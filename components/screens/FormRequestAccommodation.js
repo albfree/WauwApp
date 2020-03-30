@@ -121,7 +121,7 @@ function FormRequestAccommodation(props) {
               "La fecha de entrada debe ser posterior o igual a la actual.\n"
             );
           }
-          if (newEndTime.getDate() - newStartTime.getDate() == 0) {
+          if (newEndTime.getDate() - newStartTime.getDate() === 0) {
             errores = errores.concat(
               "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
             );

@@ -5,7 +5,6 @@ import { withNavigation } from "react-navigation";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { email } from "../account/QueriesProfile";
 
-
 function CreateAccommodation(props) {
   const [newStartTime, setStartTime] = useState(new Date());
   const [newEndTime, setEndTime] = useState(new Date());
@@ -90,7 +89,7 @@ function CreateAccommodation(props) {
       salary: newSalary,
       worker: newWorker
     };
-    console.log(accommodationData);
+    //console.log(accommodationData);
 
     if (
       newStartTime === null ||

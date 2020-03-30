@@ -46,13 +46,13 @@ function showRequest(props) {
     navigation.navigate("Home");
   }
 
-  if (request.type == "sitter") {
+  if (request.type === "sitter") {
     tipo = "Alojamiento";
     fecha = "Del "
       .concat(request.startTime)
       .concat(" al ")
       .concat(request.endTime);
-  } else if (request.type == "walk") {
+  } else if (request.type === "walk") {
     tipo = "Paseo";
     fecha = "Día y hora: ".concat(request.interval);
   }
@@ -101,7 +101,7 @@ function showRequest(props) {
       </SafeAreaView>
     );
 
-  } else if (!request.pending && request.isCanceled && request.type == "walk") {
+  } else if (!request.pending && request.isCanceled && request.type === "walk") {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image
@@ -176,7 +176,7 @@ function showRequest(props) {
       </SafeAreaView>
     );
 
-  } else if (request.pending && request.type == "sitter") {
+  } else if (request.pending && request.type === "sitter") {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Image

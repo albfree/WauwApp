@@ -8,7 +8,7 @@ import {
   Alert,
   SafeAreaView
 } from "react-native";
-import { Image, Avatar } from "react-native-elements";
+import { Avatar } from "react-native-elements";
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
@@ -101,7 +101,7 @@ function Request(props) {
   if (req.item.type == "walk") {
     tipo = "paseo";
     fecha = "Día y hora: ".concat(req.item.interval);
-  } else if (req.item.type == "sitter") {
+  } else if (req.item.type === "sitter") {
     tipo = "alojamiento";
     fecha = "Del "
       .concat(req.item.startTime)
@@ -268,8 +268,8 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     backgroundColor: "white",
-    borderRadius: 20,
-    backgroundColor: "#00a680"
+    borderRadius: 20
+    //backgroundColor: "#00a680"
   },
   request: {
     borderRadius: 6,
