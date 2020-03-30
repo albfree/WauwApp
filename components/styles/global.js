@@ -26,7 +26,6 @@ export const globalStyles = StyleSheet.create({
     marginTop: 20,
     alignItems: "center",
     justifyContent: "center",
-    alignItems: "center",
     alignContent: "center"
   },
   homeTitle: {
