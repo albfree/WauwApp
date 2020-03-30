@@ -17,6 +17,7 @@ function createRequestAccommodation(props) {
   //Atributos del props
   const newIdAccommodation = navigation.state.params.formData.idAccommodation;
   const startTime = navigation.state.params.formData.startTime;
+
   const endTime = navigation.state.params.formData.endTime;
   const newPetNumber = navigation.state.params.formData.petNumber;
 
@@ -195,11 +196,12 @@ function Precio(props) {
     //   console.log("Entra else");
 
     // }
-    console.log(days);
-    let precio = newPrice * days;
+
+    // console.log(days);
+    let precio = newPrice * days ;
     let withPets = precio * petNumber;
     setNewPrice(withPets);
-    console.log(withPets);
+   //  console.log(withPets);
   }, []);
 
   return (

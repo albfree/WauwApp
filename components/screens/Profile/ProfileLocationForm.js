@@ -77,6 +77,7 @@ function FormAdd(props) {
         "Editado",
         "Editado correctamente",
         [{ text: "Vale", onPress: () => navigation.navigate("ProfileDrawer") }],
+
         { cancelable: false }
       );
     }
@@ -97,6 +98,7 @@ function FormAdd(props) {
                 onPress: () => setIsVisibleMap(true)
               }}
               onChange={e => setWauwerAddress(e.nativeEvent.text)}
+
             />
             <Button
               buttonStyle={globalStyles.addDogBtn}
@@ -189,3 +191,4 @@ function Map(props) {
     </Modal>
   );
 }
+

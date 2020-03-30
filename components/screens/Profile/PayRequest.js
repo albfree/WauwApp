@@ -17,7 +17,6 @@ import { db } from "../../population/config.js";
 function PayRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  console.log("request", request);
   const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
   const [accessToken, setAccessToken] = useState("");
@@ -189,9 +188,9 @@ function PayRequest(props) {
         )
         .then(response => {
           setShouldShowWebviewLoading(true);
-          console.log("response.status", response.status);
+          // console.log("response.status", response.status);
           var idRequest = request.id;
-          console.log("id requests", idRequest);
+          // console.log("id requests", idRequest);
 
           alert("El pago se ha realizado correctamente");
 

@@ -11,18 +11,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config";
 import Loading from "../Loading";
-import { YellowBox } from "react-native";
-import _ from "lodash";
 import { email } from "../account/QueriesProfile";
 import { globalStyles } from "../styles/global";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
