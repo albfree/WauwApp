@@ -47,7 +47,7 @@ function ProfileAddDogForm(props) {
       });
     setReloadData(false);
   }, [reloadData]);
-  console.log(newOwner);
+ // console.log(newOwner);
 
   const addPet = () => {
     let id = db.ref("pet").push().key;

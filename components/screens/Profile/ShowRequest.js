@@ -23,7 +23,7 @@ function showRequest(props) {
   var worker = [];
   var pago = "";
 
-  console.log("id:" + id);
+  //console.log("id:" + id);
 
   db.ref("wauwers")
     .orderByChild("id")
@@ -34,7 +34,7 @@ function showRequest(props) {
 
   const cancel = () => {
     var idRequest = request.id;
-    console.log(" request", request.id);
+    //console.log(" request", request.id);
     var query = db.ref().child("requests/" + idRequest);
 
     query.update({

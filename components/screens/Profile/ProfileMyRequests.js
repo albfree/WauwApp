@@ -29,7 +29,7 @@ function ProfileMyRequests(props) {
       wauwerId = snap.val().id;
     });
 
-  console.log("wauwerId", wauwerId);
+  //console.log("wauwerId", wauwerId);
 
   useEffect(() => {
     db.ref("requests")
@@ -46,7 +46,7 @@ function ProfileMyRequests(props) {
     setLoading(false);
   }, []);
 
-  console.log(setRequestList);
+  //console.log(setRequestList);
 
   return (
     <SafeAreaView style={globalStyles.safeMyRequestsArea}>
@@ -64,7 +64,7 @@ function ProfileMyRequests(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
-        {requestsList ? (
+        {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
             style={globalStyles.myRequestsFeed}
