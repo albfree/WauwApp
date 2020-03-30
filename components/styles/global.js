@@ -894,5 +894,21 @@ export const globalStyles = StyleSheet.create({
     borderTopColor: "#ddd",
     paddingTop: 5,
     marginBottom: 10
+  },
+  walkTxt: {
+    textAlign: "center",
+    fontSize: 18,
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    paddingTop: 5,
+    marginBottom: 10
+  },
+  walkTxt2: {
+    textAlign: "center",
+    fontSize: 16,
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    paddingTop: 5,
+    marginBottom: 10
   }
 });

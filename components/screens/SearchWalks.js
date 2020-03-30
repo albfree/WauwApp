@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  StyleSheet,
   View,
   Text,
   FlatList,
@@ -8,7 +7,7 @@ import {
   SafeAreaView,
   Alert
 } from "react-native";
-import { SearchBar, Image } from "react-native-elements";
+import { SearchBar, Avatar, Icon } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../population/config";
 import Loading from "../Loading";
@@ -16,6 +15,7 @@ import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
 import { YellowBox } from "react-native";
 import _ from "lodash";
+import { globalStyles } from "../styles/global";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -56,13 +56,13 @@ function SearchWalks(props) {
   }, [reloadData]); //esto es el disparador del useEffect
 
   return (
-    <SafeAreaView>
-      <SearchBar
+    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+      {/* <SearchBar
         placeholder="Introduce una hora de inicio"
         onChangeText={e => setSearch(e)}
         value={search}
         containerStyle={styles.searchBar}
-      />
+      /> */}
       <ScrollView>
         <Loading isVisible={loading} text={"Un momento..."} />
         {data ? (
@@ -78,6 +78,7 @@ function SearchWalks(props) {
             keyExtractor={wauwerData => {
               wauwerData;
             }}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <View>
@@ -103,85 +104,53 @@ function Wauwer(props) {
   };
 
   return (
-    <View style={styles.separacion}>
-      <TouchableOpacity onPress={checkHasPets}>
-        <View style={styles.tarjeta}>
-          <View style={styles.row}>
-            <Image
-              style={{ width: 50, height: 50 }}
-              source={{ uri: wauwerData.item[0].photo }}
-            />
-            <View style={styles.column_left}>
-              <Text> {wauwerData.item[0].name} </Text>
-              <Text> {wauwerData.item[0].avgScore} </Text>
+    <TouchableOpacity onPress={checkHasPets}>
+      <View style={globalStyles.myRequestsFeedItem}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.myRequestsRow}>
+            <View style={globalStyles.searchAccommodationsColumn1}>
+              <Avatar
+                rounded
+                size="large"
+                source={{ uri: wauwerData.item[0].photo }}
+              />
+              <Text style={globalStyles.myRequestsPrice}>
+                {" "}
+                {wauwerData.item[0].name}{" "}
+              </Text>
             </View>
-            <View style={styles.column_left}>
-              <Text> {wauwerData.item[1].day} </Text>
-              <Text>
+            <View style={globalStyles.searchAccommodationsColumn1}>
+              <View style={globalStyles.myRequestsRow}>
+                <Text style={globalStyles.myRequestsNum}>
+                  {wauwerData.item[0].avgScore}
+                </Text>
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={20}
+                  color="yellow"
+                />
+              </View>
+              <Text style={globalStyles.myRequestsPrice}>
+                {" "}
+                {wauwerData.item[0].price} €
+              </Text>
+            </View>
+            <View style={globalStyles.searchAccommodationsColumn2}>
+              <Text style={globalStyles.myRequestsNum}>
+                {" "}
+                {wauwerData.item[1].day}{" "}
+              </Text>
+              <Text style={globalStyles.myRequestsStatus}>
                 {" "}
                 {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate}{" "}
               </Text>
             </View>
-            <View style={styles.column_right}>
-              <Text> {wauwerData.item[0].price} €</Text>
-            </View>
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 export default withNavigation(SearchWalks);
-
-const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_left: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_right: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    padding: 20
-  },
-  tarjeta: {
-    elevation: 1,
-    //backgroundColor: "#123",
-    borderRadius: 25,
-    borderStyle: "solid"
-  },
-  separacion: {
-    paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 5
-  },
-  loading: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  },
-  searchBar: {
-    marginBottom: 20
-  }
-});
