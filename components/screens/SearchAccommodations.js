@@ -4,15 +4,15 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  SafeAreaView,
-  StyleSheet
+  SafeAreaView
 } from "react-native";
-import { Image } from "react-native-elements";
+import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
+import { globalStyles } from "../styles/global";
+import { ScrollView } from "react-native-gesture-handler";
 
-
-  function ListAccommodations(props) {
+function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ import { withNavigation } from "react-navigation";
         const accommodations = [];
         snap.forEach(child => {
           var endTime = new Date(child.val().endTime);
-          if(endTime > new Date()){
+          if (endTime > new Date()) {
             accommodations.push(child.val());
           }
         });
@@ -34,23 +34,27 @@ import { withNavigation } from "react-navigation";
   }, []);
 
   return (
-    <SafeAreaView>
-      {accommodationsList ? (
-        <FlatList
-          data={accommodationsList}
-          renderItem={accommodation => (
-            <Accommodation
-              accommodation={accommodation}
-              navigation={navigation}
-            />
-          )}
-          keyExtractor={accommodation => accommodation.id}
-        />
-      ) : (
-        <View>
-          <Text> No hay alojamientos </Text>
-        </View>
-      )}
+    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+      <ScrollView>
+        {accommodationsList ? (
+          <FlatList
+            data={accommodationsList}
+            style={globalStyles.myRequestsFeed}
+            renderItem={accommodation => (
+              <Accommodation
+                accommodation={accommodation}
+                navigation={navigation}
+              />
+            )}
+            keyExtractor={accommodation => accommodation.id}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <View>
+            <Text> No hay alojamientos </Text>
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -65,89 +69,45 @@ function Accommodation(props) {
     });
 
   return (
-    <View style={styles.separacion}>
-      <TouchableOpacity
+    <TouchableOpacity
       onPress={() =>
-         navigation.navigate("FormRequestAccommodation", {
-           accommodation: accommodation.item
-       })
-      } 
-      >
-        <View style={styles.tarjeta}>
-          <View style={styles.row}>
-            <Image
-              style={{ width: 50, height: 50 }}
-              source={{ uri: worker.photo }}
-            />
-
-            <View style={styles.column_left}>
-              <Text> {worker.description}  </Text>
-              
+        navigation.navigate("FormRequestAccommodation", {
+          accommodation: accommodation.item
+        })
+      }
+    >
+      <View style={globalStyles.myRequestsFeedItem}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.myRequestsRow}>
+            <View style={globalStyles.searchAccommodationsColumn1}>
+              <Avatar rounded size="large" source={{ uri: worker.photo }} />
+              <Text style={globalStyles.myRequestsPrice}>
+                Precio: {accommodation.item.salary} €
+              </Text>
+              <Text style={globalStyles.notificationsDescription}>
+                {worker.description}
+              </Text>
             </View>
-            <View style={styles.column_date}>
-            <Text>Fechas disponibles para el alojamiento 
-                {accommodation.item.startTime.toLocaleString('en-US').substring(0,10)} - {accommodation.item.endTime.toLocaleString('en-US').substring(0,10)}</Text>
+            <View style={globalStyles.searchAccommodationsColumn2}>
+              <Text style={globalStyles.notificationsNum}>Disponibilidad</Text>
+              <Text style={globalStyles.myRequestsType}>
+                Del{" "}
+                {accommodation.item.startTime
+                  .toLocaleString("en-US")
+                  .substring(0, 10)}
+              </Text>
+              <Text style={globalStyles.myRequestsType}>
+                al{" "}
+                {accommodation.item.endTime
+                  .toLocaleString("en-US")
+                  .substring(0, 10)}
+              </Text>
             </View>
-            <View style={styles.column_right}>
-              <Text> {accommodation.item.salary} €</Text>
-            </View>
-           
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 export default withNavigation(ListAccommodations);
-
-const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_left: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_right: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    padding: 20
-  },
-  tarjeta: {
-    elevation: 1,
-    backgroundColor: "#fff",
-    borderRadius: 25,
-    borderStyle: "solid"
-  },
-  separacion: {
-    paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 5
-  },
-  column_date: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    padding: 20
-
-  },
-});

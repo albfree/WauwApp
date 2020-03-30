@@ -2,7 +2,6 @@ import { createStackNavigator } from "react-navigation-stack";
 import ProfileScreen from "../screens/Profile/Profile";
 import ProfileWalkerFormScreen from "../screens/Profile/ProfileWalkerForm";
 import ProfileAddDogFormScreen from "../screens/Profile/ProfileAddDogForm";
-import ProfileSitterFormScreen from "../screens/Profile/ProfileSitterForm";
 import ProfileLocationFormScreen from "../screens/Profile/ProfileLocationForm";
 import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
@@ -21,13 +20,6 @@ const ProfileScreenStacks = createStackNavigator({
     screen: ProfileWalkerFormScreen,
     navigationOptions: () => ({
       title: "Datos de Paseador",
-      headerTitleAlign: "center"
-    })
-  },
-  ProfileSitterForm: {
-    screen: ProfileSitterFormScreen,
-    navigationOptions: () => ({
-      title: "Datos de Cuidador",
       headerTitleAlign: "center"
     })
   },

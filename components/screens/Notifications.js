@@ -1,16 +1,19 @@
 import React, { useRef } from "react";
-import { View } from "react-native";
+import { View, SafeAreaView } from "react-native";
 import ListMyNotifications from "./ListMyNotifications";
 import Toast from "react-native-easy-toast";
+import { YellowBox } from "react-native";
+import _ from "lodash";
+import { globalStyles } from "../styles/global";
 
 
-export default function Chat() {
+
+export default function Notifications() {
   const toastRef = useRef();
   return (
-    <View>
+    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
       <ListMyNotifications toastRef={toastRef} />
       <Toast ref={toastRef} position="center" opacity={0.7} />
-    </View>
+    </SafeAreaView>
   );
 }
-

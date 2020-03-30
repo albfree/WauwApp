@@ -80,22 +80,7 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
-            <Button
-              buttonStyle={globalStyles.profileBtn}
-              containerStyle={globalStyles.profileBtnContainer}
-              title="Quiero ser Cuidador"
-              onPress={() => navigation.navigate("ProfileSitterForm")}
-              icon={
-                <Icon
-                  type="font-awesome"
-                  name="bed"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
+
             <Button
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}

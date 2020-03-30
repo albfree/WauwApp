@@ -139,22 +139,6 @@ function Request(requestIn) {
     color: color
   };
 
-  // const changeBgColor = {
-  //   borderRadius: 6,
-  //   elevation: 3,
-  //   backgroundColor: fondo,
-  //   shadowOffset: { width: 1, height: 1 },
-  //   shadowColor: "#333",
-  //   shadowOpacity: 0.3,
-  //   shadowRadius: 2,
-  //   marginHorizontal: 4,
-  //   marginVertical: 6,
-  //   flex: 1,
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   padding: 10
-  // };
-
   return (
     <TouchableOpacity
       onPress={() =>
@@ -164,21 +148,20 @@ function Request(requestIn) {
       }
     >
       <View style={globalStyles.myRequestsFeedItem}>
-        <View style={globalStyles.myRequestsView1}>
+        <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
             <View style={globalStyles.myRequestsColumn1}>
               <Text style={globalStyles.myRequestsNum}>
-                {" "}
-                Número de mascotas: {request.item.petNumber}{" "}
+                Número de mascotas: {request.item.petNumber}
               </Text>
-              <Text style={tarjeta}> {status} </Text>
+              <Text style={tarjeta}>{status} </Text>
               <Text style={globalStyles.myRequestsPrice}>
                 {request.item.price} €
               </Text>
             </View>
             <View style={globalStyles.myRequestsColumn2}>
               {icon}
-              <Text style={globalStyles.myRequestsType}> {tipo} </Text>
+              <Text style={globalStyles.myRequestsType}>{tipo}</Text>
             </View>
           </View>
         </View>

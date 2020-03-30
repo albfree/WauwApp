@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   View,
   Text,
   FlatList,
@@ -8,13 +7,15 @@ import {
   Alert,
   SafeAreaView
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
+import { globalStyles } from "../styles/global";
 
 
-export default function ListWalkRequests(props) {
+export default function ListMyNotifications(props) {
   const { toastRef } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
@@ -43,26 +44,30 @@ export default function ListWalkRequests(props) {
   }, [reloadRequests]);
 
   return (
-    <SafeAreaView>
-      {requestsList ? (
-        <FlatList
-          data={requestsList}
-          renderItem={request => (
-            <Request
-              req={request}
-              setReloadRequests={setReloadRequests}
-              setIsVisibleLoading={setIsVisibleLoading}
-              toastRef={toastRef}
-            />
-          )}
-          keyExtractor={request => request.id}
-        />
-      ) : (
-        <View>
-          <Text>No requests</Text>
-        </View>
-      )}
-      <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
+    <SafeAreaView style={globalStyles.safeNotificationsArea}>
+      <ScrollView>
+        {requestsList ? (
+          <FlatList
+            data={requestsList}
+            style={globalStyles.notificationsFeed}
+            renderItem={request => (
+              <Request
+                req={request}
+                setReloadRequests={setReloadRequests}
+                setIsVisibleLoading={setIsVisibleLoading}
+                toastRef={toastRef}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
+            keyExtractor={request => request.id}
+          />
+        ) : (
+          <View>
+            <Text>No hay Notificaciones</Text>
+          </View>
+        )}
+        <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -72,8 +77,12 @@ function Request(props) {
   let fecha = "";
   let estado = "";
   let tipo = "";
-  let fondo = "white";
+  let color = "white";
   let ownerInfo;
+  let dogs = "perro";
+  if (req.item.petNumber < 1) {
+    dogs = "perros";
+  }
   db.ref("wauwers")
     .child(req.item.owner)
     .on("value", snap => {
@@ -82,16 +91,16 @@ function Request(props) {
 
   if (req.item.pending) {
     estado = "Pendiente";
-    fondo = "rgba(255,128,0,0.6)";
+    color = "rgba(255,128,0,0.6)";
   } else {
     switch (req.item.isCanceled) {
       case false:
         estado = "Aceptada";
-        fondo = "rgba(0,128,0,0.6)";
+        color = "rgba(0,128,0,0.6)";
         break;
       case true:
         estado = "Rechazada";
-        fondo = "rgba(255,0,0,0.6)";
+        color = "rgba(255,0,0,0.6)";
         break;
       default:
         break;
@@ -219,77 +228,44 @@ function Request(props) {
       });
   };
 
-  const changeBgColor = {
-    borderRadius: 10,
-    elevation: 3,
-    backgroundColor: fondo,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#333",
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    marginHorizontal: 4,
-    marginVertical: 6,
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10
-    
+  const tarjeta = {
+    fontSize: 13,
+    marginTop: 4,
+    color: color
   };
 
   return (
     <TouchableOpacity onPress={checkRequestsState}>
-      <View style={changeBgColor}>
-        <Avatar
-          rounded
-          size="large"
-          containerStyle={styles.userInfoAvatar}
-          source={{
-            uri: ownerInfo.photo
-          }}
-        />
-        <View style={styles.requestContent}>
-          <Text>
-            Solicitud de {tipo} de: {ownerInfo.name}
-          </Text>
-          <Text>Servicio para {req.item.petNumber} mascotas.</Text>
-          <Text>{fecha}</Text>
-          <Text>Estado de la solicitud: {estado}</Text>
+      <View style={globalStyles.myRequestsFeedItem}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.myRequestsRow}>
+            <View style={globalStyles.notificationsColumn1}>
+              <Avatar
+                rounded
+                size="large"
+                source={{
+                  uri: ownerInfo.photo
+                }}
+              />
+              <Text style={globalStyles.notificationsNum}>
+                {ownerInfo.name}
+              </Text>
+            </View>
+            <View style={globalStyles.notificationsColumn2}>
+              <Text style={globalStyles.myRequestsType}>
+                Solicitud de {tipo}
+              </Text>
+              <Text style={globalStyles.myRequestsNum}>
+                Servicio para {req.item.petNumber} {dogs}
+              </Text>
+              <Text style={globalStyles.myRequestsPrice}>{fecha}</Text>
+              <Text style={globalStyles.myRequestsNum}>
+                Estado: <Text style={tarjeta}>{estado}</Text>
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  viewUserInfo: {
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    paddingTop: 15,
-    paddingBottom: 15,
-    backgroundColor: "white",
-    borderRadius: 20,
-    backgroundColor: "#00a680"
-  },
-  request: {
-    borderRadius: 6,
-    elevation: 3,
-    backgroundColor: "rgba(255,0,0,0.6)",
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#333",
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    marginHorizontal: 4,
-    marginVertical: 6,
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10
-  },
-  requestContent: {
-    marginHorizontal: 12,
-    marginVertical: 5,
-    flex: 1,
-    flexDirection: "column"
-  }
-});

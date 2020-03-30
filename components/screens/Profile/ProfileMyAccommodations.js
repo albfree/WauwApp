@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   View,
   Text,
   FlatList,
@@ -34,10 +33,10 @@ function ProfileMyAccommodations(props) {
       .orderByChild("worker")
       .equalTo(wauwerId)
       .on("value", snap => {
-        const accommodations = []; 
+        const accommodations = [];
         snap.forEach(child => {
           var endTime = new Date(child.val().endTime);
-          if(endTime > new Date()){
+          if (endTime > new Date()) {
             accommodations.push(child.val());
           }
         });
@@ -49,7 +48,6 @@ function ProfileMyAccommodations(props) {
 
   return (
     <SafeAreaView style={globalStyles.safeArea}>
-      <ScrollView>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -63,10 +61,11 @@ function ProfileMyAccommodations(props) {
           </View>
         </View>
       </TouchableOpacity>
-     
+      <ScrollView>
         {accommodationsList ? (
           <FlatList
             data={accommodationsList}
+            style={globalStyles.myRequestsFeed}
             renderItem={accommodation => (
               <Accommodation
                 accommodation={accommodation}
@@ -74,6 +73,7 @@ function ProfileMyAccommodations(props) {
               />
             )}
             keyExtractor={accommodation => accommodation.id}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <View>
@@ -85,11 +85,10 @@ function ProfileMyAccommodations(props) {
   );
 }
 
-
 function Accommodation(accomodationIn) {
   const { accommodation, navigation } = accomodationIn;
   let status = "";
-  let fondo = "white";
+  let color = "rgba(0,128,0,0.6)";
   let editable = false;
   var startTime = new Date(accommodation.item.startTime);
 
@@ -99,11 +98,11 @@ function Accommodation(accomodationIn) {
     switch (accommodation.item.isCanceled) {
       case true:
         status = "ocupado para la fecha establecida";
-        fondo = "rgba(0,128,0,0.6)";
+        color = "rgba(0,128,0,0.6)";
         break;
       case false:
         status = "esperando solicitudes";
-        fondo = "rgba(255,128,0,0.6)";
+        color = "rgba(255,128,0,0.6)";
         editable = true;
         break;
       default:
@@ -112,83 +111,37 @@ function Accommodation(accomodationIn) {
   }
 
   const tarjeta = {
-    elevation: 1,
-    backgroundColor: fondo,
-    borderRadius: 25,
-    borderStyle: "solid"
+    fontSize: 13,
+    marginTop: 4,
+    color: color
   };
 
   return (
-    <View style={styles.separacion}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("EditDeleteAccommodation", {
-            accommodation: accommodation.item, editable: editable
-          })
-        }
-      >
-        <View style={tarjeta}>
-          <View style={styles.row}>
-            <View style={styles.column_left}>
-              <Text>Alojamiento {status}</Text>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("EditDeleteAccommodation", {
+          accommodation: accommodation.item,
+          editable: editable
+        })
+      }
+    >
+      <View style={globalStyles.myRequestsFeedItem}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.myRequestsRow}>
+            <View style={globalStyles.myRequestsColumn1}>
+              <Text style={globalStyles.myRequestsNum}>Alojamiento</Text>
+              <Text style={tarjeta}>{status}</Text>
             </View>
-            <View style={styles.column_right}>
-              <Text>{(accommodation.item.salary*0.8).toFixed(2)} €</Text>
+            <View style={globalStyles.myRequestsColumn2}>
+              <Text style={globalStyles.myRequestsPrice}>
+                {(accommodation.item.salary * 0.8).toFixed(2)} €
+              </Text>
             </View>
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 export default withNavigation(ProfileMyAccommodations);
-
-const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_left: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_right: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    padding: 20
-  },
-  tarjeta: {
-    elevation: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 25,
-    borderStyle: "solid"
-  },
-  separacion: {
-    paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 5
-  },
-  loading: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  }
-});
