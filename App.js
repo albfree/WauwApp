@@ -25,12 +25,6 @@ export default class App extends Component {
   }
 }
 
-const AppSwitchNavigator = createSwitchNavigator({
-  LoadingScreen:LoadingScreen,
-  LoginScreen:LoginScreen,
-  DashboardScreen:DashboardScreen
-})
-
 const AppNavigator = createAppContainer(AppSwitchNavigator);
 
 const styles = StyleSheet.create({
