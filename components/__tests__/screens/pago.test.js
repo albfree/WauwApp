@@ -1,15 +1,15 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import DashboardScreen from '../../screens/DashboardScreen';
+import Pago from '../../screens/Pago';
 import mockStore from 'redux-mock-store';
 
-describe('<DashboardScreen />', () => {
-  it.skip('testing the DashboardScreen screen', async () => {
+describe('<Pago />', () => {
+  it.skip('testing the payment view', async () => {
     const store = mockStore({
         rehydrated: false,
         navigation: {navigate: jest.fn()},
     });
-    const tree = renderer.create(<DashboardScreen navigation={store}/>).toJSON();
+    const tree = renderer.create(<Pago navigation={store} request={store}/>).toJSON();
     expect(tree.children.length).toBe(1);
   });
 });

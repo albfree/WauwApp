@@ -1,15 +1,15 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import DashboardScreen from '../../screens/DashboardScreen';
+import ShowRequest from '../../../screens/Profile/ShowRequest';
 import mockStore from 'redux-mock-store';
 
-describe('<DashboardScreen />', () => {
-  it.skip('testing the DashboardScreen screen', async () => {
+describe('<ShowRequest />', () => {
+  it.skip('testing the ShowRequest screen', async () => {
     const store = mockStore({
         rehydrated: false,
         navigation: {navigate: jest.fn()},
     });
-    const tree = renderer.create(<DashboardScreen navigation={store}/>).toJSON();
+    const tree = renderer.create(<ShowRequest navigation={store}/>).toJSON();
     expect(tree.children.length).toBe(1);
   });
 });
