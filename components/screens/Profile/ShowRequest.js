@@ -15,7 +15,7 @@ import { db } from "../../population/config.js";
 function showRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  console.log(request);
+ // console.log(request);
 
   var id = request.worker;
   var tipo = "";

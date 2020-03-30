@@ -18,7 +18,7 @@ import { db } from "../population/config.js";
 function Pago(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  console.log("request", request);
+ // console.log("request", request);
   const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
   const [accessToken, setAccessToken] = useState("");
@@ -190,9 +190,9 @@ function Pago(props) {
         )
         .then(response => {
           setShouldShowWebviewLoading(true);
-          console.log("response.status", response.status);
+         // console.log("response.status", response.status);
           var idRequest = request.id;
-          console.log("id requests", idRequest);
+         // console.log("id requests", idRequest);
           var query = db.ref().child("requests/" + idRequest);
 
           query.update({

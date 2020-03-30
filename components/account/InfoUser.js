@@ -7,7 +7,7 @@ export default function InfoUser(props) {
   const { userInfo, setReloadData } = props;
 
   changeAvatar = () => {
-    console.log("Estás cambiando el avatar...");
+    //console.log("Estás cambiando el avatar...");
     setReloadData(false);
   };
 

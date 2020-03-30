@@ -3,16 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
-import { YellowBox } from 'react-native';
-import _ from 'lodash';
-
-YellowBox.ignoreWarnings(['Setting a timer']);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
-    _console.warn(message);
-  }
-};
 
 function Services(props) {
   const { navigation } = props;

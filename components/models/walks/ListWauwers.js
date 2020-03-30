@@ -38,7 +38,7 @@ export default function ListWauwers(props){
 }
 
 function Wauwer(wauwer){
-    console.log(wauwer);
+    //console.log(wauwer);
     return (
         <View  style={styles.separacion}>
             <TouchableOpacity

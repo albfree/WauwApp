@@ -36,7 +36,6 @@ export const globalStyles = StyleSheet.create({
   },
   homeContentText: {
     fontSize: 18,
-    fontWeight: "100",
     marginTop: 10,
     fontWeight: "300",
     textAlign: "center"

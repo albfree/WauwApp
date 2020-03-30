@@ -5,17 +5,8 @@ import { db } from "../population/config";
 import { Button } from "react-native-elements";
 import * as Google from "expo-google-app-auth";
 import { Icon } from "react-native-elements";
-import { YellowBox } from "react-native";
-import _ from "lodash";
 import { globalStyles } from "../styles/global";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 // const IOS_CLIENT_ID =
 //   "your-ios-client-id";
 
@@ -55,7 +46,7 @@ export default class LoginScreen extends Component {
             .auth()
             .signInWithCredential(credential)
             .then(function(result) {
-              console.log("user signed in ");
+             // console.log("user signed in ");
               if (result.additionalUserInfo.isNewUser) {
                 let idWauwer = db
                   .ref()
@@ -81,7 +72,7 @@ export default class LoginScreen extends Component {
                   isSitter: false,
                   location: null
                 });
-                console.log("Usuario añadido con éxito");
+              //  console.log("Usuario añadido con éxito");
 
                 //Google query added to get the user in case of database dump
                 firebase
@@ -119,7 +110,7 @@ export default class LoginScreen extends Component {
               // ...
             });
         } else {
-          console.log("User already signed-in Firebase.");
+        //  console.log("User already signed-in Firebase.");
         }
       }.bind(this)
     );
