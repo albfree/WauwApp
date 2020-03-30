@@ -29,7 +29,7 @@ function ProfileMyRequests(props) {
       wauwerId = snap.val().id;
     });
 
-  console.log("wauwerId", wauwerId);
+  //console.log("wauwerId", wauwerId);
 
   useEffect(() => {
     db.ref("requests")

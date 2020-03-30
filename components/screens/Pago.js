@@ -137,7 +137,7 @@ function Pago(props) {
           )
           .then(response => {
             const { id, links } = response.data;
-            const approvalUrl = links.find(data => data.rel == "approval_url")
+            const approvalUrl = links.find(data => data.rel === "approval_url")
               .href;
 
             //console.log("response", links);
@@ -165,7 +165,7 @@ function Pago(props) {
 
     //When the webViewState.title is empty this mean it's in process loading the first paypal page so there is no paypal's loading icon
     //We show our loading icon then. After that we don't want to show our icon we need to set setShouldShowWebviewLoading to limit it
-    if (webViewState.title == "") {
+    if (webViewState.title === "") {
       //When the webview get here Don't need our loading anymore because there is one from paypal
       setShouldShowWebviewLoading(false);
     }

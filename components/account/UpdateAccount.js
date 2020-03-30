@@ -1,9 +1,9 @@
 import { db } from "../population/config.js";
 
-const changeAvatar = () => {
+/* const changeAvatar = () => {
   console.log("Estás cambiando el avatar...");
-};
-s
+}; */
+
 export function updateName(id, name) {
   let userData = {
     name: name
