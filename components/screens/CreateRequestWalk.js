@@ -1,27 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  Button,
-  View,
-  Alert,
-  Picker,
-  ScrollView
-} from "react-native";
+import { Text, View, Alert, Picker, SafeAreaView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
-import { YellowBox } from "react-native";
 import { CheckBox } from "react-native-elements";
 import _ from "lodash";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
+import { Button, Icon } from "react-native-elements";
+import { globalStyles } from "../styles/global";
 
 function createRequest(props) {
   const { navigation } = props;
@@ -132,21 +117,18 @@ function createRequest(props) {
   };
 
   return (
-    <ScrollView style={{ backgroundColor: "white" }}>
-      <Text style={styles.text}>
-        {"Nombre Paseador\n"}
-        <Text style={styles.data}>{newWorker.name}</Text>
+    <SafeAreaView style={globalStyles.safeShowRequestArea}>
+      <Text style={globalStyles.accommodationSitter}>
+        {"Nombre del Paseador\n"}
+        <Text style={globalStyles.accommodationSitter2}>{newWorker.name}</Text>
       </Text>
 
-      {/* { <Text style={styles.text}>
-        {"Información \n"} <Text style={styles.data}>{newDescription}</Text>{" "}
-      </Text> } */}
-      <Text style={styles.text}>
-        {"Precio paseo \n"}
-        <Text style={styles.data}>{newPrice}</Text>
+      <Text style={globalStyles.walkTxt}>
+        {"Precio del Paseo \n"}
+        <Text style={styles.data}>{newPrice} €</Text>
       </Text>
 
-      <Text style={styles.text}>
+      <Text style={globalStyles.walkTxt2}>
         {"¿Cuándo quiere que " + newWorker.name + " pasee a su perro?"}
       </Text>
 
@@ -160,32 +142,36 @@ function createRequest(props) {
           />
         ))}
       </Picker>
-
-      <Text style={styles.text}>
-        {"Fecha\n"}
-        <Text style={styles.data}>{newInterval}</Text>{" "}
+      <Text style={globalStyles.accommodationSitter2}>
+        {"¿Qué mascotas quiere que pasee " + newWorker.name + "?"}
       </Text>
-      <View>
-        <Text style={styles.text}>
-          {"¿Qué mascotas quiere que pasee " + newWorker.name + "?"}
-        </Text>
-        <View style={styles.container}>
-          {petNames.map(pet => (
-            <PetCheckBox
-              name={pet}
-              petNumber={petNumber}
-              setPetNumber={setPetNumber}
-              newPrice={newPrice}
-              setNewPrice={setNewPrice}
-              price={price}
-            />
-          ))}
-        </View>
-      </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Crear Solicitud" onPress={checkPetNumber} color="#0de" />
-      </View>
-    </ScrollView>
+      {petNames.map(pet => (
+        <PetCheckBox
+          name={pet}
+          petNumber={petNumber}
+          setPetNumber={setPetNumber}
+          newPrice={newPrice}
+          setNewPrice={setNewPrice}
+          price={price}
+        />
+      ))}
+      <Button
+        buttonStyle={globalStyles.accommodationBtn}
+        containerStyle={globalStyles.accommodationBtnCnt}
+        title="Enviar Solicitud"
+        onPress={checkPetNumber}
+        icon={
+          <Icon
+            type="material-community"
+            name="send"
+            size={20}
+            color="white"
+            marginLeft={10}
+          />
+        }
+        titleStyle={globalStyles.editAccommodationEditDateTittle}
+      />
+    </SafeAreaView>
   );
 }
 
@@ -217,31 +203,8 @@ function PetCheckBox(props) {
     setIsChecked(!checked);
   };
   return (
-    <View style={styles.checkbox}>
+    <View>
       <CheckBox title={name} checked={checked} onPress={setChecked} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  text: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderTopWidth: 1,
-    borderTopColor: "#ddd"
-  },
-  data: {
-    paddingHorizontal: 8,
-    paddingVertical: 9,
-    color: "grey"
-  },
-  buttonContainer: {
-    marginTop: 20,
-    marginBottom: 20
-  },
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap"
-  }
-});

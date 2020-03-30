@@ -9,7 +9,7 @@ import {
   ScrollView,
   TouchableOpacity
 } from "react-native";
-import { Button } from "react-native-elements";
+import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { white } from "color-name";
 import { globalStyles } from "../styles/global";
@@ -31,35 +31,47 @@ function Home(props) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView scrollEventThrottle={16}>
-        <View style={styles.viewStyle}>
-          <Text style={globalStyles.title}>¿Conoces nuestros servicios?</Text>
-          <Text style={globalStyles.contentText}>
+        <View style={globalStyles.homeView}>
+          <Text style={globalStyles.homeTitle}>
+            ¿Conoces nuestros servicios?
+          </Text>
+          <Text style={globalStyles.homeContentText}>
             Wauw no es únicamente una aplicación, Wauw es la forma más sencilla
             de ayudar a las protectoras de animales de tu ciudad. ¡Con cada
             transacción dentro de la aplicación estarás donando a las
             protectoras y muchos pequeñajos te lo agradecerán!
           </Text>
 
-          <View style={styles.viewStyle2}>
+          <View style={globalStyles.homeView2}>
             <Image
-              style={styles.image}
+              style={globalStyles.homeImage}
               source={require("../../assets/images/dog.jpg")}
             />
           </View>
 
-          <View style={styles.viewStyle2}>
-            <Text style={globalStyles.title}>Conoce a las protectoras</Text>
-            <Text style={globalStyles.contentText}>
+          <View style={globalStyles.homeView2}>
+            <Text style={globalStyles.homeTitle}>Conoce a las protectoras</Text>
+            <Text style={globalStyles.homeContentText}>
               ¿Quieres saber con qué protectoras colaboramos? Te dejamos aquí
               toda la información disponible.
             </Text>
 
-            <View style={styles.viewStyle2}>
+            <View style={globalStyles.homeView2}>
               <Button
-                buttonStyle={globalStyles.btnStyle}
-                titleStyle={globalStyles.btnTextStyle}
+                buttonStyle={globalStyles.profileBtn}
+                containerStyle={globalStyles.profileBtnContainer}
                 title="Protectoras"
                 onPress={() => navigation.navigate("AnimalShelters")}
+                icon={
+                  <Icon
+                    type="material-community"
+                    name="shield-home"
+                    size={30}
+                    color="white"
+                    marginLeft={20}
+                  />
+                }
+                titleStyle={globalStyles.profileBtnTittle}
               />
             </View>
           </View>
@@ -70,24 +82,3 @@ function Home(props) {
 }
 
 export default withNavigation(Home);
-
-const styles = StyleSheet.create({
-  viewStyle2: {
-    width: "95%",
-    height: 200,
-    marginTop: 20,
-    alignItems: "center"
-  },
-  viewStyle: {
-    flex: 1,
-    padding: 20
-  },
-  image: {
-    flex: 1,
-    width: "100%",
-    resizeMode: "cover",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#dddddd"
-  }
-});

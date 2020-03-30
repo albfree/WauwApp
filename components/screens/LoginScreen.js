@@ -74,6 +74,7 @@ export default class LoginScreen extends Component {
                   wauwPoints: 0,
                   //Número de mascotas que va a aceptar como máximo
                   petNumberSitter: 0,
+                  petNumberWalk: 0,
                   homeDescription: "",
                   avgScore: 2.5,
                   walkSalary: 0,

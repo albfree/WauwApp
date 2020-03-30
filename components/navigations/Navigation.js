@@ -7,9 +7,6 @@ import NotificationsScreenStack from "./NotificationsStack";
 import ServicesScreenStacks from "./ServicesStacks";
 import ProfileScreenStack from "./ProfileStack";
 import ChatsScreenStack from "./ChatsStack";
-import ProfileMyRequests from "../screens/Profile/ProfileMyRequests";
-import ProfileMyAccommodations from "../screens/Profile/ProfileMyAccommodations";
-import ProfileMyWalks from "../screens/Profile/ProfileMyWalks";
 import { HeaderStyleInterpolators } from "react-navigation-stack";
 
 const NavigationStacks = createBottomTabNavigator(

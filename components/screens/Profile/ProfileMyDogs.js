@@ -3,7 +3,7 @@ import { Text, View, SafeAreaView, TouchableOpacity } from "react-native";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 
-export default function ProfileMyWalks(props) {
+export default function ProfileMyDogs(props) {
   const { navigation } = props;
   return (
     <SafeAreaView style={globalStyles.safeArea}>
@@ -14,7 +14,7 @@ export default function ProfileMyWalks(props) {
         <FontAwesome name="bars" size={24} color="#161924" />
       </TouchableOpacity>
       <View>
-        <Text>Vista de mis paseos</Text>
+        <Text>Vista de mis perros</Text>
       </View>
     </SafeAreaView>
   );
