@@ -6,17 +6,17 @@ import {FormRequestAccommodationScreen} from "../screens/FormRequestAccommodatio
 
 
 
-import { CreateRequestScreen } from "../screens/CreateRequestWalk";
+//import { CreateRequestScreen } from "../screens/CreateRequestWalk";
 
 
 const RequestScreenStacks = createStackNavigator({
-    CreateRequest: {
-       screen: CreateRequestScreen,
-       navigationOptions: ()=> ({
-           title: "Crear Solicitud",
-           headerTitleAlign: "center",
-       })
-    },
+    // CreateRequest: {
+    //    screen: CreateRequestScreen,
+    //    navigationOptions: ()=> ({
+    //        title: "Crear Solicitud",
+    //        headerTitleAlign: "center",
+    //    })
+    // },
     CreateRequestAccommodation: {
         screen: CreateRequestAccommodationScreen,
         navigationOptions: () => ({

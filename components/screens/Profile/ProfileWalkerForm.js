@@ -1,21 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  FlatList,
-  Text,
-  Input,
-  Button,
-  View,
-  Alert,
-  Picker
-} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+import { StyleSheet, SafeAreaView, Text, Button, View } from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import { YellowBox } from "react-native";
-import { CheckBox } from "react-native-elements";
 import _ from "lodash";
 import {
   Collapse,
@@ -35,18 +24,12 @@ function ProfileWalkerForm(props) {
   const { navigation } = props;
   const [reloadData, setReloadData] = useState(false);
   const [newWalker, setNewWalker] = useState([]);
+
   const [availabilitiesLunes, setAvailabilitiesLunes] = useState([]);
-  const [availabilitiesMartes, setAvailabilitiesMartes] = useState([]);
-  const [availabilitiesMiercoles, setAvailabilitiesMiercoles] = useState([]);
-  const [availabilitiesJueves, setAvailabilitiesJueves] = useState([]);
-  const [availabilitiesViernes, setAvailabilitiesViernes] = useState([]);
-  const [availabilitiesSabado, setAvailabilitiesSabado] = useState([]);
-  const [availabilitiesDomingo, setAvailabilitiesDomingo] = useState([]);
-  const [availabilities, setAvailabilities] = useState([]);
-
-  const [isChecked, setIsChecked] = useState();
-
-  const [availabilitiesGlobal, setAvailabilitiesGlobal] = useState([]);
+  const [myHour, setMyHour] = useState("");
+  const [myId, setMyId] = useState("");
+  const [ids, setIds] = useState([]);
+  const [hours, setHours] = useState([]);
 
   useEffect(() => {
     // To retrieve the current logged user
@@ -60,81 +43,109 @@ function ProfileWalkerForm(props) {
       });
     setReloadData(false);
   }, [reloadData]);
-
   useEffect(() => {
     // To retrieve availabilities
-
     db.ref("availability").on("value", snap => {
-      const avGlobal = [];
       const availabilitiesListLunes = [];
-      const availabilitiesListMartes = [];
-      const availabilitiesListMiercoles = [];
-      const availabilitiesListJueves = [];
-      const availabilitiesListViernes = [];
-      const availabilitiesListSabado = [];
-      const availabilitiesListDomingo = [];
-      var i = 0;
       snap.forEach(child => {
+        let hour =
+          child.val().day +
+          ": " +
+          child.val().startTime +
+          " - " +
+          child.val().endDate;
+        let id = child.val().id;
+
         switch (child.val().day) {
           case "Lunes":
-            if (i == 16) {
-              i = 0;
-            }
-            const avLunes = [];
-            avLunes.push(child.val());
-            avLunes.push(false);
-            avLunes.push(i);
-            i++;
-            availabilitiesListLunes.push(avLunes);
+            const huecoLunes = [];
+            huecoLunes.push(hour);
+            huecoLunes.push(id);
+            availabilitiesListLunes.push(huecoLunes);
+
             break;
           case "Martes":
-            if (i == 16) {
-              i = 0;
-            }
-            const avMartes = [];
-            avMartes.push(child.val());
-            avMartes.push(false);
-            avMartes.push(i);
-            i++;
-            availabilitiesListMartes.push(avMartes);
             break;
           case "Miercoles":
-            availabilitiesListMiercoles.push(child.val());
             break;
           case "Jueves":
-            availabilitiesListJueves.push(child.val());
             break;
           case "Viernes":
-            availabilitiesListViernes.push(child.val());
             break;
           case "Sabado":
-            availabilitiesListSabado.push(child.val());
             break;
           case "Domingo":
-            availabilitiesListDomingo.push(child.val());
             break;
           default:
             break;
         }
-      }
-      );
-      avGlobal.push(availabilitiesListLunes);
-      avGlobal.push(availabilitiesListMartes);
-      avGlobal.push(availabilitiesListMiercoles);
-      avGlobal.push(availabilitiesListJueves);
-      avGlobal.push(availabilitiesListViernes);
-      avGlobal.push(availabilitiesListSabado);
-      avGlobal.push(availabilitiesListDomingo);
-     
-      setAvailabilitiesGlobal(avGlobal);
-      
+      });
+      setAvailabilitiesLunes(availabilitiesListLunes);
+      console.log(availabilitiesLunes);
     });
     setReloadData(false);
   }, [reloadData]);
 
-  /* console.log("=====================");
-  console.log("Availabilities" + availabilitiesGlobal);
-  console.log("============ FIN ================"); */
+  const changeValues = (h, id) => {
+    setHours(h);
+    setIds(id);
+  };
+
+  // let ids = [];
+  // let hours = [];
+  let selected = "Na";
+  const isAdded = (hour, id) => {
+    setMyId(id);
+    setMyHour(hour);
+    var myIds = ids;
+    var myHours = hours;
+    if (!myIds.includes(id) && !hours.includes(hour)) {
+      myIds.push(id);
+      myHours.push(hour);
+      changeValues(myHours, myIds);
+      console.log("ids:", ids);
+      console.log("hours:", hours);
+    } else if (myIds.includes(id) && myHours.includes(hour)) {
+      myIds = ids.filter(elem => elem != id);
+      myHours = hours.filter(elem => elem != hour);
+      changeValues(myHours, myIds);
+      console.log("idsF:", ids);
+      console.log("hoursF:", hours);
+    }
+    //   let selected = "";
+    //   var start = "";
+    //   if (!ids.includes(id) && !hours.includes(hour)) {
+    //     selected = "";
+    //     if (ids.length > 0) {
+    //       start = ", ";
+    //     }
+    //     ids.push(id);
+    //     hours.push(hour);
+    //     setMyHours(hours);
+    //     hours.forEach(h => {
+    //       selected = selected + h + start;
+    //     });
+    //     if (hours.length > 1) {
+    //       selected = selected.slice(0, -2);
+    //     }
+    //   } else {
+    //     ids = ids.filter(elem => elem != id);
+    //     hours = hours.filter(elem => elem != hour);
+    //     selected = "";
+    //     if (ids.length > 0) {
+    //       start = ", ";
+    //     }
+    //     hours.forEach(h => {
+    //       selected = selected + h + start;
+    //     });
+    //     if (hours.length >= 1) {
+    //       selected = selected.slice(0, -2);
+    //     }
+    //   }
+    //   console.log("Selected:", selected);
+    //   setMySelected(selected);
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -143,6 +154,10 @@ function ProfileWalkerForm(props) {
             <Text style={styles.text}> Salario </Text>
             <Text style={styles.data}>{newWalker.walkSalary}</Text>
           </View>
+          <View>
+            <Text style={styles.text}>Disponibilidades seleccionadas</Text>
+            <Text>{selected}</Text>
+          </View>
           <Text style={styles.text}> Disponibilidad </Text>
           <View>
             <Collapse>
@@ -150,11 +165,24 @@ function ProfileWalkerForm(props) {
                 <Text>Lunes</Text>
               </CollapseHeader>
               <CollapseBody>
-                <AvailabilityFlatList
-                  availabilities={availabilitiesGlobal[0]}
-                  isChecked={isChecked}
-                  globalPos={0}
-                />
+                <View style={styles.avContainer}>
+                  {availabilitiesLunes.map(av => (
+                    <View style={styles.availability}>
+                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
+                        <Text>{av[0]}</Text>
+                      </TouchableOpacity>
+                      {/* <TextHour
+                        hour={av[0]}
+                        id={av[1]}
+                        hours={hours}
+                        setHours={setHours}
+                        ids={ids}
+                        setIds={setIds}
+                        setMySelected={setMySelected}
+                      /> */}
+                    </View>
+                  ))}
+                </View>
               </CollapseBody>
             </Collapse>
 
@@ -162,78 +190,84 @@ function ProfileWalkerForm(props) {
               <CollapseHeader>
                 <Text>Martes</Text>
               </CollapseHeader>
-              <CollapseBody>
+              {/* <CollapseBody>
                 <AvailabilityFlatList
                   availabilities={availabilitiesGlobal[1]}
                   isChecked={isChecked}
                   globalPos={1}
+                  setGlobalList={addAvailability}
                 />
-              </CollapseBody>
+              </CollapseBody> */}
             </Collapse>
 
             <Collapse>
               <CollapseHeader>
                 <Text>Miércoles</Text>
               </CollapseHeader>
-              <CollapseBody>
+              {/* <CollapseBody>
                 <AvailabilityFlatList
                   availabilities={availabilitiesGlobal[2]}
                   isChecked={isChecked}
                   globalPos={2}
+                  setGlobalList={addAvailability}
                 />
-              </CollapseBody>
+              </CollapseBody> */}
             </Collapse>
 
             <Collapse>
               <CollapseHeader>
                 <Text>Jueves</Text>
               </CollapseHeader>
-              <CollapseBody>
+              {/* <CollapseBody>
                 <AvailabilityFlatList
                   availabilities={availabilitiesGlobal[3]}
                   isChecked={isChecked}
                   globalPos={3}
+                  setGlobalList={addAvailability}
                 />
-              </CollapseBody>
+              </CollapseBody> */}
             </Collapse>
 
             <Collapse>
               <CollapseHeader>
                 <Text>Viernes</Text>
               </CollapseHeader>
-              <CollapseBody>
+              {/* <CollapseBody>
                 <AvailabilityFlatList
                   availabilities={availabilitiesGlobal[4]}
                   isChecked={isChecked}
                   globalPos={4}
+                  setGlobalList={addAvailability}
                 />
-              </CollapseBody>
+              </CollapseBody> */}
             </Collapse>
 
             <Collapse>
               <CollapseHeader>
                 <Text>Sábado</Text>
               </CollapseHeader>
-              <CollapseBody>
+              {/* <CollapseBody>
                 <AvailabilityFlatList
                   availabilities={availabilitiesGlobal[5]}
                   isChecked={isChecked}
                   globalPos={5}
+                  setGlobalList={addAvailability}
                 />
-              </CollapseBody>
+              </CollapseBody> */}
             </Collapse>
 
             <Collapse>
               <CollapseHeader>
                 <Text>Domingo</Text>
               </CollapseHeader>
-              <CollapseBody>
+              {/* <CollapseBody>
                 <AvailabilityFlatList
                   availabilities={availabilitiesGlobal[6]}
                   isChecked={isChecked}
                   globalPos={6}
+                  setGlobalList={addAvailability}
                 />
-              </CollapseBody>
+              </CollapseBody> */}
             </Collapse>
           </View>
           <View>
@@ -254,60 +288,72 @@ function ProfileWalkerForm(props) {
   );
 }
 
-function AvailabilityFlatList(props) {
-  const { availabilities, globalPos } = props;
-  //console.log("availabilities: ",availabilities);
+// function TextHour(props) {
+//   const { hour, id, hours, setHours, ids, setIds, setMySelected } = props;
+//   let myIds = [];
+//   myIds.push(ids);
+//   let myHours = [];
+//   myHours.push(hours);
 
-  return (
-    <FlatList
-      data={availabilities}
-      renderItem={availability => (
-        <AvailabilityCheckBox
-          availability={availability.item}
-          globalPos={globalPos}
-        />
-      )}
-      keyExtractor={availability => {
-        availability.item;
-      }}
-    />
-  );
-}
+//   useEffect(() => {}, []);
 
-function AvailabilityCheckBox(props) {
-  const { availability, globalPos } = props;
-  const [checked, setIsChecked] = useState(false);
-  /* console.log("==================================");
-  console.log(availability);
-  console.log("=================================="); */
-  //console.log(availability);
+//   const isAdded = (hour, id) => {
+//     let selected = "";
+//     var start = "";
+//     if (!myIds.includes(id) && !myHours.includes(hour)) {
+//       selected = "";
+//       if (myIds.length > 0) {
+//         start = ", ";
+//       }
+//       myIds.push(id);
+//       myHours.push(hour);
+//       myHours.forEach(h => {
+//         selected = selected + h + start;
+//       });
+//       if (myHours.length > 1) {
+//         selected = selected.slice(0, -2);
+//       }
+//     } else {
+//       myIds = myIds.filter(elem => elem != id);
+//       myHours = myHours.filter(elem => elem != hour);
+//       selected = "";
+//       if (myIds.length > 0) {
+//         start = ", ";
+//       }
+//       myHours.forEach(h => {
+//         selected = selected + h + start;
+//       });
+//       if (myHours.length >= 1) {
+//         selected = selected.slice(0, -2);
+//       }
+//     }
+//     console.log("Selected:", selected);
+//     setMySelected(selected);
+//   };
 
-  const setChecked = () => {
-    
-    setIsChecked(!checked);
-    console.log(availability[2]);
-  };
-
-  return (
-    <View style={styles.checkbox}>
-      <CheckBox
-        title={
-          availability[0].day +
-          ":  " +
-          availability[0].startTime +
-          " - " +
-          availability[0].endDate
-        }
-        checked={availability[1]}
-        onPress={setChecked}
-      />
-    </View>
-  );
-}
+//   return (
+//     <View>
+//       <TouchableOpacity onPress={isAdded(hour, id)}>
+//         <Text>{hour}</Text>
+//       </TouchableOpacity>
+//     </View>
+//   );
+// }
 
 export default withNavigation(ProfileWalkerForm);
 
 const styles = StyleSheet.create({
+  avContainer: {
+    borderColor: "red",
+    marginLeft: 10,
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+  availability: {
+    margin: 5
+    //backgroundColor: "green"
+  },
   text: {
     paddingHorizontal: 8,
     paddingVertical: 6,

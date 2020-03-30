@@ -35,15 +35,15 @@ const ServicesScreenStacks = createStackNavigator({
     navigationOptions: () => ({
       title: "Cambiar Disponibilidad",
       headerTitleAlign: "center"
-        })
-      },
-      CreateRequest: {
-        screen: CreateRequestScreen,
-        navigationOptions: () => ({
-          title: "Crear Solicitud",
-          headerTitleAlign: "center"
     })
   },
+  //     CreateRequest: {
+  //       screen: CreateRequestScreen,
+  //       navigationOptions: () => ({
+  //         title: "Crear Solicitud",
+  //         headerTitleAlign: "center"
+  //   })
+  // },
   CreateAccommodation: {
     screen: CreateAccommodationScreen,
     navigationOptions: () => ({
