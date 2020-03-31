@@ -38,11 +38,12 @@ function ProfileAddDogForm(props) {
           surname: snap.val().surname,
           wauwPoints: snap.val().wauwPoints
         };
-        setnewOwner(snap.val());
+        setnewOwner(newNewOwner);
+        
       });
     setReloadData(false);
   }, [reloadData]);
-  console.log(newOwner);
+
 
   const addPet = () => {
     let id = db.ref("pet").push().key;
@@ -80,6 +81,17 @@ function ProfileAddDogForm(props) {
       db.ref("pet/" + id)
         .set(petData)
         .then(() => {
+          let petNumber = 0;
+          db.ref().child('wauwers/' + newOwner.id).on('value', snap => {
+            if(snap.val().petNumber !== undefined) {
+              petNumber = snap.val().petNumber;
+            }
+          });
+
+          db.ref().child('wauwers/' + newOwner.id).update({
+            petNumber: petNumber + 1
+          });
+
           Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
           navigation.navigate("ProfileDrawer");
           setIsLoading(false);
