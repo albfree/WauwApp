@@ -56,6 +56,9 @@
   "jest": {
     "projects": [
       {
+        "preset": "jest-expo/ios"
+      },
+      {
         "preset": "jest-expo/android"
       }
     ]
