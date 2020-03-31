@@ -82,13 +82,13 @@ function ProfileAddDogForm(props) {
         .set(petData)
         .then(() => {
           let petNumber = 0;
-          db.ref().child('wauwers/' + newOwner.id).on('value', snap => {
+          db.ref().child("wauwers/" + newOwner.id).on("value", snap => {
             if(snap.val().petNumber !== undefined) {
               petNumber = snap.val().petNumber;
             }
           });
 
-          db.ref().child('wauwers/' + newOwner.id).update({
+          db.ref().child("wauwers/" + newOwner.id).update({
             petNumber: petNumber + 1
           });
 
