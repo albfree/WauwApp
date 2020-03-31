@@ -46,7 +46,7 @@ export default function ListMyNotifications(props) {
   return (
     <SafeAreaView style={globalStyles.safeNotificationsArea}>
       <ScrollView>
-        {requestsList ? (
+        {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
             style={globalStyles.notificationsFeed}

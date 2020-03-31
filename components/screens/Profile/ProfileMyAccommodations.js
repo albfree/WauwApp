@@ -62,7 +62,7 @@ function ProfileMyAccommodations(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
-        {accommodationsList ? (
+        {accommodationsList.length > 0 ? (
           <FlatList
             data={accommodationsList}
             style={globalStyles.myRequestsFeed}

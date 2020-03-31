@@ -68,7 +68,7 @@ export default function Chats(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-        {data ? (
+        {data.length > 0 ? (
           <FlatList
             data={data}
             renderItem={requestsData => (

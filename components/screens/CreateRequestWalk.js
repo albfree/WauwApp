@@ -125,7 +125,7 @@ function createRequest(props) {
 
       <Text style={globalStyles.walkTxt}>
         {"Precio del Paseo \n"}
-        <Text style={styles.data}>{newPrice} €</Text>
+        <Text style={globalStyles.walkTxt}>{newPrice} €</Text>
       </Text>
 
       <Text style={globalStyles.walkTxt2}>
