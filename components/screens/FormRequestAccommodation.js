@@ -130,12 +130,12 @@ function FormRequestAccommodation(props) {
       }
       if (newStartTime.getTime() - startAccommodation.getTime() < 0) {
         errores = errores.concat(
-          "La fecha de inicio no puede ser anterior a la fecha de inicio del alojamieto.\n"
+          "La fecha de inicio no puede ser anterior a la fecha de inicio del alojamiento.\n"
         );
       }
       if (newEndTime.getTime() - endAccommodation.getTime() > 0) {
         errores = errores.concat(
-          "La fecha de fin no puede ser posterior a la fecha de fin del alojamieto.\n"
+          "La fecha de fin no puede ser posterior a la fecha de fin del alojamiento.\n"
         );
       }
 

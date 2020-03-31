@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TextInput, Alert, SafeAreaView } from "react-native";
+import { Text, View, TextInput, Alert, SafeAreaView, Keyboard, ScrollView } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
@@ -80,6 +80,7 @@ function ProfileAddDogForm(props) {
       Alert.alert("Advertencia", errores.toString());
     } else {
       setIsLoading(true);
+
       db.ref("pet/" + id)
         .set(petData)
         .then(() => {
@@ -109,48 +110,50 @@ function ProfileAddDogForm(props) {
 
   return (
     <SafeAreaView style={globalStyles.safeShowRequestArea}>
-      <View style={globalStyles.showRequestFeed}>
-        <View style={globalStyles.viewFlex1}>
-          <Text style={globalStyles.addDogTittle}>
-            ¿Cómo se llama su perro?
+      <ScrollView keyboardShouldPersistTaps={false}>
+        <View style={globalStyles.showRequestFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <Text style={globalStyles.addDogTittle}>
+              ¿Cómo se llama su perro?
           </Text>
-          <TextInput
-            style={globalStyles.addDogCnt1}
-            placeholder="Ej.: Fluffy"
-            onChange={v => setNewName(v.nativeEvent.text)}
-          />
-          <Text style={globalStyles.addDogTittle}>¿De qué raza es?</Text>
-          <TextInput
-            style={globalStyles.addDogCnt1}
-            placeholder="Ej.: Chiguagua"
-            onChange={v => setNewBreed(v.nativeEvent.text)}
-          />
-          <Text style={globalStyles.addDogTittle}>Describa a su perro</Text>
-          <TextInput
-            style={globalStyles.addDogCnt1}
-            placeholder="Ej.: Muy manso"
-            multiline={true}
-            numberOfLines={5}
-            onChange={v => setNewDescription(v.nativeEvent.text)}
-          />
-          <Button
-            buttonStyle={globalStyles.addDogBtn}
-            containerStyle={globalStyles.addDogBtnContainer}
-            title="Crear"
-            onPress={addPet}
-            icon={
-              <Icon
-                type="material-community"
-                name="content-save"
-                size={25}
-                color="white"
-                marginLeft={30}
-              />
-            }
-            titleStyle={globalStyles.addDogBtnTxt}
-          />
+            <TextInput
+              style={globalStyles.addDogCnt1}
+              placeholder="Ej.: Fluffy"
+              onChange={v => setNewName(v.nativeEvent.text)}
+            />
+            <Text style={globalStyles.addDogTittle}>¿De qué raza es?</Text>
+            <TextInput
+              style={globalStyles.addDogCnt1}
+              placeholder="Ej.: Chiguagua"
+              onChange={v => setNewBreed(v.nativeEvent.text)}
+            />
+            <Text style={globalStyles.addDogTittle}>Describa a su perro</Text>
+            <TextInput
+              style={globalStyles.addDogCnt1}
+              placeholder="Ej.: Muy manso"
+              multiline={true}
+              numberOfLines={5}
+              onChange={v => setNewDescription(v.nativeEvent.text)}
+            />
+            <Button
+              buttonStyle={globalStyles.addDogBtn}
+              containerStyle={globalStyles.addDogBtnContainer}
+              title="Crear"
+              onPress={addPet}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="content-save"
+                  size={25}
+                  color="white"
+                  marginLeft={30}
+                />
+              }
+              titleStyle={globalStyles.addDogBtnTxt}
+            />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

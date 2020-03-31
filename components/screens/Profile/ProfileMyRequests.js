@@ -64,7 +64,7 @@ function ProfileMyRequests(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
-        {requestsList ? (
+        {requestsList.length > 0? (
           <FlatList
             data={requestsList}
             style={globalStyles.myRequestsFeed}
