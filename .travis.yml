@@ -2,13 +2,13 @@ sudo: false
 language: node_js
 node_js:
   - "12.11.1"
-  - lts/*
+#  - lts/*
 branches:
   except:
   - master
 cache:
   directories:
-#  - node_modules
+  - node_modules
   - ~/.npm
   - .jest
 before_install:
@@ -21,6 +21,6 @@ before_script:
   - npm install -g npm@latest
 script:
   - npm ci
-  - npx jest --ci
+  - npx jest --ci --noStackTrace
 #  - npx test --noStackTrace
 # - npm run coveralls
