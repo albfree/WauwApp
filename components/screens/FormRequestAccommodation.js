@@ -95,7 +95,7 @@ function FormRequestAccommodation(props) {
       newStartTime === null ||
       newEndTime === null ||
       newStartTime < new Date() ||
-      newEndTime.getDate() - newStartTime.getDate() == 0 ||
+      newEndTime.getTime() - newStartTime.getTime() < 0 ||
       petNumber === null ||
       newStartTime.getTime() - startAccommodation.getTime() < 0 ||
       newEndTime.getTime() - endAccommodation.getTime() > 0
@@ -113,7 +113,7 @@ function FormRequestAccommodation(props) {
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime.getDate() - newStartTime.getDate() == 0) {
+      if (newEndTime.getTime() - newStartTime.getTime() < 0) {
         errores = errores.concat(
           "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
         );
@@ -212,7 +212,7 @@ function FormRequestAccommodation(props) {
                 {endAccommodation.toLocaleString("en-US").substring(0, 10)}
               </Text>
               <Text style={globalStyles.accommodationPets}>
-                ¿Qué mascotas quiere que pasee?
+                ¿Qué mascotas quiere que sean alojadas?
               </Text>
               <View>
                 {petNames.map(pet => (
