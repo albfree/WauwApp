@@ -15,4 +15,4 @@ before_script:
   - npm install
 script:
 #  - npm ci
-  - npm test components/__tests__/__snapshots__ --noStackTrace --runInBand --json
+  - npm test components/__tests__/screens --noStackTrace --runInBand --json
