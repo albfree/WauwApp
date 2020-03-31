@@ -8,6 +8,7 @@ import {
   Alert
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import Loading from "./../../Loading";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
@@ -28,9 +29,9 @@ console.warn = message => {
 };
 
 function ProfileWalkerForm(props) {
-  const { navigation, toastRef } = props;
+  const { navigation } = props;
   const [reloadData, setReloadData] = useState(false);
-  const [walker, setNewWalker] = useState("");
+  const [walker, setNewWalker] = useState(navigation.state.params.userInfo);
 
   const [availabilitiesLunes, setAvailabilitiesLunes] = useState([]);
   const [availabilitiesMartes, setAvailabilitiesMartes] = useState([]);
@@ -43,47 +44,81 @@ function ProfileWalkerForm(props) {
   const [hours, setHours] = useState([]);
   const [selected, setMySelected] = useState();
   const [update, setUpdate] = useState(false);
+  const [start, setStart] = useState(false);
+  const [numAvailabilities, setNumAvailabilities] = useState(0);
+  const [startAvailabilities, setStartAvailabilities] = useState([]);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+
+  // useEffect(() => {
+  //   var w = [];
+  //   db.ref("wauwers")
+  //     .orderByChild("email")
+  //     .equalTo(email)
+  //     .once("child_added", snap => {
+  //       console.log("1");
+  //       console.log(email);
+
+  //       w.push(snap.val());
+  //       setNewWalker(w[0]);
+  //       console.log("Walker:", walker);
+  //     });
+  //   setUpdate(true);
+  //   setStart(false);
+  // }, [start]);
+
+  // console.log("ids:", ids);
+  // console.log("hours:", hours);
 
   useEffect(() => {
-    var w;
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("child_added", snap => {
-        w = snap.val();
-        setNewWalker(w);
-      });
-    setUpdate(true);
-  }, []);
+    (async () => {
+      const resulIds = [];
+      const resulHours = [];
+      const availabilities = db.ref(
+        "availabilities-wauwers/" + walker.id + "/availabilities"
+      );
 
-  useEffect(() => {
-    db.ref("availabilities-wauwers/" + walker.id + "/availabilities").on(
-      "value",
-      snap => {
-        const avIds = [];
-        const avHours = [];
-        console.log("Los muertos de Firebase");
+      await availabilities.on("value", snap => {
+        setStartAvailabilities[snap.val()];
         snap.forEach(child => {
-          console.log("Snap:");
-          avIds.push(child.val().id);
-          avHours.push(
+          let hour =
             child.val().day +
-              ": " +
-              child.val().startTime +
-              " - " +
-              child.val().endDate
-          );
+            ": " +
+            child.val().startTime +
+            " - " +
+            child.val().endDate;
+          let id = child.val().id;
+          resulIds.push(id);
+          resulHours.push(hour);
         });
-        //setAv(avIds, avHours);
-        setIds(avIds);
-        setHours(avHours);
-      }
-    );
-    //setSelected("", "", "");
+        setIds(resulIds);
+        setHours(resulHours);
+        setSelectedInicial(resulHours);
+      });
+    })();
+
     setUpdate(false);
+    setIsVisibleLoading(false);
   }, [update]);
 
+  const setSelectedInicial = hours => {
+    let selected;
+    if (hours.length == 0) {
+      selected = "";
+      setMySelected(selected);
+    } else if (hours.length == 1) {
+      selected = hours[0];
+      setMySelected(selected);
+    } else if (hours.length > 1) {
+      selected = hours[0];
+      for (var i = 1; i < hours.length; i++) {
+        selected = selected + ", " + hours[i];
+      }
+      setMySelected(selected);
+    }
+  };
+
   useEffect(() => {
+    //    console.log("3");
     // To retrieve global availabilities
     db.ref("availability").on("value", snap => {
       const availabilitiesListLunes = [];
@@ -158,10 +193,12 @@ function ProfileWalkerForm(props) {
       setAvailabilitiesDomingo(availabilitiesListDomingo);
     });
     setReloadData(false);
+    //setUpdate(true);
   }, [reloadData]);
 
   const addAv = (id, hour) => {
     //To save availability selected and then, get user's availabilities
+    setIsVisibleLoading(true);
     let availability;
     db.ref("availability")
       .child(id)
@@ -177,50 +214,38 @@ function ProfileWalkerForm(props) {
     )
       .set(availability)
       .then(() => {
+        setUpdate(true);
         Alert.alert("Disponibilidad añadida", "");
-        setSelected("", hour, id);
-        // toastRef.current.show("Disponibilidad añadida");
-        // db.ref("availabilities-wauwers/" + walker.id + "/availabilities")
-        //   .on("value", snap => {
-        //     let avIds = [];
-        //     let avHours = [];
-        //     snap.forEach(child => {
-        //       let id = child.val().id;
-        //       avIds.push(id);
-        //       let hour =
-        //         child.val().day +
-        //         ": " +
-        //         child.val().startTime +
-        //         " - " +
-        //         child.val().endDate;
-        //       avHours.push(hour);
-        //     });
-        //     setAv(avIds, avHours);
-        //   })
-        //   .then(() => {
-        //   })
-        //   .catch(() => {
-        //     toastRef.current.show("Error. Inténtelo de nuevo");
-        //   });
+        //setMySelected(hours);
+        //setSelected(hour, id);
       })
       .catch(() => {
         Alert.alert("Error. Inténtelo de nuevo", "");
       });
   };
 
-  const setAv = (idL, hourL) => {
-    // setIds(idL);
-    // setHours(hourL);
+  const setInfo = (idL, hourL) => {
+    setIds(idL);
+    setHours(hourL);
+    if (ids.length != 0) {
+      for (var i = ids.length - 1; i >= 0; i--) {
+        setSelected(hours[i], ids[i]);
+      }
+      // console.log("Ids:", ids);
+      // console.log("Hours:", hours);
+    }
   };
 
   const deleteAv = (id, hour) => {
+    setIsVisibleLoading(true);
     db.ref("availabilities-wauwers/" + walker.id + "/availabilities")
       .child(id)
       .remove()
       .then(() => {
-        Alert.alert("Disponibilidad eliminada", "");
         setUpdate(true);
-        setSelected("", hour, id);
+        Alert.alert("Disponibilidad eliminada", "");
+        //setMySelected(hours);
+        //setSelected(hour, id);
       })
       .catch(() => {
         Alert.alert("Error. Inténtelo de nuevo", "");
@@ -313,11 +338,12 @@ function ProfileWalkerForm(props) {
     //   setMySelected(selected);
   };
 
-  const setSelected = (selected, hour, id) => {
+  const setSelected = (hour, id) => {
+    let selected;
     var start = "";
     var myids = ids;
     var myhours = hours;
-    if (!myids.includes(id) && !hours.includes(hour)) {
+    if (!myids.includes(id) && !myhours.includes(hour)) {
       selected = "";
       if (myids.length > 0) {
         start = ", ";
@@ -495,6 +521,7 @@ function ProfileWalkerForm(props) {
           </View>
         </View>
       </ScrollView>
+      <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
     </SafeAreaView>
   );
 }
