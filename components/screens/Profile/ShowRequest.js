@@ -104,7 +104,7 @@ function showRequest(props) {
               buttonStyle={globalStyles.showRequestBtn}
               containerStyle={globalStyles.showRequestBtnContainer}
               title="Cancelar Solicitud"
-              onPress={() => navigation.navigate("Chats")}
+              onPress={cancel}
               icon={
                 <Icon
                   type="material-community"
