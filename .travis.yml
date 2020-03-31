@@ -21,6 +21,6 @@ before_script:
   - npm install -g npm@latest
 script:
   - npm ci
-# - npx jest --ci
-  - npx test --noStackTrace
+  - npx jest --ci
+#  - npx test --noStackTrace
 # - npm run coveralls
