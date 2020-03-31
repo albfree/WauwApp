@@ -10,6 +10,6 @@ describe('<SearchWalks />', () => {
         navigation: {navigate: jest.fn()},
     });
     const tree = renderer.create(<SearchWalks navigation={store}/>).toJSON();
-    expect(tree.children.length).toBe(2);
+    expect(tree.children.length).toBe(1);
   });
 });
