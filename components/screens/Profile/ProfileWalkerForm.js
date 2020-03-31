@@ -5,7 +5,8 @@ import {
   Text,
   Button,
   View,
-  Alert
+  Alert,
+  TextInput
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Loading from "./../../Loading";
@@ -48,26 +49,6 @@ function ProfileWalkerForm(props) {
   const [numAvailabilities, setNumAvailabilities] = useState(0);
   const [startAvailabilities, setStartAvailabilities] = useState([]);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
-
-  // useEffect(() => {
-  //   var w = [];
-  //   db.ref("wauwers")
-  //     .orderByChild("email")
-  //     .equalTo(email)
-  //     .once("child_added", snap => {
-  //       console.log("1");
-  //       console.log(email);
-
-  //       w.push(snap.val());
-  //       setNewWalker(w[0]);
-  //       console.log("Walker:", walker);
-  //     });
-  //   setUpdate(true);
-  //   setStart(false);
-  // }, [start]);
-
-  // console.log("ids:", ids);
-  // console.log("hours:", hours);
 
   useEffect(() => {
     (async () => {
@@ -380,7 +361,32 @@ function ProfileWalkerForm(props) {
         <View>
           <View>
             <Text style={styles.text}> Salario </Text>
-            <Text style={styles.data}>{walker.price}</Text>
+            <TextInput
+              style={styles.data}
+              keyboardType={"numeric"}
+              onChange={val => {
+                let precio;
+                if(val.nativeEvent.text !== "") {
+                  precio = parseInt(val.nativeEvent.text);
+                } else {
+                  precio = 0;
+                }
+
+                db.ref("wauwers")
+                  .orderByChild("email")
+                  .equalTo(email)
+                  .on("child_added", snap => {
+                    let id = snap.val().id;
+                    db.ref()
+                      .child("wauwers/" + id)
+                      .update({
+                        price: precio
+                      });
+                  });
+              }}
+            >
+              {walker.price}
+            </TextInput>
           </View>
           <View>
             <Text style={styles.text}>Disponibilidades seleccionadas</Text>
@@ -512,12 +518,51 @@ function ProfileWalkerForm(props) {
               {" "}
               ¿Cuál es el número máximo de perros que te gustaría pasear?{" "}
             </Text>
-            <Text style={styles.data}>{walker.petNumberWalker}</Text>
+            <TextInput style={styles.data} 
+            keyboardType={"numeric"}
+            onChange={val => {
+                let amountDogs;
+                if(val.nativeEvent.text !== "") {
+                  amountDogs = parseInt(val.nativeEvent.text);
+                } else {
+                  amountDogs = 0;
+                }
+
+                db.ref("wauwers")
+                  .orderByChild("email")
+                  .equalTo(email)
+                  .on("child_added", snap => {
+                    let id = snap.val().id;
+                    db.ref()
+                      .child("wauwers/" + id)
+                      .update({
+                        petNumberWalk: amountDogs
+                      });
+                  });
+              }}>
+              {walker.petNumberWalker}
+            </TextInput>
           </View>
-          <Text style={styles.text}> Ubicación </Text>
 
           <View style={styles.buttonContainer}>
-            <Button title="Voy a ser Pasedor" onPress={null} color="#0de" />
+            <Button
+              title="Voy a ser Pasedor"
+              onPress={() => {
+                db.ref("wauwers")
+                  .orderByChild("email")
+                  .equalTo(email)
+                  .on("child_added", snap => {
+                    let id = snap.val().id;
+                    db.ref()
+                      .child("wauwers/" + id)
+                      .update({
+                        isWalker: true
+                      });
+                  });
+                navigation.navigate("Home");
+              }}
+              color="#0de"
+            />
           </View>
         </View>
       </ScrollView>
