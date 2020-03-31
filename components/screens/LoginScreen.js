@@ -1,12 +1,13 @@
 import React, { Component } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, Image } from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
-
+import { Button } from "react-native-elements";
 import * as Google from "expo-google-app-auth";
-
+import { Icon } from "react-native-elements";
 import { YellowBox } from "react-native";
 import _ from "lodash";
+import { globalStyles } from "../styles/global";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -56,53 +57,32 @@ export default class LoginScreen extends Component {
             .then(function(result) {
               console.log("user signed in ");
               if (result.additionalUserInfo.isNewUser) {
-                //Rol creado
-                let idRol = db
-                  .ref()
-                  .child("rol")
-                  .push().key;
-                let query = db.ref().child("rol/" + idRol);
-                query.set({
-                  id: idRol,
-                  nombre: "wauwer"
-                });
-
-                //Cuenta de usuario creada
-                let idUA = db
-                  .ref()
-                  .child("user_account")
-                  .push().key;
-                query = db.ref().child("user_account/" + idUA);
-
-                query.set({
-                  id: idUA,
-                  username: "",
-                  password: "",
-                  rolId: idRol
-                });
-                console.log("Cuenta de usuario creada");
-
                 let idWauwer = db
                   .ref()
                   .child("wauwers")
                   .push().key;
-                
-                console.log(idWauwer);
+
                 query = db.ref().child("wauwers/" + idWauwer);
                 query.set({
+                  //Person properties
                   id: idWauwer,
                   name: result.additionalUserInfo.profile.given_name,
                   surname: result.additionalUserInfo.profile.family_name,
-                  dni: "",
                   photo: result.additionalUserInfo.profile.picture,
-                  avgScore: 2.5,
-                  user_accountId: idUA,
-                  paypalURL: "",
-                  description: "",
+                  email: result.user.email,
+                  //wauer properties
                   wauwPoints: 0,
-                  price: 5,
                   petNumber: 0,
-                  email: result.user.email
+                  price: 5,
+                  //Número de mascotas que va a aceptar como máximo
+                  petNumberSitter: 0,
+                  petNumberWalk: 0,
+                  homeDescription: "",
+                  avgScore: 2.5,
+                  walkSalary: 0,
+                  isWalker: false,
+                  isSitter: false,
+                  location: null
                 });
                 console.log("Usuario añadido con éxito");
 
@@ -152,9 +132,9 @@ export default class LoginScreen extends Component {
     try {
       const result = await Google.logInAsync({
         iosClientId:
-          "23003798547-73ukaubbmep7m4he496q87q77ah99ej4.apps.googleusercontent.com",
+          "785332619976-cs6m8a4l4m44772b4ib163luju77bvtn.apps.googleusercontent.com",
         androidClientId:
-          "23003798547-t74fgtanjhqe7mbdd9e2trcvvps4fahj.apps.googleusercontent.com",
+          "785332619976-255qeunsgbofgci9vk5ddtae3i8d9b41.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
 
@@ -171,18 +151,33 @@ export default class LoginScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Button title="Sign in with Google" onPress={this.signInWithGoogle} />
+      <View style={globalStyles.loginView}>
+        <Text style={globalStyles.loginTxt}>WAUW</Text>
+        <Image
+          source={require("../../assets/images/logo.png")}
+          style={globalStyles.loginImage}
+        />
+        <Image
+          source={require("../../assets/images/prints.png")}
+          style={globalStyles.loginPrints}
+        />
+        <Button
+          buttonStyle={globalStyles.loginBtn}
+          containerStyle={globalStyles.loginBtnContainer}
+          title="Entrar con Google"
+          onPress={this.signInWithGoogle}
+          icon={
+            <Icon
+              type="material-community"
+              name="google"
+              size={30}
+              color="white"
+              marginLeft={25}
+            />
+          }
+          titleStyle={globalStyles.loginBtnTittle}
+        />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-});

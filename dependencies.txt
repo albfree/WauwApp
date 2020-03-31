@@ -12,6 +12,7 @@ npm install react-native-safe-area-context
 expo install react-native-safe-area-context
 npm install react-navigation
 npm install react-navigation-stack
+npm install react-navigation-drawer
 npm install react-navigation-tabs
 npm i react-native-gesture-handler
 expo install react-native-gesture-handler
@@ -20,3 +21,17 @@ expo install react-native-reanimated
 expo install expo-google-app-auth
 npm install react-native-datepicker --save
 npm i react-native-easy-toast
+npm install react-native-gifted-chat
+expo install react-native-gifted-chat
+expo install expo-location
+expo install expo-permissions
+expo install react-native-maps
+npm i react-native-webview
+expo install react-native-webview
+npm install react-native-picker-select
+npm install --save react-native-keyboard-spacer
+
+
+
+
+npm i accordion-collapse-react-native

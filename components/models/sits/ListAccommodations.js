@@ -6,7 +6,7 @@ import { db } from '../../population/config';
 
 
 export default function ListAccommodations(props){
-    const {requestList}  = props;
+    const {accList}  = props;
     const [loading, setLoading] = useState(false);
     if (loading){
         return (
@@ -18,17 +18,17 @@ export default function ListAccommodations(props){
     return (
         <SafeAreaView>
             <ScrollView>
-            { requestList ? (
+            { accList ? (
                 <FlatList
-                data = {requestList}
-                renderItem= {  request  => (
-                    <Request request = {request.item} />
+                data = {accList}
+                renderItem= {  accommodation  => (
+                    <Accommodation accommodation = {accommodation.item} />
                 )}
-                keyExtractor= { (request) => {request.id}}
+                keyExtractor= { (accommodation) => {accommodation.id}}
                 />
             ) : (
                 <View>
-                    <Text> No hay usuarios </Text>
+                    <Text> No hay alojamientos disponibles </Text>
                 </View>
             )}
             </ScrollView>
@@ -41,23 +41,22 @@ export default function ListAccommodations(props){
 
 
 
-function Request(request){
+function Accommodation(accommodation){
+    console.log(accommodation);
 
     return (
         <View style={styles.separacion}>
         <TouchableOpacity>
                 <View style={styles.tarjeta}>
                     <View style={styles.row}>
-                    <Image
-                        style={{width: 50, height: 50}}
-                        source={{uri: request.request.worker.photo}}
-                    />
+                   
                    
                         <View style={styles.column_left}>
-                            <Text> {request.request.info} </Text>
+                            <Text> Hora de inicio: {accommodation.accommodation.startTime} \n </Text>
+                            <Text> Hora de fin: {accommodation.accommodation.endTime} </Text>
                         </View>
                         <View style={styles.column_right}>
-                            <Text> {request.request.quantity} €</Text>
+                            <Text> {accommodation.accommodation.salary} €</Text>
                         </View>
                     </View>
                 </View> 

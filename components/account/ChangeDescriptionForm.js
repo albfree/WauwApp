@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { db } from "../population/config.js";
+import { globalStyles } from "../styles/global";
 
 export default function ChangeDescriptionForm(props) {
   const { id, desc, setIsVisibleModal, setReloadData } = props;
@@ -35,23 +36,23 @@ export default function ChangeDescriptionForm(props) {
   return (
     <View>
       <View>
-        <View style={styles.view}>
+        <View style={globalStyles.profileFormView}>
           <Input
             placeholder="Descripción"
-            containerStyle={styles.input}
+            containerStyle={globalStyles.profileFormInput}
             defaultValue={desc && desc}
             onChange={v => setNewDesc(v.nativeEvent.text)}
             rightIcon={{
               type: "material-community",
               name: "lead-pencil",
-              color: "#c2c2c2"
+              color: "#443099"
             }}
             errorMessage={error}
           />
           <Button
             title="Cambiar descripción"
-            containerStyle={styles.btnContainer}
-            buttonStyle={styles.btn}
+            containerStyle={globalStyles.profileFormBtnContainer}
+            buttonStyle={globalStyles.profileFormBtn}
             onPress={updateDescription}
             loading={isLoading}
           />
@@ -60,22 +61,3 @@ export default function ChangeDescriptionForm(props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10
-  },
-  btnContainer: {
-    marginTop: 20,
-    width: "95%"
-  },
-  btn: {
-    backgroundColor: "#00a680",
-    borderRadius: 18
-  }
-});

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Button } from "react-native";
+import { View, Button } from "react-native";
 import InfoUser from "./InfoUser";
 import AccountOptions from "./AccountOptions";
 import * as firebase from "firebase";
 import { db } from "../population/config";
 import { email } from "./QueriesProfile";
+import { globalStyles } from "../styles/global";
 
 export default function UserGuest() {
   const [userInfo, setUserInfo] = useState([]);
@@ -26,16 +27,9 @@ export default function UserGuest() {
   }, [reloadData]);
 
   return (
-    <View style={styles.viewUserInfo}>
+    <View style={globalStyles.profileUserGuestView}>
       <InfoUser userInfo={userInfo} setReloadData={setReloadData} />
       <AccountOptions userInfo={userInfo} setReloadData={setReloadData} />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  viewUserInfo: {
-    minHeight: "100%",
-    backgroundColor: "#f2f2f2"
-  }
-});

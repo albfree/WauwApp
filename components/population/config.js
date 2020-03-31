@@ -1,17 +1,17 @@
 import firebase from "firebase";
 
 var firebaseConfig = {
-  apiKey: "AIzaSyCzMdhztBBX0fL49fbaI7Q1Lx99vmvrMbE",
-  authDomain: "wauw-ispp.firebaseapp.com",
-  databaseURL: "https://wauw-ispp.firebaseio.com",
-  projectId: "wauw-ispp",
-  storageBucket: "wauw-ispp.appspot.com",
-  messagingSenderId: "23003798547",
-  appId: "1:23003798547:web:2da2473af00d1adb60b3e6",
-  measurementId: "G-W9MR8MST0N"
+    apiKey: "AIzaSyD3ppVufXDBSUaOxSyjUnejLEdqtiwrEdU",
+    authDomain: "wauw-ispp-s2.firebaseapp.com",
+    databaseURL: "https://wauw-ispp-s2.firebaseio.com",
+    projectId: "wauw-ispp-s2",
+    storageBucket: "wauw-ispp-s2.appspot.com",
+    messagingSenderId: "785332619976",
+    appId: "1:785332619976:web:f3908cb974b3cc7d8933fd"
 };
+ // Initialize Firebase
+ var app = firebase.initializeApp(firebaseConfig);
 
-var app = firebase.initializeApp(firebaseConfig);
 // Para queries que no están puestas en ningún lado, usad la variable db
 export var db = app.database();
 

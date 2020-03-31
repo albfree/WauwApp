@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import Modal from "./Modal";
 import ChangeNameForm from "./ChangeNameForm";
 import ChangeEmailForm from "./ChangeEmailForm";
 import ChangeDescriptionForm from "./ChangeDescriptionForm";
+import { globalStyles } from "../styles/global";
 
 export default function AccountOptions(props) {
   const [isVisibleModal, setIsVisibleModal] = useState(false);
@@ -15,19 +16,19 @@ export default function AccountOptions(props) {
     {
       title: "Cambiar nombre",
       iconType: "material-community",
-      iconNameLeft: "account-circle",
-      iconColorLeft: "#ccc",
+      iconNameLeft: "rename-box",
+      iconColorLeft: "#443099",
       iconNameRight: "chevron-right",
-      iconColorRight: "#ccc",
+      iconColorRight: "#443099",
       onPress: () => selectedComponent("name")
     },
     {
       title: "Cambiar descripción",
       iconType: "material-community",
       iconNameLeft: "lead-pencil",
-      iconColorLeft: "#ccc",
+      iconColorLeft: "#443099",
       iconNameRight: "chevron-right",
-      iconColorRight: "#ccc",
+      iconColorRight: "#443099",
       onPress: () => selectedComponent("description")
     }
   ];
@@ -63,7 +64,7 @@ export default function AccountOptions(props) {
   };
 
   return (
-    <View style={styles.menuItems}>
+    <View style={globalStyles.accountItems}>
       {menuOptions.map((menu, index) => (
         <ListItem
           key={index}
@@ -79,7 +80,7 @@ export default function AccountOptions(props) {
             color: menu.iconColorRight
           }}
           onPress={menu.onPress}
-          containerStyle={styles.menuItem}
+          containerStyle={globalStyles.accountItem}
         />
       ))}
 
@@ -91,16 +92,3 @@ export default function AccountOptions(props) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  menuItem: {
-    borderBottomWidth: 1,
-    borderBottomColor: "#e3e3e3",
-    borderRadius: 25,
-    marginTop: 5,
-    marginBottom: 5
-  },
-  menuItems: {
-    marginTop: 10
-  }
-});

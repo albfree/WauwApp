@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { db } from "../population/config.js";
+import { globalStyles } from "../styles/global";
 
 export default function ChangeNameForm(props) {
   const { id, name, setIsVisibleModal, setReloadData } = props;
@@ -34,45 +35,26 @@ export default function ChangeNameForm(props) {
   };
 
   return (
-    <View style={styles.view}>
+    <View style={globalStyles.profileFormView}>
       <Input
         placeholder="Nombre"
-        containerStyle={styles.input}
+        containerStyle={globalStyles.profileFormInput}
         defaultValue={name && name}
         onChange={v => setNewName(v.nativeEvent.text)}
         rightIcon={{
           type: "material-community",
-          name: "account-circle-outline",
-          color: "#c2c2c2"
+          name: "rename-box",
+          color: "#443099"
         }}
         errorMessage={error}
       />
       <Button
         title="Cambiar nombre"
-        containerStyle={styles.btnContainer}
-        buttonStyle={styles.btn}
+        containerStyle={globalStyles.profileFormBtnContainer}
+        buttonStyle={globalStyles.profileFormBtn}
         onPress={updateName}
         loading={isLoading}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10
-  },
-  btnContainer: {
-    marginTop: 20,
-    width: "95%"
-  },
-  btn: {
-    backgroundColor: "#00a680",
-    borderRadius: 18
-  }
-});
