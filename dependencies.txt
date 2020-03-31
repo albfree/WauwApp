@@ -35,3 +35,4 @@ npm install -s jest jest-expo react-native-testing-library
 npm install redux-mock-store
 npm install --save react-redux
 npm install --save redux
+npm i accordion-collapse-react-native

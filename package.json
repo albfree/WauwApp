@@ -11,6 +11,7 @@
   "dependencies": {
     "@react-native-community/datetimepicker": "2.1.0",
     "@react-native-community/masked-view": "0.1.5",
+    "accordion-collapse-react-native": "^0.2.8",
     "axios": "^0.19.2",
     "base-64": "^0.1.0",
     "enzyme": "^3.11.0",
