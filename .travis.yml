@@ -1,0 +1,23 @@
+sudo: false
+language: node_js
+node_js:
+  - '12'
+branches:
+  except:
+  - master
+cache:
+  directories:
+  - node_modules
+  - ~/.npm
+  - .jest
+before_install:
+  - npm update
+install:
+  - npm install
+before_script:
+  - npm install -g npm@latest
+script:
+  - npm ci
+  - npx jest --ci
+  - npm test
+# - npm run coveralls
