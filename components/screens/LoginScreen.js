@@ -73,6 +73,7 @@ export default class LoginScreen extends Component {
                   //wauer properties
                   wauwPoints: 0,
                   petNumber: 0,
+                  price: 5,
                   //Número de mascotas que va a aceptar como máximo
                   petNumberSitter: 0,
                   petNumberWalk: 0,
