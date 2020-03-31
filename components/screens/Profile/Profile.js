@@ -15,6 +15,8 @@ import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
+import { email } from "../../account/QueriesProfile";
+import { db } from "../../population/config.js";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -26,6 +28,15 @@ console.warn = message => {
 
 function Profile(props) {
   const { navigation } = props;
+
+  var userInfo;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .once("child_added", snap => {
+      userInfo = snap.val();
+      console.log("Walker:", userInfo);
+    });
 
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
@@ -85,7 +96,9 @@ function Profile(props) {
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Paseador"
-              onPress={() => navigation.navigate("ProfileWalkerForm")}
+              onPress={() =>
+                navigation.navigate("ProfileWalkerForm", { userInfo: userInfo })
+              }
               icon={
                 <Icon
                   type="material-community"
