@@ -111,7 +111,7 @@ function showRequest(props) {
                   name="cancel"
                   size={30}
                   color="white"
-                  marginLeft={cancel}
+                  marginLeft={10}
                 />
               }
               titleStyle={globalStyles.showRequestBtnTittle}
