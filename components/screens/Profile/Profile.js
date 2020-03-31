@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   View,
   Text,
@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TouchableOpacity
 } from "react-native";
+import Toast from "react-native-easy-toast";
 import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
@@ -26,9 +27,11 @@ console.warn = message => {
 
 function Profile(props) {
   const { navigation } = props;
+  const toastRef = useRef();
 
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
+      <Toast ref={toastRef} position="center" opacity={0.7} />
       <TouchableOpacity
         style={{ alignItems: "flex-end", margin: 16 }}
         onPress={navigation.openDrawer}
@@ -93,7 +96,9 @@ function Profile(props) {
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Paseador"
-              onPress={() => navigation.navigate("ProfileWalkerForm")}
+              onPress={() =>
+                navigation.navigate("ProfileWalkerForm", { toastRef: toastRef })
+              }
               icon={
                 <Icon
                   type="material-community"
