@@ -48,17 +48,18 @@ function createRequest(props) {
 
   useEffect(() => {
     // To retrieve the walker availabilities
+
     db.ref("availabilities-wauwers")
-      .orderByChild("wauwer/id")
-      .equalTo(newWorker.id)
+      .child(newWorker.id)
+      .child("availabilities")
       .on("value", snap => {
-        const availabilitiesList = [];
-        availabilitiesList.push(snap.val());
-        // snap.forEach(child => {
-        //   availabilitiesList.push(child.val().availability);
-        // });
+        var availabilitiesList = [];
+        snap.forEach(child => {
+          availabilitiesList.push(child.val());
+        });
         setAvailabilities(availabilitiesList);
       });
+
     setReloadData(false);
   }, [reloadData]);
 
