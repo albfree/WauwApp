@@ -30,3 +30,8 @@ npm i react-native-webview
 expo install react-native-webview
 npm install react-native-picker-select
 npm install --save react-native-keyboard-spacer
+npm install -s jest jest-expo react-native-testing-library
+// npm install enzyme
+npm install redux-mock-store
+npm install --save react-redux
+npm install --save redux

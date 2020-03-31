@@ -13,6 +13,7 @@
     "@react-native-community/masked-view": "0.1.5",
     "axios": "^0.19.2",
     "base-64": "^0.1.0",
+    "enzyme": "^3.11.0",
     "expo": "~36.0.0",
     "expo-google-app-auth": "^8.1.0",
     "expo-location": "~8.0.0",
@@ -45,12 +46,12 @@
     "react-navigation-stack": "^2.3.6",
     "react-navigation-tabs": "^2.8.7",
     "react-redux": "^7.2.0",
-    "redux": "^4.0.5",
-    "redux-mock-store": "^1.5.4"
+    "redux": "^4.0.5"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
     "babel-preset-expo": "~8.0.0",
-    "@babel/core": "^7.0.0"
+    "redux-mock-store": "^1.5.4"
   },
   "jest": {
     "projects": [
