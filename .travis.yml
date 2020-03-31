@@ -1,66 +1,18 @@
 sudo: false
 language: node_js
+dist: xenial
 node_js:
   - "12.11.1"
-#  - lts/*
 branches:
   except:
   - master
 cache:
   directories:
+    - node_modules
     - ~/.npm
+    - .jest
 before_script:
-  - npm install --save firebase
-  - npm install react-native-elements
-  - npm install react-native-screens
-  - expo install react-native-screens
-  - npm install --save @react-native-community/masked-view
-  - expo install @react-native-community/masked-view
-  - npm install react-native-safe-area-context
-  - expo install react-native-safe-area-context
-  - npm install react-navigation
-  - npm install react-navigation-stack
-  - npm install react-navigation-drawer
-  - npm install react-navigation-tabs
-  - npm i react-native-gesture-handler
-  - expo install react-native-gesture-handler
-  - npm install react-native-reanimated
-  - expo install react-native-reanimated
-  - expo install expo-google-app-auth
-  - npm install react-native-datepicker --save
-  - npm i react-native-easy-toast
-  - npm install react-native-gifted-chat
-  - expo install react-native-gifted-chat
-  - npm install react-native-picker-select
-  - npm install --save accordion-collapse-react-native
-  - expo install expo-location
-  - expo install expo-permissions
-  - expo install react-native-maps
-  - npm i react-native-webview
-  - expo install react-native-webview
-  - npm install react-native-picker-select
-  - npm install --save react-native-keyboard-spacer
-  - npm install -s jest jest-expo react-native-testing-library
-  - npm install enzyme
-  - npm install redux-mock-store
-  - npm install --save react-redux
-  - npm install --save redux
+  - npm install
 script:
   - npm ci
-  - npm test --noStackTrace
-# - npx jest --ci
-
-# cache:
-#   directories:
-#   - node_modules
-#   - ~/.npm
-#   - .jest
-# before_install:
-#   - npm update
-# install:
-#   - npm install jest
-#   - npm install -g npx
-#   - npm install
-# script:
-#   - npm ci
-#   - npm test --noStackTrace
+  - npm jest-expo/ios --noStackTrace
