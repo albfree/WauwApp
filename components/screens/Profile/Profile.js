@@ -44,10 +44,17 @@ function Profile(props) {
     <SafeAreaView style={globalStyles.safeProfileArea}>
       <Toast ref={toastRef} position="center" opacity={0.7} />
       <TouchableOpacity
-        style={{ alignItems: "flex-end", margin: 16 }}
+        style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
       >
-        <FontAwesome name="bars" size={24} color="#161924" />
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Mi Perfil</Text>
+          </View>
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
       </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
         <View>
@@ -87,22 +94,7 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
-            <Button
-              buttonStyle={globalStyles.profileBtn}
-              containerStyle={globalStyles.profileBtnContainer}
-              title="Quiero ser Cuidador"
-              onPress={() => navigation.navigate("ProfileSitterForm")}
-              icon={
-                <Icon
-                  type="font-awesome"
-                  name="bed"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
+
             <Button
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}
@@ -113,7 +105,7 @@ function Profile(props) {
               icon={
                 <Icon
                   type="material-community"
-                  name="walk"
+                  name="dog-service"
                   size={30}
                   color="white"
                   marginLeft={20}

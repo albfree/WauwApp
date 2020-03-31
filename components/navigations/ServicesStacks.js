@@ -5,6 +5,8 @@ import ChangeAvailabilityScreen from "../screens/ChangeAvailability";
 import CreateAccommodationScreen from "../screens/CreateAccommodation";
 import SearchWalksScreen from "../screens/SearchWalks";
 
+import CreateRequestWalkScreen from "../screens/CreateRequestWalk";
+
 import CreateRequestAccommodationScreen from "../screens/CreateRequestAccommodation";
 import FormRequestAccommodationScreen from "../screens/FormRequestAccommodation";
 
@@ -37,13 +39,13 @@ const ServicesScreenStacks = createStackNavigator({
       headerTitleAlign: "center"
     })
   },
-  //     CreateRequest: {
-  //       screen: CreateRequestScreen,
-  //       navigationOptions: () => ({
-  //         title: "Crear Solicitud",
-  //         headerTitleAlign: "center"
-  //   })
-  // },
+  CreateRequestWalk: {
+    screen: CreateRequestWalkScreen,
+    navigationOptions: () => ({
+      title: "Crear Solicitud",
+      headerTitleAlign: "center"
+    })
+  },
   CreateAccommodation: {
     screen: CreateAccommodationScreen,
     navigationOptions: () => ({
@@ -54,14 +56,14 @@ const ServicesScreenStacks = createStackNavigator({
   CreateRequestAccommodation: {
     screen: CreateRequestAccommodationScreen,
     navigationOptions: () => ({
-      title: "Crear Solicitud Alojamiento",
+      title: "Solicitud de Alojamiento",
       headerTitleAlign: "center"
     })
   },
   FormRequestAccommodation: {
     screen: FormRequestAccommodationScreen,
     navigationOptions: () => ({
-      title: "Formulario Solicitud Alojamiento",
+      title: "Solicitud de Alojamiento",
       headerTitleAlign: "center"
     })
   }

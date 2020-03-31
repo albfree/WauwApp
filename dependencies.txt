@@ -25,3 +25,10 @@ npm install react-native-gifted-chat
 expo install react-native-gifted-chat
 npm install react-native-picker-select
 npm install --save accordion-collapse-react-native
+expo install expo-location
+expo install expo-permissions
+expo install react-native-maps
+npm i react-native-webview
+expo install react-native-webview
+npm install react-native-picker-select
+npm install --save react-native-keyboard-spacer

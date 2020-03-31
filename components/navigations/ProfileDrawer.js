@@ -11,8 +11,9 @@ import {
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { Icon } from "react-native-elements";
 import MyRequestsScreen from "../screens/Profile/ProfileMyRequests";
+import MyDogsScreen from "../screens//Profile/ProfileMyDogs";
 import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
-import MyWalksScreen from "../screens//Profile/ProfileMyWalks";
+
 import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
@@ -60,7 +61,6 @@ export default createDrawerNavigator(
         )
       }
     },
-
     MyAccommodations: {
       screen: MyAccommodationsScreen,
       navigationOptions: {
@@ -69,22 +69,22 @@ export default createDrawerNavigator(
           <Icon type="font-awesome" name="bed" size={17} color="#443099" />
         )
       }
-    },
+    }
 
-    MyWalks: {
-      screen: MyWalksScreen,
+    /* MyDogs: {
+      screen: MyDogsScreen,
       navigationOptions: {
-        drawerLabel: "Mis Paseos",
+        drawerLabel: "Mis Perros",
         drawerIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
-            name="walk"
+            name="dog"
             size={17}
             color="#443099"
           />
         )
       }
-    }
+    } */
   },
   {
     drawerPosition: "right",

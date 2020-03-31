@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   View,
   Text,
   FlatList,
@@ -8,22 +7,15 @@ import {
   Alert,
   SafeAreaView
 } from "react-native";
-import { Image } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
+import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config";
 import Loading from "../Loading";
-import { YellowBox } from "react-native";
-import _ from "lodash";
 import { email } from "../account/QueriesProfile";
+import { globalStyles } from "../styles/global";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
-export default function ListWalkRequests(props) {
+export default function ListMyNotifications(props) {
   const { toastRef } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
@@ -37,8 +29,8 @@ export default function ListWalkRequests(props) {
     });
 
   useEffect(() => {
-    db.ref("request")
-      .orderByChild("workerId")
+    db.ref("requests")
+      .orderByChild("worker")
       .equalTo(id)
       .on("value", snap => {
         const requests = [];
@@ -52,64 +44,78 @@ export default function ListWalkRequests(props) {
   }, [reloadRequests]);
 
   return (
-    <SafeAreaView>
-      {requestsList ? (
-        <FlatList
-          data={requestsList}
-          renderItem={request => (
-            <Request
-              req={request}
-              setReloadRequests={setReloadRequests}
-              setIsVisibleLoading={setIsVisibleLoading}
-              toastRef={toastRef}
-            />
-          )}
-          keyExtractor={request => request.id}
-        />
-      ) : (
-        <View>
-          <Text>No requests</Text>
-        </View>
-      )}
-      <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
+    <SafeAreaView style={globalStyles.safeNotificationsArea}>
+      <ScrollView>
+        {requestsList.length > 0 ? (
+          <FlatList
+            data={requestsList}
+            style={globalStyles.notificationsFeed}
+            renderItem={request => (
+              <Request
+                req={request}
+                setReloadRequests={setReloadRequests}
+                setIsVisibleLoading={setIsVisibleLoading}
+                toastRef={toastRef}
+                showsVerticalScrollIndicator={false}
+              />
+            )}
+            keyExtractor={request => request.id}
+          />
+        ) : (
+          <View>
+            <Text>No hay Notificaciones</Text>
+          </View>
+        )}
+        <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 function Request(props) {
   const { req, setReloadRequests, setIsVisibleLoading, toastRef } = props;
+  let fecha = "";
   let estado = "";
   let tipo = "";
-  let fondo = "white";
-  let owner;
+  let color = "white";
+  let ownerInfo;
+  let dogs = "perro";
+  if (req.item.petNumber < 1) {
+    dogs = "perros";
+  }
   db.ref("wauwers")
-    .child(req.item.ownerId)
+    .child(req.item.owner)
     .on("value", snap => {
-      owner = snap.val();
+      ownerInfo = snap.val();
     });
 
   if (req.item.pending) {
     estado = "Pendiente";
-    fondo = "rgba(255,128,0,0.6)";
+    color = "rgba(255,128,0,0.6)";
   } else {
     switch (req.item.isCanceled) {
       case false:
         estado = "Aceptada";
-        fondo = "rgba(0,128,0,0.6)";
+        color = "rgba(0,128,0,0.6)";
         break;
       case true:
         estado = "Rechazada";
-        fondo = "rgba(255,0,0,0.6)";
+        color = "rgba(255,0,0,0.6)";
         break;
       default:
         break;
     }
   }
 
-  if (req.item.type == "WALK") {
+  if (req.item.type == "walk") {
     tipo = "paseo";
-  } else if (req.item.type == "SITTER") {
+    fecha = "Día y hora: ".concat(req.item.interval);
+  } else if (req.item.type == "sitter") {
     tipo = "alojamiento";
+    fecha = "Del "
+      .concat(req.item.startTime)
+      .concat(" al ")
+      .concat(req.item.endTime);
   }
 
   const checkRequestsState = () => {
@@ -174,7 +180,7 @@ function Request(props) {
       pending: false,
       isCanceled: false
     };
-    db.ref("request")
+    db.ref("requests")
       .child(req.item.id)
       .update(requestData)
       .then(() => {
@@ -210,7 +216,7 @@ function Request(props) {
       pending: false,
       isCanceled: true
     };
-    db.ref("request")
+    db.ref("requests")
       .child(req.item.id)
       .update(requestData)
       .then(() => {
@@ -222,63 +228,44 @@ function Request(props) {
       });
   };
 
-  const changeBgColor = {
-    borderRadius: 6,
-    elevation: 3,
-    backgroundColor: fondo,
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#333",
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    marginHorizontal: 4,
-    marginVertical: 6,
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 10
+  const tarjeta = {
+    fontSize: 13,
+    marginTop: 4,
+    color: color
   };
 
   return (
     <TouchableOpacity onPress={checkRequestsState}>
-      <View style={changeBgColor}>
-        <Image style={styles.image} source={{ uri: owner.photo }} />
-        <View style={styles.requestContent}>
-          <Text>
-            Solicitud de {tipo} de: {owner.name}
-          </Text>
-          <Text>Servicio para {req.item.petNumber} mascotas.</Text>
-          <Text>Estado de la solicitud: {estado}</Text>
+      <View style={globalStyles.myRequestsFeedItem}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.myRequestsRow}>
+            <View style={globalStyles.notificationsColumn1}>
+              <Avatar
+                rounded
+                size="large"
+                source={{
+                  uri: ownerInfo.photo
+                }}
+              />
+              <Text style={globalStyles.notificationsNum}>
+                {ownerInfo.name}
+              </Text>
+            </View>
+            <View style={globalStyles.notificationsColumn2}>
+              <Text style={globalStyles.myRequestsType}>
+                Solicitud de {tipo}
+              </Text>
+              <Text style={globalStyles.myRequestsNum}>
+                Servicio para {req.item.petNumber} {dogs}
+              </Text>
+              <Text style={globalStyles.myRequestsPrice}>{fecha}</Text>
+              <Text style={globalStyles.myRequestsNum}>
+                Estado: <Text style={tarjeta}>{estado}</Text>
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  image: {
-    width: 60,
-    height: 60
-  },
-  request: {
-    borderRadius: 6,
-    elevation: 3,
-    backgroundColor: "rgba(255,0,0,0.6)",
-    shadowOffset: { width: 1, height: 1 },
-    shadowColor: "#333",
-    shadowOpacity: 0.3,
-    shadowRadius: 2,
-    marginHorizontal: 4,
-    marginVertical: 6,
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    //justifyContent: "space-between",
-    padding: 10
-  },
-  requestContent: {
-    marginHorizontal: 12,
-    marginVertical: 5,
-    flex: 1,
-    flexDirection: "column"
-  }
-});

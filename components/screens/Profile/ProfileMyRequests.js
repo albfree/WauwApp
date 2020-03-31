@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
   View,
   Text,
   FlatList,
@@ -13,6 +12,7 @@ import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
+import { Icon } from "react-native-elements";
 
 function ProfileMyRequests(props) {
   const { navigation } = props;
@@ -29,37 +29,50 @@ function ProfileMyRequests(props) {
       wauwerId = snap.val().id;
     });
 
+  console.log("wauwerId", wauwerId);
+
   useEffect(() => {
-    db.ref("request")
-      .orderByChild("ownerId")
+    db.ref("requests")
+      .orderByChild("owner")
       .equalTo(wauwerId)
       .on("value", snap => {
-        const requests = [];
+        const requests1 = [];
         snap.forEach(child => {
-          requests.push(child.val());
+          requests1.push(child.val());
         });
-        setRequestList(requests);
+        setRequestList(requests1);
       });
     setReloadData(false);
     setLoading(false);
   }, []);
 
+  console.log(setRequestList);
+
   return (
-    <SafeAreaView style={globalStyles.safeArea}>
+    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
       <TouchableOpacity
-        style={{ alignItems: "flex-end", margin: 16 }}
+        style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
       >
-        <FontAwesome name="bars" size={24} color="#161924" />
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Mis Solicitudes</Text>
+          </View>
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
       </TouchableOpacity>
       <ScrollView>
-        {requestsList ? (
+        {requestsList.length > 0? (
           <FlatList
             data={requestsList}
+            style={globalStyles.myRequestsFeed}
             renderItem={request => (
               <Request request={request} navigation={navigation} />
             )}
             keyExtractor={request => request.id}
+            showsVerticalScrollIndicator={false}
           />
         ) : (
           <View>
@@ -73,132 +86,88 @@ function ProfileMyRequests(props) {
 
 function Request(requestIn) {
   const { request, navigation } = requestIn;
-  console.log(request);
-
+  let icon;
   let tipo = "";
   let status = "";
-  let fondo = "white";
+  let color = "white";
 
   if (request.item.pending) {
     status = "Pendiente de aceptación";
-    fondo = "rgba(255,128,0,0.6)";
+    color = "rgba(255,128,0,0.6)";
   } else {
     switch (request.item.isCanceled) {
       case false:
         status = "Aceptada";
-        fondo = "rgba(0,128,0,0.6)";
+        color = "rgba(0,128,0,0.6)";
         break;
       case true:
         status = "Denegada";
-        fondo = "rgba(255,0,0,0.6)";
+        color = "rgba(255,0,0,0.6)";
         break;
       default:
         break;
     }
   }
 
-  if (request.item.type == "SITTER") {
+  if (request.item.type == "sitter") {
     tipo = "Alojamiento";
-  } else if (request.item.type == "WALK") {
+    icon = (
+      <Icon
+        type="font-awesome"
+        name="bed"
+        size={30}
+        color="black"
+        marginLeft={20}
+      />
+    );
+  } else if (request.item.type == "walk") {
     tipo = "Paseo";
+    icon = (
+      <Icon
+        type="material-community"
+        name="dog-service"
+        size={30}
+        color="black"
+        marginLeft={20}
+      />
+    );
   }
 
   const tarjeta = {
-    elevation: 1,
-    backgroundColor: fondo,
-    borderRadius: 25,
-    borderStyle: "solid"
+    fontSize: 13,
+    marginTop: 4,
+    color: color
   };
 
-  // const changeBgColor = {
-  //   borderRadius: 6,
-  //   elevation: 3,
-  //   backgroundColor: fondo,
-  //   shadowOffset: { width: 1, height: 1 },
-  //   shadowColor: "#333",
-  //   shadowOpacity: 0.3,
-  //   shadowRadius: 2,
-  //   marginHorizontal: 4,
-  //   marginVertical: 6,
-  //   flex: 1,
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   padding: 10
-  // };
-
   return (
-    <View style={styles.separacion}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("ShowRequest", {
-            request: request.item
-          })
-        }
-      >
-        <View style={tarjeta}>
-          <View style={styles.row}>
-            <View style={styles.column_left}>
-              <Text> Num mascotas: {request.item.petNumber} </Text>
-              <Text> {status} </Text>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("ShowRequest", {
+          request: request.item
+        })
+      }
+    >
+      <View style={globalStyles.myRequestsFeedItem}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.myRequestsRow}>
+            <View style={globalStyles.myRequestsColumn1}>
+              <Text style={globalStyles.myRequestsNum}>
+                Número de mascotas: {request.item.petNumber}
+              </Text>
+              <Text style={tarjeta}>{status} </Text>
+              <Text style={globalStyles.myRequestsPrice}>
+                {request.item.price} €
+              </Text>
             </View>
-            <View style={styles.column_right}>
-              <Text> {request.item.price} €</Text>
-              <Text> {tipo} </Text>
+            <View style={globalStyles.myRequestsColumn2}>
+              {icon}
+              <Text style={globalStyles.myRequestsType}>{tipo}</Text>
             </View>
           </View>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 export default withNavigation(ProfileMyRequests);
-
-const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_left: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    justifyContent: "space-between",
-    padding: 20
-  },
-  column_right: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-    padding: 20
-  },
-  tarjeta: {
-    elevation: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 25,
-    borderStyle: "solid"
-  },
-  separacion: {
-    paddingTop: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 5
-  },
-  loading: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    padding: 10
-  }
-});

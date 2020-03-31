@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TextInput, Button, Alert, StyleSheet } from "react-native";
+import { Text, View, TextInput, Alert, SafeAreaView, Keyboard, ScrollView } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
+import { Button, Icon } from "react-native-elements";
+import { globalStyles } from "../../styles/global";
 
 function ProfileAddDogForm(props) {
   const {
@@ -26,13 +28,24 @@ function ProfileAddDogForm(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function(snap) {
-        snap.forEach(function(child) {
-          setnewOwner(child.val());
-        });
+      .on("child_added", snap => {
+        //console.log("snap.val()", snap.val());
+        const newNewOwner = {
+          avgScore: snap.val().avgScore,
+          description: snap.val().description,
+          email: snap.val().email,
+          id: snap.val().id,
+          name: snap.val().name,
+          photo: snap.val().photo,
+          surname: snap.val().surname,
+          wauwPoints: snap.val().wauwPoints
+        };
+        setnewOwner(newNewOwner);
+        
       });
     setReloadData(false);
   }, [reloadData]);
+
 
   const addPet = () => {
     let id = db.ref("pet").push().key;
@@ -43,23 +56,23 @@ function ProfileAddDogForm(props) {
       description: newDescription,
       owner: newOwner
     };
-
+    var regex = /\w/;
     if (
       newName === null ||
-      newName === "" ||
+      !regex.test(newName) ||
       newBreed === null ||
-      newBreed === "" ||
+      !regex.test(newBreed) ||
       newDescription === null ||
-      newDescription === ""
+      !regex.test(newDescription)
     ) {
       let errores = "";
-      if (newName === null || newName === "") {
+      if (newName === null || !regex.test(newName)) {
         errores = errores.concat("Debe escribir un nombre.\n");
       }
-      if (newBreed === null || newBreed === "") {
+      if (newBreed === null || !regex.test(newBreed)) {
         errores = errores.concat("Debe escribir una raza.\n");
       }
-      if (newDescription === null || newDescription === "") {
+      if (newDescription === null || !regex.test(newDescription)) {
         errores = errores.concat(
           "Debe dar una breve descripción de su perro.\n"
         );
@@ -67,9 +80,23 @@ function ProfileAddDogForm(props) {
       Alert.alert("Advertencia", errores.toString());
     } else {
       setIsLoading(true);
+
       db.ref("pet/" + id)
         .set(petData)
         .then(() => {
+          let petNumber = 0;
+          db.ref().child("wauwers/" + newOwner.id).on("value", snap => {
+            if(snap.val().petNumber !== undefined) {
+              petNumber = snap.val().petNumber;
+            }
+          });
+
+          db.ref().child("wauwers/" + newOwner.id).update({
+            petNumber: petNumber + 1
+          });
+
+          Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
+          navigation.navigate("ProfileDrawer");
           setIsLoading(false);
           setReloadData(true);
           setIsVisibleModal(false);
@@ -78,50 +105,57 @@ function ProfileAddDogForm(props) {
           setError("Ha ocurrido un error");
           setIsLoading(false);
         });
-      Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
-      navigation.navigate("ProfileDrawer");
     }
   };
 
   return (
-    <View style={styles.view}>
-      <Text>Formulario de datos de nuevo perro</Text>
-      <View>
-        <Text>¿Cómo se llama su perro?</Text>
-        <TextInput
-          placeholder="Ej.: Fluffy"
-          containerStyle={styles.input}
-          onChange={v => setNewName(v.nativeEvent.text)}
-        />
-        <Text>¿De qué raza es?</Text>
-        <TextInput
-          placeholder="Ej.: Chiguagua"
-          containerStyle={styles.input}
-          onChange={v => setNewBreed(v.nativeEvent.text)}
-        />
-        <Text>Describa a su perro</Text>
-        <TextInput
-          multiline={true}
-          numberOfLines={5}
-          containerStyle={styles.input}
-          onChange={v => setNewDescription(v.nativeEvent.text)}
-        />
-
-        <Button title="Crear" onPress={addPet} loading={isLoading} />
-      </View>
-    </View>
+    <SafeAreaView style={globalStyles.safeShowRequestArea}>
+      <ScrollView keyboardShouldPersistTaps={false}>
+        <View style={globalStyles.showRequestFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <Text style={globalStyles.addDogTittle}>
+              ¿Cómo se llama su perro?
+          </Text>
+            <TextInput
+              style={globalStyles.addDogCnt1}
+              placeholder="Ej.: Fluffy"
+              onChange={v => setNewName(v.nativeEvent.text)}
+            />
+            <Text style={globalStyles.addDogTittle}>¿De qué raza es?</Text>
+            <TextInput
+              style={globalStyles.addDogCnt1}
+              placeholder="Ej.: Chiguagua"
+              onChange={v => setNewBreed(v.nativeEvent.text)}
+            />
+            <Text style={globalStyles.addDogTittle}>Describa a su perro</Text>
+            <TextInput
+              style={globalStyles.addDogCnt1}
+              placeholder="Ej.: Muy manso"
+              multiline={true}
+              numberOfLines={5}
+              onChange={v => setNewDescription(v.nativeEvent.text)}
+            />
+            <Button
+              buttonStyle={globalStyles.addDogBtn}
+              containerStyle={globalStyles.addDogBtnContainer}
+              title="Crear"
+              onPress={addPet}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="content-save"
+                  size={25}
+                  color="white"
+                  marginLeft={30}
+                />
+              }
+              titleStyle={globalStyles.addDogBtnTxt}
+            />
+          </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 export default withNavigation(ProfileAddDogForm);
-
-const styles = StyleSheet.create({
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10
-  }
-});

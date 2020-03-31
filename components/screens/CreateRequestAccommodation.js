@@ -1,40 +1,36 @@
-import React, { useState , useEffect} from "react";
-import { StyleSheet, Text, Button, View, Alert ,ScrollView} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, View, Alert, SafeAreaView, ScrollView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
-import _ from 'lodash';
-
-
-
+import _ from "lodash";
+import { Button, Icon } from "react-native-elements";
+import { globalStyles } from "../styles/global";
 
 function createRequestAccommodation(props) {
-  const {navigation} = props;
-
+  const { navigation } = props;
 
   const [reloadData, setReloadData] = useState(false);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
- 
 
   //Atributos del props
-  const newIdAccommodation =navigation.state.params.formData.idAccommodation;
+  const newIdAccommodation = navigation.state.params.formData.idAccommodation;
   const startTime = navigation.state.params.formData.startTime;
-  const endTime= navigation.state.params.formData.endTime;
-  const newPetNumber = navigation.state.params.formData.petNumber ;
-  
-  //Poner fechas medianamente bonitas
-  const newStartTime = startTime.toLocaleString('en-US');
-  const newEndTime = endTime.toLocaleString('en-US');
 
+  const endTime = navigation.state.params.formData.endTime;
+  const newPetNumber = navigation.state.params.formData.petNumber;
+
+  //Poner fechas medianamente bonitas
+  const newStartTime = startTime.toLocaleString("en-US").substring(0, 10);
+  const newEndTime = endTime.toLocaleString("en-US").substring(0, 10);
 
   //Atributos definidos
-  
+
   const newIsCanceled = false;
   const newType = "sitter";
   const newIsPayed = false;
 
- 
   const newPending = true;
 
   //Worker y owner
@@ -42,20 +38,10 @@ function createRequestAccommodation(props) {
   const [newWorker, setNewWorker] = useState([]);
   const [newOwner, setNewOwner] = useState([]);
 
+  const [newPrice, setNewPrice] = useState(
+    navigation.state.params.formData.salary
+  );
 
-  //Calcular el precio total del alojamiento
-
-  // let propiedades = {
-  //   salary: salary, 
-  //   startTime:startTime, 
-  //   endTime:endTime,
-  //   petNumber:newPetNumber
-
-  // }
-  // console.log(propiedades)
-
-  const [newPrice, setNewPrice] =useState(navigation.state.params.formData.salary);
-  
   //Owner logueado actualmente que realizada la request
   useEffect(() => {
     db.ref("wauwers")
@@ -66,9 +52,7 @@ function createRequestAccommodation(props) {
           setNewOwner(child.val());
         });
       });
-    
   }, [reloadData]);
-
 
   //Búsqueda por id del worker que creó el alojamiento
   useEffect(() => {
@@ -80,25 +64,20 @@ function createRequestAccommodation(props) {
           setNewWorker(child.val());
         });
       });
-    ;
   }, [reloadData]);
-    
-    
-  
+
   //Funcion llamada en el botón
-   
-    const all = () => {
-      addRequestAccommodation();
-      Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-      navigation.navigate("Home");
-    };
 
-  
+  const all = () => {
+    addRequestAccommodation();
+    Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
+    navigation.navigate("Home");
+  };
 
-    //Añadir la request a la db
+  //Añadir la request a la db
 
   const addRequestAccommodation = () => {
-    let id= db.ref("requests").push().key;
+    let id = db.ref("requests").push().key;
     setError(null);
     setIsLoading(true);
     let requestData = {
@@ -108,81 +87,100 @@ function createRequestAccommodation(props) {
       price: newPrice,
       type: newType,
       isCanceled: newIsCanceled,
-      startTime : startTime,
-      endTime: endTime,
+      startTime: newStartTime,
+      endTime: newEndTime,
       worker: newWorker.id,
       petNumber: newPetNumber,
       accommodation: newIdAccommodation,
       isPayed: newIsPayed
     };
-    console.log(requestData);
-    
-      setIsLoading(true);
-         
-      db.ref("request/" + id)
+
+    setIsLoading(true);
+
+    db.ref("requests/" + id)
       .set(requestData)
       .then(() => {
         setIsLoading(false);
         setReloadData(false);
         setIsVisibleModal(false);
-          })
+      })
       .catch(() => {
         setError("Ha ocurrido un error");
         setIsLoading(false);
-          });
-          
-        
-      
-    };
-  
- 
+      });
+  };
+
   return (
-    <ScrollView style={{backgroundColor:"white"}}>
+    <SafeAreaView style={globalStyles.safeShowRequestArea}>
+      <View style={globalStyles.showRequestFeed}>
+        <View style={globalStyles.viewFlex1}>
+          <View style={globalStyles.showRequestRow}>
+            <View style={globalStyles.editAccommodationColumn2}>
+              <Text style={globalStyles.accommodationSitter}>
+                {"Nombre del Cuidador\n"}
 
-      <Text style={styles.text}>
-        {"Nombre Cuidador\n"}
-         <Text style={styles.data}>{newWorker.name}</Text> 
-      </Text>
-      <Text style={styles.text}>
-        {"Descripcion Cuidador \n"}
-        <Text style={styles.data}>{newWorker.description}</Text> 
-      </Text>
-      <Text style={styles.text}>
-        {"Fecha de inicio\n"}
-        <Text style={styles.data}>{newStartTime}</Text>{" "}
-      </Text>
-      <Text style={styles.text}>
-        {"Fecha de inicio\n"}
-        <Text style={styles.data}>{newEndTime}</Text>{" "}
-      </Text>
-    
-        <Precio
-              startTime={startTime}
-              endTime= {endTime}
-              petNumber= {newPetNumber}
-              newPrice= {newPrice}
-              setNewPrice={setNewPrice}
-            />
-      
+                <Text style={globalStyles.accommodationSitter2}>
+                  {newWorker.name}
+                </Text>
+              </Text>
+              <Text style={globalStyles.accommodationSitter3}>
+                {newWorker.description}
+              </Text>
 
-      <View style={styles.buttonContainer}>
-        <Button title="Crear Solicitud" onPress={all} color="#0de" />
+              <Text style={globalStyles.accommodationSitter}>
+                {"Fecha de inicio\n"}
+                <Text style={globalStyles.accommodationSitter2}>
+                  {newStartTime}
+                </Text>{" "}
+              </Text>
+              <Text style={globalStyles.accommodationSitter}>
+                {"Fecha de finalización\n"}
+                <Text style={globalStyles.accommodationSitter2}>
+                  {newEndTime}
+                </Text>{" "}
+              </Text>
+
+              <Precio
+                startTime={startTime}
+                endTime={endTime}
+                petNumber={newPetNumber}
+                newPrice={newPrice}
+                setNewPrice={setNewPrice}
+              />
+
+              <Button
+                buttonStyle={globalStyles.accommodationBtn}
+                containerStyle={globalStyles.accommodationBtnCnt}
+                title="Enviar Solicitud"
+                onPress={all}
+                icon={
+                  <Icon
+                    type="material-community"
+                    name="send"
+                    size={20}
+                    color="white"
+                    marginLeft={10}
+                  />
+                }
+                titleStyle={globalStyles.editAccommodationEditDateTittle}
+              />
+            </View>
+          </View>
+        </View>
       </View>
-
-      </ScrollView>
+    </SafeAreaView>
   );
 }
 
-
-
 export default withNavigation(createRequestAccommodation);
 
-function Precio (props) {
-  const {startTime, endTime, petNumber, newPrice, setNewPrice} = props;
+function Precio(props) {
+  const { startTime, endTime, petNumber, newPrice, setNewPrice } = props;
 
-  let duration = ((endTime.getTime() - startTime.getTime())/(1000*60*60*24));   
-  const days= parseInt(duration, 10 )+1;
-  
+  let duration =
+    (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24);
+  const days = parseInt(duration, 10) + 1;
+
   // Si cambia de mes coge los dias bien, pero si esta en el mismo mes coge 1 dia menos
   // estaria bien darle una vuelta a esto. Mientras se queda que suma un dia a todo.
 
@@ -190,7 +188,6 @@ function Precio (props) {
   //  console.log(DefDays);
 
   useEffect(() => {
-
     // if(startTime.getMonth() != endTime.getMonth()){
     //   setDefDays(DefDays);
     //   console.log("Entra if");
@@ -199,52 +196,20 @@ function Precio (props) {
     //   console.log("Entra else");
 
     // }
-    console.log(days);
+
+    // console.log(days);
     let precio = newPrice * days ;
     let withPets = precio * petNumber;
     setNewPrice(withPets);
-    console.log(withPets);
+   //  console.log(withPets);
   }, []);
-  
 
   return (
-    <View><Text style={styles.text}>
-    {"Precio Total Alojamiento\n"}
-    <Text style={styles.data}>{newPrice}</Text>
-    </Text>
+    <View>
+      <Text style={globalStyles.accommodationSitter}>
+        {"Precio Total del Alojamiento\n"}
+        <Text style={globalStyles.accommodationSitter2}>{newPrice} €</Text>
+      </Text>
     </View>
   );
-  
 }
-
-const styles = StyleSheet.create({
-  text: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderTopWidth: 1,
-    borderTopColor: "#ddd"
-  },
-  data: {
-    paddingHorizontal: 8,
-    paddingVertical: 9,
-    color: "grey"
-  },
-  buttonContainer: {
-    marginTop: 40
-  },
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10
-  },
-  btnContainer: {
-    marginTop: 20,
-    width: "95%"
-  },
-  btn: {
-    backgroundColor: "#00a680"
-  }
-});

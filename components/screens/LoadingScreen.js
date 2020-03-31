@@ -5,16 +5,7 @@ import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 //in case he's already logged in, we will redirect him to dashboardScreen
 //else -> loginScreen
 import firebase from "firebase";
-import { YellowBox } from "react-native";
-import _ from "lodash";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 class LoginScreen extends Component {
   componentDidMount() {
     this.checkIfLoggedIn();
@@ -23,7 +14,7 @@ class LoginScreen extends Component {
   checkIfLoggedIn = () => {
     firebase.auth().onAuthStateChanged(
       function(user) {
-        console.log("AUTH STATE CHANGE CALLED");
+       // console.log("AUTH STATE CHANGE CALLED");
         if (user) {
           this.props.navigation.navigate("DashboardScreen");
         } else {
