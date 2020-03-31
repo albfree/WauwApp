@@ -10,6 +10,6 @@ describe('<ProfileWalkerForm />', () => {
         navigation: {navigate: jest.fn()},
     });
     const tree = renderer.create(<ProfileWalkerForm navigation={store}/>).toJSON();
-    expect(tree.children.length).toBe(1);
+    expect(tree.children.length).toBe(2);
   });
 });
