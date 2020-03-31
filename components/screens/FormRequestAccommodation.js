@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, Alert } from "react-native";
+import { View, Text, SafeAreaView, Alert, ScrollView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
@@ -164,6 +164,7 @@ function FormRequestAccommodation(props) {
 
   return (
     <SafeAreaView style={globalStyles.safeShowRequestArea}>
+      <ScrollView>
       <View style={globalStyles.showRequestFeed}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.showRequestRow}>
@@ -273,6 +274,7 @@ function FormRequestAccommodation(props) {
           </View>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

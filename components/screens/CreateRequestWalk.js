@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Alert, Picker, SafeAreaView } from "react-native";
+import { Text, View, Alert, Picker, SafeAreaView, ScrollView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
@@ -28,8 +28,8 @@ function createRequest(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function(snap) {
-        snap.forEach(function(child) {
+      .on("value", function (snap) {
+        snap.forEach(function (child) {
           setNewOwner(child.val());
         });
       });
@@ -118,59 +118,61 @@ function createRequest(props) {
 
   return (
     <SafeAreaView style={globalStyles.safeShowRequestArea}>
-      <Text style={globalStyles.accommodationSitter}>
-        {"Nombre del Paseador\n"}
-        <Text style={globalStyles.accommodationSitter2}>{newWorker.name}</Text>
-      </Text>
+      <ScrollView>
+        <Text style={globalStyles.accommodationSitter}>
+          {"Nombre del Paseador\n"}
+          <Text style={globalStyles.accommodationSitter2}>{newWorker.name}</Text>
+        </Text>
 
-      <Text style={globalStyles.walkTxt}>
-        {"Precio del Paseo \n"}
-        <Text style={globalStyles.walkTxt}>{newPrice} €</Text>
-      </Text>
+        <Text style={globalStyles.walkTxt}>
+          {"Precio del Paseo \n"}
+          <Text style={globalStyles.walkTxt}>{newPrice} €</Text>
+        </Text>
 
-      <Text style={globalStyles.walkTxt2}>
-        {"¿Cuándo quiere que " + newWorker.name + " pasee a su perro?"}
-      </Text>
+        <Text style={globalStyles.walkTxt2}>
+          {"¿Cuándo quiere que " + newWorker.name + " pasee a su perro?"}
+        </Text>
 
-      <Picker selectedValue={newInterval} onValueChange={value => funct(value)}>
-        {availabilities.map(item => (
-          <Picker.Item
-            label={
-              item.day + " " + item.startTime + "h - " + item.endDate + "h"
-            }
-            value={item}
+        <Picker selectedValue={newInterval} onValueChange={value => funct(value)}>
+          {availabilities.map(item => (
+            <Picker.Item
+              label={
+                item.day + " " + item.startTime + "h - " + item.endDate + "h"
+              }
+              value={item}
+            />
+          ))}
+        </Picker>
+        <Text style={globalStyles.accommodationSitter2}>
+          {"¿Qué mascotas quiere que pasee " + newWorker.name + "?"}
+        </Text>
+        {petNames.map(pet => (
+          <PetCheckBox
+            name={pet}
+            petNumber={petNumber}
+            setPetNumber={setPetNumber}
+            newPrice={newPrice}
+            setNewPrice={setNewPrice}
+            price={price}
           />
         ))}
-      </Picker>
-      <Text style={globalStyles.accommodationSitter2}>
-        {"¿Qué mascotas quiere que pasee " + newWorker.name + "?"}
-      </Text>
-      {petNames.map(pet => (
-        <PetCheckBox
-          name={pet}
-          petNumber={petNumber}
-          setPetNumber={setPetNumber}
-          newPrice={newPrice}
-          setNewPrice={setNewPrice}
-          price={price}
+        <Button
+          buttonStyle={globalStyles.accommodationBtn}
+          containerStyle={globalStyles.accommodationBtnCnt}
+          title="Enviar Solicitud"
+          onPress={checkPetNumber}
+          icon={
+            <Icon
+              type="material-community"
+              name="send"
+              size={20}
+              color="white"
+              marginLeft={10}
+            />
+          }
+          titleStyle={globalStyles.editAccommodationEditDateTittle}
         />
-      ))}
-      <Button
-        buttonStyle={globalStyles.accommodationBtn}
-        containerStyle={globalStyles.accommodationBtnCnt}
-        title="Enviar Solicitud"
-        onPress={checkPetNumber}
-        icon={
-          <Icon
-            type="material-community"
-            name="send"
-            size={20}
-            color="white"
-            marginLeft={10}
-          />
-        }
-        titleStyle={globalStyles.editAccommodationEditDateTittle}
-      />
+      </ScrollView>
     </SafeAreaView>
   );
 }
