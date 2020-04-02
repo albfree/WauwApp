@@ -15,8 +15,6 @@ import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
-import { db } from "../../population/config.js";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);

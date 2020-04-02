@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   SafeAreaView,
   Text,
-  Button,
   View,
   Alert,
   TextInput
@@ -20,6 +19,7 @@ import {
   CollapseHeader,
   CollapseBody
 } from "accordion-collapse-react-native";
+import Toast from "react-native-easy-toast";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -31,39 +31,35 @@ console.warn = message => {
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
+  const toastRef = useRef();
   const [reloadData, setReloadData] = useState(false);
-  const [walker, setNewWalker] = useState("");
-
-  const [availabilitiesLunes, setAvailabilitiesLunes] = useState([]);
-  const [availabilitiesMartes, setAvailabilitiesMartes] = useState([]);
-  const [availabilitiesMiercoles, setAvailabilitiesMiercoles] = useState([]);
-  const [availabilitiesJueves, setAvailabilitiesJueves] = useState([]);
-  const [availabilitiesViernes, setAvailabilitiesViernes] = useState([]);
-  const [availabilitiesSabado, setAvailabilitiesSabado] = useState([]);
-  const [availabilitiesDomingo, setAvailabilitiesDomingo] = useState([]);
   const [ids, setIds] = useState([]);
   const [hours, setHours] = useState([]);
   const [update, setUpdate] = useState(false);
-  const [start, setStart] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [globales, setGlobales] = useState([]);
+  const rangos = [
+    ["Lunes", 0],
+    ["Martes", 16],
+    ["Miércoles", 32],
+    ["Jueves", 48],
+    ["Viernes", 64],
+    ["Sábado", 80],
+    ["Domingo", 96]
+  ];
+
+  let userInfo;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", snap => {
+      userInfo = snap.val();
+    });
 
   useEffect(() => {
-    var userInfo;
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .once("child_added", snap => {
-        userInfo = snap.val();
-        setNewWalker(userInfo);
-      });
-    setStart(false);
-  }, [start]);
-
-  useEffect(() => {
-    // To retrieve user's availabilities
     const resulIds = [];
     const resulHours = [];
-    db.ref("availabilities-wauwers/" + walker.id + "/availabilities").on(
+    db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities").on(
       "value",
       snap => {
         snap.forEach(child => {
@@ -81,6 +77,9 @@ function ProfileWalkerForm(props) {
         setHours(resulHours);
       }
     );
+    if (ids.length == 1) {
+      db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").set(userInfo);
+    }
     setUpdate(false);
     setIsVisibleLoading(false);
   }, [update]);
@@ -88,14 +87,9 @@ function ProfileWalkerForm(props) {
   useEffect(() => {
     // To retrieve global availabilities
     db.ref("availability").on("value", snap => {
-      const availabilitiesListLunes = [];
-      const availabilitiesListMartes = [];
-      const availabilitiesListMiercoles = [];
-      const availabilitiesListJueves = [];
-      const availabilitiesListViernes = [];
-      const availabilitiesListSabado = [];
-      const availabilitiesListDomingo = [];
+      const global = [];
       snap.forEach(child => {
+        const hueco = [];
         let hour =
           child.val().day +
           ": " +
@@ -103,61 +97,11 @@ function ProfileWalkerForm(props) {
           " - " +
           child.val().endDate;
         let id = child.val().id;
-
-        switch (child.val().day) {
-          case "Lunes":
-            const huecoLunes = [];
-            huecoLunes.push(hour);
-            huecoLunes.push(id);
-            availabilitiesListLunes.push(huecoLunes);
-            break;
-          case "Martes":
-            const huecoMartes = [];
-            huecoMartes.push(hour);
-            huecoMartes.push(id);
-            availabilitiesListMartes.push(huecoMartes);
-            break;
-          case "Miercoles":
-            const huecoMiercoles = [];
-            huecoMiercoles.push(hour);
-            huecoMiercoles.push(id);
-            availabilitiesListMiercoles.push(huecoMiercoles);
-            break;
-          case "Jueves":
-            const huecoJueves = [];
-            huecoJueves.push(hour);
-            huecoJueves.push(id);
-            availabilitiesListJueves.push(huecoJueves);
-            break;
-          case "Viernes":
-            const huecoViernes = [];
-            huecoViernes.push(hour);
-            huecoViernes.push(id);
-            availabilitiesListViernes.push(huecoViernes);
-            break;
-          case "Sabado":
-            const huecoSabado = [];
-            huecoSabado.push(hour);
-            huecoSabado.push(id);
-            availabilitiesListSabado.push(huecoSabado);
-            break;
-          case "Domingo":
-            const huecoDomingo = [];
-            huecoDomingo.push(hour);
-            huecoDomingo.push(id);
-            availabilitiesListDomingo.push(huecoDomingo);
-            break;
-          default:
-            break;
-        }
+        hueco.push(hour);
+        hueco.push(id);
+        global.push(hueco);
       });
-      setAvailabilitiesLunes(availabilitiesListLunes);
-      setAvailabilitiesMartes(availabilitiesListMartes);
-      setAvailabilitiesMiercoles(availabilitiesListMiercoles);
-      setAvailabilitiesJueves(availabilitiesListJueves);
-      setAvailabilitiesViernes(availabilitiesListViernes);
-      setAvailabilitiesSabado(availabilitiesListSabado);
-      setAvailabilitiesDomingo(availabilitiesListDomingo);
+      setGlobales(global);
     });
     setReloadData(false);
     setUpdate(true);
@@ -166,7 +110,9 @@ function ProfileWalkerForm(props) {
   const addAv = id => {
     //To save availability selected and then, update screen's info
     setIsVisibleLoading(true);
-    db.ref("availabilities-wauwers/" + walker.id + "/wauwer").set(walker);
+    db.ref("wauwers/" + userInfo.id).update({
+      isWalker: true
+    });
 
     let availability;
     db.ref("availability")
@@ -177,37 +123,42 @@ function ProfileWalkerForm(props) {
 
     db.ref(
       "availabilities-wauwers/" +
-        walker.id +
+        userInfo.id +
         "/availabilities/" +
         availability.id
     )
       .set(availability)
       .then(() => {
         setUpdate(true);
-        Alert.alert("Disponibilidad añadida", "");
+        toastRef.current.show("Disponibilidad añadida");
       })
       .catch(() => {
-        Alert.alert("Error. Inténtelo de nuevo", "");
+        toastRef.current.show("Error. Inténtelo de nuevo");
       });
   };
 
   const deleteAv = id => {
     //To delete availability selected and then, update screen's info
     setIsVisibleLoading(true);
-    db.ref("availabilities-wauwers/" + walker.id + "/availabilities")
+    db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities")
       .child(id)
       .remove()
       .then(() => {
-        db.ref("availabilities-wauwers/" + walker.id).once("value", snap => {
+        db.ref("availabilities-wauwers/" + userInfo.id).once("value", snap => {
           if (snap.numChildren() == 1) {
-            db.ref("availabilities-wauwers/" + walker.id).remove();
+            db.ref("availabilities-wauwers/" + userInfo.id).remove();
+            db.ref()
+              .child("wauwers/" + userInfo.id)
+              .update({
+                isWalker: false
+              });
           }
         });
         setUpdate(true);
-        Alert.alert("Disponibilidad eliminada", "");
+        toastRef.current.show("Disponibilidad eliminada");
       })
       .catch(() => {
-        Alert.alert("Error. Inténtelo de nuevo", "");
+        toastRef.current.show("Error. Inténtelo de nuevo");
       });
   };
 
@@ -249,10 +200,10 @@ function ProfileWalkerForm(props) {
     );
   };
 
-  const isAdded = (hour, id) => {
+  const isAdded = id => {
     if (!ids.includes(id)) {
-      if (walker.price != 0) {
-        confirmAdd(id, hour);
+      if (userInfo.price != 0) {
+        confirmAdd(id);
       } else {
         Alert.alert(
           "No puede añadir disponibilidades",
@@ -281,16 +232,16 @@ function ProfileWalkerForm(props) {
                   precio = 0;
                 }
 
-                db.ref("wauwers/" + walker.id)
+                db.ref("wauwers/" + userInfo.id)
                   .update({
                     price: precio
                   })
                   .then(() => {
-                    setStart(true);
+                    setUpdate(true);
                   });
               }}
             >
-              {walker.price}
+              {userInfo.price}
             </TextInput>
           </View>
           <View>
@@ -298,16 +249,14 @@ function ProfileWalkerForm(props) {
               <CollapseHeader
                 style={{ backgroundColor: "rgba(191, 191, 191, 0.4)" }}
               >
-                <Text style={styles.textHeader}>↓ Mis disponibilidades ↓</Text>
+                <Text style={styles.textHeader}>↓ Mi disponibilidad ↓</Text>
               </CollapseHeader>
               <CollapseBody>
                 <View style={styles.avContainer}>
-                  {hours.map(hour => (
-                    <View style={styles.availability}>
+                  {hours.map((hour, index) => (
+                    <View key={index} style={styles.availability}>
                       <TouchableOpacity
-                        onPress={() =>
-                          confirmDelete(ids[hours.indexOf(hour)], hour)
-                        }
+                        onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
                         <Text>{hour}</Text>
                       </TouchableOpacity>
@@ -321,125 +270,28 @@ function ProfileWalkerForm(props) {
             {" "}
             Disponibilidades semanales{" "}
           </Text>
-          <View style={styles.collapse}>
-            <Collapse>
-              <CollapseHeader style={styles.collapseHeader}>
-                <Text style={styles.textHeader}>Lunes</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesLunes.map(av => (
-                    <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                      <View style={styles.availability}>
-                        <Text>{av[0]}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader style={styles.collapseHeader}>
-                <Text style={styles.textHeader}>Martes</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesMartes.map(av => (
-                    <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                      <View style={styles.availability}>
-                        <Text>{av[0]}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader style={styles.collapseHeader}>
-                <Text style={styles.textHeader}>Miércoles</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesMiercoles.map(av => (
-                    <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                      <View style={styles.availability}>
-                        <Text>{av[0]}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader style={styles.collapseHeader}>
-                <Text style={styles.textHeader}>Jueves</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesJueves.map(av => (
-                    <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                      <View style={styles.availability}>
-                        <Text>{av[0]}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader style={styles.collapseHeader}>
-                <Text style={styles.textHeader}>Viernes</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesViernes.map(av => (
-                    <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                      <View style={styles.availability}>
-                        <Text>{av[0]}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader style={styles.collapseHeader}>
-                <Text style={styles.textHeader}>Sábado</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesSabado.map(av => (
-                    <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                      <View style={styles.availability}>
-                        <Text>{av[0]}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader style={styles.collapseHeader}>
-                <Text style={styles.textHeader}>Domingo</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesDomingo.map(av => (
-                    <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                      <View style={styles.availability}>
-                        <Text>{av[0]}</Text>
-                      </View>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
+          <View>
+            {rangos.map(rango => (
+              <Collapse key={rango[0]}>
+                <CollapseHeader style={styles.collapseHeader}>
+                  <Text style={styles.textHeader}>{rango[0]}</Text>
+                </CollapseHeader>
+                <CollapseBody>
+                  <View style={styles.avContainer}>
+                    {globales.slice(rango[1], rango[1] + 16).map(av => (
+                      <TouchableOpacity
+                        key={av[1]}
+                        onPress={() => isAdded(av[1])}
+                      >
+                        <View style={styles.availability}>
+                          <Text>{av[0]}</Text>
+                        </View>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </CollapseBody>
+              </Collapse>
+            ))}
           </View>
           <View>
             <Text style={styles.text}>
@@ -457,42 +309,18 @@ function ProfileWalkerForm(props) {
                   amountDogs = 0;
                 }
 
-                db.ref("wauwers/" + walker.id)
-                  .update({
-                    petNumberWalk: amountDogs
-                  })
-                  .then(() => {
-                    setStart(true);
-                  });
+                db.ref("wauwers/" + userInfo.id).update({
+                  petNumberWalk: amountDogs
+                });
               }}
             >
-              {walker.petNumberWalk}
+              {userInfo.petNumberWalk}
             </TextInput>
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Voy a ser Pasedor"
-              onPress={() => {
-                db.ref("wauwers")
-                  .orderByChild("email")
-                  .equalTo(email)
-                  .on("child_added", snap => {
-                    let id = snap.val().id;
-                    db.ref()
-                      .child("wauwers/" + id)
-                      .update({
-                        isWalker: true
-                      });
-                  });
-                navigation.navigate("Home");
-              }}
-              color="#0de"
-            />
           </View>
         </View>
       </ScrollView>
       <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
+      <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
 }
