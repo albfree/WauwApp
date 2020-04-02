@@ -29,15 +29,6 @@ console.warn = message => {
 function Profile(props) {
   const { navigation } = props;
 
-  var userInfo;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .once("child_added", snap => {
-      userInfo = snap.val();
-      console.log("Walker:", userInfo);
-    });
-
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
       <TouchableOpacity
@@ -96,9 +87,7 @@ function Profile(props) {
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Paseador"
-              onPress={() =>
-                navigation.navigate("ProfileWalkerForm", { userInfo: userInfo })
-              }
+              onPress={() => navigation.navigate("ProfileWalkerForm")}
               icon={
                 <Icon
                   type="material-community"
