@@ -33,19 +33,22 @@ function SearchWalks(props) {
   const [data, setData] = useState([]);
 
   let petNumber;
+  let id;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .on("child_added", snap => {
       petNumber = snap.val().petNumber;
+      id = snap.val().id;
     });
 
   useEffect(() => {
     db.ref("availabilities-wauwers").on("value", snap => {
       const allData = [];
       snap.forEach(child => {
-        const wauwerData = [];
-        allData.push(child.val().wauwer);
+        if (child.val().wauwer.id != id) {
+          allData.push(child.val().wauwer);
+        }
         //wauwerData.push(child.val().availability);
         //allData.push(wauwerData);
       });
