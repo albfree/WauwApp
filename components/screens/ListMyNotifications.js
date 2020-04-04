@@ -80,7 +80,7 @@ function Request(props) {
   let color = "white";
   let ownerInfo;
   let dogs = "perro";
-  if (req.item.petNumber < 1) {
+  if (req.item.petNumber > 1) {
     dogs = "perros";
   }
   db.ref("wauwers")

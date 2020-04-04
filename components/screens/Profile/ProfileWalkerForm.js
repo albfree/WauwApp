@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   SafeAreaView,
   Text,
-  Button,
   View,
   Alert,
   TextInput
@@ -20,6 +19,7 @@ import {
   CollapseHeader,
   CollapseBody
 } from "accordion-collapse-react-native";
+import Toast from "react-native-easy-toast";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -31,48 +31,37 @@ console.warn = message => {
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
+  const toastRef = useRef();
   const [reloadData, setReloadData] = useState(false);
-  const [walker, setNewWalker] = useState("");
-
-  const [availabilitiesLunes, setAvailabilitiesLunes] = useState([]);
-  const [availabilitiesMartes, setAvailabilitiesMartes] = useState([]);
-  const [availabilitiesMiercoles, setAvailabilitiesMiercoles] = useState([]);
-  const [availabilitiesJueves, setAvailabilitiesJueves] = useState([]);
-  const [availabilitiesViernes, setAvailabilitiesViernes] = useState([]);
-  const [availabilitiesSabado, setAvailabilitiesSabado] = useState([]);
-  const [availabilitiesDomingo, setAvailabilitiesDomingo] = useState([]);
   const [ids, setIds] = useState([]);
   const [hours, setHours] = useState([]);
-  const [selected, setMySelected] = useState();
   const [update, setUpdate] = useState(false);
-  const [start, setStart] = useState(false);
-  const [numAvailabilities, setNumAvailabilities] = useState(0);
-  const [startAvailabilities, setStartAvailabilities] = useState([]);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [globales, setGlobales] = useState([]);
+  const rangos = [
+    ["Lunes", 0],
+    ["Martes", 16],
+    ["Miércoles", 32],
+    ["Jueves", 48],
+    ["Viernes", 64],
+    ["Sábado", 80],
+    ["Domingo", 96]
+  ];
+
+  let userInfo;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", snap => {
+      userInfo = snap.val();
+    });
 
   useEffect(() => {
-    var userInfo;
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .once("child_added", snap => {
-        userInfo = snap.val();
-        setNewWalker(userInfo);
-        console.log("Walker:", userInfo);
-      });
-    setStart(false);
-  }, [start]);
-
-  useEffect(() => {
-    (async () => {
-      const resulIds = [];
-      const resulHours = [];
-      const availabilities = db.ref(
-        "availabilities-wauwers/" + walker.id + "/availabilities"
-      );
-
-      await availabilities.on("value", snap => {
-        setStartAvailabilities[snap.val()];
+    const resulIds = [];
+    const resulHours = [];
+    db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities").on(
+      "value",
+      snap => {
         snap.forEach(child => {
           let hour =
             child.val().day +
@@ -86,43 +75,21 @@ function ProfileWalkerForm(props) {
         });
         setIds(resulIds);
         setHours(resulHours);
-        setSelectedInicial(resulHours);
-      });
-    })();
-
+      }
+    );
+    if (ids.length == 1) {
+      db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").set(userInfo);
+    }
     setUpdate(false);
     setIsVisibleLoading(false);
   }, [update]);
 
-  const setSelectedInicial = hours => {
-    let selected;
-    if (hours.length == 0) {
-      selected = "";
-      setMySelected(selected);
-    } else if (hours.length == 1) {
-      selected = hours[0];
-      setMySelected(selected);
-    } else if (hours.length > 1) {
-      selected = hours[0];
-      for (var i = 1; i < hours.length; i++) {
-        selected = selected + ", " + hours[i];
-      }
-      setMySelected(selected);
-    }
-  };
-
   useEffect(() => {
-    //    console.log("3");
     // To retrieve global availabilities
     db.ref("availability").on("value", snap => {
-      const availabilitiesListLunes = [];
-      const availabilitiesListMartes = [];
-      const availabilitiesListMiercoles = [];
-      const availabilitiesListJueves = [];
-      const availabilitiesListViernes = [];
-      const availabilitiesListSabado = [];
-      const availabilitiesListDomingo = [];
+      const global = [];
       snap.forEach(child => {
+        const hueco = [];
         let hour =
           child.val().day +
           ": " +
@@ -130,70 +97,22 @@ function ProfileWalkerForm(props) {
           " - " +
           child.val().endDate;
         let id = child.val().id;
-
-        switch (child.val().day) {
-          case "Lunes":
-            const huecoLunes = [];
-            huecoLunes.push(hour);
-            huecoLunes.push(id);
-            availabilitiesListLunes.push(huecoLunes);
-            break;
-          case "Martes":
-            const huecoMartes = [];
-            huecoMartes.push(hour);
-            huecoMartes.push(id);
-            availabilitiesListMartes.push(huecoMartes);
-            break;
-          case "Miercoles":
-            const huecoMiercoles = [];
-            huecoMiercoles.push(hour);
-            huecoMiercoles.push(id);
-            availabilitiesListMiercoles.push(huecoMiercoles);
-            break;
-          case "Jueves":
-            const huecoJueves = [];
-            huecoJueves.push(hour);
-            huecoJueves.push(id);
-            availabilitiesListJueves.push(huecoJueves);
-            break;
-          case "Viernes":
-            const huecoViernes = [];
-            huecoViernes.push(hour);
-            huecoViernes.push(id);
-            availabilitiesListViernes.push(huecoViernes);
-            break;
-          case "Sabado":
-            const huecoSabado = [];
-            huecoSabado.push(hour);
-            huecoSabado.push(id);
-            availabilitiesListSabado.push(huecoSabado);
-            break;
-          case "Domingo":
-            const huecoDomingo = [];
-            huecoDomingo.push(hour);
-            huecoDomingo.push(id);
-            availabilitiesListDomingo.push(huecoDomingo);
-            break;
-          default:
-            break;
-        }
+        hueco.push(hour);
+        hueco.push(id);
+        global.push(hueco);
       });
-      setAvailabilitiesLunes(availabilitiesListLunes);
-      setAvailabilitiesMartes(availabilitiesListMartes);
-      setAvailabilitiesMiercoles(availabilitiesListMiercoles);
-      setAvailabilitiesJueves(availabilitiesListJueves);
-      setAvailabilitiesViernes(availabilitiesListViernes);
-      setAvailabilitiesSabado(availabilitiesListSabado);
-      setAvailabilitiesDomingo(availabilitiesListDomingo);
+      setGlobales(global);
     });
     setReloadData(false);
-    //setUpdate(true);
+    setUpdate(true);
   }, [reloadData]);
 
-  const addAv = (id, hour) => {
-    //To save availability selected and then, get user's availabilities
+  const addAv = id => {
+    //To save availability selected and then, update screen's info
     setIsVisibleLoading(true);
-    db.ref("availabilities-wauwers/" + walker.id + "/wauwer").set(walker);
+    db.ref("wauwers/" + userInfo.id).update({
+      isWalker: true
+    });
 
     let availability;
     db.ref("availability")
@@ -204,58 +123,53 @@ function ProfileWalkerForm(props) {
 
     db.ref(
       "availabilities-wauwers/" +
-        walker.id +
+        userInfo.id +
         "/availabilities/" +
         availability.id
     )
       .set(availability)
       .then(() => {
         setUpdate(true);
-        Alert.alert("Disponibilidad añadida", "");
-        //setMySelected(hours);
-        //setSelected(hour, id);
+        toastRef.current.show("Disponibilidad añadida");
       })
       .catch(() => {
-        Alert.alert("Error. Inténtelo de nuevo", "");
+        toastRef.current.show("Error. Inténtelo de nuevo");
       });
   };
 
-  const setInfo = (idL, hourL) => {
-    setIds(idL);
-    setHours(hourL);
-    if (ids.length != 0) {
-      for (var i = ids.length - 1; i >= 0; i--) {
-        setSelected(hours[i], ids[i]);
-      }
-      // console.log("Ids:", ids);
-      // console.log("Hours:", hours);
-    }
-  };
-
-  const deleteAv = (id, hour) => {
+  const deleteAv = id => {
+    //To delete availability selected and then, update screen's info
     setIsVisibleLoading(true);
-    db.ref("availabilities-wauwers/" + walker.id + "/availabilities")
+    db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities")
       .child(id)
       .remove()
       .then(() => {
+        db.ref("availabilities-wauwers/" + userInfo.id).once("value", snap => {
+          if (snap.numChildren() == 1) {
+            db.ref("availabilities-wauwers/" + userInfo.id).remove();
+            db.ref()
+              .child("wauwers/" + userInfo.id)
+              .update({
+                isWalker: false
+              });
+          }
+        });
         setUpdate(true);
-        Alert.alert("Disponibilidad eliminada", "");
-        //setMySelected(hours);
-        //setSelected(hour, id);
+        toastRef.current.show("Disponibilidad eliminada");
       })
       .catch(() => {
-        Alert.alert("Error. Inténtelo de nuevo", "");
+        toastRef.current.show("Error. Inténtelo de nuevo");
       });
   };
 
-  const confirmAdd = (id, hour) => {
+  const confirmAdd = id => {
     Alert.alert(
       "No dispone de esta disponibilidad",
       "¿Desea incluirla?",
       [
         {
           text: "Sí",
-          onPress: () => addAv(id, hour),
+          onPress: () => addAv(id),
           style: "cancel"
         },
         {
@@ -267,14 +181,14 @@ function ProfileWalkerForm(props) {
     );
   };
 
-  const confirmDelete = (id, hour) => {
+  const confirmDelete = id => {
     Alert.alert(
       "Esta disponibilidad está añadida",
       "¿Desea eliminarla?",
       [
         {
           text: "Sí",
-          onPress: () => deleteAv(id, hour),
+          onPress: () => deleteAv(id),
           style: "cancel"
         },
         {
@@ -286,10 +200,10 @@ function ProfileWalkerForm(props) {
     );
   };
 
-  const isAdded = (hour, id) => {
+  const isAdded = id => {
     if (!ids.includes(id)) {
-      if (walker.price != 0) {
-        confirmAdd(id, hour);
+      if (userInfo.price != 0) {
+        confirmAdd(id);
       } else {
         Alert.alert(
           "No puede añadir disponibilidades",
@@ -297,84 +211,8 @@ function ProfileWalkerForm(props) {
         );
       }
     } else {
-      confirmDelete(id, hour);
+      Alert.alert("Ya ha seleccionado esta disponibilidad", "");
     }
-    // if (!myIds.includes(id) && !hours.includes(hour)) {
-    //   myIds.push(id);
-    //   myHours.push(hour);
-    //   changeValues(myHours, myIds);
-    // } else if (myIds.includes(id) && myHours.includes(hour)) {
-    //   myIds = ids.filter(elem => elem != id);
-    //   myHours = hours.filter(elem => elem != hour);
-    //   changeValues(myHours, myIds);
-    // }
-    //   let selected = "";
-    //   var start = "";
-    //   if (!ids.includes(id) && !hours.includes(hour)) {
-    //     selected = "";
-    //     if (ids.length > 0) {
-    //       start = ", ";
-    //     }
-    //     ids.push(id);
-    //     hours.push(hour);
-    //     setMyHours(hours);
-    //     hours.forEach(h => {
-    //       selected = selected + h + start;
-    //     });
-    //     if (hours.length > 1) {
-    //       selected = selected.slice(0, -2);
-    //     }
-    //   } else {
-    //     ids = ids.filter(elem => elem != id);
-    //     hours = hours.filter(elem => elem != hour);
-    //     selected = "";
-    //     if (ids.length > 0) {
-    //       start = ", ";
-    //     }
-    //     hours.forEach(h => {
-    //       selected = selected + h + start;
-    //     });
-    //     if (hours.length >= 1) {
-    //       selected = selected.slice(0, -2);
-    //     }
-    //   }
-    //   setMySelected(selected);
-  };
-
-  const setSelected = (hour, id) => {
-    let selected;
-    var start = "";
-    var myids = ids;
-    var myhours = hours;
-    if (!myids.includes(id) && !myhours.includes(hour)) {
-      selected = "";
-      if (myids.length > 0) {
-        start = ", ";
-      }
-      myids.push(id);
-      myhours.push(hour);
-      setHours(myhours);
-      myhours.forEach(h => {
-        selected = selected + h + start;
-      });
-      if (myhours.length > 1) {
-        selected = selected.slice(0, -2);
-      }
-    } else {
-      myids = myids.filter(elem => elem != id);
-      myhours = myhours.filter(elem => elem != hour);
-      selected = "";
-      if (myids.length > 0) {
-        start = ", ";
-      }
-      myhours.forEach(h => {
-        selected = selected + h + start;
-      });
-      if (myhours.length >= 1) {
-        selected = selected.slice(0, -2);
-      }
-    }
-    setMySelected(selected);
   };
 
   return (
@@ -394,149 +232,66 @@ function ProfileWalkerForm(props) {
                   precio = 0;
                 }
 
-                db.ref("wauwers")
-                  .orderByChild("email")
-                  .equalTo(email)
-                  .on("child_added", snap => {
-                    let id = snap.val().id;
-                    db.ref()
-                      .child("wauwers/" + id)
-                      .update({
-                        price: precio
-                      })
-                      .then(() => {
-                        setStart(true);
-                      });
+                db.ref("wauwers/" + userInfo.id)
+                  .update({
+                    price: precio
+                  })
+                  .then(() => {
+                    setUpdate(true);
                   });
               }}
             >
-              {walker.price}
+              {userInfo.price}
             </TextInput>
           </View>
           <View>
-            <Text style={styles.text}>Disponibilidades seleccionadas</Text>
-            <Text>{selected}</Text>
+            <Collapse>
+              <CollapseHeader
+                style={{ backgroundColor: "rgba(191, 191, 191, 0.4)" }}
+              >
+                <Text style={styles.textHeader}>↓ Mi disponibilidad ↓</Text>
+              </CollapseHeader>
+              <CollapseBody>
+                <View style={styles.avContainer}>
+                  {hours.map((hour, index) => (
+                    <View key={index} style={styles.availability}>
+                      <TouchableOpacity
+                        onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
+                      >
+                        <Text>{hour}</Text>
+                      </TouchableOpacity>
+                    </View>
+                  ))}
+                </View>
+              </CollapseBody>
+            </Collapse>
           </View>
-          <Text style={styles.text}> Disponibilidad </Text>
+          <Text style={(styles.text, { marginTop: 15 })}>
+            {" "}
+            Disponibilidades semanales{" "}
+          </Text>
           <View>
-            <Collapse>
-              <CollapseHeader>
-                <Text>Lunes</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesLunes.map(av => (
-                    <View style={styles.availability}>
-                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                        <Text>{av[0]}</Text>
+            {rangos.map(rango => (
+              <Collapse key={rango[0]}>
+                <CollapseHeader style={styles.collapseHeader}>
+                  <Text style={styles.textHeader}>{rango[0]}</Text>
+                </CollapseHeader>
+                <CollapseBody>
+                  <View style={styles.avContainer}>
+                    {globales.slice(rango[1], rango[1] + 16).map(av => (
+                      <TouchableOpacity
+                        key={av[1]}
+                        onPress={() => isAdded(av[1])}
+                      >
+                        <View style={styles.availability}>
+                          <Text>{av[0]}</Text>
+                        </View>
                       </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader>
-                <Text>Martes</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesMartes.map(av => (
-                    <View style={styles.availability}>
-                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                        <Text>{av[0]}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader>
-                <Text>Miércoles</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesMiercoles.map(av => (
-                    <View style={styles.availability}>
-                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                        <Text>{av[0]}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader>
-                <Text>Jueves</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesJueves.map(av => (
-                    <View style={styles.availability}>
-                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                        <Text>{av[0]}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader>
-                <Text>Viernes</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesViernes.map(av => (
-                    <View style={styles.availability}>
-                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                        <Text>{av[0]}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader>
-                <Text>Sábado</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesSabado.map(av => (
-                    <View style={styles.availability}>
-                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                        <Text>{av[0]}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
-
-            <Collapse>
-              <CollapseHeader>
-                <Text>Domingo</Text>
-              </CollapseHeader>
-              <CollapseBody>
-                <View style={styles.avContainer}>
-                  {availabilitiesDomingo.map(av => (
-                    <View style={styles.availability}>
-                      <TouchableOpacity onPress={() => isAdded(av[0], av[1])}>
-                        <Text>{av[0]}</Text>
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </CollapseBody>
-            </Collapse>
+                    ))}
+                  </View>
+                </CollapseBody>
+              </Collapse>
+            ))}
           </View>
           <View>
             <Text style={styles.text}>
@@ -554,114 +309,46 @@ function ProfileWalkerForm(props) {
                   amountDogs = 0;
                 }
 
-                db.ref("wauwers")
-                  .orderByChild("email")
-                  .equalTo(email)
-                  .on("child_added", snap => {
-                    let id = snap.val().id;
-                    db.ref()
-                      .child("wauwers/" + id)
-                      .update({
-                        petNumberWalk: amountDogs
-                      });
-                  });
+                db.ref("wauwers/" + userInfo.id).update({
+                  petNumberWalk: amountDogs
+                });
               }}
             >
-              {walker.petNumberWalk}
+              {userInfo.petNumberWalk}
             </TextInput>
-          </View>
-
-          <View style={styles.buttonContainer}>
-            <Button
-              title="Voy a ser Pasedor"
-              onPress={() => {
-                db.ref("wauwers")
-                  .orderByChild("email")
-                  .equalTo(email)
-                  .on("child_added", snap => {
-                    let id = snap.val().id;
-                    db.ref()
-                      .child("wauwers/" + id)
-                      .update({
-                        isWalker: true
-                      });
-                  });
-                navigation.navigate("Home");
-              }}
-              color="#0de"
-            />
           </View>
         </View>
       </ScrollView>
       <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
+      <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
 }
 
-// function TextHour(props) {
-//   const { hour, id, hours, setHours, ids, setIds, setMySelected } = props;
-//   let myIds = [];
-//   myIds.push(ids);
-//   let myHours = [];
-//   myHours.push(hours);
-
-//   useEffect(() => {}, []);
-
-//   const isAdded = (hour, id) => {
-//     let selected = "";
-//     var start = "";
-//     if (!myIds.includes(id) && !myHours.includes(hour)) {
-//       selected = "";
-//       if (myIds.length > 0) {
-//         start = ", ";
-//       }
-//       myIds.push(id);
-//       myHours.push(hour);
-//       myHours.forEach(h => {
-//         selected = selected + h + start;
-//       });
-//       if (myHours.length > 1) {
-//         selected = selected.slice(0, -2);
-//       }
-//     } else {
-//       myIds = myIds.filter(elem => elem != id);
-//       myHours = myHours.filter(elem => elem != hour);
-//       selected = "";
-//       if (myIds.length > 0) {
-//         start = ", ";
-//       }
-//       myHours.forEach(h => {
-//         selected = selected + h + start;
-//       });
-//       if (myHours.length >= 1) {
-//         selected = selected.slice(0, -2);
-//       }
-//     }
-//     setMySelected(selected);
-//   };
-
-//   return (
-//     <View>
-//       <TouchableOpacity onPress={isAdded(hour, id)}>
-//         <Text>{hour}</Text>
-//       </TouchableOpacity>
-//     </View>
-//   );
-// }
-
 export default withNavigation(ProfileWalkerForm);
 
 const styles = StyleSheet.create({
+  textHeader: {
+    textAlign: "center",
+    padding: 3
+  },
+  collapseHeader: {
+    margin: 3,
+    backgroundColor: "rgba(191, 191, 191, 0.8)"
+  },
   avContainer: {
     borderColor: "red",
-    marginLeft: 10,
+    marginLeft: 9,
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap"
   },
   availability: {
-    margin: 5
-    //backgroundColor: "green"
+    margin: 5,
+    borderWidth: 1,
+    borderColor: "rgba(11,156,49,0.5)",
+    borderRadius: 5,
+    padding: 5
   },
   text: {
     paddingHorizontal: 8,
@@ -671,11 +358,10 @@ const styles = StyleSheet.create({
   },
   data: {
     paddingHorizontal: 8,
-    paddingVertical: 9,
     color: "grey"
   },
   buttonContainer: {
-    marginTop: 40
+    marginTop: 20
   },
   view: {
     alignItems: "center",

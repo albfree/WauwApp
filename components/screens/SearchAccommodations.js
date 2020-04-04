@@ -4,18 +4,30 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
+  Alert
 } from "react-native";
 import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
+import { email } from "../account/QueriesProfile";
 
 function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  let petNumber;
+  let id;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", snap => {
+      petNumber = snap.val().petNumber;
+      id = snap.val().id;
+    });
 
   useEffect(() => {
     db.ref("accommodation")
@@ -24,9 +36,11 @@ function ListAccommodations(props) {
       .on("value", snap => {
         const accommodations = [];
         snap.forEach(child => {
-          var endTime = new Date(child.val().endTime);
-          if (endTime > new Date()) {
-            accommodations.push(child.val());
+          if (child.val().worker != id) {
+            var endTime = new Date(child.val().endTime);
+            if (endTime > new Date()) {
+              accommodations.push(child.val());
+            }
           }
         });
         setAccommodationList(accommodations);
@@ -43,6 +57,7 @@ function ListAccommodations(props) {
             renderItem={accommodation => (
               <Accommodation
                 accommodation={accommodation}
+                petNumber={petNumber}
                 navigation={navigation}
               />
             )}
@@ -60,7 +75,7 @@ function ListAccommodations(props) {
 }
 
 function Accommodation(props) {
-  const { accommodation, navigation } = props;
+  const { accommodation, navigation, petNumber } = props;
   let worker;
   db.ref("wauwers")
     .child(accommodation.item.worker)
@@ -68,14 +83,18 @@ function Accommodation(props) {
       worker = snap.val();
     });
 
+  const checkHasPets = () => {
+    if (petNumber > 0) {
+      navigation.navigate("FormRequestAccommodation", {
+        accommodation: accommodation.item
+      });
+    } else {
+      Alert.alert("¡No tienes mascotas que alojar!", "");
+    }
+  };
+
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("FormRequestAccommodation", {
-          accommodation: accommodation.item
-        })
-      }
-    >
+    <TouchableOpacity onPress={checkHasPets}>
       <View style={globalStyles.myRequestsFeedItem}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
