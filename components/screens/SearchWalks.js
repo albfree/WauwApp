@@ -3,6 +3,7 @@ import {
   View,
   Text,
   FlatList,
+  Picker,
   TouchableOpacity,
   SafeAreaView,
   Alert
@@ -13,17 +14,9 @@ import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
 function SearchWalks(props) {
   const { navigation } = props;
@@ -31,32 +24,47 @@ function SearchWalks(props) {
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
+  const [newInterval, setNewInterval] = useState(null);
+  const [availabilities, setAvailabilities] = useState([]);
+  const [newAvailability, setNewAvailability] = useState([]);
+
 
   let petNumber;
   let id;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", snap => {
-      petNumber = snap.val().petNumber;
-      id = snap.val().id;
-    });
 
+  
   useEffect(() => {
-    db.ref("availabilities-wauwers").on("value", snap => {
+    db.ref("availabilities-wauwers")
+    .on("value", snap => {
       const allData = [];
+      const allAvailability = [];
       snap.forEach(child => {
         if (child.val().wauwer.id != id) {
           allData.push(child.val().wauwer);
-        }
+          snap.forEach(child => {
+            if(!allAvailability.includes(child.val().availabilities)){
+              allAvailability.push(child.val().availabilities)
+            }
+          });
         //wauwerData.push(child.val().availability);
         //allData.push(wauwerData);
-      });
+      };
       setData(allData);
+      setAvailabilities(allAvailability);
     });
     setReloadData(false);
     setLoading(false);
   }, [reloadData]); //esto es el disparador del useEffect
+  });
+  const funct = value => {
+    setNewAvailability(value.id);
+    setNewInterval(
+      value.day + " " + value.startTime + "h - " + value.endDate + "h"
+    );
+  };
+
+  console.log(availabilities);
+
 
   return (
     <SafeAreaView style={globalStyles.safeMyRequestsArea}>
@@ -66,6 +74,23 @@ function SearchWalks(props) {
         value={search}
         containerStyle={styles.searchBar}
       /> */}
+       <Text style={globalStyles.walkTxt2}>
+          {"¿Cuándo quiere que pasee a su perro?"}
+        </Text>
+
+        <Picker
+          selectedValue={newInterval}
+          onValueChange={value => funct(value)}
+        >
+          {availabilities.map(item => (
+            <Picker.Item
+              label={
+                item.day + " " + item.startTime + "h - " + item.endDate + "h"
+              }
+              value={item}
+            />
+          ))}
+        </Picker>
       <ScrollView>
         <Loading isVisible={loading} text={"Un momento..."} />
         {data ? (
