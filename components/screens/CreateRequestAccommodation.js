@@ -30,6 +30,7 @@ function createRequestAccommodation(props) {
   const newIsCanceled = false;
   const newType = "sitter";
   const newIsPayed = false;
+  const newIsFinished = false;
 
   const newPending = true;
 
@@ -92,7 +93,8 @@ function createRequestAccommodation(props) {
       worker: newWorker.id,
       petNumber: newPetNumber,
       accommodation: newIdAccommodation,
-      isPayed: newIsPayed
+      isPayed: newIsPayed,
+      isFinished : newIsFinished
     };
 
     setIsLoading(true);

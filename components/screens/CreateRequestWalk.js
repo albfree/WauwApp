@@ -29,6 +29,7 @@ function createRequest(props) {
   const [reloadData, setReloadData] = useState(false);
   const [petNumber, setPetNumber] = useState(0);
   const [petNames, setPetNames] = useState([]);
+  const newIsFinished = false;
 
   useEffect(() => {
     // To retrieve the current logged user
@@ -108,7 +109,8 @@ function createRequest(props) {
       type: "walk",
       worker: newWorker.id,
       interval: newInterval,
-      availability: newAvailability
+      availability: newAvailability,
+      isFinished : newIsFinished
     };
     db.ref("requests/" + id)
       .set(requestData)
