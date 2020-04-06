@@ -86,7 +86,6 @@ function ShowWalk(props) {
 
   const finishRequest = () => {
     var idRequest = request.id;
-    console.log(" request", request.id);
     var query = db.ref().child("requests/" + idRequest);
     query.update({
       isFinish: true,
