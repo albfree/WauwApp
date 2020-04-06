@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Alert, Picker, SafeAreaView, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  Alert,
+  Picker,
+  SafeAreaView,
+  ScrollView
+} from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
@@ -28,8 +35,8 @@ function createRequest(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
           setNewOwner(child.val());
         });
       });
@@ -41,16 +48,18 @@ function createRequest(props) {
 
   useEffect(() => {
     // To retrieve the walker availabilities
-    db.ref("availability-wauwers")
-      .orderByChild("wauwer/id")
-      .equalTo(newWorker.id)
+
+    db.ref("availabilities-wauwers")
+      .child(newWorker.id)
+      .child("availabilities")
       .on("value", snap => {
-        const availabilitiesList = [];
+        var availabilitiesList = [];
         snap.forEach(child => {
-          availabilitiesList.push(child.val().availability);
+          availabilitiesList.push(child.val());
         });
         setAvailabilities(availabilitiesList);
       });
+
     setReloadData(false);
   }, [reloadData]);
 
@@ -121,7 +130,9 @@ function createRequest(props) {
       <ScrollView>
         <Text style={globalStyles.accommodationSitter}>
           {"Nombre del Paseador\n"}
-          <Text style={globalStyles.accommodationSitter2}>{newWorker.name}</Text>
+          <Text style={globalStyles.accommodationSitter2}>
+            {newWorker.name}
+          </Text>
         </Text>
 
         <Text style={globalStyles.walkTxt}>
@@ -133,7 +144,10 @@ function createRequest(props) {
           {"¿Cuándo quiere que " + newWorker.name + " pasee a su perro?"}
         </Text>
 
-        <Picker selectedValue={newInterval} onValueChange={value => funct(value)}>
+        <Picker
+          selectedValue={newInterval}
+          onValueChange={value => funct(value)}
+        >
           {availabilities.map(item => (
             <Picker.Item
               label={

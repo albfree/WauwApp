@@ -33,21 +33,24 @@ function SearchWalks(props) {
   const [data, setData] = useState([]);
 
   let petNumber;
+  let id;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .on("child_added", snap => {
       petNumber = snap.val().petNumber;
+      id = snap.val().id;
     });
 
   useEffect(() => {
-    db.ref("availability-wauwers").on("value", snap => {
+    db.ref("availabilities-wauwers").on("value", snap => {
       const allData = [];
       snap.forEach(child => {
-        const wauwerData = [];
-        wauwerData.push(child.val().wauwer);
-        wauwerData.push(child.val().availability);
-        allData.push(wauwerData);
+        if (child.val().wauwer.id != id) {
+          allData.push(child.val().wauwer);
+        }
+        //wauwerData.push(child.val().availability);
+        //allData.push(wauwerData);
       });
       setData(allData);
     });
@@ -96,7 +99,7 @@ function Wauwer(props) {
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
-        wauwer: wauwerData.item[0] //TODO: MODIFICAR LA REDIRECCIÓN
+        wauwer: wauwerData.item //TODO: MODIFICAR LA REDIRECCIÓN
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");
@@ -112,17 +115,17 @@ function Wauwer(props) {
               <Avatar
                 rounded
                 size="large"
-                source={{ uri: wauwerData.item[0].photo }}
+                source={{ uri: wauwerData.item.photo }}
               />
               <Text style={globalStyles.myRequestsPrice}>
                 {" "}
-                {wauwerData.item[0].name}{" "}
+                {wauwerData.item.name}{" "}
               </Text>
             </View>
             <View style={globalStyles.searchAccommodationsColumn1}>
               <View style={globalStyles.myRequestsRow}>
                 <Text style={globalStyles.myRequestsNum}>
-                  {wauwerData.item[0].avgScore}
+                  {wauwerData.item.avgScore}
                 </Text>
                 <Icon
                   type="material-community"
@@ -133,17 +136,17 @@ function Wauwer(props) {
               </View>
               <Text style={globalStyles.myRequestsPrice}>
                 {" "}
-                {wauwerData.item[0].price} €
+                {wauwerData.item.price} €
               </Text>
             </View>
             <View style={globalStyles.searchAccommodationsColumn2}>
               <Text style={globalStyles.myRequestsNum}>
                 {" "}
-                {wauwerData.item[1].day}{" "}
+                {/* {wauwerData.item[1].day}{" "} */}
               </Text>
               <Text style={globalStyles.myRequestsStatus}>
                 {" "}
-                {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate}{" "}
+                {/* {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate}{" "} */}
               </Text>
             </View>
           </View>
