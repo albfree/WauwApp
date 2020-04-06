@@ -15,7 +15,6 @@ import { globalStyles } from "../../styles/global";
 function ShowWalk(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  console.log(request);
 
   var id = request.owner;
   var tipo = "";
@@ -23,8 +22,6 @@ function ShowWalk(props) {
   var worker = [];
   var pago = "";
   var fecha = "";
-
-  console.log("id:" + id);
 
   db.ref("wauwers")
     .orderByChild("id")
@@ -112,7 +109,6 @@ function ShowWalk(props) {
 
   const declineRequest = () => {
     var idRequest = request.id;
-    console.log(" request", request.id);
     var query = db.ref().child("requests/" + idRequest);
     query.update({
       pending: false,
@@ -139,7 +135,7 @@ function ShowWalk(props) {
     pago = "Pendiente de pago";
   }
 
-  if (request.pending && request.type == "walk") {
+  if (request.pending) {
     return (
       <SafeAreaView style={globalStyles.safeShowRequestArea}>
         <View style={globalStyles.showWalkFeed}>
@@ -207,7 +203,7 @@ function ShowWalk(props) {
         </View>
       </SafeAreaView>
     );
-  } else if (!request.pending && request.isCanceled && request.type == "walk") {
+  } else if (!request.pending && request.isCanceled) {
     return (
       <SafeAreaView style={globalStyles.safeShowRequestArea}>
         <View style={globalStyles.showWalkFeed2}>
@@ -247,7 +243,6 @@ function ShowWalk(props) {
     !request.pending &&
     !request.isCanceled &&
     request.isPayed &&
-    request.type == "walk" &&
     !request.isFinish
   ) {
     return (
@@ -305,7 +300,6 @@ function ShowWalk(props) {
     !request.pending &&
     !request.isCanceled &&
     request.isPayed &&
-    request.type == "walk" &&
     request.isFinish
   ) {
     return (
@@ -349,12 +343,7 @@ function ShowWalk(props) {
         </View>
       </SafeAreaView>
     );
-  } else if (
-    !request.pending &&
-    !request.isCanceled &&
-    !request.isPayed &&
-    request.type == "walk"
-  ) {
+  } else {
     return (
       <SafeAreaView style={globalStyles.safeShowRequestArea}>
         <View style={globalStyles.showWalkFeed}>
@@ -377,7 +366,7 @@ function ShowWalk(props) {
               </View>
               <View style={globalStyles.showRequestColumn22}>
                 <Image
-                  style={globalStyles.showWalkImage}
+                  style={globalStyles.showWalkImage2}
                   source={{ uri: worker.photo }}
                 />
               </View>

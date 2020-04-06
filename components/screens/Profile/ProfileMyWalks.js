@@ -30,8 +30,6 @@ function ProfileMyWalks(props) {
       wauwerId = snap.val().id;
     });
 
-  console.log("wauwerId", wauwerId);
-
   useEffect(() => {
     db.ref("requests")
       .orderByChild("worker")
@@ -39,7 +37,7 @@ function ProfileMyWalks(props) {
       .on("value", (snap) => {
         const requests1 = [];
         snap.forEach((child) => {
-          if (child.val().type == "walk") {
+          if (child.val().type === "walk") {
             requests1.push(child.val());
           }
         });
@@ -48,8 +46,6 @@ function ProfileMyWalks(props) {
     setReloadData(false);
     setLoading(false);
   }, []);
-
-  console.log(setRequestList);
 
   return (
     <SafeAreaView style={globalStyles.safeMyRequestsArea}>
@@ -135,7 +131,7 @@ function Request(requestIn) {
   const statusC = {
     fontSize: 13,
     marginTop: 4,
-    color: color,
+    color,
   };
 
   const payC = {

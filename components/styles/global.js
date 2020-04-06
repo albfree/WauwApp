@@ -1056,8 +1056,8 @@ export const globalStyles = StyleSheet.create({
   },
   showWalkFeed2: {
     backgroundColor: "#FFF",
-    padding: 8,
     flexDirection: "row",
+    padding: 8,
     marginVertical: "35%",
     marginHorizontal: 16,
     borderRadius: 20,
