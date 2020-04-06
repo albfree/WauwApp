@@ -1,0 +1,18 @@
+sudo: false
+language: node_js
+dist: bionic
+node_js:
+  - "12.11.1"
+branches:
+  except:
+  - master
+cache:
+  directories:
+    - node_modules
+    - ~/.npm
+    - .jest
+before_script:
+  - npm install
+script:
+#  - npm ci
+  - npm test components/__tests__/screens --noStackTrace --runInBand --json
