@@ -35,7 +35,7 @@ function showRequest(props) {
   const cancel = () => {
     var idRequest = request.id;
     console.log(" request", request.id);
-    var query = db.ref().child("requests/" + idRequest);
+    //var query = db.ref().child("requests/" + idRequest);
 
     query.update({
       pending: false,
