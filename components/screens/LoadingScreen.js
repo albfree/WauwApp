@@ -11,7 +11,7 @@ class LoginScreen extends Component {
     this.checkIfLoggedIn();
   }
 
-  checkIfLoggedIn = () => {
+  checkIfLoggedIn = async () => {
     firebase.auth().onAuthStateChanged(
       function(user) {
        // console.log("AUTH STATE CHANGE CALLED");
