@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Image, Avatar } from "react-native-elements";
@@ -13,7 +13,6 @@ import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
 import { globalStyles } from "../styles/global";
-
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
@@ -24,7 +23,7 @@ export default function ListMyNotifications(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       id = snap.val().id;
     });
 
@@ -32,9 +31,9 @@ export default function ListMyNotifications(props) {
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(id)
-      .on("value", snap => {
+      .on("value", (snap) => {
         const requests = [];
-        snap.forEach(child => {
+        snap.forEach((child) => {
           requests.push(child.val());
         });
         setRequestsList(requests);
@@ -50,7 +49,7 @@ export default function ListMyNotifications(props) {
           <FlatList
             data={requestsList}
             style={globalStyles.notificationsFeed}
-            renderItem={request => (
+            renderItem={(request) => (
               <Request
                 req={request}
                 setReloadRequests={setReloadRequests}
@@ -59,7 +58,7 @@ export default function ListMyNotifications(props) {
                 showsVerticalScrollIndicator={false}
               />
             )}
-            keyExtractor={request => request.id}
+            keyExtractor={(request) => request.id}
           />
         ) : (
           <View>
@@ -85,7 +84,7 @@ function Request(props) {
   }
   db.ref("wauwers")
     .child(req.item.owner)
-    .on("value", snap => {
+    .on("value", (snap) => {
       ownerInfo = snap.val();
     });
 
@@ -128,7 +127,7 @@ function Request(props) {
     }
   };
 
-  const requestClosed = action => {
+  const requestClosed = (action) => {
     Alert.alert("¡Ya has " + action + " esta solicitud!", "");
   };
 
@@ -138,18 +137,18 @@ function Request(props) {
       "",
       [
         {
-          text: "Más tarde"
+          text: "Más tarde",
         },
         {
           text: "Aceptar",
           onPress: confirmAcceptRequest,
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "Rechazar",
           onPress: confirmDeclineRequest,
-          style: "cancel"
-        }
+          style: "cancel",
+        },
       ],
       { cancelable: false }
     );
@@ -162,12 +161,12 @@ function Request(props) {
       [
         {
           text: "Si",
-          onPress: acceptRequest
+          onPress: acceptRequest,
         },
         {
           text: "No",
-          style: "cancel"
-        }
+          style: "cancel",
+        },
       ],
       { cancelable: false }
     );
@@ -178,7 +177,7 @@ function Request(props) {
     //Actualizo la request en la tabla de request
     let requestData = {
       pending: false,
-      isCanceled: false
+      isCanceled: false,
     };
     db.ref("requests")
       .child(req.item.id)
@@ -199,12 +198,12 @@ function Request(props) {
       [
         {
           text: "Si",
-          onPress: declineRequest
+          onPress: declineRequest,
         },
         {
           text: "No",
-          style: "cancel"
-        }
+          style: "cancel",
+        },
       ],
       { cancelable: false }
     );
@@ -214,7 +213,7 @@ function Request(props) {
     setIsVisibleLoading(true);
     let requestData = {
       pending: false,
-      isCanceled: true
+      isCanceled: true,
     };
     db.ref("requests")
       .child(req.item.id)
@@ -231,7 +230,7 @@ function Request(props) {
   const tarjeta = {
     fontSize: 13,
     marginTop: 4,
-    color: color
+    color: color,
   };
 
   return (
@@ -244,7 +243,7 @@ function Request(props) {
                 rounded
                 size="large"
                 source={{
-                  uri: ownerInfo.photo
+                  uri: ownerInfo.photo,
                 }}
               />
               <Text style={globalStyles.notificationsNum}>

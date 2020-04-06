@@ -22,8 +22,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={31}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Chat: {
       screen: ChatsScreenStack,
@@ -36,8 +36,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={31}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Services: {
       screen: ServicesScreenStacks,
@@ -50,8 +50,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={31}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Notifications: {
       screen: NotificationsScreenStack,
@@ -64,8 +64,8 @@ const NavigationStacks = createBottomTabNavigator(
             size={31}
             color={tintColor}
           />
-        )
-      })
+        ),
+      }),
     },
     Profile: {
       screen: ProfileScreenStack,
@@ -78,9 +78,9 @@ const NavigationStacks = createBottomTabNavigator(
             size={31}
             color={tintColor}
           />
-        )
-      })
-    }
+        ),
+      }),
+    },
   },
   {
     initialRouteName: "Home",
@@ -90,8 +90,9 @@ const NavigationStacks = createBottomTabNavigator(
       showIcon: true,
       inactiveTintColor: "#6c7075",
       activeTintColor: "#443099",
-      keyboardHidesTabBar: false
-    }
+      keyboardHidesTabBar: false,
+    },
+    lazy: "false",
   }
 );
 

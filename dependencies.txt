@@ -30,8 +30,4 @@ npm i react-native-webview
 expo install react-native-webview
 npm install react-native-picker-select
 npm install --save react-native-keyboard-spacer
-
-
-
-
 npm i accordion-collapse-react-native
