@@ -97,7 +97,6 @@ function ShowWalk(props) {
 
   const acceptRequest = () => {
     var idRequest = request.id;
-    console.log(" request", request.id);
     var query = db.ref().child("requests/" + idRequest);
     query.update({
       pending: false,

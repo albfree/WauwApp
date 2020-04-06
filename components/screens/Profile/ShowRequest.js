@@ -5,7 +5,7 @@ import {
   View,
   Image,
   SafeAreaView,
-  Alert
+  Alert,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
@@ -15,7 +15,6 @@ import { globalStyles } from "../../styles/global";
 function showRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  console.log(request);
 
   var id = request.worker;
   var tipo = "";
@@ -23,23 +22,20 @@ function showRequest(props) {
   var worker = [];
   var pago = "";
 
-  console.log("id:" + id);
-
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       worker = snap.val();
     });
 
   const cancel = () => {
     var idRequest = request.id;
-    console.log(" request", request.id);
     //var query = db.ref().child("requests/" + idRequest);
 
     query.update({
       pending: false,
-      isCanceled: true
+      isCanceled: true,
     });
 
     alert("Se ha cancelado la solicitud correctamente");
@@ -243,10 +239,11 @@ function showRequest(props) {
               buttonStyle={globalStyles.showRequestBtn}
               containerStyle={globalStyles.showRequestBtnContainer}
               title="Proceder al Pago"
-              onPress={() => navigation.navigate("PayRequest", {
-                request
-              })}
-
+              onPress={() =>
+                navigation.navigate("PayRequest", {
+                  request,
+                })
+              }
               icon={
                 <Icon
                   type="font-awesome"
@@ -408,7 +405,7 @@ function showRequest(props) {
               title="Proceder al Pago"
               onPress={() =>
                 navigation.navigate("PayRequest", {
-                  request
+                  request,
                 })
               }
               icon={
@@ -468,7 +465,7 @@ function showRequest(props) {
               title="Abrir Chat"
               onPress={() =>
                 navigation.navigate("Chats", {
-                  request
+                  request,
                 })
               }
               icon={

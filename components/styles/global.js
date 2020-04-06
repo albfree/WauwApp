@@ -70,8 +70,8 @@ export const globalStyles = StyleSheet.create({
   },
   profileView2: {
     flex: 1,
-    paddingBottom: 60,
     marginBottom: 30,
+    paddingBottom: 60,
   },
   profileBtn: {
     backgroundColor: "#443099",
@@ -134,8 +134,8 @@ export const globalStyles = StyleSheet.create({
   /* Profile Forms */
   profileFormView: {
     alignItems: "center",
-    paddingTop: 10,
     paddingBottom: 10,
+    paddingTop: 10,
   },
   profileFormInput: {
     marginBottom: 10,
@@ -249,9 +249,9 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
   },
   drawerImage: {
+    borderRadius: 60,
     height: 120,
     width: 120,
-    borderRadius: 60,
   },
   drawerMenuView: {
     margin: 20,
@@ -265,7 +265,6 @@ export const globalStyles = StyleSheet.create({
   drawerIcon: {
     alignSelf: "flex-end",
     marginHorizontal: 5,
-    alignSelf: "flex-end",
   },
   drawerTxt: {
     fontSize: 20,
@@ -1048,8 +1047,8 @@ export const globalStyles = StyleSheet.create({
   },
   showWalkFeed: {
     backgroundColor: "#FFF",
-    padding: 8,
     flexDirection: "row",
+    padding: 8,
     marginVertical: "25%",
     marginHorizontal: 16,
     borderRadius: 20,
