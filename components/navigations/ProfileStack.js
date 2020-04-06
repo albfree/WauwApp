@@ -7,57 +7,65 @@ import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
 import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
+import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
 
 const ProfileScreenStacks = createStackNavigator({
   ProfileDrawer: {
     screen: ProfileDrawerNavigator,
     navigationOptions: () => ({
       title: "Mis Datos",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+    }),
   },
   ProfileWalkerForm: {
     screen: ProfileWalkerFormScreen,
     navigationOptions: () => ({
       title: "Datos de Paseador",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+    }),
   },
   ProfileAddDogForm: {
     screen: ProfileAddDogFormScreen,
     navigationOptions: () => ({
       title: "Datos del Perro",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+    }),
   },
   ProfileLocationForm: {
     screen: ProfileLocationFormScreen,
     navigationOptions: () => ({
       title: "Escoger Localización",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+    }),
   },
   ShowRequest: {
     screen: ShowRequestScreen,
     navigationOptions: () => ({
       title: "Solicitud",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+    }),
   },
   PayRequest: {
     screen: PayRequestScreen,
     navigationOptions: () => ({
       title: "Pago",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+    }),
   },
   EditDeleteAccommodation: {
     screen: EditDeleteAccommodationScreen,
     navigationOptions: () => ({
       title: "Editar alojamiento",
-      headerTitleAlign: "center"
-    })
-  }
+      headerTitleAlign: "center",
+    }),
+  },
+  AddReviewService: {
+    screen: AddReviewServiceScreen,
+    navigationOptions: () => ({
+      title: "Formulario Rating",
+      headerTitleAlign: "center",
+    }),
+  },
 });
 
 export default ProfileScreenStacks;

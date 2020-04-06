@@ -4,7 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
@@ -25,19 +25,17 @@ function ProfileMyRequests(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       wauwerId = snap.val().id;
     });
-
-  console.log("wauwerId", wauwerId);
 
   useEffect(() => {
     db.ref("requests")
       .orderByChild("owner")
       .equalTo(wauwerId)
-      .on("value", snap => {
+      .on("value", (snap) => {
         const requests1 = [];
-        snap.forEach(child => {
+        snap.forEach((child) => {
           requests1.push(child.val());
         });
         setRequestList(requests1);
@@ -45,8 +43,6 @@ function ProfileMyRequests(props) {
     setReloadData(false);
     setLoading(false);
   }, []);
-
-  console.log(setRequestList);
 
   return (
     <SafeAreaView style={globalStyles.safeMyRequestsArea}>
@@ -64,14 +60,14 @@ function ProfileMyRequests(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
-        {requestsList.length > 0? (
+        {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
             style={globalStyles.myRequestsFeed}
-            renderItem={request => (
+            renderItem={(request) => (
               <Request request={request} navigation={navigation} />
             )}
-            keyExtractor={request => request.id}
+            keyExtractor={(request) => request.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
@@ -136,14 +132,14 @@ function Request(requestIn) {
   const tarjeta = {
     fontSize: 13,
     marginTop: 4,
-    color: color
+    color: color,
   };
 
   return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("ShowRequest", {
-          request: request.item
+          request: request.item,
         })
       }
     >
