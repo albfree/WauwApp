@@ -5,17 +5,9 @@ import { db } from "../population/config";
 import { Button } from "react-native-elements";
 import * as Google from "expo-google-app-auth";
 import { Icon } from "react-native-elements";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 // const IOS_CLIENT_ID =
 //   "your-ios-client-id";
 
@@ -132,9 +124,9 @@ export default class LoginScreen extends Component {
     try {
       const result = await Google.logInAsync({
         iosClientId:
-          "785332619976-cs6m8a4l4m44772b4ib163luju77bvtn.apps.googleusercontent.com",
+          "191130769894-9h9fm6gvurfb5l20grk9jirf4svn1n3s.apps.googleusercontent.com",
         androidClientId:
-          "785332619976-255qeunsgbofgci9vk5ddtae3i8d9b41.apps.googleusercontent.com",
+          "191130769894-jebp8hq5kp341r7nagcs33667quenvl9.apps.googleusercontent.com",
         scopes: ["profile", "email"]
       });
 
