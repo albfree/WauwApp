@@ -17,7 +17,7 @@ function showRequest(props) {
   let valorado;
   let desabilitado;
 
-  if (!request.rated) {
+  if (!request.isRated) {
     valorado = "Valorar servicio";
     desabilitado = false;
   } else {
@@ -35,6 +35,7 @@ function showRequest(props) {
   const cancel = () => {
     var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
+    //var query = db.ref().child("requests/" + idRequest);
 
     query.update({
       pending: false,

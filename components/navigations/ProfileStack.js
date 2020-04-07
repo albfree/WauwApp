@@ -8,6 +8,7 @@ import ShowRequestScreen from "../screens/Profile/ShowRequest";
 import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
 import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
+import ShowWalkScreen from "../screens/Profile/ShowWalk";
 
 const ProfileScreenStacks = createStackNavigator({
   ProfileDrawer: {
@@ -42,6 +43,13 @@ const ProfileScreenStacks = createStackNavigator({
     screen: ShowRequestScreen,
     navigationOptions: () => ({
       title: "Solicitud",
+      headerTitleAlign: "center",
+    }),
+  },
+  ShowWalk: {
+    screen: ShowWalkScreen,
+    navigationOptions: () => ({
+      title: "Paseo",
       headerTitleAlign: "center",
     }),
   },

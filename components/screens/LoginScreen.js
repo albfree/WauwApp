@@ -5,7 +5,6 @@ import { db } from "../population/config";
 import { Button } from "react-native-elements";
 import * as Google from "expo-google-app-auth";
 import { Icon } from "react-native-elements";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
 

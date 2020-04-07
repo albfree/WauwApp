@@ -6,18 +6,19 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
-  Image
+  Image,
 } from "react-native";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { Icon } from "react-native-elements";
 import MyRequestsScreen from "../screens/Profile/ProfileMyRequests";
 import MyDogsScreen from "../screens//Profile/ProfileMyDogs";
 import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
+import MyWalksScreen from "../screens/Profile/ProfileMyWalks";
 
 import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
-const CustomDrawerComponent = props => (
+const CustomDrawerComponent = (props) => (
   <SafeAreaView>
     <View style={globalStyles.drawerView}>
       <Image
@@ -44,8 +45,8 @@ export default createDrawerNavigator(
             size={17}
             color="#443099"
           />
-        )
-      }
+        ),
+      },
     },
     MyRequests: {
       screen: MyRequestsScreen,
@@ -58,8 +59,8 @@ export default createDrawerNavigator(
             size={17}
             color="#443099"
           />
-        )
-      }
+        ),
+      },
     },
     MyAccommodations: {
       screen: MyAccommodationsScreen,
@@ -67,9 +68,23 @@ export default createDrawerNavigator(
         drawerLabel: "Mis Alojamientos",
         drawerIcon: ({ tintColor }) => (
           <Icon type="font-awesome" name="bed" size={17} color="#443099" />
-        )
-      }
-    }
+        ),
+      },
+    },
+    MyWalks: {
+      screen: MyWalksScreen,
+      navigationOptions: {
+        drawerLabel: "Mis Paseos",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog-service"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
 
     /* MyDogs: {
       screen: MyDogsScreen,
@@ -88,6 +103,6 @@ export default createDrawerNavigator(
   },
   {
     drawerPosition: "right",
-    contentComponent: CustomDrawerComponent
+    contentComponent: CustomDrawerComponent,
   }
 );
