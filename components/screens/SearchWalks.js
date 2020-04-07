@@ -27,43 +27,73 @@ function SearchWalks(props) {
   const [newInterval, setNewInterval] = useState(null);
   const [availabilities, setAvailabilities] = useState([]);
   const [newAvailability, setNewAvailability] = useState([]);
+  const [filter, setFilter] = useState(false);
 
 
   let petNumber;
   let id;
 
-  
   useEffect(() => {
-    db.ref("availabilities-wauwers")
-    .on("value", snap => {
-      const allData = [];
-      const allAvailability = [];
-      snap.forEach(child => {
-        if (child.val().wauwer.id != id) {
+    
+          const query = db.ref("availabilities-wauwers");
+          query.on("value", snap => {
+            const allData = [];
+            const allAvailability = [];
+            const allIds = [];
+            snap.forEach(child => {
+          if (child.val().wauwer.id != id) {
           allData.push(child.val().wauwer);
-          snap.forEach(child => {
-            if(!allAvailability.includes(child.val().availabilities)){
-              allAvailability.push(child.val().availabilities)
-            }
-          });
-        //wauwerData.push(child.val().availability);
-        //allData.push(wauwerData);
-      };
+          query
+            .child(child.val().wauwer.id)
+            .child("availabilities")
+            .on("value", (child) => {
+              child.forEach(kid=>{
+                if(!allIds.includes(kid.val().id)){
+                  allAvailability.push(kid.val());
+                  allIds.push(kid.val().id);
+                }
+              }); 
+            });
+        }
+    });
       setData(allData);
       setAvailabilities(allAvailability);
+  
     });
+  
     setReloadData(false);
-    setLoading(false);
+    setLoading(false)
+    
   }, [reloadData]); //esto es el disparador del useEffect
-  });
+
+
+
   const funct = value => {
     setNewAvailability(value.id);
     setNewInterval(
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
-    );
+      );
+      
+      console.log(newAvailability);
+  //     if(filter){
+  //     useEffect(() => {
+  //     const query = db.ref("availabilities-wauwers");
+  //     query.on("value", snap => {
+  //       const allData = [];
+  //       snap.forEach(child => {
+  //         if (child.val().wauwer.id != id && child.val().availabilities.includes(newAvailability) ) {
+  //           allData.push(child.val().wauwer);
+  //         }
+  //     });
+  //       setData(allData);
+        
+  //     });
+  //     setReloadData(false);
+  //     setLoading(false);
+  //   }, [reloadData]);
+  // }
   };
 
-  console.log(availabilities);
 
 
   return (
@@ -74,11 +104,12 @@ function SearchWalks(props) {
         value={search}
         containerStyle={styles.searchBar}
       /> */}
+      <ScrollView>
        <Text style={globalStyles.walkTxt2}>
           {"¿Cuándo quiere que pasee a su perro?"}
         </Text>
 
-        <Picker
+       <Picker
           selectedValue={newInterval}
           onValueChange={value => funct(value)}
         >
@@ -90,8 +121,8 @@ function SearchWalks(props) {
               value={item}
             />
           ))}
-        </Picker>
-      <ScrollView>
+        </Picker> 
+      
         <Loading isVisible={loading} text={"Un momento..."} />
         {data ? (
           <FlatList
@@ -115,7 +146,7 @@ function SearchWalks(props) {
         )}
       </ScrollView>
     </SafeAreaView>
-  );
+ );
 }
 
 function Wauwer(props) {
