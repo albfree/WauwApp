@@ -30,6 +30,7 @@ function ListAccommodations(props) {
     });
 
   useEffect(() => {
+    
     db.ref("accommodation")
       .orderByChild("isCanceled")
       .equalTo(false)

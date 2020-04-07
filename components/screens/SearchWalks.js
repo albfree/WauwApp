@@ -24,17 +24,40 @@ function SearchWalks(props) {
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
-  const [newInterval, setNewInterval] = useState(null);
+  //const [newInterval, setNewInterval] = useState(null);
   const [availabilities, setAvailabilities] = useState([]);
-  const [newAvailability, setNewAvailability] = useState([]);
+  const [newAvailability, setNewAvailability] = useState(null);
   const [filter, setFilter] = useState(false);
 
 
   let petNumber;
   let id;
+  db.ref("wauwers")
+  .orderByChild("email")
+  .equalTo(email)
+  .on("child_added", snap => {
+    petNumber = snap.val().petNumber;
+    id = snap.val().id;
+  });
 
   useEffect(() => {
+    console.log("entra")
+    console.log(newAvailability !=  null)
+    if(newAvailability  !=  null){
+      console.log("entra2");
+      const query = db.ref("availabilities-wauwers");
+      query.on("value", snap => {
+      const allData = [];
+        snap.forEach(child => {
+        if (child.val().wauwer.id != id && child.val().availabilities.includes(newAvailability) ) {
+         allData.push(child.val().wauwer);
+        }
+        });
+       setData(allData);
     
+      });
+    }
+    else{
           const query = db.ref("availabilities-wauwers");
           query.on("value", snap => {
             const allData = [];
@@ -60,7 +83,7 @@ function SearchWalks(props) {
       setAvailabilities(allAvailability);
   
     });
-  
+   }
     setReloadData(false);
     setLoading(false)
     
@@ -70,12 +93,11 @@ function SearchWalks(props) {
 
   const funct = value => {
     setNewAvailability(value.id);
-    setNewInterval(
-      value.day + " " + value.startTime + "h - " + value.endDate + "h"
-      );
+    // setNewInterval(
+    //   value.day + " " + value.startTime + "h - " + value.endDate + "h"
+    //   );
       
-      console.log(newAvailability);
-  //     if(filter){
+  //    if(filter){
   //     useEffect(() => {
   //     const query = db.ref("availabilities-wauwers");
   //     query.on("value", snap => {
@@ -94,6 +116,9 @@ function SearchWalks(props) {
   // }
   };
 
+  console.log(newAvailability);
+  console.log(newAvailability !=  null)
+
 
 
   return (
@@ -104,13 +129,13 @@ function SearchWalks(props) {
         value={search}
         containerStyle={styles.searchBar}
       /> */}
-      <ScrollView>
+    <ScrollView>
        <Text style={globalStyles.walkTxt2}>
           {"¿Cuándo quiere que pasee a su perro?"}
         </Text>
-
+       
        <Picker
-          selectedValue={newInterval}
+         // selectedValue={newInterval}
           onValueChange={value => funct(value)}
         >
           {availabilities.map(item => (
@@ -144,7 +169,7 @@ function SearchWalks(props) {
             <Text> No hay usuarios </Text>
           </View>
         )}
-      </ScrollView>
+      </ScrollView> 
     </SafeAreaView>
  );
 }
