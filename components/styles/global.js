@@ -270,62 +270,7 @@ export const globalStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
   },
-  /* Login Screen */
-  loginImage: {
-    height: "40%",
-    width: "60%",
-    resizeMode: "stretch",
-    alignSelf: "center",
-    marginBottom: 40,
-    marginTop: 10,
-  },
-  loginBtn: {
-    backgroundColor: "#443099",
-    borderRadius: 30,
-    marginTop: 10,
-    marginBottom: 10,
-    width: "100%",
-    height: "50%",
-    justifyContent: "flex-start",
-  },
-  loginBtnContainer: {
-    alignItems: "center",
-    alignSelf: "center",
-    width: "75%",
-    height: "10%",
-    backgroundColor: "#443099",
-    marginTop: 50,
-    marginRight: 20,
-    marginLeft: 20,
-    justifyContent: "center",
-  },
-  loginPrints: {
-    height: "10%",
-    width: "82%",
-    resizeMode: "stretch",
-    backgroundColor: "transparent",
-    alignSelf: "center",
-    marginBottom: 20,
-    marginTop: 30,
-  },
-  loginBtnTittle: {
-    marginLeft: 40,
-    fontSize: 17,
-  },
-  loginView: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 40,
-    paddingBottom: 60,
-    marginBottom: 60,
-  },
-  loginTxt: {
-    fontSize: 50,
-    color: "#5c54a4",
-    marginTop: 40,
-  },
+
   /* My Requests */
   myRequestsFeed: {
     marginHorizontal: 16,
