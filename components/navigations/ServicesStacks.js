@@ -10,6 +10,8 @@ import CreateRequestWalkScreen from "../screens/CreateRequestWalk";
 import CreateRequestAccommodationScreen from "../screens/CreateRequestAccommodation";
 import FormRequestAccommodationScreen from "../screens/FormRequestAccommodation";
 
+import FormFilterByAvailabilityScreen from "../screens/FormFilterByAvailability"
+
 const ServicesScreenStacks = createStackNavigator({
   Services: {
     screen: ServicesScreen,
@@ -66,7 +68,15 @@ const ServicesScreenStacks = createStackNavigator({
       title: "Solicitud de Alojamiento",
       headerTitleAlign: "center"
     })
-  }
+  },
+
+  FormFilterByAvailability: {
+    screen: FormFilterByAvailabilityScreen,
+    navigationOptions: () => ({
+      title: "Filtrar paseos",
+      headerTitleAlign: "center"
+    })
+  },
 });
 
 export default ServicesScreenStacks;

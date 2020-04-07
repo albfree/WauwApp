@@ -22,7 +22,7 @@ function Services(props) {
       <View style={styles.row}>
         <View style={styles.column}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("SearchWalks")}
+            onPress={() => navigation.navigate("FormFilterByAvailability")}
             activeOpacity={0.5}
           >
             <Image
@@ -35,7 +35,7 @@ function Services(props) {
             buttonStyle={globalStyles.btnStyle}
             titleStyle={globalStyles.btnTextStyle}
             title="Buscar Paseos"
-            onPress={() => navigation.navigate("SearchWalks")}
+            onPress={() => navigation.navigate("FormFilterByAvailability")}
           />
         </View>
         <View style={styles.column}>

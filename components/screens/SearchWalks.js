@@ -27,7 +27,6 @@ function SearchWalks(props) {
   //const [newInterval, setNewInterval] = useState(null);
   const [availabilities, setAvailabilities] = useState([]);
   const [newAvailability, setNewAvailability] = useState(null);
-  const [filter, setFilter] = useState(false);
 
 
   let petNumber;
@@ -41,10 +40,7 @@ function SearchWalks(props) {
   });
 
   useEffect(() => {
-    console.log("entra")
-    console.log(newAvailability !=  null)
     if(newAvailability  !=  null){
-      console.log("entra2");
       const query = db.ref("availabilities-wauwers");
       query.on("value", snap => {
       const allData = [];
