@@ -31,6 +31,7 @@ function createRequestAccommodation(props) {
   const newType = "sitter";
   const newIsPayed = false;
   const newIsFinished = false;
+  const newIsRated = false;
 
   const newPending = true;
 
@@ -48,8 +49,8 @@ function createRequestAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function(snap) {
-        snap.forEach(function(child) {
+      .on("value", function (snap) {
+        snap.forEach(function (child) {
           setNewOwner(child.val());
         });
       });
@@ -60,8 +61,8 @@ function createRequestAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("id")
       .equalTo(navigation.state.params.formData.worker)
-      .on("value", function(snap) {
-        snap.forEach(function(child) {
+      .on("value", function (snap) {
+        snap.forEach(function (child) {
           setNewWorker(child.val());
         });
       });
@@ -94,7 +95,8 @@ function createRequestAccommodation(props) {
       petNumber: newPetNumber,
       accommodation: newIdAccommodation,
       isPayed: newIsPayed,
-      isFinished : newIsFinished
+      isFinished: newIsFinished,
+      isRated: newIsRated,
     };
 
     setIsLoading(true);
@@ -200,10 +202,9 @@ function Precio(props) {
     // }
 
     // console.log(days);
-    let precio = newPrice * days ;
+    let precio = newPrice * days;
     let withPets = precio * petNumber;
     setNewPrice(withPets);
-   //  console.log(withPets);
   }, []);
 
   return (

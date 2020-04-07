@@ -5,7 +5,7 @@ import {
   Alert,
   Picker,
   SafeAreaView,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -30,14 +30,15 @@ function createRequest(props) {
   const [petNumber, setPetNumber] = useState(0);
   const [petNames, setPetNames] = useState([]);
   const newIsFinished = false;
+  const newIsRated = false;
 
   useEffect(() => {
     // To retrieve the current logged user
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function(snap) {
-        snap.forEach(function(child) {
+      .on("value", function (snap) {
+        snap.forEach(function (child) {
           setNewOwner(child.val());
         });
       });
@@ -53,9 +54,9 @@ function createRequest(props) {
     db.ref("availabilities-wauwers")
       .child(newWorker.id)
       .child("availabilities")
-      .on("value", snap => {
+      .on("value", (snap) => {
         var availabilitiesList = [];
-        snap.forEach(child => {
+        snap.forEach((child) => {
           availabilitiesList.push(child.val());
         });
         setAvailabilities(availabilitiesList);
@@ -69,9 +70,9 @@ function createRequest(props) {
     db.ref("pet")
       .orderByChild("owner/email")
       .equalTo(email)
-      .on("value", snap => {
+      .on("value", (snap) => {
         const pets = [];
-        snap.forEach(child => {
+        snap.forEach((child) => {
           pets.push(child.val().name);
         });
         setPetNames(pets);
@@ -86,7 +87,7 @@ function createRequest(props) {
     }
   };
 
-  const funct = value => {
+  const funct = (value) => {
     setNewAvailability(value.id);
     setNewInterval(
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
@@ -110,7 +111,8 @@ function createRequest(props) {
       worker: newWorker.id,
       interval: newInterval,
       availability: newAvailability,
-      isFinished : newIsFinished
+      isFinished: newIsFinished,
+      isRated: newIsRated,
     };
     db.ref("requests/" + id)
       .set(requestData)
@@ -148,9 +150,9 @@ function createRequest(props) {
 
         <Picker
           selectedValue={newInterval}
-          onValueChange={value => funct(value)}
+          onValueChange={(value) => funct(value)}
         >
-          {availabilities.map(item => (
+          {availabilities.map((item) => (
             <Picker.Item
               label={
                 item.day + " " + item.startTime + "h - " + item.endDate + "h"
@@ -162,7 +164,7 @@ function createRequest(props) {
         <Text style={globalStyles.accommodationSitter2}>
           {"¿Qué mascotas quiere que pasee " + newWorker.name + "?"}
         </Text>
-        {petNames.map(pet => (
+        {petNames.map((pet) => (
           <PetCheckBox
             name={pet}
             petNumber={petNumber}
