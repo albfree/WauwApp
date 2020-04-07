@@ -16,6 +16,9 @@ export const globalStyles = StyleSheet.create({
   viewFlex1: {
     flex: 1,
   },
+  viewFlex2: {
+    flex: 2,
+  },
   homeView: {
     padding: 20,
     flex: 1,
