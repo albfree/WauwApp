@@ -6,16 +6,20 @@ import email from "react-native-email";
 import { db } from "../../population/config";
 import * as firebase from "firebase";
 
-
-import { View, Text, ScrollView, SafeAreaView, Button } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  Button,
+  StyleSheet,
+  Image,
+} from "react-native";
 
 export default function UserData(props) {
   var user = props.navigation.state.params.userInfo;
-  var request = props.navigation.state.params.request;
-  
-  for(let i = 0; i < request.length; i++) {
-      console.log("Request " + (i + 1), request[i]);
-  }
+  var requestWorker = props.navigation.state.params.request;
+  var pets = props.navigation.state.params.pets;
 
   sendEmail = () => {
     email("sergiotb15@gmail.com", {
@@ -33,12 +37,95 @@ export default function UserData(props) {
   };
 
   return (
-      <SafeAreaView>
-        <ScrollView>
-          <View>
-            <Text> UserData.js </Text>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+    <SafeAreaView>
+      <ScrollView>
+        <View style={styles.fieldSet}>
+          <Text style={styles.legend}>Datos personales</Text>
+          <Text> {"\n"} </Text>
+          <Text>Nombre: {user.name}</Text>
+          <Text>Apellidos: {user.surname}</Text>
+          <Text>Dirección: {user.address}</Text>
+          <Text>Descripción: {user.description}</Text>
+          <Text>Email: {user.email}</Text>
+          <Text> La localización es visible sólo para ti</Text>
+          <Text>{user.location.latitude}</Text>
+          <Text>{user.location.latitudeDelta}</Text>
+          <Text>{user.location.longitude}</Text>
+          <Text>{user.location.longitudeDelta}</Text>
+          <Text>Número de mascotas: {user.petNumber}</Text>
+          <Text>Salario: {user.price}</Text>
+          <Text>WauwPoints: {user.wauwPoints}</Text>
+          <Text>Nota media: {user.avgScore}</Text>
+        </View>
+
+        <View style={styles.fieldSet}>
+          <Text style={styles.legend}>Mascotas registradas</Text>
+          <Text> {"\n"} </Text>
+          {pets.map((pet) => {
+            let petParse = JSON.parse(JSON.stringify(pet));
+            return (
+              <View>
+                <Text> Nombre: {petParse.name} </Text>
+                <Text> Raza: {petParse.breed} </Text>
+                <Text> Descripción: {petParse.description} </Text>
+                <Text> {"\n"}</Text>
+              </View>
+            );
+          })}
+        </View>
+
+        <View style={styles.fieldSet}>
+          <Text style={styles.legend}>Solicitudes recibidas</Text>
+          <Text> {"\n"} </Text>
+          {requestWorker.map((request) => {
+            let reqParse = JSON.parse(JSON.stringify(request));
+            return (
+              <View>
+                {reqParse.interval !== undefined ? (
+                  <Text>Disponibilidad del paseo: {reqParse.interval}</Text>
+                ) : (
+                  <Text> Alojamiento </Text>
+                )}
+                <Text>
+                  {" "}
+                  ¿Cancelada?: {reqParse.isCanceled === true ? "Sí" : "No"}{" "}
+                </Text>
+                <Text>
+                  {" "}
+                  ¿Pagada?: {reqParse.isPayed === true ? "Sí" : "No"}{" "}
+                </Text>
+                <Text>
+                  {" "}
+                  ¿Finalizada?: {reqParse.isFinished === true
+                    ? "Sí"
+                    : "No"}{" "}
+                </Text>
+                <Text> Precio: {reqParse.price} </Text>
+                <Text> {"\n"} </Text>
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  fieldSet: {
+    margin: 10,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    alignItems: "flex-start",
+    borderColor: "#000",
+  },
+  legend: {
+    position: "absolute",
+    top: -10,
+    left: 10,
+    fontWeight: "bold",
+    backgroundColor: "#FFFFFF",
+  },
+});

@@ -40,12 +40,23 @@ function Profile(props) {
     var request = [];
 
     // Better way to get some information from DB and send it to UserData
-    db.ref("requests").limitToFirst(10).once("value", (snap) => {
+    db.ref("requests").orderByChild("worker").equalTo(userInfo.id).once("value", (snap) => {
       //request = snap.val();
       snap.forEach(child => {
         request.push(child);
       });
     });
+
+
+    var pets = [];
+
+    db.ref("pet").orderByChild("owner/email").equalTo(userInfo.email).once("value", (snap) => {
+      snap.forEach(petty => {
+        pets.push(petty);
+      })
+    });
+
+
 
 
   return (
@@ -126,7 +137,7 @@ function Profile(props) {
               containerStyle={globalStyles.profileBtnContainer}
               title="Ver información recopilada"
               onPress={() =>
-                navigation.navigate("UserData", { userInfo: userInfo, request: request })
+                navigation.navigate("UserData", { userInfo: userInfo, request: request, pets: pets })
               }
               icon={
                 <Icon
