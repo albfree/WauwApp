@@ -7,6 +7,7 @@ import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
 import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
+import UserDataScreen from '../screens/GRPD/UserData';
 
 const ProfileScreenStacks = createStackNavigator({
   ProfileDrawer: {
@@ -55,6 +56,13 @@ const ProfileScreenStacks = createStackNavigator({
     screen: EditDeleteAccommodationScreen,
     navigationOptions: () => ({
       title: "Editar alojamiento",
+      headerTitleAlign: "center"
+    })
+  },
+  UserData: {
+    screen: UserDataScreen,
+    navigationOptions: () => ({
+      title: "Ver información recopilada",
       headerTitleAlign: "center"
     })
   }

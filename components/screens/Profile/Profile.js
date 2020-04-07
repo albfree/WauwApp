@@ -5,7 +5,7 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
@@ -20,7 +20,7 @@ import { db } from "../../population/config.js";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
-console.warn = message => {
+console.warn = (message) => {
   if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
@@ -33,10 +33,20 @@ function Profile(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .once("child_added", snap => {
+    .once("child_added", (snap) => {
       userInfo = snap.val();
-      console.log("Walker:", userInfo);
     });
+
+    var request = [];
+
+    // Better way to get some information from DB and send it to UserData
+    db.ref("requests").limitToFirst(10).once("value", (snap) => {
+      //request = snap.val();
+      snap.forEach(child => {
+        request.push(child);
+      });
+    });
+
 
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
@@ -110,6 +120,26 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
+
+            <Button
+              buttonStyle={globalStyles.profileBtn}
+              containerStyle={globalStyles.profileBtnContainer}
+              title="Ver información recopilada"
+              onPress={() =>
+                navigation.navigate("UserData", { userInfo: userInfo, request: request })
+              }
+              icon={
+                <Icon
+                  type="material-community"
+                  name="information-variant"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
+            />
+
             <Image
               source={require("../../../assets/images/prints.png")}
               style={globalStyles.profilePrints}
