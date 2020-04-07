@@ -54,7 +54,7 @@ function AddReviewService(props) {
               })
               .then(() => {
                 db.ref("requests/" + request.id)
-                  .update({ rated: true })
+                  .update({ isRated: true })
                   .then(() => {
                     Alert.alert("Su valoración se ha guardado", "");
                     navigation.popToTop();

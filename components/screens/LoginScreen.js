@@ -11,7 +11,7 @@ import { globalStyles } from "../styles/global";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
-console.warn = message => {
+console.warn = (message) => {
   if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
@@ -37,11 +37,11 @@ export default class LoginScreen extends Component {
     return false;
   };
 
-  onSignIn = googleUser => {
+  onSignIn = (googleUser) => {
     //console.log('Google Auth Response', googleUser);
     // We need to register an Observer on Firebase Auth to make sure auth is initialized.
     var unsubscribe = firebase.auth().onAuthStateChanged(
-      function(firebaseUser) {
+      function (firebaseUser) {
         unsubscribe();
         // Check if we are already signed-in Firebase with the correct user.
         if (!this.isUserEqual(googleUser, firebaseUser)) {
@@ -54,13 +54,10 @@ export default class LoginScreen extends Component {
           firebase
             .auth()
             .signInWithCredential(credential)
-            .then(function(result) {
+            .then(function (result) {
               console.log("user signed in ");
               if (result.additionalUserInfo.isNewUser) {
-                let idWauwer = db
-                  .ref()
-                  .child("wauwers")
-                  .push().key;
+                let idWauwer = db.ref().child("wauwers").push().key;
 
                 query = db.ref().child("wauwers/" + idWauwer);
                 query.set({
@@ -78,11 +75,11 @@ export default class LoginScreen extends Component {
                   petNumberSitter: 0,
                   petNumberWalk: 0,
                   homeDescription: "",
-                  avgScore: 2.5,
+                  avgScore: 0,
                   walkSalary: 0,
                   isWalker: false,
                   isSitter: false,
-                  location: null
+                  location: null,
                 });
                 console.log("Usuario añadido con éxito");
 
@@ -95,7 +92,7 @@ export default class LoginScreen extends Component {
                     profile_picture: result.additionalUserInfo.profile.picture,
                     first_name: result.additionalUserInfo.profile.given_name,
                     last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now()
+                    created_at: Date.now(),
                   }); /*
 
                   .then(function(snapshot) {
@@ -107,11 +104,11 @@ export default class LoginScreen extends Component {
                   .database()
                   .ref("/users/" + result.user.uid)
                   .update({
-                    last_logged_in: Date.now()
+                    last_logged_in: Date.now(),
                   });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               // Handle Errors here.
               var errorCode = error.code;
               var errorMessage = error.message;
@@ -132,10 +129,10 @@ export default class LoginScreen extends Component {
     try {
       const result = await Google.logInAsync({
         iosClientId:
-          "785332619976-cs6m8a4l4m44772b4ib163luju77bvtn.apps.googleusercontent.com",
+          "191130769894-9h9fm6gvurfb5l20grk9jirf4svn1n3s.apps.googleusercontent.com",
         androidClientId:
-          "785332619976-255qeunsgbofgci9vk5ddtae3i8d9b41.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
+          "191130769894-jebp8hq5kp341r7nagcs33667quenvl9.apps.googleusercontent.com",
+        scopes: ["profile", "email"],
       });
 
       if (result.type === "success") {
