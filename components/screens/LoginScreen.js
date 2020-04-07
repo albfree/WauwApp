@@ -7,14 +7,6 @@ import * as Google from "expo-google-app-auth";
 import { Icon } from "react-native-elements";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = (message) => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 // const IOS_CLIENT_ID =
 //   "your-ios-client-id";
 
