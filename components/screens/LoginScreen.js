@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Text, View, Image } from "react-native";
+import React, {  useState, useEffect, Component } from "react";
+import { Text, View, Image, Alert, TouchableOpacity } from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
 import { Button } from "react-native-elements";
@@ -7,11 +7,22 @@ import * as Google from "expo-google-app-auth";
 import { Icon } from "react-native-elements";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
+import TermsAndConditions from "./TermsAndConditions";
+import { CheckBox } from "react-native-elements";
+import { withNavigation } from "react-navigation";
 
 // const IOS_CLIENT_ID =
 //   "your-ios-client-id";
 
-export default class LoginScreen extends Component {
+ function LoginScreen(props) {
+  const { navigation } = props;
+  
+  const [isChecked, setIsChecked] = useState(false);
+
+  const changeChecked = () => {
+    setIsChecked(!isChecked);
+  };
+
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
       var providerData = firebaseUser.providerData;
@@ -120,56 +131,77 @@ export default class LoginScreen extends Component {
     );
   };
 
-  signInWithGoogle = async () => {
-    try {
-      const result = await Google.logInAsync({
-        iosClientId:
-          "191130769894-9h9fm6gvurfb5l20grk9jirf4svn1n3s.apps.googleusercontent.com",
-        androidClientId:
-          "191130769894-jebp8hq5kp341r7nagcs33667quenvl9.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      });
-
-      if (result.type === "success") {
-        this.onSignIn(result);
-        return result.accessToken;
-      } else {
-        return { cancelled: true };
-      }
-    } catch (e) {
-      return { error: true };
-    }
+  const funct = () => {
+    signInWithGoogle(isChecked);
   };
 
-  render() {
+  signInWithGoogle = async (isChecked) => {
+    console.log(isChecked);
+    if(isChecked === false){
+      Alert.alert("Advertencia", "Debe aceptar los términos y condiciones de uso para poder usar Wauw.")
+    }else{
+      try {
+        const result = await Google.logInAsync({
+          iosClientId:
+            "191130769894-9h9fm6gvurfb5l20grk9jirf4svn1n3s.apps.googleusercontent.com",
+          androidClientId:
+            "191130769894-jebp8hq5kp341r7nagcs33667quenvl9.apps.googleusercontent.com",
+          scopes: ["profile", "email"]
+        });
+
+        if (result.type === "success") {
+          this.onSignIn(result);
+          return result.accessToken;
+        } else {
+          return { cancelled: true };
+        }
+      } catch (e) {
+        return { error: true };
+      }
+    }  
+  };
+
+  const onPressTerms = () =>{
     return (
-      <View style={globalStyles.loginView}>
-        <Text style={globalStyles.loginTxt}>WAUW</Text>
-        <Image
-          source={require("../../assets/images/logo.png")}
-          style={globalStyles.loginImage}
-        />
-        <Image
-          source={require("../../assets/images/prints.png")}
-          style={globalStyles.loginPrints}
-        />
-        <Button
-          buttonStyle={globalStyles.loginBtn}
-          containerStyle={globalStyles.loginBtnContainer}
-          title="Entrar con Google"
-          onPress={this.signInWithGoogle}
-          icon={
-            <Icon
-              type="material-community"
-              name="google"
-              size={30}
-              color="white"
-              marginLeft={25}
-            />
-          }
-          titleStyle={globalStyles.loginBtnTittle}
-        />
-      </View>
+      navigation.navigate("Terms")
     );
-  }
+  };
+
+  return (
+    <View style={globalStyles.loginView}>
+      <Text style={globalStyles.loginTxt}>WAUW</Text>
+      <Image
+        source={require("../../assets/images/logo.png")}
+        style={globalStyles.loginImage}
+      />
+      <Image
+        source={require("../../assets/images/prints.png")}
+        style={globalStyles.loginPrints}
+      />
+      <CheckBox checked={isChecked} onPress={changeChecked} />
+
+      <Text>He leído y acepto los 
+        <Text style={{color: "#3AF"}} onPress={onPressTerms}> términos y condiciones de uso</Text>.
+      </Text>
+
+      <Button
+        buttonStyle={globalStyles.loginBtn}
+        containerStyle={globalStyles.loginBtnContainer}
+        title="Entrar con Google"
+        onPress={funct}
+        icon={
+          <Icon
+            type="material-community"
+            name="google"
+            size={30}
+            color="white"
+            marginLeft={25}
+          />
+        }
+        titleStyle={globalStyles.loginBtnTittle}
+      />
+    </View>
+  );
 }
+
+export default withNavigation(LoginScreen);
