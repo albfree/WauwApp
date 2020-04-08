@@ -41,7 +41,7 @@ function FormRequestAccommodation(props) {
     setStartTime(currentDate);
   };
 
-  const showModeS = currentMode => {
+  const showModeS = (currentMode) => {
     setShowS(true);
     setModeS(currentMode);
   };
@@ -56,7 +56,7 @@ function FormRequestAccommodation(props) {
     setEndTime(currentDate);
   };
 
-  const showModeE = currentMode => {
+  const showModeE = (currentMode) => {
     setShowE(true);
     setModeE(currentMode);
   };
@@ -67,16 +67,13 @@ function FormRequestAccommodation(props) {
 
   useEffect(() => {
     // To retrieve my pets' names
-    db.ref("pet")
-      .orderByChild("owner/email")
-      .equalTo(email)
-      .on("value", snap => {
-        const pets = [];
-        snap.forEach(child => {
-          pets.push(child.val().name);
-        });
-        setPetNames(pets);
+    db.ref("pet/" + navigation.state.params.id).on("value", (snap) => {
+      const pets = [];
+      snap.forEach((child) => {
+        pets.push(child.val().name);
       });
+      setPetNames(pets);
+    });
   }, []);
 
   const sendForm = () => {
@@ -88,7 +85,7 @@ function FormRequestAccommodation(props) {
       isCanceled: navigation.state.params.accommodation.isCanceled,
       startTime: newStartTime,
       endTime: newEndTime,
-      petNumber: petNumber
+      petNumber: petNumber,
     };
 
     if (
@@ -155,7 +152,7 @@ function FormRequestAccommodation(props) {
         setIsLoading(true);
 
         navigation.navigate("CreateRequestAccommodation", {
-          formData: formData
+          formData: formData,
         });
         Alert.alert("Éxito", "Confirme su solicitud.");
       }
@@ -165,115 +162,115 @@ function FormRequestAccommodation(props) {
   return (
     <SafeAreaView style={globalStyles.safeShowRequestArea}>
       <ScrollView>
-      <View style={globalStyles.showRequestFeed}>
-        <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.showRequestRow}>
-            <View style={globalStyles.editAccommodationColumn1}>
-              <Button
-                buttonStyle={globalStyles.editAccommodationEditDateBtn}
-                containerStyle={
-                  globalStyles.editAccommodationEditDateBtnContainer
-                }
-                title="Fecha de Entrada"
-                onPress={showDatepickerS}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="calendar-import"
-                    size={20}
-                    color="white"
-                  />
-                }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
-              />
-              {showS && (
-                <DateTimePicker
-                  testID="dateTimePickerS"
-                  timeZoneOffsetInMinutes={0}
-                  value={newStartTime}
-                  mode={modeS}
-                  is24Hour={true}
-                  display="default"
-                  onChange={onChangeS}
+        <View style={globalStyles.showRequestFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <View style={globalStyles.showRequestRow}>
+              <View style={globalStyles.editAccommodationColumn1}>
+                <Button
+                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
+                  containerStyle={
+                    globalStyles.editAccommodationEditDateBtnContainer
+                  }
+                  title="Fecha de Entrada"
+                  onPress={showDatepickerS}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="calendar-import"
+                      size={20}
+                      color="white"
+                    />
+                  }
+                  titleStyle={globalStyles.editAccommodationEditDateTittle}
                 />
-              )}
-            </View>
-            <View style={globalStyles.editAccommodationColumn2}>
-              <Text style={globalStyles.accommodationDate}>
-                Introduzca las fechas que desea
-              </Text>
-              <Text style={globalStyles.accommodationDate2}>
-                Fechas Disponibles
-              </Text>
-              <Text style={globalStyles.accommodationDate3}>
-                Del{" "}
-                {startAccommodation.toLocaleString("en-US").substring(0, 10)}{" "}
-                hasta el{" "}
-                {endAccommodation.toLocaleString("en-US").substring(0, 10)}
-              </Text>
-              <Text style={globalStyles.accommodationPets}>
-                ¿Qué mascotas quiere que pasee?
-              </Text>
-              <View>
-                {petNames.map(pet => (
-                  <PetCheckbox
-                    name={pet}
-                    petNumber={petNumber}
-                    setPetNumber={setPetNumber}
+                {showS && (
+                  <DateTimePicker
+                    testID="dateTimePickerS"
+                    timeZoneOffsetInMinutes={0}
+                    value={newStartTime}
+                    mode={modeS}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChangeS}
                   />
-                ))}
+                )}
               </View>
-              <Button
-                buttonStyle={globalStyles.accommodationBtn}
-                containerStyle={globalStyles.accommodationBtnCnt}
-                title="Crear"
-                onPress={sendForm}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="content-save"
-                    size={20}
-                    color="white"
-                    marginLeft={10}
-                  />
-                }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
-              />
-            </View>
-            <View style={globalStyles.editAccommodationColumn3}>
-              <Button
-                buttonStyle={globalStyles.editAccommodationEditDateBtn}
-                containerStyle={
-                  globalStyles.editAccommodationEditDateBtnContainer2
-                }
-                title="Fecha de Salida"
-                onPress={showDatepickerE}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="calendar-export"
-                    size={20}
-                    color="white"
-                  />
-                }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
-              />
-
-              {showE && (
-                <DateTimePicker
-                  testID="dateTimePickerE"
-                  timeZoneOffsetInMinutes={0}
-                  value={newEndTime}
-                  mode={modeE}
-                  is24Hour={true}
-                  display="default"
-                  onChange={onChangeE}
+              <View style={globalStyles.editAccommodationColumn2}>
+                <Text style={globalStyles.accommodationDate}>
+                  Introduzca las fechas que desea
+                </Text>
+                <Text style={globalStyles.accommodationDate2}>
+                  Fechas Disponibles
+                </Text>
+                <Text style={globalStyles.accommodationDate3}>
+                  Del{" "}
+                  {startAccommodation.toLocaleString("en-US").substring(0, 10)}{" "}
+                  hasta el{" "}
+                  {endAccommodation.toLocaleString("en-US").substring(0, 10)}
+                </Text>
+                <Text style={globalStyles.accommodationPets}>
+                  ¿Qué mascotas quiere que pasee?
+                </Text>
+                <View>
+                  {petNames.map((pet) => (
+                    <PetCheckbox
+                      name={pet}
+                      petNumber={petNumber}
+                      setPetNumber={setPetNumber}
+                    />
+                  ))}
+                </View>
+                <Button
+                  buttonStyle={globalStyles.accommodationBtn}
+                  containerStyle={globalStyles.accommodationBtnCnt}
+                  title="Crear"
+                  onPress={sendForm}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="content-save"
+                      size={20}
+                      color="white"
+                      marginLeft={10}
+                    />
+                  }
+                  titleStyle={globalStyles.editAccommodationEditDateTittle}
                 />
-              )}
+              </View>
+              <View style={globalStyles.editAccommodationColumn3}>
+                <Button
+                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
+                  containerStyle={
+                    globalStyles.editAccommodationEditDateBtnContainer2
+                  }
+                  title="Fecha de Salida"
+                  onPress={showDatepickerE}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="calendar-export"
+                      size={20}
+                      color="white"
+                    />
+                  }
+                  titleStyle={globalStyles.editAccommodationEditDateTittle}
+                />
+
+                {showE && (
+                  <DateTimePicker
+                    testID="dateTimePickerE"
+                    timeZoneOffsetInMinutes={0}
+                    value={newEndTime}
+                    mode={modeE}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChangeE}
+                  />
+                )}
+              </View>
             </View>
           </View>
         </View>
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
