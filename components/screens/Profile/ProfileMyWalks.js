@@ -13,6 +13,7 @@ import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
+import BlankView from "../BlankView";
 
 function ProfileMyWalks(props) {
   const { navigation } = props;
@@ -48,7 +49,7 @@ function ProfileMyWalks(props) {
   }, []);
 
   return (
-    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -74,9 +75,7 @@ function ProfileMyWalks(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <View>
-            <Text> No hay paseos </Text>
-          </View>
+          <BlankView text={"No tiene paseos habilitados"} />
         )}
       </ScrollView>
     </SafeAreaView>

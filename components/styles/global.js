@@ -1,6 +1,32 @@
 import { StyleSheet } from "react-native";
 
+const gris = "#dddddd";
+
 export const globalStyles = StyleSheet.create({
+  blankImage: {
+    flex: 1,
+    height: null,
+    resizeMode: "cover",
+    width: null,
+  },
+  blankTxt: {
+    fontSize: 22,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  blankView: {
+    flex: 1,
+    paddingVertical: "25%",
+  },
+  blankView2: {
+    paddingHorizontal: 20,
+  },
+  blankView3: {
+    height: 200,
+    marginTop: 30,
+    width: "100%",
+  },
+
   btnStyle: {
     backgroundColor: "#443099",
     width: "75%",

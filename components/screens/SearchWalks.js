@@ -5,10 +5,12 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Alert
+  Alert,
+  ScrollView,
 } from "react-native";
 import { SearchBar, Avatar, Icon } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
+import BlankView from "./BlankView";
+
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
@@ -19,7 +21,7 @@ import { globalStyles } from "../styles/global";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
-console.warn = message => {
+console.warn = (message) => {
   if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
@@ -37,15 +39,15 @@ function SearchWalks(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       petNumber = snap.val().petNumber;
       id = snap.val().id;
     });
 
   useEffect(() => {
-    db.ref("availabilities-wauwers").on("value", snap => {
+    db.ref("availabilities-wauwers").on("value", (snap) => {
       const allData = [];
-      snap.forEach(child => {
+      snap.forEach((child) => {
         if (child.val().wauwer.id != id) {
           allData.push(child.val().wauwer);
         }
@@ -59,34 +61,32 @@ function SearchWalks(props) {
   }, [reloadData]); //esto es el disparador del useEffect
 
   return (
-    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       {/* <SearchBar
         placeholder="Introduce una hora de inicio"
         onChangeText={e => setSearch(e)}
         value={search}
         containerStyle={styles.searchBar}
       /> */}
-      <ScrollView>
+      <ScrollView scrollEventThrottle={16}>
         <Loading isVisible={loading} text={"Un momento..."} />
-        {data ? (
+        {data.length > 0 ? (
           <FlatList
             data={data}
-            renderItem={wauwerData => (
+            renderItem={(wauwerData) => (
               <Wauwer
                 wauwerData={wauwerData}
                 petNumber={petNumber}
                 navigation={navigation}
               />
             )}
-            keyExtractor={wauwerData => {
+            keyExtractor={(wauwerData) => {
               wauwerData;
             }}
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <View>
-            <Text> No hay usuarios </Text>
-          </View>
+          <BlankView text={"No hay paseos disponibles"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -99,7 +99,7 @@ function Wauwer(props) {
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
-        wauwer: wauwerData.item //TODO: MODIFICAR LA REDIRECCIÓN
+        wauwer: wauwerData.item, //TODO: MODIFICAR LA REDIRECCIÓN
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");
