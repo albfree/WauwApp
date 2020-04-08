@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+
 const verde = "rgba(0,128,0,0.6)";
 const lila = "#d6d6e8";
 
@@ -10,7 +11,6 @@ export const addDogStyles = StyleSheet.create({
     height: "100%",
     justifyContent: "flex-start",
     marginVertical: 10,
-
     width: "100%",
   },
   addDogBtnContainer: {
