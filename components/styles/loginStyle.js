@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const morado = "#443099";
 const transparente = "transparent";
 const blanco = "#5c54a4";
+const celeste = "#33AAFF";
 
 export const loginStyles = StyleSheet.create({
   loginBtn: {
@@ -55,4 +56,7 @@ export const loginStyles = StyleSheet.create({
     paddingTop: 40,
     paddingBottom: 60,
   },
+  hyperlink:{
+    color: celeste
+  }
 });

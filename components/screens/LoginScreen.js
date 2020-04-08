@@ -7,8 +7,6 @@ import * as Google from "expo-google-app-auth";
 import { Icon } from "react-native-elements";
 import _ from "lodash";
 
-import { globalStyles } from "../styles/global";
-import TermsAndConditions from "./TermsAndConditions";
 import { CheckBox } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { loginStyles } from "../styles/loginStyle";
@@ -109,10 +107,9 @@ import { loginStyles } from "../styles/loginStyle";
     signInWithGoogle(isChecked);
   };
 
-  signInWithGoogle = async (isChecked) => {
-    console.log(isChecked);
+  const signInWithGoogle = async (isChecked) => {
     if(isChecked === false){
-      Alert.alert("Advertencia", "Debe aceptar los términos y condiciones de uso para poder usar Wauw.")
+      Alert.alert("Advertencia", "Debe aceptar los términos y condiciones de uso para poder usar Wauw.");
     }else{
       try {
         const result = await Google.logInAsync({
@@ -135,7 +132,7 @@ import { loginStyles } from "../styles/loginStyle";
     }  
   };
 
-  const onPressTerms = () =>{
+  const onPressTerms = () => {
     return (
       navigation.navigate("Terms")
     );
@@ -143,32 +140,38 @@ import { loginStyles } from "../styles/loginStyle";
 
   return (
     <View style={loginStyles.loginView}>
-        <Text style={loginStyles.loginTxt}>WAUW</Text>
-        <Image
-          source={require("../../assets/images/logo.png")}
-          style={loginStyles.loginImage}
+    <Text style={loginStyles.loginTxt}>WAUW</Text>
+    <Image
+      source={require("../../assets/images/logo.png")}
+      style={loginStyles.loginImage}
+    />
+    <Image
+      source={require("../../assets/images/prints.png")}
+      style={loginStyles.loginPrints}
+    />
+    <CheckBox checked={isChecked} onPress={changeChecked} />
+
+    <Text>He leído y acepto los 
+      <Text style={loginStyles.hyperlink} onPress={onPressTerms}> términos y condiciones de uso</Text>.
+    </Text>
+
+    <Button
+      buttonStyle={loginStyles.loginBtn}
+      containerStyle={loginStyles.loginBtnContainer}
+      title="Entrar con Google"
+      onPress={funct}
+      icon={
+        <Icon
+          type="material-community"
+          name="google"
+          size={30}
+          color="white"
+          marginLeft={25}
         />
-        <Image
-          source={require("../../assets/images/prints.png")}
-          style={loginStyles.loginPrints}
-        />
-        <Button
-          buttonStyle={loginStyles.loginBtn}
-          containerStyle={loginStyles.loginBtnContainer}
-          title="Entrar con Google"
-          onPress={this.signInWithGoogle}
-          icon={
-            <Icon
-              type="material-community"
-              name="google"
-              size={30}
-              color="white"
-              marginLeft={25}
-            />
-          }
-          titleStyle={loginStyles.loginBtnTittle}
-        />
-      </View>
+      }
+      titleStyle={loginStyles.loginBtnTittle}
+    />
+  </View>
   );
 }
 

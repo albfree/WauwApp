@@ -1,6 +1,7 @@
 import { Text, View, Linking } from "react-native";
 import React, { Component } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import { loginStyles } from "../styles/loginStyle";
 
 export default class TermsAndConditions extends Component {
   render(){
@@ -19,8 +20,8 @@ export default class TermsAndConditions extends Component {
         Wauw almacena los datos de los usuarios que utilizan la aplicación, y garantiza la seguridad
         y la confidencialidad de los mismos. El registro de los usuarios en esta aplicación está
         gestionado mediante el sistema de autenticación de Google. Puede consultar pinchando <Text
-          onPress={() => {Linking.openURL('https://policies.google.com/privacy?hl=es&gl=es');}}
-          style={{color: "#3AF"}}
+          onPress={() => {Linking.openURL("https://policies.google.com/privacy?hl=es&gl=es");}}
+          style={loginStyles.hyperlink}
           >aquí</Text> su política de privacidad.
       </Text>
 
@@ -42,16 +43,16 @@ export default class TermsAndConditions extends Component {
       <Text>
         Cualquier funcionamiento anormal, o cualquier problema originado al realizar un pago mediante PayPal, quedará
         bajo responsabilidad de dicha organización. Puede obtener más información pinchando <Text
-          onPress={() => {Linking.openURL('https://www.paypal.com/es/smarthelp/home');}}
-          style={{color: "#3AF"}}
+          onPress={() => {Linking.openURL("https://www.paypal.com/es/smarthelp/home");}}
+          style={loginStyles.hyperlink}
           >aquí</Text>.
       </Text>
 
       <Text>
         La organización aseguradora que ofrece servicio a Wauw es la compañía Santa Lucía S.A. Puede obtener
         más información pinchando <Text
-          onPress={() => {Linking.openURL('https://www.santalucia.es/informacion-legal');}}
-          style={{color: "#3AF"}}
+          onPress={() => {Linking.openURL("https://www.santalucia.es/informacion-legal");}}
+          style={loginStyles.hyperlink}
           >aquí</Text>.
       </Text>
 
@@ -63,8 +64,8 @@ export default class TermsAndConditions extends Component {
         de quien la realice, pudiendo incluso llegar a procedimientos legales por parte de la autoridad competente
         en proporción a la gravedad de la transgresión. Si observa algún comportamiento inadecuado en cualquier
         momento, puede informar del mismo enviando un correo electrónico a <Text
-          onPress={() => {Linking.openURL('mailto:wauwispp1920@gmail.com');}}
-          style={{color: "#3AF"}}
+          onPress={() => {Linking.openURL("mailto:wauwispp1920@gmail.com");}}
+          style={loginStyles.hyperlink}
           >wauwispp1920@gmail.com</Text>.
       </Text>
 
@@ -90,6 +91,6 @@ export default class TermsAndConditions extends Component {
 
       </ScrollView>
     </View>
-    )
+    );
   }
 }
