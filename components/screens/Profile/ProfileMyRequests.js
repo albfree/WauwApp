@@ -135,7 +135,7 @@ function Request(requestIn) {
   const tarjeta = {
     fontSize: 13,
     marginTop: 4,
-    color: color,
+    color,
   };
 
   return (

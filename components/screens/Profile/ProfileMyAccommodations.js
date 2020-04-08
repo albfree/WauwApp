@@ -112,7 +112,7 @@ function Accommodation(accomodationIn) {
   const tarjeta = {
     fontSize: 13,
     marginTop: 4,
-    color: color,
+    color,
   };
 
   return (
@@ -120,7 +120,7 @@ function Accommodation(accomodationIn) {
       onPress={() =>
         navigation.navigate("EditDeleteAccommodation", {
           accommodation: accommodation.item,
-          editable: editable,
+          editable,
         })
       }
     >

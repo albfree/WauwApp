@@ -15,17 +15,8 @@ import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = (message) => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
 function SearchWalks(props) {
   const { navigation } = props;
