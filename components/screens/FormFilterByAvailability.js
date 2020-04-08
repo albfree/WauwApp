@@ -63,6 +63,9 @@ function FormFilterByAvailability(props) {
   return (
     <SafeAreaView style={globalStyles.safeMyRequestsArea}>
       <ScrollView>
+      <Text style={globalStyles.walkTxt2}>
+          {"Seleccione la fecha y hora para su paseo"}
+        </Text>
         <Loading isVisible={loading} text={"Un momento..."} />
         {availabilities ? (
           <FlatList
