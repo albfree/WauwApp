@@ -205,12 +205,12 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.price != 0) {
+      if (userInfo.price>=5) {
         confirmAdd(id);
       } else {
         Alert.alert(
           "No puede añadir disponibilidades",
-          "Su salario no puede ser 0"
+          "Su salario debe ser mayor o igual a 5"
         );
       }
     } else {
