@@ -75,6 +75,10 @@ function AddReviewService(props) {
     }
   };
 
+  const btn = {
+    backgroundColor: "#00a680",
+  };
+
   return (
     <View style={styles.viewBody}>
       <View stlye={styles.viewRating}>
@@ -101,7 +105,7 @@ function AddReviewService(props) {
       </View>
       <Button
         containerStyle={styles.btnContainer}
-        buttonStyle={styles.btn}
+        buttonStyle={btn}
         title="Añadir valoración"
         onPress={addReview}
       />
@@ -111,9 +115,6 @@ function AddReviewService(props) {
 }
 
 const styles = StyleSheet.create({
-  btn: {
-    backgroundColor: "#00a680",
-  },
   btnContainer: {
     alignSelf: "center",
     flex: 1,
