@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Alert
+  Alert,
 } from "react-native";
 import { SearchBar, Avatar, Icon } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
@@ -19,7 +19,7 @@ import { globalStyles } from "../styles/global";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
-console.warn = message => {
+console.warn = (message) => {
   if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
@@ -37,15 +37,15 @@ function SearchWalks(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       petNumber = snap.val().petNumber;
       id = snap.val().id;
     });
 
   useEffect(() => {
-    db.ref("availabilities-wauwers").on("value", snap => {
+    db.ref("availabilities-wauwers").on("value", (snap) => {
       const allData = [];
-      snap.forEach(child => {
+      snap.forEach((child) => {
         if (child.val().wauwer.id != id) {
           allData.push(child.val().wauwer);
         }
@@ -71,14 +71,14 @@ function SearchWalks(props) {
         {data ? (
           <FlatList
             data={data}
-            renderItem={wauwerData => (
+            renderItem={(wauwerData) => (
               <Wauwer
                 wauwerData={wauwerData}
                 petNumber={petNumber}
                 navigation={navigation}
               />
             )}
-            keyExtractor={wauwerData => {
+            keyExtractor={(wauwerData) => {
               wauwerData;
             }}
             showsVerticalScrollIndicator={false}
@@ -99,7 +99,7 @@ function Wauwer(props) {
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
-        wauwer: wauwerData.item //TODO: MODIFICAR LA REDIRECCIÓN
+        wauwer: wauwerData.item, //TODO: MODIFICAR LA REDIRECCIÓN
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");
@@ -136,7 +136,7 @@ function Wauwer(props) {
               </View>
               <Text style={globalStyles.myRequestsPrice}>
                 {" "}
-                {wauwerData.item.price} €
+                {wauwerData.item.walkSalary} €
               </Text>
             </View>
             <View style={globalStyles.searchAccommodationsColumn2}>
