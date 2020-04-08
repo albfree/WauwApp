@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 const gris = "#dddddd";
+const blanco = "#FFF";
 
 export const globalStyles = StyleSheet.create({
   blankImage: {
@@ -38,7 +39,15 @@ export const globalStyles = StyleSheet.create({
   btnTextStyle: {
     flex: 1,
   },
-  /* Home */
+  viewFeed: {
+    backgroundColor: blanco,
+    borderRadius: 20,
+    flex: 1,
+    flexDirection: "row",
+    marginHorizontal: 20,
+    marginVertical: "30%",
+    paddingHorizontal: 20,
+  },
   viewFlex1: {
     flex: 1,
   },
@@ -626,47 +635,6 @@ export const globalStyles = StyleSheet.create({
     flex: 4,
     fontSize: 15,
     alignSelf: "center",
-  },
-  /* Add Dog */
-  addDogTittle: {
-    fontSize: 18,
-    alignSelf: "center",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  addDogCnt1: {
-    borderRadius: 5,
-    borderColor: "#d6d6e8",
-    borderWidth: 1,
-    textAlign: "center",
-    marginHorizontal: 20,
-    paddingHorizontal: 20,
-  },
-  addDogBtnContainer: {
-    borderWidth: 1,
-    borderColor: "#d6d6e8",
-    alignSelf: "center",
-    backgroundColor: "rgba(0,128,0,0.6)",
-    marginTop: 30,
-    marginBottom: 10,
-    justifyContent: "center",
-    width: "60%",
-    height: 45,
-  },
-  addDogBtn: {
-    backgroundColor: "rgba(0,128,0,0.6)",
-    borderRadius: 30,
-    justifyContent: "flex-start",
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
-    marginVertical: 10,
-  },
-  addDogBtnTxt: {
-    flex: 1,
-    fontSize: 18,
-    alignSelf: "center",
-    marginRight: 10,
   },
   /* Location */
   locationMapBtnContainerSave: {
