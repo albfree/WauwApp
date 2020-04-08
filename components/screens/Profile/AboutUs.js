@@ -1,18 +1,14 @@
 import React from "react";
 import { View, Text,StyleSheet,SafeAreaView,ScrollView , ImageBackground} from "react-native";
-import { globalStyles } from "../styles/global";
-import protectora1 from "../../assets/images/protectora1.jpg";
-import protectora2 from "../../assets/images/protectora2.jpg";
-import protectora3 from "../../assets/images/protectora3.jpg";
+import { globalStyles } from "../../styles/global";
 
 
-export default function AnimalShelters() {
+export default function AboutUs() {
   return (
    
        <ScrollView scrollEventThrottle={16}>
           <SafeAreaView style={{ flex: 1 }}>
     <View style={styles.profilePrints} >
-    <ImageBackground source ={protectora1} style={styles.image}>
         <Text style={styles.homeTitle}>{"\n"}ARCA DE NOÉ</Text>
         
         <Text style={styles.contentText}>
@@ -32,13 +28,11 @@ export default function AnimalShelters() {
          ·Teléfono: 954 62 03 02{"\n"}
          ·Dirección: Av. de la Reina Mercedes, 41, 41012 Sevilla
          </Text>  
-         </ImageBackground>
 
     </View>
     </SafeAreaView>
     <SafeAreaView style={{ flex: 1 }}>
     <View style={styles.profilePrints} >
-    <ImageBackground source = {protectora2} style={styles.image}>
         <Text style={styles.homeTitle} >{"\n"}ARGOS</Text>
         
         <Text style={styles.contentText}>
@@ -58,13 +52,11 @@ export default function AnimalShelters() {
          ·Adopciones: adopciones@argos-sevilla.org{"\n"}   
          ·Acodigas temporales: acogidas@argos-sevilla.org
          </Text>  
-         </ImageBackground>
 
     </View>
     </SafeAreaView>
     <SafeAreaView style={{ flex: 1 }}>
     <View style={styles.profilePrints} >
-    <ImageBackground source = {protectora3} style={styles.image}>
         <Text style={styles.homeTitle} >{"\n"}LA SONRISA ANIMAL</Text>
         
         <Text style={styles.contentText}>
@@ -85,7 +77,6 @@ export default function AnimalShelters() {
          ·Email: asociacionlasanimal@gmail.com{"\n"}
          ·Dirección: Brenes, Sevilla
          </Text>   
-         </ImageBackground>
 
     </View>
     </SafeAreaView>

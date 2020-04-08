@@ -50,7 +50,7 @@ function ListAccommodations(props) {
   return (
     <SafeAreaView style={globalStyles.safeMyRequestsArea}>
       <ScrollView>
-        {accommodationsList ? (
+        {accommodationsList.length > 0 ? (
           <FlatList
             data={accommodationsList}
             style={globalStyles.myRequestsFeed}
