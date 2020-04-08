@@ -40,7 +40,7 @@ const RequestScreenStacks = createStackNavigator({
   FormRequestAccommodation: {
     screen: FormRequestAccommodationScreen,
     navigationOptions: () => ({
-      title: "Formualario Solicitud Alojamiento",
+      title: "Formulario Solicitud Alojamiento",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
