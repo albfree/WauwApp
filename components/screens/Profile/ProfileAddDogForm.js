@@ -37,17 +37,6 @@ function ProfileAddDogForm(props) {
       .orderByChild("email")
       .equalTo(email)
       .on("child_added", (snap) => {
-        //console.log("snap.val()", snap.val());
-        const newNewOwner = {
-          avgScore: snap.val().avgScore,
-          //description: snap.val().description,
-          email: snap.val().email,
-          id: snap.val().id,
-          name: snap.val().name,
-          photo: snap.val().photo,
-          surname: snap.val().surname,
-          wauwPoints: snap.val().wauwPoints,
-        };
         setnewOwner(snap.val());
       });
     setReloadData(false);

@@ -205,7 +205,7 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.price>=5) {
+      if (userInfo.price >= 5) {
         confirmAdd(id);
       } else {
         Alert.alert(
@@ -334,54 +334,54 @@ function ProfileWalkerForm(props) {
 export default withNavigation(ProfileWalkerForm);
 
 const styles = StyleSheet.create({
-  textHeader: {
-    textAlign: "center",
-    padding: 3,
-  },
-  collapseHeader: {
-    margin: 3,
-    backgroundColor: "rgba(191, 191, 191, 0.8)",
+  availability: {
+    borderColor: "rgba(11,156,49,0.5)",
+    borderRadius: 5,
+    borderWidth: 1,
+    margin: 5,
+    padding: 5,
   },
   avContainer: {
     borderColor: "red",
-    marginLeft: 9,
     flex: 1,
     flexDirection: "row",
     flexWrap: "wrap",
+    marginLeft: 9,
   },
-  availability: {
-    margin: 5,
-    borderWidth: 1,
-    borderColor: "rgba(11,156,49,0.5)",
-    borderRadius: 5,
-    padding: 5,
-  },
-  text: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderTopWidth: 1,
-    borderTopColor: "#ddd",
-  },
-  data: {
-    paddingHorizontal: 8,
-    color: "grey",
-  },
-  buttonContainer: {
-    marginTop: 20,
-  },
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  input: {
-    marginBottom: 10,
+  btn: {
+    backgroundColor: "#00a680",
   },
   btnContainer: {
     marginTop: 20,
     width: "95%",
   },
-  btn: {
-    backgroundColor: "#00a680",
+  buttonContainer: {
+    marginTop: 20,
+  },
+  collapseHeader: {
+    backgroundColor: "rgba(191, 191, 191, 0.8)",
+    margin: 3,
+  },
+  data: {
+    color: "grey",
+    paddingHorizontal: 8,
+  },
+  input: {
+    marginBottom: 10,
+  },
+  text: {
+    borderTopColor: "#ddd",
+    borderTopWidth: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
+  },
+  textHeader: {
+    padding: 3,
+    textAlign: "center",
+  },
+  view: {
+    paddingBottom: 10,
+    alignItems: "center",
+    paddingTop: 10,
   },
 });
