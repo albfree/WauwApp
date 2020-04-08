@@ -106,11 +106,18 @@ function Wauwer(props) {
     }
   };
 
+  const publicProf = () => {
+      navigation.navigate("PublicProfile", {
+        user: wauwerData
+      });
+  };
+
   return (
     <TouchableOpacity onPress={checkHasPets}>
       <View style={globalStyles.myRequestsFeedItem}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
+          <TouchableOpacity onPress={publicProf}>
             <View style={globalStyles.searchAccommodationsColumn1}>
               <Avatar
                 rounded
@@ -122,6 +129,7 @@ function Wauwer(props) {
                 {wauwerData.item.name}{" "}
               </Text>
             </View>
+            </TouchableOpacity>
             <View style={globalStyles.searchAccommodationsColumn1}>
               <View style={globalStyles.myRequestsRow}>
                 <Text style={globalStyles.myRequestsNum}>
