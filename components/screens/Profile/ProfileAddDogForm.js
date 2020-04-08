@@ -15,15 +15,7 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 
 function ProfileAddDogForm(props) {
-  const {
-    id,
-    name,
-    breed,
-    description,
-    owner,
-    setIsVisibleModal,
-    navigation,
-  } = props;
+  const { setIsVisibleModal, navigation } = props;
   const [newName, setNewName] = useState(null);
   const [newBreed, setNewBreed] = useState(null);
   const [newDescription, setNewDescription] = useState(null);
