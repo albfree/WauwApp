@@ -128,6 +128,7 @@ function createRequest(props) {
         setIsLoading(false);
       });
   };
+  
 
   return (
     <SafeAreaView style={globalStyles.safeShowRequestArea}>

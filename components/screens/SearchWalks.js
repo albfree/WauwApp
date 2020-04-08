@@ -10,7 +10,8 @@ import {
 } from "react-native";
 import { SearchBar, Avatar, Icon } from "react-native-elements";
 import BlankView from "./BlankView";
-
+import { Avatar, Icon } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
@@ -20,10 +21,11 @@ import { globalStyles } from "../styles/global";
 
 function SearchWalks(props) {
   const { navigation } = props;
-  const { search, setSearch } = useState("");
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
+
+  const interval = navigation.state.params.interval;
 
   let petNumber;
   let id;
@@ -36,30 +38,36 @@ function SearchWalks(props) {
     });
 
   useEffect(() => {
-    db.ref("availabilities-wauwers").on("value", (snap) => {
+    const query = db.ref("availabilities-wauwers");
+    query.on("value", (snap) => {
       const allData = [];
       snap.forEach((child) => {
         if (child.val().wauwer.id != id) {
-          allData.push(child.val().wauwer);
+          console.log("entra");
+          for (var availability in child.val().availabilities) {
+            console.log(availability);
+            console.log(interval.id);
+            if (availability == interval.id) {
+              console.log("ududjjdj");
+              allData.push(child.val().wauwer);
+            }
+          }
         }
-        //wauwerData.push(child.val().availability);
-        //allData.push(wauwerData);
       });
       setData(allData);
     });
+
     setReloadData(false);
     setLoading(false);
   }, [reloadData]); //esto es el disparador del useEffect
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      {/* <SearchBar
-        placeholder="Introduce una hora de inicio"
-        onChangeText={e => setSearch(e)}
-        value={search}
-        containerStyle={styles.searchBar}
-      /> */}
-      <ScrollView scrollEventThrottle={16}>
+      <ScrollView>
+        <Text style={globalStyles.walkTxt2}>
+          {"¿Cuándo quiere que pasee a su perro?"}
+        </Text>
+
         <Loading isVisible={loading} text={"Un momento..."} />
         {data.length > 0 ? (
           <FlatList
@@ -98,9 +106,9 @@ function Wauwer(props) {
   };
 
   const publicProf = () => {
-      navigation.navigate("PublicProfile", {
-        user: wauwerData.item
-      });
+    navigation.navigate("PublicProfile", {
+      user: wauwerData.item,
+    });
   };
 
   return (
@@ -108,18 +116,18 @@ function Wauwer(props) {
       <View style={globalStyles.myRequestsFeedItem}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
-          <TouchableOpacity onPress={publicProf}>
-            <View style={globalStyles.searchAccommodationsColumn1}>
-              <Avatar
-                rounded
-                size="large"
-                source={{ uri: wauwerData.item.photo }}
-              />
-              <Text style={globalStyles.myRequestsPrice}>
-                {" "}
-                {wauwerData.item.name}{" "}
-              </Text>
-            </View>
+            <TouchableOpacity onPress={publicProf}>
+              <View style={globalStyles.searchAccommodationsColumn1}>
+                <Avatar
+                  rounded
+                  size="large"
+                  source={{ uri: wauwerData.item.photo }}
+                />
+                <Text style={globalStyles.myRequestsPrice}>
+                  {" "}
+                  {wauwerData.item.name}{" "}
+                </Text>
+              </View>
             </TouchableOpacity>
             <View style={globalStyles.searchAccommodationsColumn1}>
               <View style={globalStyles.myRequestsRow}>
@@ -136,16 +144,6 @@ function Wauwer(props) {
               <Text style={globalStyles.myRequestsPrice}>
                 {" "}
                 {wauwerData.item.price} €
-              </Text>
-            </View>
-            <View style={globalStyles.searchAccommodationsColumn2}>
-              <Text style={globalStyles.myRequestsNum}>
-                {" "}
-                {/* {wauwerData.item[1].day}{" "} */}
-              </Text>
-              <Text style={globalStyles.myRequestsStatus}>
-                {" "}
-                {/* {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate}{" "} */}
               </Text>
             </View>
           </View>

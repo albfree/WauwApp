@@ -1,4 +1,4 @@
-import React, {  useState, useEffect, Component } from "react";
+import React, { useState, useEffect, Component } from "react";
 import { Text, View, Image, Alert, TouchableOpacity } from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
@@ -11,9 +11,9 @@ import { CheckBox } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { loginStyles } from "../styles/loginStyle";
 
- function LoginScreen(props) {
+function LoginScreen(props) {
   const { navigation } = props;
-  
+
   const [isChecked, setIsChecked] = useState(false);
 
   const changeChecked = () => {
@@ -108,16 +108,19 @@ import { loginStyles } from "../styles/loginStyle";
   };
 
   const signInWithGoogle = async (isChecked) => {
-    if(isChecked === false){
-      Alert.alert("Advertencia", "Debe aceptar los términos y condiciones de uso para poder usar Wauw.");
-    }else{
+    if (isChecked === false) {
+      Alert.alert(
+        "Advertencia",
+        "Debe aceptar los términos y condiciones de uso para poder usar Wauw."
+      );
+    } else {
       try {
         const result = await Google.logInAsync({
           iosClientId:
             "191130769894-9h9fm6gvurfb5l20grk9jirf4svn1n3s.apps.googleusercontent.com",
           androidClientId:
             "191130769894-jebp8hq5kp341r7nagcs33667quenvl9.apps.googleusercontent.com",
-          scopes: ["profile", "email"]
+          scopes: ["profile", "email"],
         });
 
         if (result.type === "success") {
@@ -129,49 +132,52 @@ import { loginStyles } from "../styles/loginStyle";
       } catch (e) {
         return { error: true };
       }
-    }  
+    }
   };
 
   const onPressTerms = () => {
-    return (
-      navigation.navigate("Terms")
-    );
+    return navigation.navigate("Terms");
   };
 
   return (
     <View style={loginStyles.loginView}>
-    <Text style={loginStyles.loginTxt}>WAUW</Text>
-    <Image
-      source={require("../../assets/images/logo.png")}
-      style={loginStyles.loginImage}
-    />
-    <Image
-      source={require("../../assets/images/prints.png")}
-      style={loginStyles.loginPrints}
-    />
-    <CheckBox checked={isChecked} onPress={changeChecked} />
+      <Text style={loginStyles.loginTxt}>WAUW</Text>
+      <Image
+        source={require("../../assets/images/logo.png")}
+        style={loginStyles.loginImage}
+      />
+      <Image
+        source={require("../../assets/images/prints.png")}
+        style={loginStyles.loginPrints}
+      />
+      <CheckBox checked={isChecked} onPress={changeChecked} />
 
-    <Text>He leído y acepto los 
-      <Text style={loginStyles.hyperlink} onPress={onPressTerms}> términos y condiciones de uso</Text>.
-    </Text>
+      <Text>
+        He leído y acepto los
+        <Text style={loginStyles.hyperlink} onPress={onPressTerms}>
+          {" "}
+          términos y condiciones de uso
+        </Text>
+        .
+      </Text>
 
-    <Button
-      buttonStyle={loginStyles.loginBtn}
-      containerStyle={loginStyles.loginBtnContainer}
-      title="Entrar con Google"
-      onPress={funct}
-      icon={
-        <Icon
-          type="material-community"
-          name="google"
-          size={30}
-          color="white"
-          marginLeft={25}
-        />
-      }
-      titleStyle={loginStyles.loginBtnTittle}
-    />
-  </View>
+      <Button
+        buttonStyle={loginStyles.loginBtn}
+        containerStyle={loginStyles.loginBtnContainer}
+        title="Entrar con Google"
+        onPress={funct}
+        icon={
+          <Icon
+            type="material-community"
+            name="google"
+            size={30}
+            color="white"
+            marginLeft={25}
+          />
+        }
+        titleStyle={loginStyles.loginBtnTittle}
+      />
+    </View>
   );
 }
 

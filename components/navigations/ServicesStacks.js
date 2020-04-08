@@ -5,9 +5,8 @@ import ChangeAvailabilityScreen from "../screens/ChangeAvailability";
 import CreateAccommodationScreen from "../screens/CreateAccommodation";
 import SearchWalksScreen from "../screens/SearchWalks";
 import PublicProfileScreen from "../account/PublicProfile";
-
 import CreateRequestWalkScreen from "../screens/CreateRequestWalk";
-
+import FormFilterByAvailabilityScreen from "../screens/FormFilterByAvailability";
 import CreateRequestAccommodationScreen from "../screens/CreateRequestAccommodation";
 import FormRequestAccommodationScreen from "../screens/FormRequestAccommodation";
 
@@ -139,8 +138,16 @@ const ServicesScreenStacks = createStackNavigator({
         color: blanco,
       },
       headerTintColor: blanco,
-    })
-  }
+    }),
+  },
+
+  FormFilterByAvailability: {
+    screen: FormFilterByAvailabilityScreen,
+    navigationOptions: () => ({
+      title: "Filtrar paseos",
+      headerTitleAlign: "center",
+    }),
+  },
 });
 
 export default ServicesScreenStacks;
