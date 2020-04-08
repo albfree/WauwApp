@@ -108,7 +108,7 @@ function Wauwer(props) {
 
   const publicProf = () => {
       navigation.navigate("PublicProfile", {
-        user: wauwerData
+        user: wauwerData.item
       });
   };
 
