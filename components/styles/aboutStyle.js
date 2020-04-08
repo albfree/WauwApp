@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+const negro = "#000000";
+
 export const styles = StyleSheet.create({
 
     contentText: {
@@ -8,34 +10,34 @@ export const styles = StyleSheet.create({
         marginTop: 10,
         marginHorizontal: 20,
         textAlign: "justify",
-        color: "black"
+        color: negro
     },
 
     contentTextBold: {
         fontSize: 20,
         fontWeight: "700",
-        marginTop: 10,
         marginHorizontal: 20,
-        textAlign: "justify",
-        color: "black"
+        marginTop: 10,
+        color: negro,
+        textAlign: "justify"
     },
+
+    homeImage: {
+        flex: 1,
+        resizeMode: "stretch",
+        width: "85%",
+        borderRadius: 20,
+        borderWidth: 1,
+        alignSelf: "center",
+        justifyContent: "center",
+      },
 
     homeTitle: {
         fontSize: 24,
         fontWeight: "700",
         textAlign: "center",
-        color: "black"
-    },
-
-    homeImage: {
-        flex: 1,
-        width: "85%",
-        resizeMode: "stretch",
-        borderRadius: 20,
-        borderWidth: 1,
-        alignSelf: "center",
-        justifyContent: "center",
-      }
+        color: negro
+    }
 
 }
 );
