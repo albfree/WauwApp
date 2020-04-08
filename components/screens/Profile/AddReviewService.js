@@ -79,9 +79,14 @@ function AddReviewService(props) {
     backgroundColor: "#00a680",
   };
 
+  const viewRating = {
+    backgroundColor: "white",
+    height: 110,
+  };
+
   return (
     <View style={styles.viewBody}>
-      <View stlye={styles.viewRating}>
+      <View stlye={viewRating}>
         <AirbnbRating
           count={5}
           reviews={["Muy mal", "Mal", "Normal", "Bueno", "Excelente"]}
@@ -126,24 +131,20 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 10,
   },
-  textArea: {
-    height: 150,
-    padding: 0,
-    margin: 0,
-    width: "100%",
-  },
   formReview: {
     alignItems: "center",
     flex: 1,
     margin: 10,
     marginTop: 40,
   },
+  textArea: {
+    height: 150,
+    margin: 0,
+    padding: 0,
+    width: "100%",
+  },
   viewBody: {
     flex: 1,
-  },
-  viewRating: {
-    backgroundColor: "white",
-    height: 110,
   },
 });
 
