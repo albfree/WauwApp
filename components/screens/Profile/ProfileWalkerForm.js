@@ -110,10 +110,6 @@ function ProfileWalkerForm(props) {
   const addAv = (id) => {
     //To save availability selected and then, update screen's info
     setIsVisibleLoading(true);
-    db.ref("wauwers/" + userInfo.id).update({
-      isWalker: true,
-    });
-
     let availability;
     db.ref("availability")
       .child(id)
@@ -149,11 +145,6 @@ function ProfileWalkerForm(props) {
           (snap) => {
             if (snap.numChildren() == 1) {
               db.ref("availabilities-wauwers/" + userInfo.id).remove();
-              db.ref()
-                .child("wauwers/" + userInfo.id)
-                .update({
-                  isWalker: false,
-                });
             }
           }
         );
@@ -205,7 +196,7 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.price >= 5) {
+      if (userInfo.walkSalary >= 5) {
         confirmAdd(id);
       } else {
         Alert.alert(
@@ -238,15 +229,15 @@ function ProfileWalkerForm(props) {
 
                 db.ref("wauwers/" + userInfo.id)
                   .update({
-                    price: precio,
-                    walkSalary: salary,
+                    price: salary,
+                    walkSalary: precio,
                   })
                   .then(() => {
                     setUpdate(true);
                   });
               }}
             >
-              {userInfo.price}
+              {userInfo.walkSalary}
             </TextInput>
           </View>
           <View>

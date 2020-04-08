@@ -144,7 +144,7 @@ function Wauwer(props) {
               </View>
               <Text style={globalStyles.myRequestsPrice}>
                 {" "}
-                {wauwerData.item.walkSalary} €
+                {wauwerData.item.price} €
               </Text>
             </View>
             <View style={globalStyles.searchAccommodationsColumn2}>

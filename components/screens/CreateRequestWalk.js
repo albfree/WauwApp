@@ -18,7 +18,7 @@ import { globalStyles } from "../styles/global";
 function createRequest(props) {
   const { navigation } = props;
   const [newPrice, setNewPrice] = useState(
-    navigation.state.params.wauwer.walkSalary
+    navigation.state.params.wauwer.price
   );
   const price = navigation.state.params.wauwer.price;
   const [newInterval, setNewInterval] = useState(null);
