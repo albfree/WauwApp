@@ -53,8 +53,18 @@ function Profile(props) {
     db.ref("pet").orderByChild("owner/email").equalTo(userInfo.email).once("value", (snap) => {
       snap.forEach(petty => {
         pets.push(petty);
-      })
+      });
     });
+
+    var accommodations = [];
+
+    db.ref("accommodation").orderByChild("worker").equalTo(userInfo.id).once("value", (snap) => {
+      snap.forEach(pretty => {
+        accommodations.push(pretty);
+      });
+    });
+
+    
 
 
 
