@@ -130,7 +130,7 @@ const ServicesScreenStacks = createStackNavigator({
   PublicProfile: {
     screen: PublicProfileScreen,
     navigationOptions: () => ({
-      title: "Perfil público",
+      title: "Perfil",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
