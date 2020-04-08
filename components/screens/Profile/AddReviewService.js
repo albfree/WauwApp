@@ -44,7 +44,7 @@ function AddReviewService(props) {
           })
           .then(() => {
             score = (score * (numReviews - 1) + rating) / numReviews;
-            if (score % 2 != 0) {
+            if (score % 2 !== 0) {
               score = Math.round(score * 10) / 10;
             }
 

@@ -234,7 +234,6 @@ function ProfileWalkerForm(props) {
                 } else {
                   precio = 0;
                 }
-                console.log(userInfo);
                 const salary = Math.round(precio * 1.3 * 10) / 10;
 
                 db.ref("wauwers/" + userInfo.id)
