@@ -115,25 +115,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#00a680",
   },
   btnContainer: {
+    alignSelf: "center",
     flex: 1,
     justifyContent: "flex-end",
-    marginTop: 20,
     marginBottom: 10,
+    marginTop: 20,
     width: "95%",
-    alignSelf: "center",
-  },
-  textArea: {
-    height: 150,
-    width: "100%",
-    padding: 0,
-    margin: 0,
   },
   input: {
     marginBottom: 10,
   },
+  textArea: {
+    height: 150,
+    padding: 0,
+    margin: 0,
+    width: "100%",
+  },
   formReview: {
-    flex: 1,
     alignItems: "center",
+    flex: 1,
     margin: 10,
     marginTop: 40,
   },
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   viewRating: {
-    height: 110,
     backgroundColor: "white",
+    height: 110,
   },
 });
 
