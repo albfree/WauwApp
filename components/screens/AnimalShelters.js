@@ -2,7 +2,6 @@ import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   ScrollView,
   ImageBackground,
@@ -39,6 +38,10 @@ export default function AnimalShelters() {
               {"\n"} {"\n"}Pone especial empeño en proteger aquellos animales
               que son peor tratados por la sociedad, por motivos de edad, raza o
               enfermedad.{"\n"}
+              Contacta con ellos:{"\n"}
+              {"\n"}
+              ·Teléfono: 954 62 03 02{"\n"}
+              ·Dirección: Av. de la Reina Mercedes, 41, 41012 Sevilla
             </Text>
           </ImageBackground>
         </View>
@@ -64,6 +67,11 @@ export default function AnimalShelters() {
               encuentran animales abandonados y maltratados puedan hacerse cargo
               de ellos en sus propias casas hasta encontrarles familia
               definitiva. {"\n"}
+              Contacta con ellos:{"\n"}
+              {"\n"}
+              ·Información general: info@argos-sevilla.org{"\n"}
+              ·Adopciones: adopciones@argos-sevilla.org{"\n"}
+              ·Acodigas temporales: acogidas@argos-sevilla.org
             </Text>
           </ImageBackground>
         </View>
@@ -91,6 +99,10 @@ export default function AnimalShelters() {
               puedes amadrinar, hazte socio/a, únete a nuestro grupo de teaming
               por 1€/mes o ayúdanos a difundir. {"\n"} {"\n"} Nuestros peludos y
               nosotros te lo agradeceremos de corazón! {"\n"}
+              Contacta con ellos:{"\n"}
+              {"\n"}
+              ·Email: asociacionlasanimal@gmail.com{"\n"}
+              ·Dirección: Brenes, Sevilla
             </Text>
           </ImageBackground>
         </View>
