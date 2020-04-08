@@ -36,3 +36,4 @@ npm install redux-mock-store
 npm install --save react-redux
 npm install --save redux
 npm i accordion-collapse-react-native
+npm i react-native-ratings
