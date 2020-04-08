@@ -6,6 +6,9 @@ const blanco = "#5c54a4";
 const celeste = "#33AAFF";
 
 export const loginStyles = StyleSheet.create({
+  hyperlink:{
+    color: celeste
+  },
   loginBtn: {
     backgroundColor: morado,
     borderRadius: 30,
@@ -55,8 +58,5 @@ export const loginStyles = StyleSheet.create({
     marginBottom: "5%",
     paddingTop: 40,
     paddingBottom: 60,
-  },
-  hyperlink:{
-    color: celeste
   }
 });
