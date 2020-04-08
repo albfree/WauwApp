@@ -8,11 +8,6 @@ import { globalStyles } from "../../styles/global";
 
 function ProfileAddDogForm(props) {
   const {
-    id,
-    name,
-    breed,
-    description,
-    owner,
     setIsVisibleModal,
     navigation
   } = props;
@@ -32,7 +27,7 @@ function ProfileAddDogForm(props) {
         //console.log("snap.val()", snap.val());
         const newNewOwner = {
           avgScore: snap.val().avgScore,
-          description: snap.val().description,
+          homeDescription: snap.val().homeDescription,
           email: snap.val().email,
           id: snap.val().id,
           name: snap.val().name,

@@ -1,7 +1,7 @@
 import * as Font from "expo-font";
 import { StyleSheet, Text, View } from "react-native"; 
 import {  createAppContainer, createSwitchNavigator } from "react-navigation";
-import LoginScreen from "./components/screens/LoginScreen";
+import LoginScreen from "./components/navigations/LoginStack";
 import DashboardScreen from "./components/screens/DashboardScreen";
 import LoadingScreen from "./components/screens/LoadingScreen";
 import { AppLoading } from "expo";
