@@ -92,11 +92,18 @@ function Accommodation(props) {
     }
   };
 
+  const publicProf = () => {
+    navigation.navigate("PublicProfile", {
+      user: worker
+    });
+  };
+
   return (
     <TouchableOpacity onPress={checkHasPets}>
       <View style={globalStyles.myRequestsFeedItem}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
+          <TouchableOpacity onPress={publicProf}>
             <View style={globalStyles.searchAccommodationsColumn1}>
               <Avatar rounded size="large" source={{ uri: worker.photo }} />
               <Text style={globalStyles.myRequestsPrice}>
@@ -106,6 +113,7 @@ function Accommodation(props) {
                 {worker.description}
               </Text>
             </View>
+            </TouchableOpacity>
             <View style={globalStyles.searchAccommodationsColumn2}>
               <Text style={globalStyles.notificationsNum}>Disponibilidad</Text>
               <Text style={globalStyles.myRequestsType}>

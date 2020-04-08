@@ -17,11 +17,6 @@ import { addDogStyles } from "../../styles/addDogStyle";
 
 function ProfileAddDogForm(props) {
   const {
-    id,
-    name,
-    breed,
-    description,
-    owner,
     setIsVisibleModal,
     navigation,
   } = props;
@@ -40,7 +35,7 @@ function ProfileAddDogForm(props) {
       .on("child_added", (snap) => {
         const newNewOwner = {
           avgScore: snap.val().avgScore,
-          description: snap.val().description,
+          homeDescription: snap.val().homeDescription,
           email: snap.val().email,
           id: snap.val().id,
           name: snap.val().name,
