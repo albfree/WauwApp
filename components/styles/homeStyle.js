@@ -16,17 +16,18 @@ export const homeStyles = StyleSheet.create({
     alignItems: "center",
     alignSelf: "center",
     backgroundColor: morado,
-    borderWidth: 1,
     borderColor: lila,
+    borderWidth: 1,
+
     justifyContent: "center",
     marginBottom: 10,
     marginTop: 5,
     width: "90%",
   },
   homeBtnTxt: {
+    alignSelf: "center",
     flex: 5,
     fontSize: 17,
-    alignSelf: "center",
   },
   homeImage: {
     alignSelf: "center",
