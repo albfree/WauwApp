@@ -6,9 +6,6 @@ const blanco = "#5c54a4";
 const celeste = "#33AAFF";
 
 export const loginStyles = StyleSheet.create({
-  hyperlink:{
-    color: celeste
-  },
   loginBtn: {
     backgroundColor: morado,
     borderRadius: 30,
@@ -49,6 +46,19 @@ export const loginStyles = StyleSheet.create({
     fontSize: 50,
     marginTop: "20%",
   },
+  loginTxt2: {
+    color: celeste,
+  },
+  loginTxt3: {
+    fontSize: 18,
+    fontWeight: "700",
+    marginVertical: 10,
+    textAlign: "center",
+  },
+  loginTxt4: {
+    marginBottom: 10,
+    textAlign: "center",
+  },
   loginView: {
     alignItems: "center",
     flex: 1,
@@ -57,5 +67,13 @@ export const loginStyles = StyleSheet.create({
     marginBottom: "5%",
     paddingTop: 40,
     paddingBottom: 60,
-  }
+  },
+  loginView2: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    marginBottom: "5%",
+    paddingBottom: 60,
+  },
 });

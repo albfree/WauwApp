@@ -4,15 +4,18 @@ import TermsAndConditionsScreen from "../screens/TermsAndConditions";
 
 const LoginStack = createStackNavigator({
   Login: {
-    screen: LoginScreen
+    screen: LoginScreen,
+    navigationOptions: () => ({
+      header: null,
+    }),
   },
   Terms: {
     screen: TermsAndConditionsScreen,
     navigationOptions: () => ({
       title: "Términos y condiciones de uso",
-      headerTitleAlign: "center"
-    })
-  }
+      headerTitleAlign: "center",
+    }),
+  },
 });
 
 export default LoginStack;

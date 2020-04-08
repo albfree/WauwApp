@@ -150,17 +150,16 @@ function LoginScreen(props) {
         source={require("../../assets/images/prints.png")}
         style={loginStyles.loginPrints}
       />
-      <CheckBox checked={isChecked} onPress={changeChecked} />
-
-      <Text>
-        He leído y acepto los
-        <Text style={loginStyles.hyperlink} onPress={onPressTerms}>
-          {" "}
-          términos y condiciones de uso
+      <View style={loginStyles.loginView2}>
+        <CheckBox checked={isChecked} onPress={changeChecked} />
+        <Text>
+          He leído y acepto los
+          <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
+            {" "}
+            términos y condiciones de uso
+          </Text>
         </Text>
-        .
-      </Text>
-
+      </View>
       <Button
         buttonStyle={loginStyles.loginBtn}
         containerStyle={loginStyles.loginBtnContainer}

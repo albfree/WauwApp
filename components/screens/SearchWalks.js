@@ -10,8 +10,6 @@ import {
 } from "react-native";
 import { SearchBar, Avatar, Icon } from "react-native-elements";
 import BlankView from "./BlankView";
-import { Avatar, Icon } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
