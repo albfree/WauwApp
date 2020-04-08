@@ -45,48 +45,7 @@ export const globalStyles = StyleSheet.create({
   viewFlex2: {
     flex: 2,
   },
-  homeView: {
-    padding: 20,
-    flex: 1,
-    alignContent: "center",
-    alignItems: "center",
-  },
-  homeView2: {
-    flex: 1,
-    width: "95%",
-    height: 180,
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-  },
-  homeTitle: {
-    fontSize: 24,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  homeContentText: {
-    fontSize: 18,
-    fontWeight: "100",
-    marginTop: 10,
-    fontWeight: "300",
-    textAlign: "center",
-  },
-  homeImage: {
-    flex: 1,
-    width: "85%",
-    resizeMode: "stretch",
-    borderRadius: 20,
-    borderWidth: 1,
-    alignSelf: "center",
-    justifyContent: "center",
-  },
-  safeHomeArea: {
-    flex: 1,
-    paddingBottom: 5,
-    marginBottom: 20,
-  },
+
   /* Profile */
   safeProfileArea: {
     flex: 1,
