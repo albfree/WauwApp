@@ -5,12 +5,12 @@ const lila = "#d6d6e8";
 export const homeStyles = StyleSheet.create({
   homeBtn: {
     backgroundColor: morado,
-    borderRadius: 30,
+    borderRadius: 300,
     justifyContent: "flex-start",
-    marginBottom: 5,
-    marginLeft: "5%",
-    marginTop: 5,
-    width: "90%",
+    height: 45,
+    marginHorizontal: 20,
+    paddingHorizontal: 10,
+    width: "100%",
   },
   homeBtnContainer: {
     alignItems: "center",
@@ -18,16 +18,14 @@ export const homeStyles = StyleSheet.create({
     backgroundColor: morado,
     borderColor: lila,
     borderWidth: 1,
-
+    height: "10%",
     justifyContent: "center",
-    marginBottom: 10,
-    marginTop: 5,
-    width: "90%",
+    width: "65%",
   },
   homeBtnTxt: {
     alignSelf: "center",
-    flex: 5,
     fontSize: 17,
+    marginLeft: "20%",
   },
   homeImage: {
     alignSelf: "center",

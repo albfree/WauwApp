@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const blanco = "#FFF";
 const lila = "#d6d6e8";
@@ -21,10 +21,11 @@ export const locationStyles = StyleSheet.create({
     backgroundColor: verde,
     borderColor: lila,
     borderWidth: 1,
-    height: 55,
+    height: Platform.OS === "ios" ? 70 : 55,
     justifyContent: "center",
     marginBottom: 10,
     marginTop: 50,
+    paddingBottom: Platform.OS === "ios" ? 20 : null,
     width: "70%",
   },
 
@@ -41,10 +42,12 @@ export const locationStyles = StyleSheet.create({
     backgroundColor: mapa,
   },
   locationMapBtnContainerCancel: {
-    paddingLeft: 5,
+    paddingHorizontal: 5,
+    width: "50%",
   },
   locationMapBtnContainerSave: {
-    paddingRight: 5,
+    paddingHorizontal: 5,
+    width: "50%",
   },
   locationMapBtnSave: {
     backgroundColor: mapa2,

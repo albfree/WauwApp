@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const verde = "rgba(0,128,0,0.6)";
 const lila = "#d6d6e8";
@@ -22,6 +22,7 @@ export const addDogStyles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 10,
     marginTop: 10,
+    paddingBottom: Platform.OS === "ios" ? 20 : null,
     width: "60%",
   },
   addDogBtnTxt: {

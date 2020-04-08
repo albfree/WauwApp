@@ -217,6 +217,10 @@ function ProfileWalkerForm(props) {
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
             <Text style={walkerFormStyles.walkerFormTxt}> Salario </Text>
+            <Text style={walkerFormStyles.walkerFormTxt3}>
+              {" "}
+              (precio / hora){" "}
+            </Text>
             <TextInput
               style={walkerFormStyles.walkerFormImput}
               keyboardType={"numeric"}

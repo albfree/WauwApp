@@ -8,7 +8,6 @@ export const loginStyles = StyleSheet.create({
   loginBtn: {
     backgroundColor: morado,
     borderRadius: 30,
-    height: "50%",
     justifyContent: "flex-start",
     width: "95%",
   },

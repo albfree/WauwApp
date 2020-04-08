@@ -9,6 +9,7 @@ export const walkerFormStyles = StyleSheet.create({
   walkerFormImput: {
     color: gris,
     fontSize: 16,
+    marginVertical: 10,
     paddingHorizontal: 10,
     textAlign: "center",
   },
@@ -16,7 +17,7 @@ export const walkerFormStyles = StyleSheet.create({
     color: gris,
     fontSize: 16,
     marginBottom: 10,
-    paddingHorizontal: 10,
+    padding: 10,
     textAlign: "center",
   },
   walkerFormList: {
@@ -39,6 +40,10 @@ export const walkerFormStyles = StyleSheet.create({
   walkerFormTxt2: {
     fontSize: 17,
     paddingVertical: 3,
+    textAlign: "center",
+  },
+  walkerFormTxt3: {
+    fontSize: 15,
     textAlign: "center",
   },
   walkerFormView: {
