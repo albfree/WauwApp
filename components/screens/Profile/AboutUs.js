@@ -1,119 +1,82 @@
 import React from "react";
-import { View, Text,StyleSheet,SafeAreaView,ScrollView , ImageBackground} from "react-native";
+import { Text, View, SafeAreaView, TouchableOpacity, ScrollView, Image } from "react-native";
 import { globalStyles } from "../../styles/global";
+import { styles } from "../../styles/aboutStyle";
+import { FontAwesome } from "@expo/vector-icons";
 
 
-export default function AboutUs() {
-  return (
-   
-       <ScrollView scrollEventThrottle={16}>
-          <SafeAreaView style={{ flex: 1 }}>
-    <View style={styles.profilePrints} >
-        <Text style={styles.homeTitle}>{"\n"}ARCA DE NOÉ</Text>
-        
-        <Text style={styles.contentText}>
-          Arca de Noé es una asociación sin ánimo de lucro, legalmente constituida, 
-        cuyos objetivos principales son: {"\n"}{"\n"}
+export default function AboutUs(props) {
+    const { navigation } = props;
 
-        ·Denunciar el abandono y maltrato de los animales y promover su defensa.  {"\n"}{"\n"}
-        ·Rescatar y cuidar de perros y gatos abandonados y buscarles familias adoptantes. {"\n"}{"\n"}
-        
-        Es una asociación totalmente independiente cuya única fuente de financiación
-         son las cuotas de los colaboradores y los donativos. {"\n"} {"\n"}Pone especial empeño en 
-         proteger aquellos animales que son peor tratados por la sociedad, 
-         por motivos de edad, raza o enfermedad.{"\n"}{"\n"}
-         
-         Contacta con ellos:{"\n"}{"\n"}
-         
-         ·Teléfono: 954 62 03 02{"\n"}
-         ·Dirección: Av. de la Reina Mercedes, 41, 41012 Sevilla
-         </Text>  
+    return (
 
-    </View>
-    </SafeAreaView>
-    <SafeAreaView style={{ flex: 1 }}>
-    <View style={styles.profilePrints} >
-        <Text style={styles.homeTitle} >{"\n"}ARGOS</Text>
-        
-        <Text style={styles.contentText}>
-        La asociación protectora ARGOS se funda en Sevilla el 24 de Febrero de 2010 
-        por un grupo de personas que, habiendo colaborado con otras protectoras y refugios 
-        y sabiendo las dificultades por las que estos pasan para mantener un número de animales 
-        sostenible, debido a la enorme cantidad de abandonos que se producen, deciden ofrecer
-         una alternativa.{"\n"}
-        ARGOS nace por tanto de la necesidad de buscar una solución al hacinamiento de 
-        los refugios tradicionales, bien manteniendo nuestros perros en residencias o bien 
-        ayudando a que quienes encuentran animales abandonados y maltratados puedan hacerse
-         cargo de ellos en sus propias casas hasta encontrarles familia definitiva. {"\n"}
+        <SafeAreaView style={globalStyles.safeArea}>
+            <TouchableOpacity
+                style={{ alignItems: "flex-end", margin: 16 }}
+                onPress={navigation.openDrawer}
+            >
+                <FontAwesome name="bars" size={24} color="#161924" />
+            </TouchableOpacity>
 
-         Contacta con ellos:{"\n"}{"\n"}
-         
-         ·Información general: info@argos-sevilla.org{"\n"}
-         ·Adopciones: adopciones@argos-sevilla.org{"\n"}   
-         ·Acodigas temporales: acogidas@argos-sevilla.org
-         </Text>  
+            <ScrollView scrollEventThrottle={16}>
 
-    </View>
-    </SafeAreaView>
-    <SafeAreaView style={{ flex: 1 }}>
-    <View style={styles.profilePrints} >
-        <Text style={styles.homeTitle} >{"\n"}LA SONRISA ANIMAL</Text>
-        
-        <Text style={styles.contentText}>
-        Una pequeña asociación sin ánimo de lucro, situada en Brenes (Sevilla). {"\n"}
-         En Andalucía en concreto es muy triste el desproporcionado número de casos
-          que nos encontramos casi a diario y que a duras penas podemos atender,
-           ya que carecemos de todo tipo de ayudas públicas y apoyo institucional,
-          así como de refugio propio donde albergar a los animales rescatados. {"\n"} {"\n"}
-      Por ese motivo, los perros y gatos rescatados van a parar a las casas de 
-      los pocos voluntarios, algunos amigos que nos ayudan con acogidas.  {"\n"}
-      Si no puedes adoptar, acoge. Si no puedes acoger, amadrina. 
-      Si no puedes amadrinar, hazte socio/a, únete a nuestro grupo de teaming 
-      por 1€/mes o ayúdanos a difundir. {"\n"} {"\n"} Nuestros peludos y nosotros te lo agradeceremos 
-      de corazón! {"\n"}
+                <View style={globalStyles.homeView2}>
+                    <Image
+                        style={styles.homeImage}
+                        source={require("../../../assets/images/usphoto.jpg")}
+                    />
+                </View>
 
-      Contacta con ellos:{"\n"}{"\n"}
-         
-         ·Email: asociacionlasanimal@gmail.com{"\n"}
-         ·Dirección: Brenes, Sevilla
-         </Text>   
+                <Text style={styles.homeTitle}>{"\n"}¿Quienes somos?</Text>
 
-    </View>
-    </SafeAreaView>
-    </ScrollView>
-   
-  );
-  }
+                <Text style={styles.contentText}>
+                    ¿Tienes problemas de tiempo? ¿Tu mascota pasa muchas horas sola por tu trabajo o tus estudios? ¿Necesitas ganar un dinero extra?
+                    Todos estos problemas son muy habituales, y desde Wauw queremos acabar con ellos.{"\n"}{"\n"}
+                    Ofrecemos los mejores servicios de paseo y alojamiento de mascotas para que tu pequeño nunca más esté triste
+                    y tu puedas darte esas vacaciones que llevas tiempo queriendo hacer. Además todo nuestro equipo ama las mascotas,
+                    así que lógicamente queremos lo mejor para ellas.
+                    Es por todo esto y más que estamos muy comprometidos a que nuestros servicios sean seguros
+                    y que nuestros cuidadores los traten como si fuesen parte de su familia.
+         </Text>
 
-  const styles = StyleSheet.create({
-    contentText: {
-      fontSize: 20,
-      fontWeight: "300",
-      marginTop: 10,
-      marginHorizontal: 20,
-      textAlign: "center",
-      color: "white"
-    },
-    profilePrints: {
-      height: "20%",
-      width: "100%",
-      resizeMode: "stretch",
-      backgroundColor: "transparent",
-      alignSelf: "center",
-      marginTop: 10,
-      marginBottom: 20,
+                <View style={globalStyles.homeView2}>
+                    <Image
+                        style={styles.homeImage}
+                        source={require("../../../assets/images/happydoggo.jpg")}
+                    />
+                </View>
 
-    },
-    image: {
-      flex: 2,
-      resizeMode: "cover",
-      justifyContent: "center"
-    },
-    homeTitle: {
-      fontSize: 24,
-      fontWeight: "700",
-      textAlign: "center",
-      color: "white"
-    },
-  });
-  
+                <Text style={styles.homeTitle}>{"\n"}¿Por qué nosotros?</Text>
+
+                <Text style={styles.contentText}>
+                    Por qué no solo somos una aplicación. Porque también velamos por las protectoras de animales y queremos ofrecerles todo el apoyo posible.
+                    Desde Wauw somos fieles creyentes del compromiso animal y con cada transacción dentro de la aplicación,  un porcentaje irá destinado a donaciones
+                    mensuales a las protectoras de animales con las que trabajamos.
+                {"\n"}{"\n"}Además, también queremos que nuestros usuarios disfruten de la aplicación y es por ello
+                que hemos implementado diferentes planes de fidelización para que puedan ahorrar dinero.
+
+                {"\n"}{"\n"}Contamos también con una <Text style={styles.contentTextBold}>cobertura veterinaria incluida en
+                todas las reservas</Text>, ya que tu mascota  es lo primero para nosotros, además de opiniones de otros usuarios sobre todos y cada uno de nuestros cuidadores y
+                paseadores para que sepas con quien va a estar tu mascota y esto no te suponga nunca más una preocupación. ¡Podréis estar
+                contacto dentro de la aplicación y así ver como se encuentra tu perro en todo momento!
+         </Text>
+
+                <View style={globalStyles.homeView2}>
+                    <Image
+                        style={styles.homeImage}
+                        source={require("../../../assets/images/shiba.jpg")}
+                    />
+                </View>
+
+                <Text style={styles.homeTitle}>{"\n"}Contáctanos</Text>
+
+                <Text style={styles.contentText}>
+                <Text style={styles.contentTextBold}>Email:</Text> wauwispp1920@gmail.com {"\n"}
+                <Text style={styles.contentTextBold}>Dirección:</Text> Escuela Técnica Superior de Ingeniería Informática, Universidad de Sevilla {"\n"}
+                <Text style={styles.contentTextBold}>Landing page:</Text> cutt.ly/wauw
+                </Text>
+            </ScrollView>
+        </SafeAreaView>
+    );
+}
+
