@@ -12,8 +12,6 @@ import {
 function PublicProfile(props) {
     const { navigation } = props;
 
-    console.log(props);
-
     return(
         <View>
             <Text>HOLA!</Text>
