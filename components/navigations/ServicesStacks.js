@@ -4,6 +4,7 @@ import SearchAccommodationsScreen from "../screens/SearchAccommodations";
 import ChangeAvailabilityScreen from "../screens/ChangeAvailability";
 import CreateAccommodationScreen from "../screens/CreateAccommodation";
 import SearchWalksScreen from "../screens/SearchWalks";
+import PublicProfileScreen from "../account/PublicProfile";
 
 import CreateRequestWalkScreen from "../screens/CreateRequestWalk";
 
@@ -126,6 +127,13 @@ const ServicesScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
+  PublicProfile: {
+    screen: PublicProfileScreen,
+    navigationOptions: () => ({
+      title: "Perfil público",
+      headerTitleAlign: "center"
+    })
+  }
 });
 
 export default ServicesScreenStacks;
