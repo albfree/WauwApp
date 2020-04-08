@@ -26,8 +26,8 @@ export const walkerFormStyles = StyleSheet.create({
     paddingTop: 5,
   },
   walkerFormList3: {
-    margin: 3,
     backgroundColor: gris3,
+    margin: 3,
   },
   walkerFormTxt: {
     fontSize: 20,
@@ -38,8 +38,8 @@ export const walkerFormStyles = StyleSheet.create({
   },
   walkerFormTxt2: {
     fontSize: 17,
-    textAlign: "center",
     paddingVertical: 3,
+    textAlign: "center",
   },
   walkerFormView: {
     flex: 1,
@@ -49,9 +49,9 @@ export const walkerFormStyles = StyleSheet.create({
     marginHorizontal: 2,
   },
   walkerFormView2: {
-    borderWidth: 1,
     borderColor: lila,
     borderRadius: 10,
+    borderWidth: 1,
     margin: 5,
     padding: 5,
   },

@@ -3,6 +3,8 @@ import { StyleSheet } from "react-native";
 const blanco = "#FFF";
 const lila = "#d6d6e8";
 const verde = "rgba(0,128,0,0.6)";
+const mapa = "#a60d0d";
+const mapa2 = "#00a680";
 
 export const locationStyles = StyleSheet.create({
   locationBtn: {
@@ -36,7 +38,7 @@ export const locationStyles = StyleSheet.create({
     marginBottom: 10,
   },
   locationMapBtnCancel: {
-    backgroundColor: "#a60d0d",
+    backgroundColor: mapa,
   },
   locationMapBtnContainerCancel: {
     paddingLeft: 5,
@@ -45,11 +47,11 @@ export const locationStyles = StyleSheet.create({
     paddingRight: 5,
   },
   locationMapBtnSave: {
-    backgroundColor: "#00a680",
+    backgroundColor: mapa2,
   },
   locationMapStyle: {
-    width: "100%",
     height: 550,
+    width: "100%",
   },
   locationView: {
     backgroundColor: blanco,
