@@ -33,18 +33,6 @@ function createRequest(props) {
   const newIsFinished = false;
   const newIsRated = false;
   const [select, setSelect] = useState(null);
-  useEffect(() => {
-    // To retrieve the current logged user
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
-          setNewOwner(child.val());
-        });
-      });
-    setReloadData(false);
-  }, [reloadData]);
 
   let newOwner;
   db.ref("wauwers")
