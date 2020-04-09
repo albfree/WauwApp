@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Alert
+  Alert,
 } from "react-native";
 import { Image, Avatar } from "react-native-elements";
 import { db } from "../population/config.js";
@@ -24,7 +24,7 @@ function ListAccommodations(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       petNumber = snap.val().petNumber;
       id = snap.val().id;
     });
@@ -33,9 +33,9 @@ function ListAccommodations(props) {
     db.ref("accommodation")
       .orderByChild("isCanceled")
       .equalTo(false)
-      .on("value", snap => {
+      .on("value", (snap) => {
         const accommodations = [];
-        snap.forEach(child => {
+        snap.forEach((child) => {
           if (child.val().worker != id) {
             var endTime = new Date(child.val().endTime);
             if (endTime > new Date()) {
@@ -54,14 +54,15 @@ function ListAccommodations(props) {
           <FlatList
             data={accommodationsList}
             style={globalStyles.myRequestsFeed}
-            renderItem={accommodation => (
+            renderItem={(accommodation) => (
               <Accommodation
                 accommodation={accommodation}
                 petNumber={petNumber}
+                myId={id}
                 navigation={navigation}
               />
             )}
-            keyExtractor={accommodation => accommodation.id}
+            keyExtractor={(accommodation) => accommodation.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
@@ -75,18 +76,19 @@ function ListAccommodations(props) {
 }
 
 function Accommodation(props) {
-  const { accommodation, navigation, petNumber } = props;
+  const { accommodation, navigation, petNumber, myId } = props;
   let worker;
   db.ref("wauwers")
     .child(accommodation.item.worker)
-    .on("value", snap => {
+    .on("value", (snap) => {
       worker = snap.val();
     });
 
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("FormRequestAccommodation", {
-        accommodation: accommodation.item
+        accommodation: accommodation.item,
+        id: myId,
       });
     } else {
       Alert.alert("¡No tienes mascotas que alojar!", "");

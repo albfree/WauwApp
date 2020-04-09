@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, TextInput, Alert, SafeAreaView, Keyboard, ScrollView } from "react-native";
+import {
+  Text,
+  View,
+  TextInput,
+  Alert,
+  SafeAreaView,
+  Keyboard,
+  ScrollView,
+} from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
@@ -7,10 +15,7 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 
 function ProfileAddDogForm(props) {
-  const {
-    setIsVisibleModal,
-    navigation
-  } = props;
+  const { setIsVisibleModal, navigation } = props;
   const [newName, setNewName] = useState(null);
   const [newBreed, setNewBreed] = useState(null);
   const [newDescription, setNewDescription] = useState(null);
@@ -23,24 +28,11 @@ function ProfileAddDogForm(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("child_added", snap => {
-        //console.log("snap.val()", snap.val());
-        const newNewOwner = {
-          avgScore: snap.val().avgScore,
-          homeDescription: snap.val().homeDescription,
-          email: snap.val().email,
-          id: snap.val().id,
-          name: snap.val().name,
-          photo: snap.val().photo,
-          surname: snap.val().surname,
-          wauwPoints: snap.val().wauwPoints
-        };
-        setnewOwner(newNewOwner);
-        
+      .on("child_added", (snap) => {
+        setnewOwner(snap.val());
       });
     setReloadData(false);
   }, [reloadData]);
-
 
   const addPet = () => {
     let id = db.ref("pet").push().key;
@@ -49,7 +41,7 @@ function ProfileAddDogForm(props) {
       name: newName,
       breed: newBreed,
       description: newDescription,
-      owner: newOwner
+      owner: newOwner.id,
     };
     var regex = /\w/;
     if (
@@ -76,25 +68,21 @@ function ProfileAddDogForm(props) {
     } else {
       setIsLoading(true);
 
-      db.ref("pet/" + id)
+      db.ref("pet/" + newOwner.id + "/" + id)
         .set(petData)
         .then(() => {
-          let petNumber = 0;
-          db.ref().child("wauwers/" + newOwner.id).on("value", snap => {
-            if(snap.val().petNumber !== undefined) {
-              petNumber = snap.val().petNumber;
-            }
-          });
-
-          db.ref().child("wauwers/" + newOwner.id).update({
-            petNumber: petNumber + 1
-          });
-
-          Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
-          navigation.navigate("ProfileDrawer");
-          setIsLoading(false);
-          setReloadData(true);
-          setIsVisibleModal(false);
+          db.ref("wauwers/" + newOwner.id)
+            .update({ petNumber: newOwner.petNumber + 1 })
+            .then(() => {
+              Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
+              navigation.navigate("ProfileDrawer");
+              setIsLoading(false);
+              setIsVisibleModal(false);
+            })
+            .catch(() => {
+              setError("Ha ocurrido un error");
+              setIsLoading(false);
+            });
         })
         .catch(() => {
           setError("Ha ocurrido un error");
@@ -110,17 +98,17 @@ function ProfileAddDogForm(props) {
           <View style={globalStyles.viewFlex1}>
             <Text style={globalStyles.addDogTittle}>
               ¿Cómo se llama su perro?
-          </Text>
+            </Text>
             <TextInput
               style={globalStyles.addDogCnt1}
               placeholder="Ej.: Fluffy"
-              onChange={v => setNewName(v.nativeEvent.text)}
+              onChange={(v) => setNewName(v.nativeEvent.text)}
             />
             <Text style={globalStyles.addDogTittle}>¿De qué raza es?</Text>
             <TextInput
               style={globalStyles.addDogCnt1}
               placeholder="Ej.: Chiguagua"
-              onChange={v => setNewBreed(v.nativeEvent.text)}
+              onChange={(v) => setNewBreed(v.nativeEvent.text)}
             />
             <Text style={globalStyles.addDogTittle}>Describa a su perro</Text>
             <TextInput
@@ -128,7 +116,7 @@ function ProfileAddDogForm(props) {
               placeholder="Ej.: Muy manso"
               multiline={true}
               numberOfLines={5}
-              onChange={v => setNewDescription(v.nativeEvent.text)}
+              onChange={(v) => setNewDescription(v.nativeEvent.text)}
             />
             <Button
               buttonStyle={globalStyles.addDogBtn}
