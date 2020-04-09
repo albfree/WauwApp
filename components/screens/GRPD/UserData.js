@@ -235,8 +235,48 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
+        <Text>Actualmente tiene 0 solicitudes recibidas{"\n"}</Text>
+        )}
+
+        {requestOwner.length !== 0 ? (
+          <View style={styles.fieldSet}>
+            <Text style={styles.legend}>Solicitudes recibidas</Text>
+            <Text> {"\n"} </Text>
+            {requestOwner.map((request) => {
+              let reqParse = JSON.parse(JSON.stringify(request));
+              return (
+                <View>
+                  {reqParse.interval !== undefined ? (
+                    <Text>Disponibilidad del paseo: {reqParse.interval}</Text>
+                  ) : (
+                    <Text> Alojamiento </Text>
+                  )}
+                  <Text>
+                    {" "}
+                    ¿Cancelada?: {reqParse.isCanceled === true
+                      ? "Sí"
+                      : "No"}{" "}
+                  </Text>
+                  <Text>
+                    {" "}
+                    ¿Pagada?: {reqParse.isPayed === true ? "Sí" : "No"}{" "}
+                  </Text>
+                  <Text>
+                    {" "}
+                    ¿Finalizada?: {reqParse.isFinished === true
+                      ? "Sí"
+                      : "No"}{" "}
+                  </Text>
+                  <Text> Precio: {reqParse.price} </Text>
+                  <Text> {"\n"} </Text>
+                </View>
+              );
+            })}
+          </View>
+        ) : (
           <Text>Actualmente tiene 0 solicitudes recibidas</Text>
         )}
+
         <Button
           title={"Exportar estos datos a su aplicación de correo"}
           onPress={this.sendEmail}
