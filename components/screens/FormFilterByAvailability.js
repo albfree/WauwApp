@@ -13,11 +13,10 @@ import { email } from "../account/QueriesProfile";
 
 import { globalStyles } from "../styles/global";
 import Loading from "../Loading";
-
+import { formSearchWalkStyles } from "../styles/formSearchWalksStyle";
 import _ from "lodash";
 
 function FormFilterByAvailability(props) {
-  console.log(props);
   const { navigation } = props;
 
   const [loading, setLoading] = useState(true);
@@ -39,7 +38,7 @@ function FormFilterByAvailability(props) {
       const allAvailability = [];
       const allIds = [];
       snap.forEach((child) => {
-        if (child.val().wauwer.id != id) {
+        if (child.val().wauwer.id !== id) {
           query
             .child(child.val().wauwer.id)
             .child("availabilities")
@@ -61,9 +60,9 @@ function FormFilterByAvailability(props) {
   }, [reloadData]);
 
   return (
-    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
-      <Text style={globalStyles.walkTxt2}>
+        <Text style={formSearchWalkStyles.formSearchWalkTxt}>
           {"Seleccione la fecha y hora para su paseo"}
         </Text>
         <Loading isVisible={loading} text={"Un momento..."} />
@@ -92,24 +91,24 @@ function Availability(props) {
   const { interval, navigation } = props;
 
   return (
-    <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("SearchWalks", { interval: interval.item })
-      }
-    >
-      <View style={globalStyles.myRequestsFeedItem}>
-        <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
-            <View style={globalStyles.searchAccommodationsColumn1}>
-              <Text style={globalStyles.myRequestsPrice}>
+    <View style={globalStyles.viewFlex1}>
+      <View style={formSearchWalkStyles.formSearchWalkView}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("SearchWalks", { interval: interval.item })
+          }
+        >
+          <View style={formSearchWalkStyles.formSearchWalkFeed}>
+            <View style={globalStyles.viewFlex1}>
+              <Text style={formSearchWalkStyles.formSearchWalkTxt2}>
                 {interval.item.day} {interval.item.startTime} {"h - "}{" "}
                 {interval.item.endDate} {"h"}
               </Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 

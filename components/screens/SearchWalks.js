@@ -16,6 +16,7 @@ import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
+import { searchWalksStyles } from "../styles/searchWalkStyle";
 
 function SearchWalks(props) {
   const { navigation } = props;
@@ -41,12 +42,8 @@ function SearchWalks(props) {
       const allData = [];
       snap.forEach((child) => {
         if (child.val().wauwer.id != id) {
-          console.log("entra");
           for (var availability in child.val().availabilities) {
-            console.log(availability);
-            console.log(interval.id);
             if (availability == interval.id) {
-              console.log("ududjjdj");
               allData.push(child.val().wauwer);
             }
           }
@@ -62,8 +59,8 @@ function SearchWalks(props) {
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
-        <Text style={globalStyles.walkTxt2}>
-          {"¿Cuándo quiere que pasee a su perro?"}
+        <Text style={searchWalksStyles.searchWalkTxt}>
+          {"Escoja al paseador que desee"}
         </Text>
 
         <Loading isVisible={loading} text={"Un momento..."} />
@@ -111,26 +108,26 @@ function Wauwer(props) {
 
   return (
     <TouchableOpacity onPress={checkHasPets}>
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={searchWalksStyles.searchWalkFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
+          <View style={searchWalksStyles.searchWalksView}>
             <TouchableOpacity onPress={publicProf}>
-              <View style={globalStyles.searchAccommodationsColumn1}>
+              <View style={searchWalksStyles.searchWalkColumn}>
                 <Avatar
                   rounded
                   size="large"
                   source={{ uri: wauwerData.item.photo }}
                 />
-                <Text style={globalStyles.myRequestsPrice}>
-                  {" "}
-                  {wauwerData.item.name}{" "}
-                </Text>
               </View>
             </TouchableOpacity>
-            <View style={globalStyles.searchAccommodationsColumn1}>
-              <View style={globalStyles.myRequestsRow}>
-                <Text style={globalStyles.myRequestsNum}>
-                  {wauwerData.item.avgScore}
+            <View style={searchWalksStyles.searchWalkColumn2}>
+              <Text style={searchWalksStyles.searchWalkTxt2}>
+                {" "}
+                {wauwerData.item.name}{" "}
+              </Text>
+              <View style={searchWalksStyles.searchWalksView}>
+                <Text style={searchWalksStyles.searchWalkTxt3}>
+                  Valoración: {wauwerData.item.avgScore}
                 </Text>
                 <Icon
                   type="material-community"
@@ -139,9 +136,8 @@ function Wauwer(props) {
                   color="yellow"
                 />
               </View>
-              <Text style={globalStyles.myRequestsPrice}>
-                {" "}
-                {wauwerData.item.price} €
+              <Text style={searchWalksStyles.searchWalkTxt2}>
+                Precio / Hora: {wauwerData.item.price} €
               </Text>
             </View>
           </View>

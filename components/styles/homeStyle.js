@@ -6,8 +6,8 @@ export const homeStyles = StyleSheet.create({
   homeBtn: {
     backgroundColor: morado,
     borderRadius: 300,
-    justifyContent: "flex-start",
     height: 45,
+    justifyContent: "flex-start",
     marginHorizontal: 20,
     paddingHorizontal: 10,
     width: "100%",

@@ -38,8 +38,8 @@ export const addDogStyles = StyleSheet.create({
     marginTop: 10,
   },
   addDogTxt2: {
-    borderRadius: 5,
     borderColor: lila,
+    borderRadius: 5,
     borderWidth: 1,
     textAlign: "center",
     marginHorizontal: 20,
