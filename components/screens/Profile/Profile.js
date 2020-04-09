@@ -37,37 +37,55 @@ function Profile(props) {
       userInfo = snap.val();
     });
 
-    var request = [];
+  var requestWorker = [];
 
-    // Better way to get some information from DB and send it to UserData
-    db.ref("requests").orderByChild("worker").equalTo(userInfo.id).once("value", (snap) => {
+  // Better way to get some information from DB and send it to UserData
+  db.ref("requests")
+    .orderByChild("worker")
+    .equalTo(userInfo.id)
+    .once("value", (snap) => {
       //request = snap.val();
-      snap.forEach(child => {
-        request.push(child);
+      snap.forEach((child) => {
+        requestWorker.push(child);
       });
     });
 
+  var requestOwner = [];
 
-    var pets = [];
-
-    db.ref("pet").orderByChild("owner/email").equalTo(userInfo.email).once("value", (snap) => {
-      snap.forEach(petty => {
-        pets.push(petty);
+  // Better way to get some information from DB and send it to UserData
+  db.ref("requests")
+    .orderByChild("owner")
+    .equalTo(userInfo.id)
+    .once("value", (snap) => {
+      //request = snap.val();
+      snap.forEach((child) => {
+        requestOwner.push(child);
       });
     });
 
-    var accommodations = [];
+  var pets = [];
 
-    db.ref("accommodation").orderByChild("worker").equalTo(userInfo.id).once("value", (snap) => {
-      snap.forEach(pretty => {
+  db.ref("pet/" + userInfo.id).on("value", (snap) => {
+    console.log(userInfo.id);
+    console.log("snap.val()", snap.val());
+    snap.forEach((child) => {
+      pets.push(child);
+      console.log("child snap", child);
+    });
+  });
+
+  console.log("pets", pets);
+
+  var accommodations = [];
+
+  db.ref("accommodation")
+    .orderByChild("worker")
+    .equalTo(userInfo.id)
+    .once("value", (snap) => {
+      snap.forEach((pretty) => {
         accommodations.push(pretty);
       });
     });
-
-    
-
-
-
 
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
@@ -147,8 +165,30 @@ function Profile(props) {
               containerStyle={globalStyles.profileBtnContainer}
               title="Ver información recopilada"
               onPress={() =>
-                navigation.navigate("UserData", { userInfo: userInfo, request: request, pets: pets })
+                navigation.navigate("UserData", {
+                  userInfo: userInfo,
+                  requestWorker: requestWorker,
+                  pets: pets,
+                  requestOwner: requestOwner,
+                })
               }
+              icon={
+                <Icon
+                  type="material-community"
+                  name="information-variant"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
+            />
+
+            <Button
+              buttonStyle={globalStyles.profileBtn}
+              containerStyle={globalStyles.profileBtnContainer}
+              title="Pagar"
+              onPress={() => navigation.navigate("Pagar")}
               icon={
                 <Icon
                   type="material-community"

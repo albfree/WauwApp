@@ -18,21 +18,136 @@ import {
 
 export default function UserData(props) {
   var user = props.navigation.state.params.userInfo;
-  var requestWorker = props.navigation.state.params.request;
+  var requestWorker = props.navigation.state.params.requestWorker;
+  var requestOwner = props.navigation.state.params.requestOwner;
   var pets = props.navigation.state.params.pets;
 
+  console.log("pets", pets);
+
   sendEmail = () => {
-    email("sergiotb15@gmail.com", {
+    var userEmail = "Datos de usuario\n\n";
+    var requestWorkerEmail = "Solicitudes recibidas\n\n";
+    var requestOwnerEmail = "Solicitudes realizadas\n\n";
+    var petsEmail = "Mascotas registradas en nuestra aplicación\n\n";
+
+    userEmail += "Nombre: " + user.name + "\n";
+    userEmail += "Apellidos: " + user.surname + "\n";
+    if (user.address !== undefined) {
+      userEmail += "Dirección: " + user.address + "\n";
+    }
+    userEmail += "Descripción: " + user.description + "\n";
+    userEmail += "Email: " + user.email + "\n";
+    userEmail += "Número de mascotas: " + user.petNumber + "\n";
+    userEmail += "Salario: " + user.price + "\n";
+    userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
+    userEmail += "Nota media: " + user.avgScore + "\n";
+    if (user.location !== undefined) {
+      userEmail += user.location.latitude + "\n";
+      userEmail += user.location.latitudeDelta + "\n";
+      userEmail += user.location.longitude + "\n";
+      userEmail += user.location.longitudeDelta + "\n";
+      userEmail += "\n\n";
+    }
+
+    if (pets.length !== 0) {
+      {
+        pets.map((pet) => {
+          petsEmail += "Nombre: " + pet.name + "\n";
+          petsEmail += "Descripción: " + pet.description + "\n";
+          petsEmail += "Raza: " + pet.breed + "\n";
+        });
+      }
+    } else {
+      petsEmail = "Actualmente tiene 0 mascotas registradas";
+    }
+
+    if (requestOwner.length !== 0) {
+      requestOwner.map((reqOwner) => {
+        if (reqOwner.interval !== undefined) {
+          requestOwnerEmail += "Alojamiento\n";
+        } else {
+          requestOwnerEmail += reqOwner.interval;
+        }
+        requestOwnerEmail += "¿Cancelada?: ";
+        if (reqOwner.isCanceled) {
+          requestOwnerEmail += "Sí\n";
+        } else {
+          requestOwnerEmail += "No\n";
+        }
+        requestOwnerEmail += "¿Pagada?: ";
+        if (reqOwner.isPayed) {
+          requestOwnerEmail += "Sí\n";
+        } else {
+          requestOwnerEmail += "No\n";
+        }
+        requestOwnerEmail += "¿Finalizada?: ";
+        if (reqOwner.isFinished) {
+          requestOwnerEmail += "Sí\n";
+        } else {
+          requestOwnerEmail += "No\n";
+        }
+        requestOwnerEmail += "Precio: " + reqOwner.price;
+      });
+    } else {
+      requestOwnerEmail += "Actualmente tiene 0 solicitudes recibidas\n";
+    }
+
+    if (requestWorker.length !== 0) {
+      requestWorker.map((reqWorker) => {
+        if (reqWorker.interval !== undefined) {
+          requestWorkerEmail += "Alojamiento\n";
+        } else {
+          requestWorkerEmail += reqOwner.interval;
+        }
+        requestWorkerEmail += "¿Cancelada?: ";
+        if (reqWorker.isCanceled) {
+          requestWorkerEmail += "Sí\n";
+        } else {
+          requestWorkerEmail += "No\n";
+        }
+        requestWorkerEmail += "¿Pagada?: ";
+        if (reqWorker.isPayed) {
+          requestWorkerEmail += "Sí\n";
+        } else {
+          requestWorkerEmail += "No\n";
+        }
+        requestWorkerEmail += "¿Finalizada?: ";
+        if (reqWorker.isFinished) {
+          requestWorkerEmail += "Sí\n";
+        } else {
+          requestWorkerEmail += "No\n";
+        }
+        requestWorkerEmail += "Precio: " + reqWorker.price;
+      });
+    } else {
+      requestWorkerEmail += "Actualmente tiene 0 solicitudes realizadas\n";
+    }
+    console.log(userEmail);
+    console.log(petsEmail);
+    console.log(requestWorkerEmail);
+    console.log(requestOwnerEmail);
+
+    var bodyEmail = "";
+    bodyEmail += userEmail + "\n";
+    bodyEmail += petsEmail + "\n";
+    bodyEmail += requestOwnerEmail + "\n";
+    bodyEmail += requestWorkerEmail + "\n";
+
+    console.log("bodyEmail", bodyEmail);
+
+    email(user.email, {
       cc: "",
       bcc: "",
-      body: "Cuerpo de ejemplo",
-      subject: "Prueba de subject",
+      body: bodyEmail,
+      subject: "GDPR Datos de usuario",
     })
       .then(() => {
         console.log("Mensaje enviado con éxito");
       })
       .catch((e) => {
-        console.log(e);
+        alert(
+          "Se ha producido un error al exportar los datos.\n Revise la aplicación de mensajería que tiene como predeterminada e inténtelo de nuevo"
+        );
       });
   };
 
@@ -122,6 +237,10 @@ export default function UserData(props) {
         ) : (
           <Text>Actualmente tiene 0 solicitudes recibidas</Text>
         )}
+        <Button
+          title={"Exportar estos datos a su aplicación de correo"}
+          onPress={this.sendEmail}
+        />
       </ScrollView>
     </SafeAreaView>
   );
