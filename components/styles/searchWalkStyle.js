@@ -7,6 +7,14 @@ const negro = "#454D65";
 const verde = "rgba(0,128,0,0.6)";
 
 export const searchWalksStyles = StyleSheet.create({
+  searchWalkColumn: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  searchWalkColumn2: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+  },
   searchWalksBtn: {
     alignSelf: "center",
     backgroundColor: verde,
@@ -26,20 +34,7 @@ export const searchWalksStyles = StyleSheet.create({
     marginVertical: 10,
     width: "75%",
   },
-  searchWalksBtnTxt: {
-    alignSelf: "center",
-    flex: 4,
-    fontSize: 16,
-    marginLeft: 5,
-  },
-  searchWalkColumn: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-  },
-  searchWalkColumn2: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-  },
+
   searchWalkFeed: {
     alignItems: "center",
     backgroundColor: blanco,
@@ -53,7 +48,6 @@ export const searchWalksStyles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 20,
   },
-
   searchWalkTxt: {
     fontSize: 17,
     paddingVertical: 10,
