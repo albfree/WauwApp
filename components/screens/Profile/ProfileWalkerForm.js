@@ -103,10 +103,6 @@ function ProfileWalkerForm(props) {
   const addAv = (id) => {
     //To save availability selected and then, update screen's info
     setIsVisibleLoading(true);
-    db.ref("wauwers/" + userInfo.id).update({
-      isWalker: true,
-    });
-
     let availability;
     db.ref("availability")
       .child(id)
@@ -142,11 +138,6 @@ function ProfileWalkerForm(props) {
           (snap) => {
             if (snap.numChildren() == 1) {
               db.ref("availabilities-wauwers/" + userInfo.id).remove();
-              db.ref()
-                .child("wauwers/" + userInfo.id)
-                .update({
-                  isWalker: false,
-                });
             }
           }
         );
@@ -198,12 +189,12 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.price != 0) {
+      if (userInfo.walkSalary >= 5) {
         confirmAdd(id);
       } else {
         Alert.alert(
           "No puede añadir disponibilidades",
-          "Su salario no puede ser 0"
+          "Su salario debe ser mayor o igual a 5"
         );
       }
     } else {
@@ -231,17 +222,19 @@ function ProfileWalkerForm(props) {
                 } else {
                   precio = 0;
                 }
+                const salary = Math.round(precio * 1.3 * 10) / 10;
 
                 db.ref("wauwers/" + userInfo.id)
                   .update({
-                    price: precio,
+                    price: salary,
+                    walkSalary: precio,
                   })
                   .then(() => {
                     setUpdate(true);
                   });
               }}
             >
-              {userInfo.price}
+              {userInfo.walkSalary}
             </TextInput>
 
             <Collapse style={walkerFormStyles.walkerFormList2}>
@@ -292,29 +285,6 @@ function ProfileWalkerForm(props) {
                 </CollapseBody>
               </Collapse>
             ))}
-
-            <Text style={walkerFormStyles.walkerFormTxt}>
-              {" "}
-              ¿Cuál es el número máximo de perros que te gustaría pasear?{" "}
-            </Text>
-            <TextInput
-              style={walkerFormStyles.walkerFormImput2}
-              keyboardType={"numeric"}
-              onChange={(val) => {
-                let amountDogs;
-                if (val.nativeEvent.text !== "") {
-                  amountDogs = parseInt(val.nativeEvent.text);
-                } else {
-                  amountDogs = 0;
-                }
-
-                db.ref("wauwers/" + userInfo.id).update({
-                  petNumberWalk: amountDogs,
-                });
-              }}
-            >
-              {userInfo.petNumberWalk}
-            </TextInput>
           </View>
         </View>
       </ScrollView>

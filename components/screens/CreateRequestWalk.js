@@ -23,7 +23,7 @@ function createRequest(props) {
   );
   const price = navigation.state.params.wauwer.price;
   const [newInterval, setNewInterval] = useState(null);
-  const [newOwner, setNewOwner] = useState([]);
+  //const [newOwner, setNewOwner] = useState([]);
   const newWorker = navigation.state.params.wauwer;
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,6 +45,14 @@ function createRequest(props) {
       });
     setReloadData(false);
   }, [reloadData]);
+
+  let newOwner;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      newOwner = snap.val();
+    });
 
   const [availabilities, setAvailabilities] = useState([]);
   const [newAvailability, setNewAvailability] = useState([]);
@@ -68,16 +76,13 @@ function createRequest(props) {
 
   useEffect(() => {
     // To retrieve my pets' names
-    db.ref("pet")
-      .orderByChild("owner/email")
-      .equalTo(email)
-      .on("value", (snap) => {
-        const pets = [];
-        snap.forEach((child) => {
-          pets.push(child.val().name);
-        });
-        setPetNames(pets);
+    db.ref("pet/" + newOwner.id).on("value", (snap) => {
+      const pets = [];
+      snap.forEach((child) => {
+        pets.push(child.val().name);
       });
+      setPetNames(pets);
+    });
   }, []);
 
   const checkPetNumber = () => {

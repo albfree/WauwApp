@@ -37,8 +37,7 @@ function SearchWalks(props) {
     });
 
   useEffect(() => {
-    const query = db.ref("availabilities-wauwers");
-    query.on("value", (snap) => {
+    db.ref("availabilities-wauwers").on("value", (snap) => {
       const allData = [];
       snap.forEach((child) => {
         if (child.val().wauwer.id != id) {

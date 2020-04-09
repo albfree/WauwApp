@@ -7,6 +7,7 @@ import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
 import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
+import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
 import ShowWalkScreen from "../screens/Profile/ShowWalk";
 
 const morado = "#443099";
@@ -123,6 +124,13 @@ const ProfileScreenStacks = createStackNavigator({
         color: blanco,
       },
       headerTintColor: blanco,
+    }),
+  },
+  AddReviewService: {
+    screen: AddReviewServiceScreen,
+    navigationOptions: () => ({
+      title: "Formulario Rating",
+      headerTitleAlign: "center",
     }),
   },
 });

@@ -31,7 +31,6 @@ function ListAccommodations(props) {
     });
 
   useEffect(() => {
-    
     db.ref("accommodation")
       .orderByChild("isCanceled")
       .equalTo(false)
@@ -60,6 +59,7 @@ function ListAccommodations(props) {
               <Accommodation
                 accommodation={accommodation}
                 petNumber={petNumber}
+                myId={id}
                 navigation={navigation}
               />
             )}
@@ -75,7 +75,7 @@ function ListAccommodations(props) {
 }
 
 function Accommodation(props) {
-  const { accommodation, navigation, petNumber } = props;
+  const { accommodation, navigation, petNumber, myId } = props;
   let worker;
   db.ref("wauwers")
     .child(accommodation.item.worker)
@@ -87,6 +87,7 @@ function Accommodation(props) {
     if (petNumber > 0) {
       navigation.navigate("FormRequestAccommodation", {
         accommodation: accommodation.item,
+        id: myId,
       });
     } else {
       Alert.alert("¡No tienes mascotas que alojar!", "");
@@ -95,7 +96,7 @@ function Accommodation(props) {
 
   const publicProf = () => {
     navigation.navigate("PublicProfile", {
-      user: worker
+      user: worker,
     });
   };
 
@@ -104,16 +105,16 @@ function Accommodation(props) {
       <View style={globalStyles.myRequestsFeedItem}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
-          <TouchableOpacity onPress={publicProf}>
-            <View style={globalStyles.searchAccommodationsColumn1}>
-              <Avatar rounded size="large" source={{ uri: worker.photo }} />
-              <Text style={globalStyles.myRequestsPrice}>
-                Precio: {accommodation.item.salary} €
-              </Text>
-              <Text style={globalStyles.notificationsDescription}>
-                {worker.description}
-              </Text>
-            </View>
+            <TouchableOpacity onPress={publicProf}>
+              <View style={globalStyles.searchAccommodationsColumn1}>
+                <Avatar rounded size="large" source={{ uri: worker.photo }} />
+                <Text style={globalStyles.myRequestsPrice}>
+                  Precio: {accommodation.item.salary} €
+                </Text>
+                <Text style={globalStyles.notificationsDescription}>
+                  {worker.description}
+                </Text>
+              </View>
             </TouchableOpacity>
             <View style={globalStyles.searchAccommodationsColumn2}>
               <Text style={globalStyles.notificationsNum}>Disponibilidad</Text>

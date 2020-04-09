@@ -16,10 +16,7 @@ import { globalStyles } from "../../styles/global";
 import { addDogStyles } from "../../styles/addDogStyle";
 
 function ProfileAddDogForm(props) {
-  const {
-    setIsVisibleModal,
-    navigation,
-  } = props;
+  const { setIsVisibleModal, navigation } = props;
   const [newName, setNewName] = useState(null);
   const [newBreed, setNewBreed] = useState(null);
   const [newDescription, setNewDescription] = useState(null);
@@ -43,7 +40,7 @@ function ProfileAddDogForm(props) {
           surname: snap.val().surname,
           wauwPoints: snap.val().wauwPoints,
         };
-        setnewOwner(newNewOwner);
+        setnewOwner(snap.val());
       });
     setReloadData(false);
   }, [reloadData]);
@@ -55,7 +52,7 @@ function ProfileAddDogForm(props) {
       name: newName,
       breed: newBreed,
       description: newDescription,
-      owner: newOwner,
+      owner: newOwner.id,
     };
     var regex = /\w/;
     if (
@@ -82,29 +79,21 @@ function ProfileAddDogForm(props) {
     } else {
       setIsLoading(true);
 
-      db.ref("pet/" + id)
+      db.ref("pet/" + newOwner.id + "/" + id)
         .set(petData)
         .then(() => {
-          let petNumber = 0;
-          db.ref()
-            .child("wauwers/" + newOwner.id)
-            .on("value", (snap) => {
-              if (snap.val().petNumber !== undefined) {
-                petNumber = snap.val().petNumber;
-              }
+          db.ref("wauwers/" + newOwner.id)
+            .update({ petNumber: newOwner.petNumber + 1 })
+            .then(() => {
+              Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
+              navigation.navigate("ProfileDrawer");
+              setIsLoading(false);
+              setIsVisibleModal(false);
+            })
+            .catch(() => {
+              setError("Ha ocurrido un error");
+              setIsLoading(false);
             });
-
-          db.ref()
-            .child("wauwers/" + newOwner.id)
-            .update({
-              petNumber: petNumber + 1,
-            });
-
-          Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
-          navigation.navigate("ProfileDrawer");
-          setIsLoading(false);
-          setReloadData(true);
-          setIsVisibleModal(false);
         })
         .catch(() => {
           setError("Ha ocurrido un error");

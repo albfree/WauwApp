@@ -30,8 +30,6 @@ function ProfileMyRequests(props) {
       wauwerId = snap.val().id;
     });
 
-  console.log("wauwerId", wauwerId);
-
   useEffect(() => {
     db.ref("requests")
       .orderByChild("owner")
@@ -46,8 +44,6 @@ function ProfileMyRequests(props) {
     setReloadData(false);
     setLoading(false);
   }, []);
-
-  console.log(setRequestList);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
