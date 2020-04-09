@@ -19,7 +19,7 @@ function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const filter = navigation.state.params.formData.startTime;
   let petNumber;
   let id;
   db.ref("wauwers")
@@ -39,7 +39,13 @@ function ListAccommodations(props) {
         snap.forEach((child) => {
           if (child.val().worker != id) {
             var endTime = new Date(child.val().endTime);
-            if (endTime > new Date()) {
+            var startTime = new Date(child.val().startTime);
+
+            if (
+              endTime > new Date() &&
+              filter - startTime >= -86400000 &&
+              filter - endTime <= 86400000
+            ) {
               accommodations.push(child.val());
             }
           }

@@ -9,6 +9,7 @@ import CreateRequestWalkScreen from "../screens/CreateRequestWalk";
 import FormFilterByAvailabilityScreen from "../screens/FormFilterByAvailability";
 import CreateRequestAccommodationScreen from "../screens/CreateRequestAccommodation";
 import FormRequestAccommodationScreen from "../screens/FormRequestAccommodation";
+import FormFilterByDateScreen from "../screens/FormFilterByDate";
 
 const morado = "#443099";
 const blanco = "white";
@@ -145,6 +146,13 @@ const ServicesScreenStacks = createStackNavigator({
     screen: FormFilterByAvailabilityScreen,
     navigationOptions: () => ({
       title: "Filtrar paseos",
+      headerTitleAlign: "center",
+    }),
+  },
+  FormFilterByDate: {
+    screen: FormFilterByDateScreen,
+    navigationOptions: () => ({
+      title: "Filtrar Alojamientos",
       headerTitleAlign: "center",
     }),
   },
