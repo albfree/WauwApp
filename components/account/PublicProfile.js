@@ -3,7 +3,8 @@ import { withNavigation } from "react-navigation";
 import {
     View,
     Text,
-    SafeAreaView
+    SafeAreaView,
+    TouchableOpacity
 } from "react-native";
 import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
@@ -11,34 +12,71 @@ import { ScrollView } from "react-native-gesture-handler";
 
 function PublicProfile(props) {
     const userInfo = props.navigation.state.params.user;
+    const [profileView, setProfileView] = useState([false]);
 
     //console.log(userInfo);
+
+    useEffect(() => {
+
+    }, [profileView]);
 
     return (
         <SafeAreaView>
             <ScrollView>
-                <View>
-                    <View style={globalStyles.infoUserView}>
+                <View style={globalStyles.userPublicGlobal}>
+                    <View style={globalStyles.infoUserPublic}>
                         <Avatar
                             rounded
                             size="large"
-                            containerStyle={globalStyles.userInfoAvatar}
+                            containerStyle={globalStyles.userInfoPublicAvatar}
                             source={{
                                 uri: userInfo.photo
                             }}
                         />
-                        <Text style={globalStyles.userInfoDisplayName}>{userInfo.name}</Text>
+                        <Text style={globalStyles.infoUserScore}>{userInfo.avgScore}/5</Text>
                     </View>
-                    <View style={globalStyles.userInfoDescriptionGlobal}>
-                        <Text style={globalStyles.userInfoTitleDescription}>Ubicación</Text>
-                        <Text style={globalStyles.userInfoDescription}>
-                            {userInfo.location}
-                        </Text>
-                        <Text style={globalStyles.userInfoTitleDescription}>Sobre mí</Text>
-                        <Text style={globalStyles.userInfoDescription}>
-                            {userInfo.description}
-                        </Text>
-                    </View>
+                    <View><Text style={globalStyles.userInfoPublicDisplayName}>{userInfo.name}</Text></View>
+
+                    {profileView === true ? (
+                        <View style={globalStyles.userInfoPublicGlobal}>
+                            <View style={globalStyles.tabBarPublicPro}>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        setProfileView(false)
+                                    }
+                                >
+                                    <Text style={globalStyles.textInformationPublicPro1}>Información</Text>
+                                </TouchableOpacity>
+                                <Text style={globalStyles.textReviewsPublicPro1}>Valoraciones</Text>
+                                
+
+
+
+
+                            </View>
+                        </View>
+                    ) : (
+                            <View style={globalStyles.userInfoPublicGlobal}>
+                                <View style={globalStyles.tabBarPublicPro}>
+                                    <Text style={globalStyles.textInformationPublicPro}>Información</Text>
+                                    <TouchableOpacity
+                                        onPress={() =>
+                                            setProfileView(true)
+                                        }
+                                    >
+                                        <Text style={globalStyles.textReviewsPublicPro}>Valoraciones</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <Text style={globalStyles.userInfoPublicTitleDescription}>Sobre mí</Text>
+                                <Text style={globalStyles.userInfoPublicDescription}>
+                                    {userInfo.description}
+                                </Text>
+                                <Text style={globalStyles.userInfoPublicTitleDescription}>Ubicación</Text>
+                                <Text style={globalStyles.userInfoPublicDescription}>
+                                    {userInfo.location}
+                                </Text>
+                            </View>
+                        )}
                 </View>
             </ScrollView>
         </SafeAreaView>
