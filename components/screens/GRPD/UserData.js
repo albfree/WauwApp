@@ -52,9 +52,11 @@ export default function UserData(props) {
     if (pets.length !== 0) {
       {
         pets.map((pet) => {
-          petsEmail += "Nombre: " + pet.name + "\n";
-          petsEmail += "Descripción: " + pet.description + "\n";
-          petsEmail += "Raza: " + pet.breed + "\n";
+          let petParse = JSON.parse(JSON.stringify(pet));
+          petsEmail += ("Nombre: " + petParse.name + "\n");
+          petsEmail += ("Descripción: " + petParse.description + "\n");
+          petsEmail += ("Raza: " + petParse.breed + "\n");
+          petsEmail += "\n";
         });
       }
     } else {
@@ -135,7 +137,7 @@ export default function UserData(props) {
 
     console.log("bodyEmail", bodyEmail);
 
-    email(user.email, {
+    email("wauwispp1920@gmail.com", {
       cc: "",
       bcc: "",
       body: bodyEmail,
