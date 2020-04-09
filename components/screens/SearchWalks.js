@@ -43,7 +43,7 @@ function SearchWalks(props) {
       snap.forEach((child) => {
         if (child.val().wauwer.id != id) {
           for (var availability in child.val().availabilities) {
-            if (availability == interval.id) {
+            if (availability === interval.id) {
               allData.push(child.val().wauwer);
             }
           }

@@ -13,13 +13,13 @@ export const formSearchWalkStyles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   formSearchWalkTxt: {
-    textAlign: "center",
     fontSize: 17,
     paddingVertical: 10,
+    textAlign: "center",
   },
   formSearchWalkTxt2: {
-    textAlign: "center",
     paddingVertical: 10,
+    textAlign: "center",
   },
   formSearchWalkView: {
     paddingTop: 5,

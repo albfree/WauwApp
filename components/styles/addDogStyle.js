@@ -41,8 +41,8 @@ export const addDogStyles = StyleSheet.create({
     borderColor: lila,
     borderRadius: 5,
     borderWidth: 1,
-    textAlign: "center",
     marginHorizontal: 20,
     paddingHorizontal: 20,
+    textAlign: "center",
   },
 });

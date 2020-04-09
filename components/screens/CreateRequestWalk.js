@@ -32,7 +32,7 @@ function createRequest(props) {
   const [petNames, setPetNames] = useState([]);
   const newIsFinished = false;
   const newIsRated = false;
-  const [select, SetSelect] = useState(null);
+  const [select, setSelect] = useState(null);
   useEffect(() => {
     // To retrieve the current logged user
     db.ref("wauwers")
@@ -93,7 +93,7 @@ function createRequest(props) {
     setNewInterval(
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
     );
-    SetSelect(value);
+    setSelect(value);
   };
 
   const addRequest = () => {
@@ -120,7 +120,7 @@ function createRequest(props) {
       .set(requestData)
       .then(() => {
         Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-        navigation.navigate("Home");
+        navigation.popToTop();
         setIsLoading(false);
         setReloadData(true);
         setIsVisibleModal(false);

@@ -8,28 +8,28 @@ const verde = "rgba(0,128,0,0.6)";
 
 export const searchWalksStyles = StyleSheet.create({
   searchWalksBtn: {
+    alignSelf: "center",
     backgroundColor: verde,
     borderRadius: 30,
-    justifyContent: "flex-start",
-    width: "100%",
     height: "100%",
-    alignSelf: "center",
+    justifyContent: "flex-start",
     marginVertical: 10,
+    width: "100%",
   },
   searchWalksBtnContainer: {
-    borderWidth: 1,
-    borderColor: lila,
     alignSelf: "center",
     backgroundColor: verde,
-    marginVertical: 10,
-    justifyContent: "center",
-    width: "75%",
+    borderColor: lila,
+    borderWidth: 1,
     height: 45,
+    justifyContent: "center",
+    marginVertical: 10,
+    width: "75%",
   },
   searchWalksBtnTxt: {
+    alignSelf: "center",
     flex: 4,
     fontSize: 16,
-    alignSelf: "center",
     marginLeft: 5,
   },
   searchWalkColumn: {
@@ -92,9 +92,9 @@ export const searchWalksStyles = StyleSheet.create({
     textAlign: "center",
   },
   searchWalksView: {
+    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
   },
   searchWalksView2: {
     paddingHorizontal: "20%",
