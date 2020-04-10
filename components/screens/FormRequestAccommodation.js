@@ -209,7 +209,7 @@ function FormRequestAccommodation(props) {
                   {endAccommodation.toLocaleString("en-US").substring(0, 10)}
                 </Text>
                 <Text style={globalStyles.accommodationPets}>
-                  ¿Qué mascotas quiere que pasee?
+                  ¿Qué mascotas quiere alojar?
                 </Text>
                 <View>
                   {petNames.map((pet) => (
