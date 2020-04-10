@@ -8,6 +8,7 @@ export default function MyReviews(props) {
   const user = props.userInfo;
   const [myReviews, setMyReviews] = useState([]);
   const [val, setVal] = useState(true);
+
   useEffect(() => {
     let reviews = [];
     db.ref("reviews/" + user.id).once("value", (snap) => {

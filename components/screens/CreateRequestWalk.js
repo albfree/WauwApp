@@ -14,6 +14,7 @@ import { CheckBox } from "react-native-elements";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
+import { searchWalkStyles, searchWalksStyles } from "../styles/searchWalkStyle";
 
 function createRequest(props) {
   const { navigation } = props;
@@ -31,6 +32,7 @@ function createRequest(props) {
   const [petNames, setPetNames] = useState([]);
   const newIsFinished = false;
   const newIsRated = false;
+  const [select, setSelect] = useState(null);
 
   let newOwner;
   db.ref("wauwers")
@@ -84,6 +86,7 @@ function createRequest(props) {
     setNewInterval(
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
     );
+    setSelect(value);
   };
 
   const addRequest = () => {
@@ -110,7 +113,7 @@ function createRequest(props) {
       .set(requestData)
       .then(() => {
         Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-        navigation.navigate("Home");
+        navigation.popToTop();
         setIsLoading(false);
         setReloadData(true);
         setIsVisibleModal(false);
@@ -122,66 +125,76 @@ function createRequest(props) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.safeShowRequestArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
-        <Text style={globalStyles.accommodationSitter}>
-          {"Nombre del Paseador\n"}
-          <Text style={globalStyles.accommodationSitter2}>
-            {newWorker.name}
-          </Text>
-        </Text>
+        <View style={globalStyles.viewFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <Text style={searchWalksStyles.searchWalkTxt4}>
+              {"Nombre del Paseador\n"}
+              <Text style={searchWalksStyles.searchWalkTxt5}>
+                {newWorker.name}
+              </Text>
+            </Text>
 
-        <Text style={globalStyles.walkTxt}>
-          {"Precio del Paseo \n"}
-          <Text style={globalStyles.walkTxt}>{newPrice} €</Text>
-        </Text>
+            <Text style={searchWalksStyles.searchWalkTxt6}>
+              {"Precio del Paseo \n"}
+              <Text style={searchWalksStyles.searchWalkTxt5}>{newPrice} €</Text>
+            </Text>
 
-        <Text style={globalStyles.walkTxt2}>
-          {"¿Cuándo quiere que " + newWorker.name + " pasee a su perro?"}
-        </Text>
-
-        <Picker
-          selectedValue={newInterval}
-          onValueChange={(value) => funct(value)}
-        >
-          {availabilities.map((item) => (
-            <Picker.Item
-              label={
-                item.day + " " + item.startTime + "h - " + item.endDate + "h"
+            <Text style={searchWalksStyles.searchWalkTxt7}>
+              {"¿Cuándo quiere que pasee a su perro?"}
+            </Text>
+            <View style={searchWalksStyles.searchWalksView2}>
+              <Picker
+                selectedValue={select}
+                onValueChange={(value) => funct(value)}
+              >
+                {availabilities.map((item) => (
+                  <Picker.Item
+                    label={
+                      item.day +
+                      " " +
+                      item.startTime +
+                      "h - " +
+                      item.endDate +
+                      "h"
+                    }
+                    value={item}
+                  />
+                ))}
+              </Picker>
+            </View>
+            <Text style={searchWalksStyles.searchWalkTxt7}>
+              {"¿Qué perro desea que pasee ?"}
+            </Text>
+            {petNames.map((pet) => (
+              <PetCheckBox
+                name={pet}
+                petNumber={petNumber}
+                setPetNumber={setPetNumber}
+                newPrice={newPrice}
+                setNewPrice={setNewPrice}
+                price={price}
+              />
+            ))}
+            <Button
+              buttonStyle={searchWalksStyles.searchWalksBtn}
+              containerStyle={searchWalksStyles.searchWalksBtnContainer}
+              title="Enviar Solicitud"
+              onPress={checkPetNumber}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="send"
+                  size={20}
+                  color="white"
+                  marginLeft={20}
+                />
               }
-              value={item}
+              titleStyle={searchWalksStyles.searchWalksBtnTxt}
             />
-          ))}
-        </Picker>
-        <Text style={globalStyles.accommodationSitter2}>
-          {"¿Qué mascotas quiere que pasee " + newWorker.name + "?"}
-        </Text>
-        {petNames.map((pet) => (
-          <PetCheckBox
-            name={pet}
-            petNumber={petNumber}
-            setPetNumber={setPetNumber}
-            newPrice={newPrice}
-            setNewPrice={setNewPrice}
-            price={price}
-          />
-        ))}
-        <Button
-          buttonStyle={globalStyles.accommodationBtn}
-          containerStyle={globalStyles.accommodationBtnCnt}
-          title="Enviar Solicitud"
-          onPress={checkPetNumber}
-          icon={
-            <Icon
-              type="material-community"
-              name="send"
-              size={20}
-              color="white"
-              marginLeft={10}
-            />
-          }
-          titleStyle={globalStyles.editAccommodationEditDateTittle}
-        />
+          </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

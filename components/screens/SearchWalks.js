@@ -6,31 +6,25 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
+  ScrollView,
 } from "react-native";
 import { SearchBar, Avatar, Icon } from "react-native-elements";
-import { ScrollView } from "react-native-gesture-handler";
+import BlankView from "./BlankView";
 import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = (message) => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
+import { searchWalksStyles } from "../styles/searchWalkStyle";
 
 function SearchWalks(props) {
   const { navigation } = props;
-  const { search, setSearch } = useState("");
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
+
+  const interval = navigation.state.params.interval;
 
   let petNumber;
   let id;
@@ -47,26 +41,27 @@ function SearchWalks(props) {
       const allData = [];
       snap.forEach((child) => {
         if (child.val().wauwer.id != id) {
-          allData.push(child.val().wauwer);
+          for (var availability in child.val().availabilities) {
+            if (availability === interval.id) {
+              allData.push(child.val().wauwer);
+            }
+          }
         }
-        //wauwerData.push(child.val().availability);
-        //allData.push(wauwerData);
       });
       setData(allData);
     });
+
     setReloadData(false);
     setLoading(false);
   }, [reloadData]); //esto es el disparador del useEffect
 
   return (
-    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
-      {/* <SearchBar
-        placeholder="Introduce una hora de inicio"
-        onChangeText={e => setSearch(e)}
-        value={search}
-        containerStyle={styles.searchBar}
-      /> */}
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
+        <Text style={searchWalksStyles.searchWalkTxt}>
+          {"Escoja al paseador que desee"}
+        </Text>
+
         <Loading isVisible={loading} text={"Un momento..."} />
         {data.length > 0 ? (
           <FlatList
@@ -84,9 +79,7 @@ function SearchWalks(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <View>
-            <Text> No hay usuarios </Text>
-          </View>
+          <BlankView text={"No hay paseos disponibles"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -119,18 +112,23 @@ function Wauwer(props) {
 
   return (
     <TouchableOpacity onPress={checkHasPets}>
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={searchWalksStyles.searchWalkFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
+          <View style={searchWalksStyles.searchWalksView}>
             <TouchableOpacity onPress={publicProf}>
-              <View style={globalStyles.searchAccommodationsColumn1}>
+              <View style={searchWalksStyles.searchWalkColumn}>
                 <Avatar rounded size="large" source={{ uri: user.photo }} />
-                <Text style={globalStyles.myRequestsPrice}> {user.name} </Text>
               </View>
             </TouchableOpacity>
-            <View style={globalStyles.searchAccommodationsColumn1}>
-              <View style={globalStyles.myRequestsRow}>
-                <Text style={globalStyles.myRequestsNum}>{user.avgScore}</Text>
+            <View style={searchWalksStyles.searchWalkColumn2}>
+              <Text style={searchWalksStyles.searchWalkTxt2}>
+                {" "}
+                {user.name}{" "}
+              </Text>
+              <View style={searchWalksStyles.searchWalksView}>
+                <Text style={searchWalksStyles.searchWalkTxt3}>
+                  Valoración: {user.avgScore}
+                </Text>
                 <Icon
                   type="material-community"
                   name="star"
@@ -138,16 +136,8 @@ function Wauwer(props) {
                   color="yellow"
                 />
               </View>
-              <Text style={globalStyles.myRequestsPrice}> {user.price} €</Text>
-            </View>
-            <View style={globalStyles.searchAccommodationsColumn2}>
-              <Text style={globalStyles.myRequestsNum}>
-                {" "}
-                {/* {wauwerData.item[1].day}{" "} */}
-              </Text>
-              <Text style={globalStyles.myRequestsStatus}>
-                {" "}
-                {/* {wauwerData.item[1].startTime} - {wauwerData.item[1].endDate}{" "} */}
+              <Text style={searchWalksStyles.searchWalkTxt2}>
+                Precio / Hora: {user.price} €
               </Text>
             </View>
           </View>

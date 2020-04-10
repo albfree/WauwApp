@@ -11,18 +11,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
 import { Button, Icon } from "react-native-elements";
-import { YellowBox } from "react-native";
-import _ from "lodash";
+
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
 function Profile(props) {
   const { navigation } = props;

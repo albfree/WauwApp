@@ -13,12 +13,13 @@ import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
 import { email } from "../account/QueriesProfile";
+import BlankView from "./BlankView";
 
 function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const filter = navigation.state.params.formData.startTime;
   let petNumber;
   let id;
   db.ref("wauwers")
@@ -38,7 +39,13 @@ function ListAccommodations(props) {
         snap.forEach((child) => {
           if (child.val().worker != id) {
             var endTime = new Date(child.val().endTime);
-            if (endTime > new Date()) {
+            var startTime = new Date(child.val().startTime);
+
+            if (
+              endTime > new Date() &&
+              filter - startTime >= -86400000 &&
+              filter - endTime <= 86400000
+            ) {
               accommodations.push(child.val());
             }
           }
@@ -48,9 +55,9 @@ function ListAccommodations(props) {
   }, []);
 
   return (
-    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
-        {accommodationsList ? (
+        {accommodationsList.length > 0 ? (
           <FlatList
             data={accommodationsList}
             style={globalStyles.myRequestsFeed}
@@ -66,9 +73,7 @@ function ListAccommodations(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <View>
-            <Text> No hay alojamientos </Text>
-          </View>
+          <BlankView text={"No hay alojamientos disponibles"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -97,7 +102,7 @@ function Accommodation(props) {
 
   const publicProf = () => {
     navigation.navigate("PublicProfile", {
-      user: worker
+      user: worker,
     });
   };
 
@@ -106,16 +111,16 @@ function Accommodation(props) {
       <View style={globalStyles.myRequestsFeedItem}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
-          <TouchableOpacity onPress={publicProf}>
-            <View style={globalStyles.searchAccommodationsColumn1}>
-              <Avatar rounded size="large" source={{ uri: worker.photo }} />
-              <Text style={globalStyles.myRequestsPrice}>
-                Precio: {accommodation.item.salary} €
-              </Text>
-              <Text style={globalStyles.notificationsDescription}>
-                {worker.description}
-              </Text>
-            </View>
+            <TouchableOpacity onPress={publicProf}>
+              <View style={globalStyles.searchAccommodationsColumn1}>
+                <Avatar rounded size="large" source={{ uri: worker.photo }} />
+                <Text style={globalStyles.myRequestsPrice}>
+                  Precio: {accommodation.item.salary} €
+                </Text>
+                <Text style={globalStyles.notificationsDescription}>
+                  {worker.description}
+                </Text>
+              </View>
             </TouchableOpacity>
             <View style={globalStyles.searchAccommodationsColumn2}>
               <Text style={globalStyles.notificationsNum}>Disponibilidad</Text>
