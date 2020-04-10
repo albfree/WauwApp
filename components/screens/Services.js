@@ -51,9 +51,9 @@ function Services(props) {
 
   const check = () => {
     if (tittle === "Buscar Paseador") {
-      navigation.navigate("SearchWalks");
+      navigation.navigate("FormFilterByAvailability");
     } else if (tittle === "Buscar Alojamiento") {
-      navigation.navigate("SearchAccommodations");
+      navigation.navigate("FormFilterByDate");
     } else {
       navigation.navigate("CreateAccommodation");
     }

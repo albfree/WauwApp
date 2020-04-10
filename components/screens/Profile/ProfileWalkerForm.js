@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  StyleSheet,
   SafeAreaView,
   Text,
   View,
   Alert,
   TextInput,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Loading from "./../../Loading";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 import {
   Collapse,
@@ -20,14 +19,8 @@ import {
   CollapseBody,
 } from "accordion-collapse-react-native";
 import Toast from "react-native-easy-toast";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = (message) => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
+import { globalStyles } from "../../styles/global";
+import { walkerFormStyles } from "../../styles/walkerFormStyle";
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
@@ -210,13 +203,17 @@ function ProfileWalkerForm(props) {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View>
-          <View>
-            <Text style={styles.text}> Salario </Text>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView keyboardShouldPersistTaps={false}>
+        <View style={globalStyles.viewFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <Text style={walkerFormStyles.walkerFormTxt}> Salario </Text>
+            <Text style={walkerFormStyles.walkerFormTxt3}>
+              {" "}
+              (precio / hora){" "}
+            </Text>
             <TextInput
-              style={styles.data}
+              style={walkerFormStyles.walkerFormImput}
               keyboardType={"numeric"}
               onChange={(val) => {
                 let precio;
@@ -239,18 +236,17 @@ function ProfileWalkerForm(props) {
             >
               {userInfo.walkSalary}
             </TextInput>
-          </View>
-          <View>
-            <Collapse>
-              <CollapseHeader
-                style={{ backgroundColor: "rgba(191, 191, 191, 0.4)" }}
-              >
-                <Text style={styles.textHeader}>↓ Mi disponibilidad ↓</Text>
+
+            <Collapse style={walkerFormStyles.walkerFormList2}>
+              <CollapseHeader style={walkerFormStyles.walkerFormList}>
+                <Text style={walkerFormStyles.walkerFormTxt2}>
+                  ↓ Mi disponibilidad ↓
+                </Text>
               </CollapseHeader>
               <CollapseBody>
-                <View style={styles.avContainer}>
+                <View style={walkerFormStyles.walkerFormView}>
                   {hours.map((hour, index) => (
-                    <View key={index} style={styles.availability}>
+                    <View key={index} style={walkerFormStyles.walkerFormView2}>
                       <TouchableOpacity
                         onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
@@ -261,25 +257,26 @@ function ProfileWalkerForm(props) {
                 </View>
               </CollapseBody>
             </Collapse>
-          </View>
-          <Text style={(styles.text, { marginTop: 15 })}>
-            {" "}
-            Disponibilidades semanales{" "}
-          </Text>
-          <View>
+
+            <Text style={walkerFormStyles.walkerFormTxt}>
+              Disponibilidades semanales
+            </Text>
+
             {rangos.map((rango) => (
               <Collapse key={rango[0]}>
-                <CollapseHeader style={styles.collapseHeader}>
-                  <Text style={styles.textHeader}>{rango[0]}</Text>
+                <CollapseHeader style={walkerFormStyles.walkerFormList3}>
+                  <Text style={walkerFormStyles.walkerFormTxt2}>
+                    {rango[0]}
+                  </Text>
                 </CollapseHeader>
                 <CollapseBody>
-                  <View style={styles.avContainer}>
+                  <View style={walkerFormStyles.walkerFormView}>
                     {globales.slice(rango[1], rango[1] + 16).map((av) => (
                       <TouchableOpacity
                         key={av[1]}
                         onPress={() => isAdded(av[1])}
                       >
-                        <View style={styles.availability}>
+                        <View style={walkerFormStyles.walkerFormView2}>
                           <Text>{av[0]}</Text>
                         </View>
                       </TouchableOpacity>
@@ -289,30 +286,6 @@ function ProfileWalkerForm(props) {
               </Collapse>
             ))}
           </View>
-          {/* <View>
-            <Text style={styles.text}>
-              {" "}
-              ¿Cuál es el número máximo de perros que te gustaría pasear?{" "}
-            </Text>
-            <TextInput
-              style={styles.data}
-              keyboardType={"numeric"}
-              onChange={(val) => {
-                let amountDogs;
-                if (val.nativeEvent.text !== "") {
-                  amountDogs = parseInt(val.nativeEvent.text);
-                } else {
-                  amountDogs = 0;
-                }
-
-                db.ref("wauwers/" + userInfo.id).update({
-                  petNumberWalk: amountDogs,
-                });
-              }}
-            >
-              {userInfo.petNumberWalk}
-            </TextInput>
-          </View> */}
         </View>
       </ScrollView>
       <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
@@ -322,56 +295,3 @@ function ProfileWalkerForm(props) {
 }
 
 export default withNavigation(ProfileWalkerForm);
-
-const styles = StyleSheet.create({
-  availability: {
-    borderColor: "rgba(11,156,49,0.5)",
-    borderRadius: 5,
-    borderWidth: 1,
-    margin: 5,
-    padding: 5,
-  },
-  avContainer: {
-    borderColor: "red",
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-    marginLeft: 9,
-  },
-  btn: {
-    backgroundColor: "#00a680",
-  },
-  btnContainer: {
-    marginTop: 20,
-    width: "95%",
-  },
-  buttonContainer: {
-    marginTop: 20,
-  },
-  collapseHeader: {
-    backgroundColor: "rgba(191, 191, 191, 0.8)",
-    margin: 3,
-  },
-  data: {
-    color: "grey",
-    paddingHorizontal: 8,
-  },
-  input: {
-    marginBottom: 10,
-  },
-  text: {
-    borderTopColor: "#ddd",
-    borderTopWidth: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-  },
-  textHeader: {
-    padding: 3,
-    textAlign: "center",
-  },
-  view: {
-    paddingBottom: 10,
-    alignItems: "center",
-    paddingTop: 10,
-  },
-});

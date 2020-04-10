@@ -13,6 +13,7 @@ import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
+import BlankView from "../BlankView";
 
 function ProfileMyRequests(props) {
   const { navigation } = props;
@@ -45,7 +46,7 @@ function ProfileMyRequests(props) {
   }, []);
 
   return (
-    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -71,9 +72,7 @@ function ProfileMyRequests(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <View>
-            <Text> No hay solicitudes </Text>
-          </View>
+          <BlankView text={"No tiene solicitudes realizadas"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -132,7 +131,7 @@ function Request(requestIn) {
   const tarjeta = {
     fontSize: 13,
     marginTop: 4,
-    color: color,
+    color,
   };
 
   return (

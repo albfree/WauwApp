@@ -4,7 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
@@ -12,6 +12,7 @@ import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
+import BlankView from "../BlankView";
 
 function ProfileMyAccommodations(props) {
   const { navigation } = props;
@@ -24,7 +25,7 @@ function ProfileMyAccommodations(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       wauwerId = snap.val().id;
     });
 
@@ -32,9 +33,9 @@ function ProfileMyAccommodations(props) {
     db.ref("accommodation")
       .orderByChild("worker")
       .equalTo(wauwerId)
-      .on("value", snap => {
+      .on("value", (snap) => {
         const accommodations = [];
-        snap.forEach(child => {
+        snap.forEach((child) => {
           var endTime = new Date(child.val().endTime);
           if (endTime > new Date()) {
             accommodations.push(child.val());
@@ -47,7 +48,7 @@ function ProfileMyAccommodations(props) {
   }, [reloadData]);
 
   return (
-    <SafeAreaView style={globalStyles.safeArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -66,19 +67,17 @@ function ProfileMyAccommodations(props) {
           <FlatList
             data={accommodationsList}
             style={globalStyles.myRequestsFeed}
-            renderItem={accommodation => (
+            renderItem={(accommodation) => (
               <Accommodation
                 accommodation={accommodation}
                 navigation={navigation}
               />
             )}
-            keyExtractor={accommodation => accommodation.id}
+            keyExtractor={(accommodation) => accommodation.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <View>
-            <Text> No hay alojamientos </Text>
-          </View>
+          <BlankView text={"No tiene alojamientos habilitados"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -113,7 +112,7 @@ function Accommodation(accomodationIn) {
   const tarjeta = {
     fontSize: 13,
     marginTop: 4,
-    color: color
+    color,
   };
 
   return (
@@ -121,7 +120,7 @@ function Accommodation(accomodationIn) {
       onPress={() =>
         navigation.navigate("EditDeleteAccommodation", {
           accommodation: accommodation.item,
-          editable: editable
+          editable,
         })
       }
     >
