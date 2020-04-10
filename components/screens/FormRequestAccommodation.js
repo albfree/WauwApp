@@ -91,11 +91,11 @@ function FormRequestAccommodation(props) {
     if (
       newStartTime === null ||
       newEndTime === null ||
-      newStartTime < new Date() ||
-      newEndTime.getDate() - newStartTime.getDate() == 0 ||
-      petNumber === null ||
-      newStartTime.getTime() - startAccommodation.getTime() < 0 ||
-      newEndTime.getTime() - endAccommodation.getTime() > 0
+      new Date() - newStartTime > 10000 ||
+      newEndTime.getTime() - newStartTime.getTime() < -10000 ||
+      petNumber === 0 ||
+      startAccommodation.getTime() - newStartTime.getTime() > 43200000 ||
+      endAccommodation.getTime() - newEndTime.getTime() < -43200000
     ) {
       let errores = "";
       if (newStartTime === null) {
@@ -105,14 +105,14 @@ function FormRequestAccommodation(props) {
         errores = errores.concat("Debe escribir una fecha de salida.\n");
       }
 
-      if (newStartTime < new Date()) {
+      if (new Date() - newStartTime > 10000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime.getDate() - newStartTime.getDate() == 0) {
+      if (newEndTime.getTime() - newStartTime.getTime() < -10000) {
         errores = errores.concat(
-          "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+          "La fecha de entrada debe ser anterior a la fecha de salida.\n"
         );
       }
       if (petNumber === 0 && petNames === null) {
@@ -125,38 +125,39 @@ function FormRequestAccommodation(props) {
           "Tienes que seleccionar alguna mascota para el alojamiento.\n"
         );
       }
-      if (newStartTime.getTime() - startAccommodation.getTime() < 0) {
+
+      if (startAccommodation.getTime() - newStartTime.getTime() > 43200000) {
         errores = errores.concat(
           "La fecha de inicio no puede ser anterior a la fecha de inicio del alojamiento.\n"
         );
       }
-      if (newEndTime.getTime() - endAccommodation.getTime() > 0) {
+      if (endAccommodation.getTime() - newEndTime.getTime() < -43200000) {
         errores = errores.concat(
           "La fecha de fin no puede ser posterior a la fecha de fin del alojamiento.\n"
         );
       }
 
       Alert.alert("Advertencia", errores.toString());
+      // } else {
+      //   let errores = "";
+      //   if (newStartTime < new Date() || newEndTime < newStartTime) {
+      //     errores = errores.concat(
+      //       "La fecha de entrada debe ser posterior o igual a la actual.\n"
+      //     );
+      //     errores = errores.concat(
+      //       "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+      //     );
+
+      //     Alert.alert("Advertencia", errores.toString());
     } else {
-      let errores = "";
-      if (newStartTime < new Date() || newEndTime < newStartTime) {
-        errores = errores.concat(
-          "La fecha de entrada debe ser posterior o igual a la actual.\n"
-        );
-        errores = errores.concat(
-          "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
-        );
+      setIsLoading(true);
 
-        Alert.alert("Advertencia", errores.toString());
-      } else {
-        setIsLoading(true);
-
-        navigation.navigate("CreateRequestAccommodation", {
-          formData: formData,
-        });
-        Alert.alert("Éxito", "Confirme su solicitud.");
-      }
+      navigation.navigate("CreateRequestAccommodation", {
+        formData: formData,
+      });
+      Alert.alert("Éxito", "Confirme su solicitud.");
     }
+    // }
   };
 
   return (
