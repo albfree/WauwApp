@@ -9,6 +9,7 @@ import {
 import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
+import MyReviews from "./MyReviews";
 
 function PublicProfile(props) {
     const userInfo = props.navigation.state.params.user;
@@ -48,12 +49,8 @@ function PublicProfile(props) {
                                     <Text style={globalStyles.textInformationPublicPro1}>Información</Text>
                                 </TouchableOpacity>
                                 <Text style={globalStyles.textReviewsPublicPro1}>Valoraciones</Text>
-                                
-
-
-
-
                             </View>
+                            <MyReviews userInfo={userInfo}></MyReviews>
                         </View>
                     ) : (
                             <View style={globalStyles.userInfoPublicGlobal}>

@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from "react";
 import { db } from "../population/config.js";
-import { View } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView
+} from "react-native";
 import { Rating } from "react-native-elements";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function MyReviews(props) {
-  const { user } = props.navigation.params.state.userInfo;
+  const user = props.userInfo;
   let reviews = [];
   db.ref("reviews/" + user.id).once("value", (snap) => {
     snap.forEach((child) => {
