@@ -74,7 +74,7 @@ function SearchWalks(props) {
               />
             )}
             keyExtractor={(wauwerData) => {
-              wauwerData;
+              wauwerData.id;
             }}
             showsVerticalScrollIndicator={false}
           />
@@ -88,11 +88,16 @@ function SearchWalks(props) {
 
 function Wauwer(props) {
   const { wauwerData, petNumber, navigation } = props;
+  const id = wauwerData.item.id;
+  let user;
+  db.ref("wauwers/" + id).once("value", (snap) => {
+    user = snap.val();
+  });
 
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
-        wauwer: wauwerData.item, //TODO: MODIFICAR LA REDIRECCIÓN
+        wauwer: user, //TODO: MODIFICAR LA REDIRECCIÓN
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");
@@ -101,7 +106,7 @@ function Wauwer(props) {
 
   const publicProf = () => {
     navigation.navigate("PublicProfile", {
-      user: wauwerData.item,
+      user: user,
     });
   };
 
@@ -112,21 +117,17 @@ function Wauwer(props) {
           <View style={searchWalksStyles.searchWalksView}>
             <TouchableOpacity onPress={publicProf}>
               <View style={searchWalksStyles.searchWalkColumn}>
-                <Avatar
-                  rounded
-                  size="large"
-                  source={{ uri: wauwerData.item.photo }}
-                />
+                <Avatar rounded size="large" source={{ uri: user.photo }} />
               </View>
             </TouchableOpacity>
             <View style={searchWalksStyles.searchWalkColumn2}>
               <Text style={searchWalksStyles.searchWalkTxt2}>
                 {" "}
-                {wauwerData.item.name}{" "}
+                {user.name}{" "}
               </Text>
               <View style={searchWalksStyles.searchWalksView}>
                 <Text style={searchWalksStyles.searchWalkTxt3}>
-                  Valoración: {wauwerData.item.avgScore}
+                  Valoración: {user.avgScore}
                 </Text>
                 <Icon
                   type="material-community"
@@ -136,7 +137,7 @@ function Wauwer(props) {
                 />
               </View>
               <Text style={searchWalksStyles.searchWalkTxt2}>
-                Precio / Hora: {wauwerData.item.price} €
+                Precio / Hora: {user.price} €
               </Text>
             </View>
           </View>
