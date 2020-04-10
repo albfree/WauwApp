@@ -5,7 +5,7 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
@@ -13,12 +13,13 @@ import UserGuest from "../../account/UserGuest";
 import { Button, Icon } from "react-native-elements";
 import { YellowBox } from "react-native";
 import _ from "lodash";
+import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
-console.warn = message => {
+console.warn = (message) => {
   if (message.indexOf("Setting a timer") <= -1) {
     _console.warn(message);
   }
@@ -26,6 +27,8 @@ console.warn = message => {
 
 function Profile(props) {
   const { navigation } = props;
+
+  console.log("Email", email);
 
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
@@ -97,6 +100,24 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
+
+            <Button
+              buttonStyle={globalStyles.profileSignOut}
+              containerStyle={globalStyles.profileSignOutContainer}
+              title="Página de pagar"
+              onPress={() => navigation.navigate("Pagar", { email: email })}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="credit-card-wireless"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
+            />
+
             <Image
               source={require("../../../assets/images/prints.png")}
               style={globalStyles.profilePrints}

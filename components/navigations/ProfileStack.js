@@ -9,6 +9,7 @@ import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
 import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
 import ShowWalkScreen from "../screens/Profile/ShowWalk";
+import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
 const blanco = "white";
@@ -131,6 +132,20 @@ const ProfileScreenStacks = createStackNavigator({
     navigationOptions: () => ({
       title: "Formulario Rating",
       headerTitleAlign: "center",
+    }),
+  },
+  Pagar: {
+    screen: PagarScreen,
+    navigationOptions: () => ({
+      title: "Pagar",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
     }),
   },
 });

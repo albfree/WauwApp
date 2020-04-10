@@ -1,0 +1,91 @@
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Button,
+} from "react-native";
+import { WebView } from "react-native-webview";
+import { withNavigation } from "react-navigation";
+import axios from "axios";
+import qs from "qs";
+import { decode, encode } from "base-64";
+import { db } from "../population/config.js";
+
+export default function Pagar(props) {
+  var email = props.navigation.state.params.email;
+
+  const [accessToken, setAccessToken] = useState("");
+
+  //Fix bug btoa
+  useEffect(() => {
+    if (!global.btoa) {
+      global.btoa = encode;
+    }
+
+    if (!global.atob) {
+      global.atob = decode;
+    }
+  }, []);
+
+  var paymentURL = "https://api.sandbox.paypal.com/v1/payments/payouts";
+
+  var sender_batch_header = {
+    sender_batch_id: "10042020",
+    email_subject: "¡Tu pago por el paseo o alojamiento!",
+    email_message:
+      "Gracias por tu paseo o alojamiento a nuestra aplicación. Con tu servicio, hemos conseguido aportar un granito de arena a las protectoras de animales",
+  };
+
+  var items = {
+    recipient_type: "EMAIL",
+    amount: {
+      value: "9.87",
+      currency: "EUR",
+    },
+    note: "Gracias por tu servicio!",
+    receiver: email,
+  };
+
+  const auth = {
+    username:
+      "AUrtghWgBuLlBCqUDRK4NfYpHNRxRPlxdQFu1m0nV8XSrVnfGT734v_CrmSWFjGvJ9GgcVlEyJ6GsgXq", //"your_paypal-app-client-ID",
+    password:
+      "EMc9eBqWueUaCtRuB92j3smvFqF4jyog2nzyFFY1Ud5us5vxm5F_KOKFj2QN1fVnaj8f33zBlh8eOGz2", //"your-paypal-app-secret-ID
+  };
+
+  const data = {
+    grant_type: "client_credentials",
+  };
+
+  const options = {
+    method: "post",
+    headers: {
+      "content-type": "application/x-www-form-urlencoded",
+      "Access-Control-Allow-Credentials": true,
+    },
+    data: qs.stringify(data),
+    url: paymentURL,
+    auth: auth,
+  };
+
+  payment = async () => {
+    console.log("Entra al pago");
+    await axios(options)
+      .then((response) => {
+        console.log("access_token", response.data);
+      })
+      .catch((err) => {
+        console.log("Error", err);
+      });
+  };
+
+  return (
+    <View>
+      <Text> Estamos en pagar.js </Text>
+      <Button title={"Prueba de pago"} onPress={payment} />
+    </View>
+  );
+}
