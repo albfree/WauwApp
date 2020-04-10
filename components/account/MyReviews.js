@@ -7,12 +7,16 @@ import { ScrollView } from "react-native-gesture-handler";
 export default function MyReviews(props) {
   const user = props.userInfo;
   const [myReviews, setMyReviews] = useState([]);
+  const [val, setVal] = useState(true);
   useEffect(() => {
     let reviews = [];
     db.ref("reviews/" + user.id).once("value", (snap) => {
       snap.forEach((child) => {
         reviews.push(child.val());
       });
+      if (reviews.length === 0) {
+        setVal(false);
+      }
       setMyReviews(reviews);
     });
   }, []);
@@ -20,7 +24,7 @@ export default function MyReviews(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-        {myReviews.length > 0 ? (
+        {val === true ? (
           <View>
             {myReviews.map((review, index) => (
               <Review key={index} review={review} />

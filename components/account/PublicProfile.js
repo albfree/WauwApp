@@ -5,20 +5,12 @@ import { Avatar, Rating } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
 import MyReviews from "./MyReviews";
-import { db } from "../population/config";
 
 function PublicProfile(props) {
   const userInfo = props.navigation.state.params.user;
-  const [profileView, setProfileView] = useState([false]);
-  let userRating;
-  db.ref("wauwers/" + userInfo.id).once("value", (snap) => {
-    userRating = snap.val().avgScore;
-  });
-
-  //console.log(userInfo);
+  const [profileView, setProfileView] = useState(false);
 
   useEffect(() => {}, [profileView]);
-  console.log(userRating);
 
   return (
     <SafeAreaView>
@@ -33,8 +25,14 @@ function PublicProfile(props) {
                 uri: userInfo.photo,
               }}
             />
-            <Rating imageSize={20} readonly startingValue={userRating} />
-            <Text style={globalStyles.infoUserScore}>{userRating}/5</Text>
+            <Rating
+              imageSize={20}
+              readonly
+              startingValue={userInfo.avgScore}
+            />
+            <Text style={globalStyles.infoUserScore}>
+              {userInfo.avgScore}/5
+            </Text>
           </View>
           <View>
             <Text style={globalStyles.userInfoPublicDisplayName}>

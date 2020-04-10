@@ -68,7 +68,7 @@ function SearchWalks(props) {
       /> */}
       <ScrollView>
         <Loading isVisible={loading} text={"Un momento..."} />
-        {data ? (
+        {data.length > 0 ? (
           <FlatList
             data={data}
             renderItem={(wauwerData) => (
@@ -79,7 +79,7 @@ function SearchWalks(props) {
               />
             )}
             keyExtractor={(wauwerData) => {
-              wauwerData;
+              wauwerData.id;
             }}
             showsVerticalScrollIndicator={false}
           />
@@ -96,15 +96,15 @@ function SearchWalks(props) {
 function Wauwer(props) {
   const { wauwerData, petNumber, navigation } = props;
   const id = wauwerData.item.id;
-  let userRating;
+  let user;
   db.ref("wauwers/" + id).once("value", (snap) => {
-    userRating = snap.val().avgScore;
+    user = snap.val();
   });
 
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
-        wauwer: wauwerData.item, //TODO: MODIFICAR LA REDIRECCIÓN
+        wauwer: user, //TODO: MODIFICAR LA REDIRECCIÓN
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");
@@ -113,7 +113,7 @@ function Wauwer(props) {
 
   const publicProf = () => {
     navigation.navigate("PublicProfile", {
-      user: wauwerData.item,
+      user: user,
     });
   };
 
@@ -124,20 +124,13 @@ function Wauwer(props) {
           <View style={globalStyles.myRequestsRow}>
             <TouchableOpacity onPress={publicProf}>
               <View style={globalStyles.searchAccommodationsColumn1}>
-                <Avatar
-                  rounded
-                  size="large"
-                  source={{ uri: wauwerData.item.photo }}
-                />
-                <Text style={globalStyles.myRequestsPrice}>
-                  {" "}
-                  {wauwerData.item.name}{" "}
-                </Text>
+                <Avatar rounded size="large" source={{ uri: user.photo }} />
+                <Text style={globalStyles.myRequestsPrice}> {user.name} </Text>
               </View>
             </TouchableOpacity>
             <View style={globalStyles.searchAccommodationsColumn1}>
               <View style={globalStyles.myRequestsRow}>
-                <Text style={globalStyles.myRequestsNum}>{userRating}</Text>
+                <Text style={globalStyles.myRequestsNum}>{user.avgScore}</Text>
                 <Icon
                   type="material-community"
                   name="star"
@@ -145,10 +138,7 @@ function Wauwer(props) {
                   color="yellow"
                 />
               </View>
-              <Text style={globalStyles.myRequestsPrice}>
-                {" "}
-                {wauwerData.item.price} €
-              </Text>
+              <Text style={globalStyles.myRequestsPrice}> {user.price} €</Text>
             </View>
             <View style={globalStyles.searchAccommodationsColumn2}>
               <Text style={globalStyles.myRequestsNum}>
