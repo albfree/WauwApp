@@ -95,6 +95,11 @@ function SearchWalks(props) {
 
 function Wauwer(props) {
   const { wauwerData, petNumber, navigation } = props;
+  const id = wauwerData.item.id;
+  let userRating;
+  db.ref("wauwers/" + id).once("value", (snap) => {
+    userRating = snap.val().avgScore;
+  });
 
   const checkHasPets = () => {
     if (petNumber > 0) {
@@ -107,9 +112,9 @@ function Wauwer(props) {
   };
 
   const publicProf = () => {
-      navigation.navigate("PublicProfile", {
-        user: wauwerData.item
-      });
+    navigation.navigate("PublicProfile", {
+      user: wauwerData.item,
+    });
   };
 
   return (
@@ -117,24 +122,22 @@ function Wauwer(props) {
       <View style={globalStyles.myRequestsFeedItem}>
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
-          <TouchableOpacity onPress={publicProf}>
-            <View style={globalStyles.searchAccommodationsColumn1}>
-              <Avatar
-                rounded
-                size="large"
-                source={{ uri: wauwerData.item.photo }}
-              />
-              <Text style={globalStyles.myRequestsPrice}>
-                {" "}
-                {wauwerData.item.name}{" "}
-              </Text>
-            </View>
+            <TouchableOpacity onPress={publicProf}>
+              <View style={globalStyles.searchAccommodationsColumn1}>
+                <Avatar
+                  rounded
+                  size="large"
+                  source={{ uri: wauwerData.item.photo }}
+                />
+                <Text style={globalStyles.myRequestsPrice}>
+                  {" "}
+                  {wauwerData.item.name}{" "}
+                </Text>
+              </View>
             </TouchableOpacity>
             <View style={globalStyles.searchAccommodationsColumn1}>
               <View style={globalStyles.myRequestsRow}>
-                <Text style={globalStyles.myRequestsNum}>
-                  {wauwerData.item.avgScore}
-                </Text>
+                <Text style={globalStyles.myRequestsNum}>{userRating}</Text>
                 <Icon
                   type="material-community"
                   name="star"

@@ -1,28 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "../population/config.js";
-import {
-  View,
-  Text,
-  SafeAreaView
-} from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import { Rating } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function MyReviews(props) {
   const user = props.userInfo;
-  let reviews = [];
-  db.ref("reviews/" + user.id).once("value", (snap) => {
-    snap.forEach((child) => {
-      reviews.push(child.val());
+  const [myReviews, setMyReviews] = useState([]);
+  useEffect(() => {
+    let reviews = [];
+    db.ref("reviews/" + user.id).once("value", (snap) => {
+      snap.forEach((child) => {
+        reviews.push(child.val());
+      });
+      setMyReviews(reviews);
     });
-  });
+  }, []);
 
   return (
     <SafeAreaView>
       <ScrollView>
-        {reviews.length > 0 ? (
+        {myReviews.length > 0 ? (
           <View>
-            {reviews.map((review, index) => (
+            {myReviews.map((review, index) => (
               <Review key={index} review={review} />
             ))}
           </View>
