@@ -67,6 +67,7 @@ function CreateAccommodation(props) {
   const [newWorker, setNewWorker] = useState([]);
   const [newSalary, setNewSalary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [newPrice, setNewPrice] = useState(null);
 
   const all = () => {
     addAccommodation();
@@ -75,6 +76,7 @@ function CreateAccommodation(props) {
   const addCommissions = props => {
     let price = props * 1.25;
     setNewSalary(price);
+    setNewPrice(props);
   };
 
   const addAccommodation = () => {
@@ -87,9 +89,9 @@ function CreateAccommodation(props) {
       endTime: newEndTime.toISOString(),
       isCanceled: newIsCanceled,
       salary: newSalary,
-      worker: newWorker
+      worker: newWorker,
+      price: newPrice
     };
-    console.log(accommodationData);
 
     if (
       newStartTime === null ||
