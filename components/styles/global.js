@@ -1,77 +1,74 @@
 import { StyleSheet } from "react-native";
 
+const gris = "#dddddd";
+const blanco = "#FFF";
+
 export const globalStyles = StyleSheet.create({
+  blankImage: {
+    flex: 1,
+    height: null,
+    resizeMode: "cover",
+    width: null,
+  },
+  blankTxt: {
+    fontSize: 22,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  blankView: {
+    flex: 1,
+    paddingVertical: "25%",
+  },
+  blankView2: {
+    paddingHorizontal: 20,
+  },
+  blankView3: {
+    height: 200,
+    marginTop: 30,
+    width: "100%",
+  },
+
   btnStyle: {
     backgroundColor: "#443099",
     width: "75%",
     height: "45%",
     borderRadius: 30,
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
   btnTextStyle: {
-    flex: 1
-  },
-  /* Home */
-  viewFlex1: {
-    flex: 1
-  },
-  homeView: {
-    padding: 20,
     flex: 1,
-    alignContent: "center",
-    alignItems: "center"
   },
-  homeView2: {
-    flex: 1,
-    width: "95%",
-    height: 180,
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center"
-  },
-  homeTitle: {
-    fontSize: 24,
-    fontWeight: "700",
-    textAlign: "center"
-  },
-  homeContentText: {
-    fontSize: 18,
-    fontWeight: "100",
-    marginTop: 10,
-    fontWeight: "300",
-    textAlign: "center"
-  },
-  homeImage: {
-    flex: 1,
-    width: "85%",
-    resizeMode: "stretch",
+  viewFeed: {
+    backgroundColor: blanco,
     borderRadius: 20,
-    borderWidth: 1,
-    alignSelf: "center",
-    justifyContent: "center"
-  },
-  safeHomeArea: {
     flex: 1,
-    paddingBottom: 5,
-    marginBottom: 20
+    flexDirection: "row",
+    marginHorizontal: 20,
+    marginVertical: "30%",
+    paddingHorizontal: 20,
   },
+  viewFlex1: {
+    flex: 1,
+  },
+  viewFlex2: {
+    flex: 2,
+  },
+
   /* Profile */
   safeProfileArea: {
     flex: 1,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   profileView: {
     flex: 1,
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   profileView2: {
     flex: 1,
+    marginBottom: 30,
     paddingBottom: 60,
-    marginBottom: 30
   },
   profileBtn: {
     backgroundColor: "#443099",
@@ -80,7 +77,7 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 5,
     width: "90%",
     justifyContent: "flex-start",
-    marginLeft: 20
+    marginLeft: 20,
   },
   profileBtnContainer: {
     borderWidth: 1,
@@ -93,7 +90,7 @@ export const globalStyles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     marginBottom: 10,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   profilePrints: {
     height: "20%",
@@ -102,12 +99,12 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: "transparent",
     alignSelf: "center",
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
   },
   profileBtnTittle: {
     flex: 5,
     fontSize: 17,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   profileSignOut: {
     backgroundColor: "#ff7549",
@@ -116,7 +113,7 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 5,
     width: "90%",
     justifyContent: "flex-start",
-    marginLeft: 20
+    marginLeft: 20,
   },
   profileSignOutContainer: {
     borderWidth: 1,
@@ -129,26 +126,26 @@ export const globalStyles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     marginBottom: 10,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   /* Profile Forms */
   profileFormView: {
     alignItems: "center",
+    paddingBottom: 10,
     paddingTop: 10,
-    paddingBottom: 10
   },
   profileFormInput: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   profileFormBtnContainer: {
     marginTop: 20,
-    width: "95%"
+    width: "95%",
   },
   profileFormBtn: {
     backgroundColor: "#5c54a4",
     borderRadius: 18,
     borderWidth: 1,
-    borderColor: "#d6d6e8"
+    borderColor: "#d6d6e8",
   },
   /* Profile AccountOptions */
   accountItem: {
@@ -156,15 +153,15 @@ export const globalStyles = StyleSheet.create({
     borderColor: "#d6d6e8",
     borderRadius: 25,
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
   accountItems: {
-    paddingTop: 10
+    paddingTop: 10,
   },
   /* Profile UserGuest */
   profileUserGuestView: {
     minHeight: "100%",
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   /* Profile InfoUser */
   userInfoDescriptionGlobal: {
@@ -172,7 +169,7 @@ export const globalStyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 25,
     backgroundColor: "white",
-    borderColor: "#d6d6e8"
+    borderColor: "#d6d6e8",
   },
   userInfoDescription: {
     alignItems: "center",
@@ -182,7 +179,7 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 25,
     color: "black",
     marginBottom: 10,
-    textAlign: "center"
+    textAlign: "center",
   },
   userInfoTitleDescription: {
     textAlign: "center",
@@ -190,7 +187,7 @@ export const globalStyles = StyleSheet.create({
     fontSize: 19,
     borderRadius: 25,
     color: "#4d399a",
-    paddingTop: 10
+    paddingTop: 10,
   },
   userInfoWauwPoints: {
     borderWidth: 1,
@@ -207,7 +204,7 @@ export const globalStyles = StyleSheet.create({
     marginLeft: "25%",
     marginRight: "25%",
     textAlignVertical: "center",
-    textAlign: "center"
+    textAlign: "center",
   },
   userInfoEmail: {
     color: "white",
@@ -215,19 +212,19 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "bold",
     paddingRight: "10%",
     marginRight: "2%",
-    fontSize: 16
+    fontSize: 16,
   },
   userInfoDisplayName: {
     fontWeight: "bold",
     color: "white",
     marginRight: "2%",
-    fontSize: 16
+    fontSize: 16,
   },
   userInfoAvatar: {
     borderWidth: 1,
     borderColor: "#d6d6e8",
     marginLeft: "10%",
-    marginRight: "5%"
+    marginRight: "5%",
   },
   infoUserView: {
     borderWidth: 1,
@@ -239,190 +236,133 @@ export const globalStyles = StyleSheet.create({
     paddingBottom: 10,
     borderRadius: 25,
     backgroundColor: "#5c54a4",
-    textAlignVertical: "center"
+    textAlignVertical: "center",
   },
   /* Profile Drawer */
   drawerView: {
     height: 150,
     backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   drawerImage: {
+    borderRadius: 60,
     height: 120,
     width: 120,
-    borderRadius: 60
   },
   drawerMenuView: {
-    margin: 20
+    margin: 20,
   },
   drawerTitle: {
     flex: 1,
     alignItems: "center",
     marginHorizontal: 5,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   drawerIcon: {
     alignSelf: "flex-end",
     marginHorizontal: 5,
-    alignSelf: "flex-end"
   },
   drawerTxt: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
-  /* Login Screen */
-  loginImage: {
-    height: "40%",
-    width: "60%",
-    resizeMode: "stretch",
-    alignSelf: "center",
-    marginBottom: 40,
-    marginTop: 10
-  },
-  loginBtn: {
-    backgroundColor: "#443099",
-    borderRadius: 30,
-    marginTop: 10,
-    marginBottom: 10,
-    width: "100%",
-    height: "50%",
-    justifyContent: "flex-start"
-  },
-  loginBtnContainer: {
-    alignItems: "center",
-    alignSelf: "center",
-    width: "75%",
-    height: "10%",
-    backgroundColor: "#443099",
-    marginTop: 50,
-    marginRight: 20,
-    marginLeft: 20,
-    justifyContent: "center"
-  },
-  loginPrints: {
-    height: "10%",
-    width: "82%",
-    resizeMode: "stretch",
-    backgroundColor: "transparent",
-    alignSelf: "center",
-    marginBottom: 20,
-    marginTop: 30
-  },
-  loginBtnTittle: {
-    marginLeft: 40,
-    fontSize: 17
-  },
-  loginView: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: 40,
-    paddingBottom: 60,
-    marginBottom: 60
-  },
-  loginTxt: {
-    fontSize: 50,
-    color: "#5c54a4",
-    marginTop: 40
-  },
+
   /* My Requests */
   myRequestsFeed: {
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   safeMyRequestsArea: {
     flex: 1,
     paddingBottom: 5,
-    marginBottom: 20
+    marginBottom: 20,
   },
   myRequestsFeedItem: {
     backgroundColor: "#FFF",
     borderRadius: 5,
     padding: 8,
     flexDirection: "row",
-    marginVertical: 8
+    marginVertical: 8,
   },
   myRequestsColumn1: {
     alignItems: "flex-start",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   myRequestsColumn2: {
     alignItems: "flex-end",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   myRequestsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   myRequestsNum: {
     fontSize: 15,
     fontWeight: "500",
-    color: "#454D65"
+    color: "#454D65",
   },
   myRequestsStatus: {
     fontSize: 13,
-    marginTop: 4
+    marginTop: 4,
   },
   myRequestsPrice: {
     fontSize: 14,
     color: "#838899",
     marginTop: 4,
-    marginLeft: 3
+    marginLeft: 3,
   },
   myRequestsType: {
     fontSize: 14,
     color: "#838899",
-    marginTop: 4
+    marginTop: 4,
   },
   /* Show Request */
   safeShowRequestArea: {
     flex: 1,
     paddingBottom: 5,
     marginBottom: 20,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   showRequestFeed: {
     backgroundColor: "#FFF",
-    borderRadius: 5,
     padding: 8,
     flexDirection: "row",
     marginVertical: 8,
     marginHorizontal: 16,
-    borderRadius: 20
+    borderRadius: 20,
   },
   showRequestRow: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginVertical: 10
+    marginVertical: 10,
   },
   showRequestRow2: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginTop: 10
+    marginTop: 10,
   },
   showRequestColumn1: {
     flex: 1,
     alignItems: "flex-start",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   showRequestColumn2: {
     flex: 1.3,
     alignItems: "center",
     marginHorizontal: 5,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   showRequestColumn22: {
     flex: 1,
     alignItems: "center",
     marginHorizontal: 5,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   showRequestColumn3: {
     flex: 1,
     alignItems: "center",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   showRequestImage: {
     width: 80,
@@ -430,7 +370,7 @@ export const globalStyles = StyleSheet.create({
     resizeMode: "stretch",
     borderRadius: 50,
     marginTop: 5,
-    marginBottom: 18
+    marginBottom: 18,
   },
   showRequestImage2: {
     width: 100,
@@ -439,108 +379,108 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 20,
     marginBottom: 18,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   showRequestName: {
     marginTop: 15,
-    marginBottom: 10
+    marginBottom: 10,
   },
   showRequestType: {
     marginTop: 5,
     marginBottom: 10,
-    color: "#443099"
+    color: "#443099",
   },
   showRequestType2: {
     marginTop: 15,
     marginBottom: 15,
-    color: "#443099"
+    color: "#443099",
   },
   showRequestDate1: {
     marginTop: 5,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   showRequestDate2: {
     marginBottom: 10,
     alignSelf: "flex-start",
-    color: "#838899"
+    color: "#838899",
   },
   showRequestDate3: {
     marginLeft: 10,
     marginTop: 2,
-    alignSelf: "flex-start"
+    alignSelf: "flex-start",
   },
   showRequestDate4: {
     marginBottom: 10,
     marginLeft: 10,
     alignSelf: "flex-start",
-    color: "#838899"
+    color: "#838899",
   },
   showRequestPrice: {
     marginTop: 10,
     marginBottom: 10,
     alignSelf: "center",
     marginLeft: 25,
-    fontSize: 17
+    fontSize: 17,
   },
   showRequestStatus: {
     marginBottom: 4,
     alignSelf: "center",
     marginLeft: 20,
-    color: "rgba(255,128,0,0.6)"
+    color: "rgba(255,128,0,0.6)",
   },
   showRequestStatus2: {
     marginBottom: 4,
     alignSelf: "center",
     marginLeft: 20,
-    color: "rgba(255,0,0,0.6)"
+    color: "rgba(255,0,0,0.6)",
   },
   showRequestStatus3: {
     marginBottom: 4,
     alignSelf: "center",
     marginLeft: 20,
-    color: "rgba(0,128,0,0.6)"
+    color: "rgba(0,128,0,0.6)",
   },
   showRequestStatus4: {
     marginBottom: 10,
     alignSelf: "center",
     marginLeft: 30,
-    color: "rgba(0,128,0,0.6)",
-    marginTop: 5
+    color: "rgba(255,128,0,0.6)",
+    marginTop: 5,
   },
   showRequestStatus5: {
     marginBottom: 10,
     alignSelf: "center",
     marginLeft: 30,
     color: "rgba(255,0,0,0.6)",
-    marginTop: 5
+    marginTop: 5,
   },
 
   showRequestPay: {
-    color: "rgba(255,0,0,0.6)"
+    color: "rgba(255,0,0,0.6)",
   },
   showRequestPay2: {
-    color: "rgba(0,128,0,0.6)"
+    color: "rgba(0,128,0,0.6)",
   },
   showRequestPay3: {
     color: "rgba(0,128,0,0.6)",
-    marginTop: 15
+    marginTop: 15,
   },
   showRequestPay4: {
     color: "rgba(255,0,0,0.6)",
-    marginTop: 15
+    marginTop: 15,
   },
 
   showRequestBtnTittle: {
     flex: 4,
     fontSize: 16,
-    alignSelf: "center"
+    alignSelf: "center",
   },
   showRequestBtn: {
     backgroundColor: "#443099",
     borderRadius: 30,
     width: "90%",
     justifyContent: "flex-start",
-    marginLeft: 20
+    marginLeft: 20,
   },
   showRequestBtnContainer: {
     borderWidth: 1,
@@ -553,59 +493,59 @@ export const globalStyles = StyleSheet.create({
     marginRight: 20,
     marginLeft: 20,
     marginBottom: 10,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   /* Edit Accommodation */
   editAccommodationDate1: {
     marginTop: 5,
     alignSelf: "flex-start",
-    fontSize: 17
+    fontSize: 17,
   },
   editAccommodationDate2: {
     marginBottom: 10,
     alignSelf: "flex-start",
     color: "#838899",
-    marginLeft: 22
+    marginLeft: 22,
   },
   editAccommodationPrice1: {
     marginTop: 32,
     alignSelf: "center",
     fontSize: 17,
-    marginBottom: 5
+    marginBottom: 5,
   },
   editAccommodationPrice2: {
     alignSelf: "center",
     color: "rgba(0,128,0,0.6)",
-    fontSize: 16
+    fontSize: 16,
   },
   editAccommodationColumn1: {
     flex: 1,
     alignItems: "center",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   editAccommodationColumn2: {
     flex: 1.8,
     alignItems: "center",
     marginHorizontal: 5,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   editAccommodationColumn3: {
     flex: 1,
     alignItems: "center",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   editAccommodationEditDate: {
     alignSelf: "center",
-    fontSize: 19
+    fontSize: 19,
   },
   editAccommodationEditPrize: {
     alignSelf: "center",
     fontSize: 19,
-    marginTop: 65
+    marginTop: 65,
   },
   editAccommodationEditPrize2: {
     alignSelf: "center",
-    fontSize: 17
+    fontSize: 17,
   },
   editAccommodationEditDateBtn: {
     backgroundColor: "#443099",
@@ -613,7 +553,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "80%",
     height: "80%",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   editAccommodationEditDateBtnContainer: {
     borderWidth: 1,
@@ -626,13 +566,13 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     width: 150,
     height: 45,
-    marginRight: -60
+    marginRight: -60,
   },
   editAccommodationEditDateTittle: {
     flex: 4,
     fontSize: 15,
     alignSelf: "center",
-    marginLeft: 5
+    marginLeft: 5,
   },
   editAccommodationEditDateBtnContainer2: {
     borderWidth: 1,
@@ -645,7 +585,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     width: 150,
     height: 45,
-    marginRight: 20
+    marginRight: 20,
   },
   editAccommodationEditDateBtnContainer3: {
     borderWidth: 1,
@@ -658,7 +598,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     width: 150,
     height: 45,
-    marginRight: -60
+    marginRight: -60,
   },
   editAccommodationEditDateBtn3: {
     backgroundColor: "rgba(0,128,0,0.6)",
@@ -667,7 +607,7 @@ export const globalStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignSelf: "center",
-    marginVertical: 10
+    marginVertical: 10,
   },
   editAccommodationEditDateBtnContainer4: {
     borderWidth: 1,
@@ -680,7 +620,7 @@ export const globalStyles = StyleSheet.create({
     justifyContent: "center",
     width: 150,
     height: 45,
-    marginRight: 20
+    marginRight: 20,
   },
   editAccommodationEditDateBtn4: {
     backgroundColor: "rgba(255,0,0,0.6)",
@@ -689,79 +629,14 @@ export const globalStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignSelf: "center",
-    marginVertical: 10
+    marginVertical: 10,
   },
   editAccommodationEditDateTittle2: {
     flex: 4,
     fontSize: 15,
-    alignSelf: "center"
-  },
-  /* Add Dog */
-  addDogTittle: {
-    fontSize: 18,
     alignSelf: "center",
-    marginTop: 10,
-    marginBottom: 10
   },
-  addDogCnt1: {
-    borderRadius: 5,
-    borderColor: "#d6d6e8",
-    borderWidth: 1,
-    textAlign: "center",
-    marginHorizontal: 20,
-    paddingHorizontal: 20
-  },
-  addDogBtnContainer: {
-    borderWidth: 1,
-    borderColor: "#d6d6e8",
-    alignSelf: "center",
-    backgroundColor: "rgba(0,128,0,0.6)",
-    marginTop: 30,
-    marginBottom: 10,
-    justifyContent: "center",
-    width: "60%",
-    height: 45
-  },
-  addDogBtn: {
-    backgroundColor: "rgba(0,128,0,0.6)",
-    borderRadius: 30,
-    justifyContent: "flex-start",
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
-    marginVertical: 10
-  },
-  addDogBtnTxt: {
-    flex: 1,
-    fontSize: 18,
-    alignSelf: "center",
-    marginRight: 10
-  },
-  /* Location */
-  locationMapBtnContainerSave: {
-    paddingRight: 5
-  },
-  locationMapBtnSave: {
-    backgroundColor: "#00a680"
-  },
-  locationMapBtnContainerCancel: {
-    paddingLeft: 5
-  },
-  locationMapBtnCancel: {
-    backgroundColor: "#a60d0d"
-  },
-  locationViewMapBtn: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 10
-  },
-  locationMapStyle: {
-    width: "100%",
-    height: 550
-  },
-  locationInput: {
-    marginBottom: 10
-  },
+
   /* Create Accommodation*/
   createAccommodationBtnContainer: {
     borderWidth: 1,
@@ -772,7 +647,7 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     width: "100%",
-    height: 45
+    height: 45,
   },
   createAccommodationBtn: {
     backgroundColor: "rgba(0,128,0,0.6)",
@@ -781,80 +656,80 @@ export const globalStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignSelf: "center",
-    marginVertical: 10
+    marginVertical: 10,
   },
   createAccommodationBtnTxt: {
     flex: 1,
     fontSize: 18,
     alignSelf: "center",
-    marginRight: 10
+    marginRight: 10,
   },
   /* Notifications */
   notificationsFeed: {
-    marginHorizontal: 16
+    marginHorizontal: 16,
   },
   safeNotificationsArea: {
     flex: 1,
     paddingTop: 10,
     paddingBottom: 5,
-    marginBottom: 20
+    marginBottom: 20,
   },
   notificationsColumn1: {
     alignItems: "center",
     marginLeft: 20,
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   notificationsColumn2: {
     flex: 2,
     alignItems: "flex-end",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   notificationsNum: {
     fontSize: 15,
     fontWeight: "500",
     color: "#454D65",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   /* Search Accomodations */
   searchAccommodationsColumn1: {
     alignItems: "center",
     marginRight: 20,
     flex: 2,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   searchAccommodationsColumn2: {
     flex: 1,
     alignItems: "center",
-    marginHorizontal: 5
+    marginHorizontal: 5,
   },
   notificationsDescription: {
     fontSize: 13,
     marginTop: 4,
-    textAlign: "center"
+    textAlign: "center",
   },
   /* Accommodation Request */
   accommodationDate: {
     alignSelf: "center",
     fontSize: 18,
-    marginHorizontal: -60
+    marginHorizontal: -60,
   },
   accommodationDate2: {
     alignSelf: "center",
     fontSize: 16,
-    marginTop: 60
+    marginTop: 60,
   },
   accommodationDate3: {
     alignSelf: "center",
     color: "#838899",
-    marginHorizontal: -60
+    marginHorizontal: -60,
   },
   accommodationPets: {
     alignSelf: "center",
     fontSize: 18,
     marginHorizontal: -70,
     marginTop: 10,
-    marginBottom: 5
+    marginBottom: 5,
   },
   accommodationBtn: {
     backgroundColor: "rgba(0,128,0,0.6)",
@@ -863,7 +738,7 @@ export const globalStyles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignSelf: "center",
-    marginVertical: 10
+    marginVertical: 10,
   },
   accommodationBtnCnt: {
     borderWidth: 1,
@@ -874,17 +749,17 @@ export const globalStyles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     width: 150,
-    height: 45
+    height: 45,
   },
   accommodationSitter: {
     fontSize: 18,
     textAlign: "center",
-    marginBottom: 5
+    marginBottom: 5,
   },
   accommodationSitter2: {
     color: "grey",
     textAlign: "center",
-    fontSize: 16
+    fontSize: 16,
   },
   accommodationSitter3: {
     color: "grey",
@@ -893,7 +768,7 @@ export const globalStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#ddd",
     paddingTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
   walkTxt: {
     textAlign: "center",
@@ -901,7 +776,7 @@ export const globalStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#ddd",
     paddingTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
   },
   walkTxt2: {
     textAlign: "center",
@@ -909,6 +784,255 @@ export const globalStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: "#ddd",
     paddingTop: 5,
-    marginBottom: 10
+    marginBottom: 10,
+  },
+  /* Show Walk */
+  showWalkName: {
+    marginTop: "10%",
+    marginBottom: "9%",
+    alignSelf: "center",
+    textAlign: "center",
+  },
+  showWalkPrice: {
+    marginTop: "9%",
+    marginBottom: "9%",
+    alignSelf: "center",
+    fontSize: 17,
+    textAlign: "center",
+  },
+  showWalkDate1: {
+    marginTop: "4%",
+    alignSelf: "center",
+  },
+  showWalkDate2: {
+    alignSelf: "center",
+    color: "#838899",
+  },
+  showWalkDate3: {
+    alignSelf: "center",
+    color: "#838899",
+    marginBottom: "10%",
+  },
+  showWalkBtnContainer: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "rgba(0,128,0,0.6)",
+    justifyContent: "center",
+    width: "160%",
+    height: "21%",
+    marginRight: "-50%",
+  },
+  showWalkBtn: {
+    backgroundColor: "rgba(0,128,0,0.6)",
+    borderRadius: 30,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
+  showWalkImage: {
+    width: "93%",
+    height: "50%",
+    resizeMode: "stretch",
+    borderRadius: 50,
+    marginTop: "20%",
+    marginBottom: "18%",
+    alignSelf: "center",
+  },
+  showWalkImage2: {
+    width: "93%",
+    height: "60%",
+    resizeMode: "stretch",
+    borderRadius: 50,
+    marginTop: "20%",
+    marginBottom: "18%",
+    alignSelf: "center",
+  },
+  showWalkStatus: {
+    marginBottom: "10%",
+    alignSelf: "center",
+    color: "rgba(255,128,0,0.6)",
+    marginTop: "25%",
+    textAlign: "center",
+    fontSize: 17,
+  },
+  showWalkStatus2: {
+    marginBottom: "10%",
+    alignSelf: "center",
+    color: "rgba(0,128,0,0.6)",
+    marginTop: "25%",
+    textAlign: "center",
+    fontSize: 17,
+  },
+  showWalkPay: {
+    color: "rgba(255,0,0,0.6)",
+    marginTop: "15%",
+    textAlign: "center",
+    fontSize: 17,
+    alignSelf: "center",
+    marginBottom: "30%",
+  },
+  showWalkPay2: {
+    color: "rgba(0,128,0,0.6)",
+    marginTop: "15%",
+    textAlign: "center",
+    fontSize: 17,
+    alignSelf: "center",
+    marginBottom: "30%",
+  },
+  showWalkBtnContainer2: {
+    borderWidth: 1,
+    borderColor: "#d6d6e8",
+    alignSelf: "center",
+    backgroundColor: "rgba(255,0,0,0.6)",
+    justifyContent: "center",
+    width: "160%",
+    height: "21%",
+    marginLeft: "-50%",
+  },
+  showWalkBtn2: {
+    backgroundColor: "rgba(255,0,0,0.6)",
+    borderRadius: 30,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
+  showWalkBtnContainer3: {
+    borderWidth: 1,
+    borderColor: "#443099",
+    alignSelf: "center",
+    backgroundColor: "#00a680",
+    justifyContent: "center",
+    width: "85%",
+    height: "29%",
+  },
+  showWalkBtn3: {
+    backgroundColor: "#443099",
+    borderRadius: 30,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
+  showWalkRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  showWalkRow2: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginBottom: "5%",
+  },
+  showWalkFeed: {
+    backgroundColor: "#FFF",
+    flexDirection: "row",
+    padding: 8,
+    marginVertical: "25%",
+    marginHorizontal: 16,
+    borderRadius: 20,
+  },
+  showWalkFeed2: {
+    backgroundColor: "#FFF",
+    flexDirection: "row",
+    padding: 8,
+    marginVertical: "35%",
+    marginHorizontal: 16,
+    borderRadius: 20,
+  },
+  showWalkWaiting: {
+    color: "rgba(255,128,0,0.6)",
+    textAlign: "center",
+    fontSize: 16,
+    alignSelf: "center",
+    marginBottom: "5%",
+  },
+  showWalkWaiting2: {
+    color: "rgba(0,128,0,0.6)",
+    textAlign: "center",
+    fontSize: 22,
+    alignSelf: "center",
+    fontWeight: "bold",
+  },
+  infoUserPublic: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingBottom: 5,
+    textAlignVertical: "center",
+  },
+  userInfoPublicAvatar: {
+    marginLeft: "10%"
+  },
+  userInfoPublicDisplayName: {
+    color: "black",
+    fontSize: 16,
+    marginLeft: "14%"
+  },
+  userInfoPublicGlobal: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 25,
+    backgroundColor: "white",
+    borderColor: "#d6d6e8",
+    marginTop: "10%"
+  },
+  userInfoPublicTitleDescription: {
+    textAlign: "center",
+    paddingBottom: 5,
+    fontSize: 16,
+    borderRadius: 25,
+    color: "#4d399a",
+    paddingTop: 10,
+  },
+  userInfoPublicDescription: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 15,
+    marginRight: 15,
+    borderRadius: 25,
+    color: "black",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  userPublicGlobal: {
+    paddingTop: "25%"
+  },
+  textInformationPublicPro:{
+    textAlign: "left",
+    paddingLeft: 50,
+    color: "#4d399a",
+    fontSize: 20,
+    fontWeight: "bold"
+  },
+  textInformationPublicPro1:{
+    textAlign: "left",
+    paddingLeft: 50,
+    fontSize: 20,
+  },
+  textReviewsPublicPro: {
+    textAlign: "right",
+    paddingRight: 50,
+    fontSize: 20
+  },
+  textReviewsPublicPro1: {
+    textAlign: "right",
+    paddingRight: 50,
+    fontSize: 20,
+    color: "#4d399a",
+    fontWeight: "bold"
+  },
+  tabBarPublicPro: {
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    paddingTop: 10,
+    paddingBottom: 5,
+    textAlignVertical: "center"
+  },
+  infoUserScore:{
+    paddingRight: 70,
+    paddingTop: 15,
+    color: "#4d399a",
+    fontWeight: "bold"
   }
 });

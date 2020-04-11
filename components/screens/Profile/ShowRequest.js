@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  TextInput,
-  View,
-  Image,
-  SafeAreaView,
-  Alert
-} from "react-native";
+import React from "react";
+import { Text, View, Image, SafeAreaView, Alert } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
@@ -15,31 +8,38 @@ import { globalStyles } from "../../styles/global";
 function showRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  console.log(request);
 
   var id = request.worker;
   var tipo = "";
   var status = "";
   var worker = [];
   var pago = "";
+  let valorado;
+  let desabilitado;
 
-  console.log("id:" + id);
+  if (!request.isRated) {
+    valorado = "Valorar servicio";
+    desabilitado = false;
+  } else {
+    valorado = "Servicio valorado";
+    desabilitado = true;
+  }
 
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       worker = snap.val();
     });
 
   const cancel = () => {
     var idRequest = request.id;
-    console.log(" request", request.id);
     var query = db.ref().child("requests/" + idRequest);
+    //var query = db.ref().child("requests/" + idRequest);
 
     query.update({
       pending: false,
-      isCanceled: true
+      isCanceled: true,
     });
 
     alert("Se ha cancelado la solicitud correctamente");
@@ -70,6 +70,17 @@ function showRequest(props) {
   } else {
     pago = "Pendiente de pago";
   }
+
+  const checkIsRated = () => {
+    if (!request.rated) {
+      navigation.navigate("AddReviewService", {
+        request: request,
+        worker: worker,
+      });
+    } else {
+      Alert.alert("Ya ha valorado este servicio", "");
+    }
+  };
 
   if (request.pending && request.type == "walk") {
     return (
@@ -201,6 +212,25 @@ function showRequest(props) {
               }
               titleStyle={globalStyles.showRequestBtnTittle}
             />
+            <Button
+              // buttonStyle={globalStyles.showRequestBtn}
+              // containerStyle={globalStyles.showRequestBtnContainer}
+              title={valorado}
+              onPress={() =>
+                navigation.navigate("AddReviewService", {
+                  request: request,
+                  worker: worker,
+                })
+              }
+              disabled={desabilitado}
+              // icon={
+              //   <Icon
+              //     size={25}
+              //     color="white"
+              //   />
+              // }
+              titleStyle={globalStyles.showRequestBtnTittle}
+            />
           </View>
         </View>
       </SafeAreaView>
@@ -243,10 +273,11 @@ function showRequest(props) {
               buttonStyle={globalStyles.showRequestBtn}
               containerStyle={globalStyles.showRequestBtnContainer}
               title="Proceder al Pago"
-              onPress={() => navigation.navigate("PayRequest", {
-                request
-              })}
-
+              onPress={() =>
+                navigation.navigate("PayRequest", {
+                  request,
+                })
+              }
               icon={
                 <Icon
                   type="font-awesome"
@@ -408,7 +439,7 @@ function showRequest(props) {
               title="Proceder al Pago"
               onPress={() =>
                 navigation.navigate("PayRequest", {
-                  request
+                  request,
                 })
               }
               icon={
@@ -468,7 +499,7 @@ function showRequest(props) {
               title="Abrir Chat"
               onPress={() =>
                 navigation.navigate("Chats", {
-                  request
+                  request,
                 })
               }
               icon={
@@ -480,6 +511,23 @@ function showRequest(props) {
                   marginLeft={10}
                 />
               }
+              titleStyle={globalStyles.showRequestBtnTittle}
+            />
+            <Button
+              // buttonStyle={globalStyles.showRequestBtn}
+              // containerStyle={globalStyles.showRequestBtnContainer}
+              title={valorado}
+              onPress={navigation.navigate("AddReviewService", {
+                request: request,
+                worker: worker,
+              })}
+              disabled={desabilitado}
+              // icon={
+              //   <Icon
+              //     size={25}
+              //     color="white"
+              //   />
+              // }
               titleStyle={globalStyles.showRequestBtnTittle}
             />
           </View>

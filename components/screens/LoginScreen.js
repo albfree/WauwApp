@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import { Text, View, Image } from "react-native";
+import React, { useState, useEffect, Component } from "react";
+import { Text, View, Image, Alert, TouchableOpacity } from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
 import { Button } from "react-native-elements";
 import * as Google from "expo-google-app-auth";
 import { Icon } from "react-native-elements";
-import { YellowBox } from "react-native";
 import _ from "lodash";
-import { globalStyles } from "../styles/global";
 
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
-// const IOS_CLIENT_ID =
-//   "your-ios-client-id";
+import { CheckBox } from "react-native-elements";
+import { withNavigation } from "react-navigation";
+import { loginStyles } from "../styles/loginStyle";
 
-export default class LoginScreen extends Component {
+function LoginScreen(props) {
+  const { navigation } = props;
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const changeChecked = () => {
+    setIsChecked(!isChecked);
+  };
+
   isUserEqual = (googleUser, firebaseUser) => {
     if (firebaseUser) {
       var providerData = firebaseUser.providerData;
@@ -29,7 +29,6 @@ export default class LoginScreen extends Component {
             firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
           providerData[i].uid === googleUser.getBasicProfile().getId()
         ) {
-          // We don't need to reauth the Firebase connection.
           return true;
         }
       }
@@ -37,56 +36,36 @@ export default class LoginScreen extends Component {
     return false;
   };
 
-  onSignIn = googleUser => {
-    //console.log('Google Auth Response', googleUser);
-    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+  onSignIn = (googleUser) => {
     var unsubscribe = firebase.auth().onAuthStateChanged(
-      function(firebaseUser) {
+      function (firebaseUser) {
         unsubscribe();
-        // Check if we are already signed-in Firebase with the correct user.
         if (!this.isUserEqual(googleUser, firebaseUser)) {
-          // Build Firebase credential with the Google ID token.
           var credential = firebase.auth.GoogleAuthProvider.credential(
             googleUser.idToken,
             googleUser.accessToken
           );
-          // Sign in with credential from the Google user.
           firebase
             .auth()
             .signInWithCredential(credential)
-            .then(function(result) {
-              console.log("user signed in ");
+            .then(function (result) {
               if (result.additionalUserInfo.isNewUser) {
-                let idWauwer = db
-                  .ref()
-                  .child("wauwers")
-                  .push().key;
+                let idWauwer = db.ref().child("wauwers").push().key;
 
                 query = db.ref().child("wauwers/" + idWauwer);
                 query.set({
-                  //Person properties
                   id: idWauwer,
                   name: result.additionalUserInfo.profile.given_name,
                   surname: result.additionalUserInfo.profile.family_name,
                   photo: result.additionalUserInfo.profile.picture,
                   email: result.user.email,
-                  //wauer properties
                   wauwPoints: 0,
                   petNumber: 0,
-                  price: 5,
-                  //Número de mascotas que va a aceptar como máximo
-                  petNumberSitter: 0,
-                  petNumberWalk: 0,
-                  homeDescription: "",
-                  avgScore: 2.5,
+                  price: 0,
+                  avgScore: 0,
                   walkSalary: 0,
-                  isWalker: false,
-                  isSitter: false,
-                  location: null
+                  location: null,
                 });
-                console.log("Usuario añadido con éxito");
-
-                //Google query added to get the user in case of database dump
                 firebase
                   .database()
                   .ref("/users/" + result.user.uid)
@@ -95,31 +74,22 @@ export default class LoginScreen extends Component {
                     profile_picture: result.additionalUserInfo.profile.picture,
                     first_name: result.additionalUserInfo.profile.given_name,
                     last_name: result.additionalUserInfo.profile.family_name,
-                    created_at: Date.now()
-                  }); /*
-
-                  .then(function(snapshot) {
-                    // console.log('Snapshot', snapshot);
+                    created_at: Date.now(),
                   });
-                  */
               } else {
                 firebase
                   .database()
                   .ref("/users/" + result.user.uid)
                   .update({
-                    last_logged_in: Date.now()
+                    last_logged_in: Date.now(),
                   });
               }
             })
-            .catch(function(error) {
-              // Handle Errors here.
+            .catch(function (error) {
               var errorCode = error.code;
               var errorMessage = error.message;
-              // The email of the user's account used.
               var email = error.email;
-              // The firebase.auth.AuthCredential type that was used.
               var credential = error.credential;
-              // ...
             });
         } else {
           console.log("User already signed-in Firebase.");
@@ -128,56 +98,81 @@ export default class LoginScreen extends Component {
     );
   };
 
-  signInWithGoogle = async () => {
-    try {
-      const result = await Google.logInAsync({
-        iosClientId:
-          "785332619976-cs6m8a4l4m44772b4ib163luju77bvtn.apps.googleusercontent.com",
-        androidClientId:
-          "785332619976-255qeunsgbofgci9vk5ddtae3i8d9b41.apps.googleusercontent.com",
-        scopes: ["profile", "email"]
-      });
+  const funct = () => {
+    signInWithGoogle(isChecked);
+  };
 
-      if (result.type === "success") {
-        this.onSignIn(result);
-        return result.accessToken;
-      } else {
-        return { cancelled: true };
+  const signInWithGoogle = async (isChecked) => {
+    if (isChecked === false) {
+      Alert.alert(
+        "Advertencia",
+        "Debe aceptar los términos y condiciones de uso para poder usar Wauw."
+      );
+    } else {
+      try {
+        const result = await Google.logInAsync({
+          iosClientId:
+            "191130769894-9h9fm6gvurfb5l20grk9jirf4svn1n3s.apps.googleusercontent.com",
+          androidClientId:
+            "191130769894-jebp8hq5kp341r7nagcs33667quenvl9.apps.googleusercontent.com",
+          scopes: ["profile", "email"],
+        });
+
+        if (result.type === "success") {
+          this.onSignIn(result);
+          return result.accessToken;
+        } else {
+          return { cancelled: true };
+        }
+      } catch (e) {
+        return { error: true };
       }
-    } catch (e) {
-      return { error: true };
     }
   };
 
-  render() {
-    return (
-      <View style={globalStyles.loginView}>
-        <Text style={globalStyles.loginTxt}>WAUW</Text>
-        <Image
-          source={require("../../assets/images/logo.png")}
-          style={globalStyles.loginImage}
-        />
-        <Image
-          source={require("../../assets/images/prints.png")}
-          style={globalStyles.loginPrints}
-        />
-        <Button
-          buttonStyle={globalStyles.loginBtn}
-          containerStyle={globalStyles.loginBtnContainer}
-          title="Entrar con Google"
-          onPress={this.signInWithGoogle}
-          icon={
-            <Icon
-              type="material-community"
-              name="google"
-              size={30}
-              color="white"
-              marginLeft={25}
-            />
-          }
-          titleStyle={globalStyles.loginBtnTittle}
-        />
+  const onPressTerms = () => {
+    return navigation.navigate("Terms");
+  };
+
+  return (
+    <View style={loginStyles.loginView}>
+      <Text style={loginStyles.loginTxt}>WAUW</Text>
+      <Image
+        source={require("../../assets/images/logo.png")}
+        style={loginStyles.loginImage}
+      />
+      <Image
+        source={require("../../assets/images/prints.png")}
+        style={loginStyles.loginPrints}
+      />
+      <View style={loginStyles.loginView2}>
+        <CheckBox checked={isChecked} onPress={changeChecked} />
+        <Text>
+          He leído y acepto los
+          <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
+            {" "}
+            términos y condiciones de uso
+          </Text>
+        </Text>
       </View>
-    );
-  }
+      <Button
+        buttonStyle={loginStyles.loginBtn}
+        containerStyle={loginStyles.loginBtnContainer}
+        title="Entrar con Google"
+        onPress={funct}
+        icon={
+          <Icon
+            type="material-community"
+            name="google"
+            size={30}
+            color="white"
+            marginLeft={25}
+          />
+        }
+        titleStyle={loginStyles.loginBtnTittle}
+      />
+    </View>
+  );
 }
+
+export default withNavigation(LoginScreen);
