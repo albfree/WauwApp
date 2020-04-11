@@ -1,0 +1,233 @@
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  Button
+} from "react-native";
+import { db } from "../../population/config.js";
+import { withNavigation } from "react-navigation";
+import { email } from "../../account/QueriesProfile";
+import { globalStyles } from "../../styles/global";
+import { FontAwesome } from "@expo/vector-icons";
+import { Icon } from "react-native-elements";
+import firebase from "firebase";
+
+function ProfileDeleteData(props) {
+    const {navigation} = props;
+
+    const [loading, setLoading] = useState(true);
+    const [requestsWorkerList, setRequestWorkerList] = useState([]);
+    const [requestsOwnerList, setRequestOwnerList] = useState([]);
+    const [user, setUser] = useState();
+    const [reloadData, setReloadData] = useState(false);
+
+    let wauwerId;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", snap => {
+      wauwerId = snap.val().id;
+    });
+
+    let anonWauwerId = "anonimo";
+
+    useEffect(() => {
+      db.ref("requests")
+        .orderByChild("worker")
+        .equalTo(wauwerId)
+        .on("value", (snap) => {
+          const requests = [];
+          snap.forEach((child) => {
+            requests.push(child.val());
+          });
+          setRequestWorkerList(requests);
+        });
+        setLoading(false);
+        setReloadData(false);
+      }, []);
+
+      useEffect(() => {
+        db.ref("requests")
+          .orderByChild("owner")
+          .equalTo(wauwerId)
+          .on("value", (snap) => {
+            const requestsO = [];
+            snap.forEach((child) => {
+              requestsO.push(child.val());
+            });
+            setRequestOwnerList(requestsO);
+          });
+          setLoading(false);
+          setReloadData(false);
+        }, []);
+
+        useEffect(() => {
+          db.ref("users")
+            .orderByChild("gmail")
+            .equalTo(email)
+            .on("value", (snap) => {
+              snap.forEach((child) => {
+                setUser(child.val());
+              });
+            });
+
+            setLoading(false);
+            setReloadData(false);
+          }, []);
+          
+
+  const aviso = () => {
+    Alert.alert(
+        "Aviso",
+        "Aviso. Estás a punto de borrar tus datos de esta aplicación. Para volver a usar la aplicación deberás registrarte de nuevo",
+        [
+            {
+             text: "Vale",
+            onPress: validateAndDelete, 
+            },
+            {
+            text: "Cancelar",
+            style: "cancel",
+            },
+        ],
+        { cancelable: false }
+      );
+  };
+
+  const validateAndDelete = () =>  {
+
+    if(requestsWorkerList && requestsWorkerList.length) {
+      for (let i = 0; i < requestsWorkerList.length; i++) {
+        if(requestsWorkerList[i].pending == false && requestsWorkerList[i].isFinished == false || requestsWorkerList[i].isPayed == false || requestsWorkerList[i].isRated == false) {
+        Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
+        break;
+        } else {
+          let idWorker = {
+            worker: anonWauwerId
+          };
+          db.ref("requests/" + requestsWorkerList[i].id).update(idWorker);
+        }
+      }
+    } else {
+      if(requestsOwnerList && requestsOwnerList.length) {
+        for (let i = 0; i < requestsOwnerList.length; i++) {
+          if(requestsOwnerList[i].pending == false && requestsOwnerList[i].isFinished == false || requestsOwnerList[i].isPayed == false || requestsOwnerList[i].isRated == false) {
+          Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
+          break;
+          } else {
+            let idOwner = {
+              owner: anonWauwerId
+            };
+            db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
+          }
+        } 
+    } else {
+      deleteData(wauwerId);
+    }
+    }
+  };
+
+
+    return(
+      <View>
+        <TouchableOpacity
+        style={globalStyles.drawerMenuView}
+        onPress={navigation.openDrawer}
+      >
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Eliminar datos</Text>
+          </View>
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
+      </TouchableOpacity>
+        <Button
+        buttonStyle={globalStyles.addDogBtn}
+        containerStyle={globalStyles.addDogBtnContainer}
+        title="Eliminar datos"
+        onPress={aviso}
+        />
+      </View>
+    );
+}
+
+function deleteData(props) {
+
+ 
+  let wauwerId = props;
+  
+  
+  var user = [];
+  db.ref("users")
+  .orderByChild("gmail")
+  .equalTo(email)
+  .on("value", (snap) => {
+    snap.forEach((child) => {
+     user.push(child.val());
+    });
+  });
+
+  
+   //BORRADO DE MASCOTAS
+  
+      db.ref("pet")
+      .orderByChild("owner/id")
+      .equalTo(wauwerId)
+      .on("value", (snap) => {
+        snap.forEach((child) => {
+          child.ref.remove();
+        });
+      });
+      
+   
+   
+
+  //BORRADO DE ALOJAMIENTOS
+  
+      db.ref("accommodation")
+      .orderByChild("worker")
+      .equalTo(wauwerId)
+      .on("value", (snap) => {
+        snap.forEach((child) => {
+          child.ref.remove();
+        });
+      });
+      
+
+  //BORRADO DE DISPONIBILIDADES DEL WAUWER
+  
+      db.ref("availabilities-wauwers")
+      .child(wauwerId)
+      .remove();
+ 
+
+ //BORRADO DE USER Y WAUWER
+
+  if (!user[0].hasOwnProperty("last_logged_in")) {
+    Alert.alert("Lo sentimos. Para poder eliminar la cuenta debe haber iniciado sesión más de una vez");
+  } else {
+    var currentUser = firebase.auth().currentUser;
+    var userUid = currentUser.uid;
+    currentUser.delete().then(function() {
+      db.ref("users/"+userUid).remove();
+      db.ref("wauwers/"+wauwerId).remove();
+      Alert.alert(
+        "Éxito",
+        "Su cuenta y toda la información relacionada han sido eliminados.",
+        [
+          {
+            text: "Ok",
+            style: "cancel", 
+          },
+          ],
+          { cancelable: false }
+        );
+    });
+  }
+}
+
+export default withNavigation(ProfileDeleteData);

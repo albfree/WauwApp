@@ -14,6 +14,7 @@ import MyRequestsScreen from "../screens/Profile/ProfileMyRequests";
 import MyDogsScreen from "../screens//Profile/ProfileMyDogs";
 import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
 import MyWalksScreen from "../screens/Profile/ProfileMyWalks";
+import DeleteDataScreen from "../screens/Profile/ProfileDeleteData";
 
 import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
@@ -75,6 +76,21 @@ export default createDrawerNavigator(
       screen: MyWalksScreen,
       navigationOptions: {
         drawerLabel: "Mis Paseos",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog-service"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+
+    DeleteData: {
+      screen: DeleteDataScreen,
+      navigationOptions: {
+        drawerLabel: "Eliminar Cuenta",
         drawerIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
