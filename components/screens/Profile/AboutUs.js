@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  Linking,
 } from "react-native";
 import { globalStyles } from "../../styles/global";
 import { aboutStyles } from "../../styles/aboutStyle";
@@ -92,7 +93,14 @@ export default function AboutUs(props) {
 
         <Text style={aboutStyles.aboutTxt2}>
           <Text style={aboutStyles.aboutTxt3}>Email:</Text>{" "}
-          wauwispp1920@gmail.com {"\n"}
+          <Text
+              onPress={() => {
+                Linking.openURL("mailto:wauwispp1920@gmail.com");
+              }}
+              style={aboutStyles.aboutLink}
+            >
+              wauwispp1920@gmail.com
+            </Text> {"\n"}
           <Text style={aboutStyles.aboutTxt3}>Dirección:</Text> Escuela Técnica
           Superior de Ingeniería Informática, Universidad de Sevilla {"\n"}
           <Text style={aboutStyles.aboutTxt3}>Landing page:</Text> cutt.ly/wauw

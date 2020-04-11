@@ -57,7 +57,7 @@ export const loginStyles = StyleSheet.create({
   },
   loginTxt4: {
     marginBottom: 10,
-    textAlign: "center",
+    textAlign: "justify",
   },
   loginView: {
     alignItems: "center",
