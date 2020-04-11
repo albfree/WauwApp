@@ -112,11 +112,19 @@ function createRequest(props) {
     db.ref("requests/" + id)
       .set(requestData)
       .then(() => {
-        Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-        navigation.popToTop();
-        setIsLoading(false);
-        setReloadData(true);
-        setIsVisibleModal(false);
+        db.ref("wauwers/" + newWorker.id)
+          .update({ hasRequests: true })
+          .then(() => {
+            Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
+            navigation.popToTop();
+            setIsLoading(false);
+            setReloadData(true);
+            setIsVisibleModal(false);
+          })
+          .catch(() => {
+            setError("Ha ocurrido un error");
+            setIsLoading(false);
+          });
       })
       .catch(() => {
         setError("Ha ocurrido un error");
