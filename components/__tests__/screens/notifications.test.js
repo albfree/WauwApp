@@ -4,7 +4,7 @@ import Notifications from '../../screens/Notifications';
 import mockStore from 'redux-mock-store';
 
 describe('<Notifications />', () => {
-  it('testing the Notifications screen', async () => {
+  it.skip('testing the Notifications screen', async () => {
     const store = mockStore({
         rehydrated: false,
         navigation: {navigate: jest.fn(), params: 10},
