@@ -14,6 +14,8 @@ import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
 import { email } from "../account/QueriesProfile";
 import BlankView from "./BlankView";
+import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
+import { searchWalksStyles } from "../styles/searchWalkStyle.js";
 
 function ListAccommodations(props) {
   const { navigation } = props;
@@ -56,11 +58,13 @@ function ListAccommodations(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
+      <Text style={searchAccommodationStyles.searchAccommodationTxt}>
+        {"Escoja al cuidador que desee"}
+      </Text>
       <ScrollView>
         {accommodationsList.length > 0 ? (
           <FlatList
             data={accommodationsList}
-            style={globalStyles.myRequestsFeed}
             renderItem={(accommodation) => (
               <Accommodation
                 accommodation={accommodation}
@@ -108,29 +112,36 @@ function Accommodation(props) {
 
   return (
     <TouchableOpacity onPress={checkHasPets}>
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={searchAccommodationStyles.searchAccommodationFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
+          <View style={searchAccommodationStyles.searchAccommodationView}>
             <TouchableOpacity onPress={publicProf}>
-              <View style={globalStyles.searchAccommodationsColumn1}>
+              <View style={searchAccommodationStyles.searchAccommodationColumn}>
                 <Avatar rounded size="large" source={{ uri: worker.photo }} />
-                <Text style={globalStyles.myRequestsPrice}>
-                  Precio: {accommodation.item.salary} €
-                </Text>
-                <Text style={globalStyles.notificationsDescription}>
-                  {worker.description}
+                <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                  {worker.name}
                 </Text>
               </View>
             </TouchableOpacity>
-            <View style={globalStyles.searchAccommodationsColumn2}>
-              <Text style={globalStyles.notificationsNum}>Disponibilidad</Text>
-              <Text style={globalStyles.myRequestsType}>
+            <View style={searchAccommodationStyles.searchAccommodationColumn2}>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
+                Precio
+              </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                {accommodation.item.salary} €
+              </Text>
+            </View>
+            <View style={searchAccommodationStyles.searchAccommodationColumn3}>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
+                Disponibilidad
+              </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
                 Del{" "}
                 {accommodation.item.startTime
                   .toLocaleString("en-US")
                   .substring(0, 10)}
               </Text>
-              <Text style={globalStyles.myRequestsType}>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
                 al{" "}
                 {accommodation.item.endTime
                   .toLocaleString("en-US")
