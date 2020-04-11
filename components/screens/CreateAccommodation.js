@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, SafeAreaView, Alert, ScrollView, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  SafeAreaView,
+  Alert,
+  ScrollView,
+  Keyboard,
+} from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { email } from "../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
-
 
 function CreateAccommodation(props) {
   const [newStartTime, setStartTime] = useState(new Date());
@@ -27,7 +34,7 @@ function CreateAccommodation(props) {
     setStartTime(currentDate);
   };
 
-  const showModeS = currentMode => {
+  const showModeS = (currentMode) => {
     setShowS(true);
     setModeS(currentMode);
   };
@@ -42,7 +49,7 @@ function CreateAccommodation(props) {
     setEndTime(currentDate);
   };
 
-  const showModeE = currentMode => {
+  const showModeE = (currentMode) => {
     setShowE(true);
     setModeE(currentMode);
   };
@@ -73,7 +80,7 @@ function CreateAccommodation(props) {
     addAccommodation();
   };
 
-  const addCommissions = props => {
+  const addCommissions = (props) => {
     let price = props * 1.25;
     setNewSalary(price);
     setNewPrice(props);
@@ -90,7 +97,7 @@ function CreateAccommodation(props) {
       isCanceled: newIsCanceled,
       salary: newSalary,
       worker: newWorker,
-      price: newPrice
+      price: newPrice,
     };
 
     if (
@@ -195,15 +202,15 @@ function CreateAccommodation(props) {
               <View style={globalStyles.editAccommodationColumn2}>
                 <Text style={globalStyles.editAccommodationEditDate}>
                   Establecer Fecha
-              </Text>
+                </Text>
                 <Text style={globalStyles.editAccommodationEditPrize}>
                   Precio / noche
-              </Text>
+                </Text>
                 <TextInput
                   placeholder="10.00"
                   keyboardType="numeric"
                   containerStyle={globalStyles.editAccommodationEditPrize2}
-                  onChange={v => addCommissions(v.nativeEvent.text)}
+                  onChange={(v) => addCommissions(v.nativeEvent.text)}
                 />
                 <Button
                   buttonStyle={globalStyles.createAccommodationBtn}
