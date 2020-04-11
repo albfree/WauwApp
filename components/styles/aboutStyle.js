@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+const celeste = "#33AAFF";
+
 export const aboutStyles = StyleSheet.create({
   aboutImage: {
     alignSelf: "center",
@@ -11,6 +13,9 @@ export const aboutStyles = StyleSheet.create({
     marginVertical: 20,
     resizeMode: "stretch",
     width: "85%",
+  },
+  aboutLink: {
+    color: celeste,
   },
   aboutTxt: {
     fontSize: 24,
