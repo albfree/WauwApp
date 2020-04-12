@@ -15,7 +15,7 @@ import MyDogsScreen from "../screens//Profile/ProfileMyDogs";
 import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
 import MyWalksScreen from "../screens/Profile/ProfileMyWalks";
 import AboutUsScreen from "../screens/Profile/AboutUs";
-
+import LastConexionsScreen from "../screens/Profile/LastConexion";
 import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
@@ -98,9 +98,23 @@ export default createDrawerNavigator(
             size={17}
             color="#443099"
           />
-        )
-      }
-    }
+        ),
+      },
+    },
+    LastConexion: {
+      screen: LastConexionsScreen,
+      navigationOptions: {
+        drawerLabel: "Últimas Conexiones",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="security"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
 
     /* MyDogs: {
       screen: MyDogsScreen,
