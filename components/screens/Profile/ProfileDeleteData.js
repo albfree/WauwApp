@@ -98,6 +98,9 @@ function ProfileDeleteData(props) {
 
   const validateAndDelete = () =>  {
 
+    console.log(requestsOwnerList);
+    console.log(requestsWorkerList);
+
     if(requestsWorkerList && requestsWorkerList.length) {
       for (let i = 0; i < requestsWorkerList.length; i++) {
         if(requestsWorkerList[i].pending == false && requestsWorkerList[i].isFinished == false || requestsWorkerList[i].isPayed == false || requestsWorkerList[i].isRated == false) {
@@ -174,9 +177,7 @@ function deleteData(props) {
   
    //BORRADO DE MASCOTAS
   
-      db.ref("pet")
-      .child(wauwerId)
-      .remove();
+      db.ref("pet/"+ wauwerId).remove();
       
    
    
@@ -195,9 +196,7 @@ function deleteData(props) {
 
   //BORRADO DE DISPONIBILIDADES DEL WAUWER
   
-      db.ref("availabilities-wauwers")
-      .child(wauwerId)
-      .remove();
+      db.ref("availabilities-wauwers/" + wauwerId).remove();
  
 
  //BORRADO DE USER Y WAUWER

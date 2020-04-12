@@ -145,7 +145,7 @@ function LoginScreen(props) {
         source={require("../../assets/images/prints.png")}
         style={loginStyles.loginPrints}
       />
-      <View style={loginStyles.loginView2}>
+      
         <CheckBox checked={isChecked} onPress={changeChecked} />
         <Text>
           He leído y acepto los
@@ -154,7 +154,7 @@ function LoginScreen(props) {
             términos y condiciones de uso
           </Text>
         </Text>
-      </View>
+      
       <Button
         buttonStyle={loginStyles.loginBtn}
         containerStyle={loginStyles.loginBtnContainer}

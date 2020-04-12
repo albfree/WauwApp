@@ -5,9 +5,9 @@ import TermsAndConditionsScreen from "../screens/TermsAndConditions";
 const LoginStack = createStackNavigator({
   Login: {
     screen: LoginScreen,
-    navigationOptions: () => ({
+   /* navigationOptions: () => ({
       header: null,
-    }),
+    }),*/
   },
   Terms: {
     screen: TermsAndConditionsScreen,
