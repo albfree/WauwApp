@@ -99,7 +99,7 @@ function createRequest(props) {
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
     );
     setSelect(value);
-    setNewPrice(wauwerPrices[itemPosition]);
+    //setNewPrice(wauwerPrices[itemPosition]);
   };
 
   const addRequest = () => {
