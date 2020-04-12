@@ -5,7 +5,7 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
@@ -109,6 +109,7 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
+            <Text>Última conexión: "Introdudir aquí última conexión"</Text>
           </View>
         </View>
       </ScrollView>
