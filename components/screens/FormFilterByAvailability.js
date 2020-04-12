@@ -38,15 +38,15 @@ function FormFilterByAvailability(props) {
       const allAvailability = [];
       const allIds = [];
       snap.forEach((child) => {
-        if (child.val().wauwer.id !== id) {
+        if (child.key == id) {
           query
-            .child(child.val().wauwer.id)
+            .child(child.key)
             .child("availabilities")
             .on("value", (child) => {
               child.forEach((kid) => {
-                if (!allIds.includes(kid.val().id)) {
-                  allAvailability.push(kid.val());
-                  allIds.push(kid.val().id);
+                if (!allIds.includes(kid.key)) {
+                  allAvailability.push(kid.val().availability);
+                  allIds.push(kid.key);
                 }
               });
             });
@@ -72,9 +72,7 @@ function FormFilterByAvailability(props) {
             renderItem={(interval) => (
               <Availability interval={interval} navigation={navigation} />
             )}
-            keyExtractor={(interval) => {
-              interval;
-            }}
+            keyExtractor={(interval) => interval.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
@@ -101,7 +99,7 @@ function Availability(props) {
           <View style={formSearchWalkStyles.formSearchWalkFeed}>
             <View style={globalStyles.viewFlex1}>
               <Text style={formSearchWalkStyles.formSearchWalkTxt2}>
-                {interval.item.day} {interval.item.startTime} {"h - "}{" "}
+                {interval.item.day} {interval.item.startTime} {"h -"}{" "}
                 {interval.item.endDate} {"h"}
               </Text>
             </View>

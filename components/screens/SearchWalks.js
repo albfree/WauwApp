@@ -40,10 +40,13 @@ function SearchWalks(props) {
     db.ref("availabilities-wauwers").on("value", (snap) => {
       const allData = [];
       snap.forEach((child) => {
-        if (child.val().wauwer.id != id) {
+        if (child.key == id) {
           for (var availability in child.val().availabilities) {
             if (availability === interval.id) {
-              allData.push(child.val().wauwer);
+              const wData = [];
+              wData.push(child.key);
+              wData.push(interval.id);
+              allData.push(wData);
             }
           }
         }
@@ -59,7 +62,8 @@ function SearchWalks(props) {
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
         <Text style={searchWalksStyles.searchWalkTxt}>
-          {"Escoja al paseador que desee"}
+          {"Escoja al paseador que desee\n\n"}
+          {"para los "+interval.day+" de "+interval.startTime+"h a "+interval.endDate+"h"}
         </Text>
 
         <Loading isVisible={loading} text={"Un momento..."} />
@@ -88,16 +92,28 @@ function SearchWalks(props) {
 
 function Wauwer(props) {
   const { wauwerData, petNumber, navigation } = props;
-  const id = wauwerData.item.id;
+  const id = wauwerData.item[0];
+  console.log(wauwerData);
+
   let user;
   db.ref("wauwers/" + id).once("value", (snap) => {
     user = snap.val();
   });
 
+  let price;
+  db.ref("availabilities-wauwers")
+    .child(id)
+    .child("availabilities")
+    .child(wauwerData.item[1])
+    .once("value", (snap) => {
+      price = snap.val().price;
+    });
+
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
-        wauwer: user, //TODO: MODIFICAR LA REDIRECCIÓN
+        wauwer: user,
+        price: price, //TODO: MODIFICAR LA REDIRECCIÓN
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");
@@ -137,7 +153,7 @@ function Wauwer(props) {
                 />
               </View>
               <Text style={searchWalksStyles.searchWalkTxt2}>
-                Precio / Hora: {user.price} €
+                Precio / Hora: {price} €
               </Text>
             </View>
           </View>

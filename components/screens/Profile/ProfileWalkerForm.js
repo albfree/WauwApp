@@ -31,6 +31,7 @@ function ProfileWalkerForm(props) {
   const [update, setUpdate] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [globales, setGlobales] = useState([]);
+  const [sueldo, setSueldo] = useState(0);
   const rangos = [
     ["Lunes", 0],
     ["Martes", 16],
@@ -57,12 +58,12 @@ function ProfileWalkerForm(props) {
       (snap) => {
         snap.forEach((child) => {
           let hour =
-            child.val().day +
+            child.val().availability.day +
             ": " +
-            child.val().startTime +
+            child.val().availability.startTime +
             " - " +
-            child.val().endDate;
-          let id = child.val().id;
+            child.val().availability.endDate;
+          let id = child.val().availability.id;
           resulIds.push(id);
           resulHours.push(hour);
         });
@@ -70,9 +71,11 @@ function ProfileWalkerForm(props) {
         setHours(resulHours);
       }
     );
-    if (ids.length == 1) {
-      db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").set(userInfo);
-    }
+    // if (ids.length >= 1) {
+    //   db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").update({
+    //     price: sueldo,
+    //   });
+    // }
     setUpdate(false);
     setIsVisibleLoading(false);
   }, [update]);
@@ -110,13 +113,19 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
+    const money = Math.round(sueldo * 1.3 * 10) / 10;
+    const walkData = {
+      availability: availability,
+      price: money,
+    };
+
     db.ref(
       "availabilities-wauwers/" +
         userInfo.id +
         "/availabilities/" +
         availability.id
     )
-      .set(availability)
+      .set(walkData)
       .then(() => {
         setUpdate(true);
         toastRef.current.show("Disponibilidad añadida");
@@ -189,7 +198,7 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.walkSalary >= 5) {
+      if (sueldo >= 5) {
         confirmAdd(id);
       } else {
         Alert.alert(
@@ -230,11 +239,12 @@ function ProfileWalkerForm(props) {
                     walkSalary: precio,
                   })
                   .then(() => {
-                    setUpdate(true);
+                    setSueldo(precio);
+                    //setUpdate(true);
                   });
               }}
             >
-              {userInfo.walkSalary}
+              {sueldo}
             </TextInput>
 
             <Collapse style={walkerFormStyles.walkerFormList2}>

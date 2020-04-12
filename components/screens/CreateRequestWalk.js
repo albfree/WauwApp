@@ -18,10 +18,9 @@ import { searchWalkStyles, searchWalksStyles } from "../styles/searchWalkStyle";
 
 function createRequest(props) {
   const { navigation } = props;
-  const [newPrice, setNewPrice] = useState(
-    navigation.state.params.wauwer.price
-  );
-  const price = navigation.state.params.wauwer.price;
+  const [newPrice, setNewPrice] = useState(navigation.state.params.price);
+
+  const price = navigation.state.params.price;
   const [newInterval, setNewInterval] = useState(null);
   //const [newOwner, setNewOwner] = useState([]);
   const newWorker = navigation.state.params.wauwer;
@@ -45,20 +44,32 @@ function createRequest(props) {
   const [availabilities, setAvailabilities] = useState([]);
   const [newAvailability, setNewAvailability] = useState([]);
 
+  const [wauwerPrices, setWauwerPrices] = useState([]);
+
   useEffect(() => {
     // To retrieve the walker availabilities
 
-    db.ref("availabilities-wauwers")
+    const ref = db
+      .ref("availabilities-wauwers")
       .child(newWorker.id)
-      .child("availabilities")
-      .on("value", (snap) => {
+      .child("availabilities");
+    ref
+      .once("value", (snap) => {
         var availabilitiesList = [];
         snap.forEach((child) => {
-          availabilitiesList.push(child.val());
+          availabilitiesList.push(child.val().availability);
         });
         setAvailabilities(availabilitiesList);
+      })
+      .then(() => {
+        ref.once("value", (snap) => {
+          const prices = [];
+          snap.forEach((child) => {
+            prices.push(child.val().price);
+          });
+          setWauwerPrices(prices);
+        });
       });
-
     setReloadData(false);
   }, [reloadData]);
 
@@ -81,12 +92,14 @@ function createRequest(props) {
     }
   };
 
-  const funct = (value) => {
+  const funct = (value, itemPosition) => {
     setNewAvailability(value.id);
     setNewInterval(
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
     );
     setSelect(value);
+    console.log(wauwerPrices);
+    setNewPrice(wauwerPrices[itemPosition]);
   };
 
   const addRequest = () => {
@@ -152,10 +165,10 @@ function createRequest(props) {
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Cuándo quiere que pasee a su perro?"}
             </Text>
-            <View style={searchWalksStyles.searchWalksView2}>
+            {/* <View style={searchWalksStyles.searchWalksView2}>
               <Picker
                 selectedValue={select}
-                onValueChange={(value) => funct(value)}
+                onValueChange={(value, itemPosition) => funct(value, itemPosition)}
               >
                 {availabilities.map((item) => (
                   <Picker.Item
@@ -171,7 +184,7 @@ function createRequest(props) {
                   />
                 ))}
               </Picker>
-            </View>
+            </View> */}
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Qué perro desea que pasee ?"}
             </Text>
