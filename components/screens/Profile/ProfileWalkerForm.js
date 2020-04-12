@@ -13,6 +13,9 @@ import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import _ from "lodash";
+
+import { Button, Icon } from "react-native-elements";
+
 import {
   Collapse,
   CollapseHeader,
@@ -31,6 +34,9 @@ function ProfileWalkerForm(props) {
   const [update, setUpdate] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [globales, setGlobales] = useState([]);
+
+  const [newPrice, setNewPrice] = useState(null);
+
   const rangos = [
     ["Lunes", 0],
     ["Martes", 16],
@@ -202,6 +208,10 @@ function ProfileWalkerForm(props) {
     }
   };
 
+  const cambiaPrecio = (value) => {
+    setNewPrice(value);
+  };
+
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView keyboardShouldPersistTaps={false}>
@@ -212,30 +222,46 @@ function ProfileWalkerForm(props) {
               {" "}
               (precio / hora){" "}
             </Text>
+
             <TextInput
               style={walkerFormStyles.walkerFormImput}
               keyboardType={"numeric"}
-              onChange={(val) => {
-                let precio;
-                if (val.nativeEvent.text !== "") {
-                  precio = parseInt(val.nativeEvent.text);
-                } else {
-                  precio = 0;
-                }
-                const salary = Math.round(precio * 1.3 * 10) / 10;
-
-                db.ref("wauwers/" + userInfo.id)
-                  .update({
-                    price: salary,
-                    walkSalary: precio,
-                  })
-                  .then(() => {
-                    setUpdate(true);
-                  });
-              }}
+              placeholder="5"
+              onChange={(v) => cambiaPrecio(v.nativeEvent.text)}
             >
               {userInfo.walkSalary}
             </TextInput>
+            <Button
+              buttonStyle={globalStyles.createAccommodationBtn}
+              containerStyle={globalStyles.createAccommodationBtnContainer}
+              title="Añadir Precio"
+              onPress={() => {
+                if (newPrice >= 5) {
+                  const salary = ((newPrice * 1.3 * 100) / 100).toFixed(2);
+                  db.ref("wauwers/" + userInfo.id)
+                    .update({
+                      price: salary,
+                      walkSalary: newPrice,
+                    })
+                    .then(() => {
+                      setUpdate(true);
+                    });
+                  Alert.alert("Precio añadido con éxito");
+                } else {
+                  Alert.alert("Su salario debe ser mayor o igual a 5");
+                }
+              }}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="content-save"
+                  size={25}
+                  color="white"
+                  marginLeft={5}
+                />
+              }
+              titleStyle={globalStyles.createAccommodationBtnTxt}
+            />
 
             <Collapse style={walkerFormStyles.walkerFormList2}>
               <CollapseHeader style={walkerFormStyles.walkerFormList}>

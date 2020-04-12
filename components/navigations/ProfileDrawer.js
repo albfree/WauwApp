@@ -16,6 +16,7 @@ import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
 import MyWalksScreen from "../screens/Profile/ProfileMyWalks";
 import DeleteDataScreen from "../screens/Profile/ProfileDeleteData";
 import AboutUsScreen from "../screens/Profile/AboutUs";
+import LastConexionsScreen from "../screens/Profile/LastConexion";
 import FeedbackScreen from "../screens/Profile/Feedback";
 
 import { globalStyles } from "../styles/global";
@@ -118,7 +119,20 @@ export default createDrawerNavigator(
         ),
       },
     },
-
+    LastConexion: {
+      screen: LastConexionsScreen,
+      navigationOptions: {
+        drawerLabel: "Últimas Conexiones",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="security"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
     Feedback: {
       screen: FeedbackScreen,
       navigationOptions: {
