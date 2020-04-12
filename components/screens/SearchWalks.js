@@ -40,7 +40,7 @@ function SearchWalks(props) {
     db.ref("availabilities-wauwers").on("value", (snap) => {
       const allData = [];
       snap.forEach((child) => {
-        if (child.key == id) {
+        if (child.key !== id) {
           for (var availability in child.val().availabilities) {
             if (availability === interval.id) {
               const wData = [];

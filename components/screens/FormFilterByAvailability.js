@@ -38,7 +38,7 @@ function FormFilterByAvailability(props) {
       const allAvailability = [];
       const allIds = [];
       snap.forEach((child) => {
-        if (child.key == id) {
+        if (child.key !== id) {
           query
             .child(child.key)
             .child("availabilities")
