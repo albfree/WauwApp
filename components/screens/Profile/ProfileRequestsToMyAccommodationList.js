@@ -14,11 +14,11 @@ import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
 
-function ProfileMyAccommodations(props) {
+function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;
 
   const [loading, setLoading] = useState(true);
-  const [accommodationsList, setAccommodationsList] = useState([]);
+  const [RequestsList, setRequestsList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
   let wauwerId;
@@ -30,18 +30,18 @@ function ProfileMyAccommodations(props) {
     });
 
   useEffect(() => {
-    db.ref("accommodation")
+    db.ref("Request")
       .orderByChild("worker")
       .equalTo(wauwerId)
       .on("value", (snap) => {
-        const accommodations = [];
+        const Requests = [];
         snap.forEach((child) => {
           var endTime = new Date(child.val().endTime);
-          if (endTime > new Date()) {
-            accommodations.push(child.val());
+          if (endTime > new Date() || child.val().isFinished === false) {
+            Requests.push(child.val());
           }
         });
-        setAccommodationsList(accommodations);
+        setRequestsList(Requests);
       });
     setReloadData(false);
     setLoading(false);
@@ -56,7 +56,7 @@ function ProfileMyAccommodations(props) {
       >
         <View>
           <View style={globalStyles.drawerTitle}>
-            <Text style={globalStyles.drawerTxt}>Mis Alojamientos</Text>
+            <Text style={globalStyles.drawerTxt}>Solicitudes a mi alojamiento</Text>
           </View>
           <View style={globalStyles.drawerIcon}>
             <FontAwesome name="bars" size={24} color="#161924" />
@@ -64,51 +64,33 @@ function ProfileMyAccommodations(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
-        {accommodationsList.length > 0 ? (
+        {RequestsList.length > 0 ? (
           <FlatList
-            data={accommodationsList}
+            data={RequestsList}
             style={globalStyles.myRequestsFeed}
-            renderItem={(accommodation) => (
-              <Accommodation
-                accommodation={accommodation}
+            renderItem={(Request) => (
+              <Request
+                Request={Request}
                 navigation={navigation}
               />
             )}
-            keyExtractor={(accommodation) => accommodation.id}
+            keyExtractor={(Request) => Request.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <BlankView text={"No tiene alojamientos habilitados"} />
+          <BlankView text={"No tiene solicitudes para este alojamiento."} />
         )}
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function Accommodation(accomodationIn) {
-  const { accommodation, navigation } = accomodationIn;
+function Request(requestIn) {
+  const { request, navigation } = requestIn;
   let status = "";
   let color = "rgba(0,128,0,0.6)";
-  let editable = false;
-  var startTime = new Date(accommodation.item.startTime);
-
-  if (startTime < new Date()) {
-    status = "en curso";
-  } else {
-    switch (accommodation.item.isCanceled) {
-      case true:
-        status = "ocupado para la fecha establecida";
-        color = "rgba(0,128,0,0.6)";
-        break;
-      case false:
-        status = "esperando solicitudes";
-        color = "rgba(255,128,0,0.6)";
-        editable = true;
-        break;
-      default:
-        break;
-    }
-  }
+  let toFinish = false;
+  var startTime = new Date(request.item.startTime);
 
   const tarjeta = {
     fontSize: 13,
@@ -116,18 +98,12 @@ function Accommodation(accomodationIn) {
     color,
   };
 
-  const onPressRequests = () => {
-    navigation.navigate("RequestToMyAccommodationList", {
-      accommodation: accommodation.item
-    });
-  };
-
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate("EditDeleteAccommodation", {
-          accommodation: accommodation.item,
-          editable,
+        navigation.navigate("DisplayFinishRequest", {
+          request: request.item,
+          toFinish,
         })
       }
     >
@@ -135,17 +111,17 @@ function Accommodation(accomodationIn) {
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
             <View style={globalStyles.myRequestsColumn1}>
-              <Text style={globalStyles.myRequestsNum}>Alojamiento</Text>
+              <Text style={globalStyles.myRequestsNum}>Solicitud</Text>
               <Text style={tarjeta}>{status}</Text>
             </View>
             <View style={globalStyles.myRequestsColumn2}>
               <Text style={globalStyles.myRequestsPrice}>
-                {(accommodation.item.salary * 0.8).toFixed(2)} €
+                {(request.item.price * 0.8).toFixed(2)} €
               </Text>
             </View>
             <View style={globalStyles.myRequestsColumn2}>
-              <Text style={globalStyles.myRequestsPrice} onPress={onPressRequests}>
-                Ver solicitudes
+              <Text style={globalStyles.myRequestsPrice}>
+                {request.item.owner}
               </Text>
             </View>
           </View>
@@ -155,4 +131,4 @@ function Accommodation(accomodationIn) {
   );
 }
 
-export default withNavigation(ProfileMyAccommodations);
+export default withNavigation(ProfileRequestToMyRequestList);
