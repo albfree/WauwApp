@@ -13,9 +13,6 @@ import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import _ from "lodash";
-
-import { Button, Icon } from "react-native-elements";
-
 import {
   Collapse,
   CollapseHeader,
@@ -34,9 +31,7 @@ function ProfileWalkerForm(props) {
   const [update, setUpdate] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [globales, setGlobales] = useState([]);
-
-  const [newPrice, setNewPrice] = useState(null);
-
+  const [sueldo, setSueldo] = useState(0);
   const rangos = [
     ["Lunes", 0],
     ["Martes", 16],
@@ -63,12 +58,12 @@ function ProfileWalkerForm(props) {
       (snap) => {
         snap.forEach((child) => {
           let hour =
-            child.val().day +
+            child.val().availability.day +
             ": " +
-            child.val().startTime +
+            child.val().availability.startTime +
             " - " +
-            child.val().endDate;
-          let id = child.val().id;
+            child.val().availability.endDate;
+          let id = child.val().availability.id;
           resulIds.push(id);
           resulHours.push(hour);
         });
@@ -76,9 +71,11 @@ function ProfileWalkerForm(props) {
         setHours(resulHours);
       }
     );
-    if (ids.length == 1) {
-      db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").set(userInfo);
-    }
+    // if (ids.length >= 1) {
+    //   db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").update({
+    //     price: sueldo,
+    //   });
+    // }
     setUpdate(false);
     setIsVisibleLoading(false);
   }, [update]);
@@ -116,13 +113,19 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
+    const money = Math.round(sueldo * 1.3 * 10) / 10;
+    const walkData = {
+      availability: availability,
+      price: money,
+    };
+
     db.ref(
       "availabilities-wauwers/" +
         userInfo.id +
         "/availabilities/" +
         availability.id
     )
-      .set(availability)
+      .set(walkData)
       .then(() => {
         setUpdate(true);
         toastRef.current.show("Disponibilidad añadida");
@@ -195,7 +198,7 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.walkSalary >= 5) {
+      if (sueldo >= 5) {
         confirmAdd(id);
       } else {
         Alert.alert(
@@ -208,10 +211,6 @@ function ProfileWalkerForm(props) {
     }
   };
 
-  const cambiaPrecio = (value) => {
-    setNewPrice(value);
-  };
-
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView keyboardShouldPersistTaps={false}>
@@ -222,46 +221,31 @@ function ProfileWalkerForm(props) {
               {" "}
               (precio / hora){" "}
             </Text>
-
             <TextInput
               style={walkerFormStyles.walkerFormImput}
               keyboardType={"numeric"}
-              placeholder="5"
-              onChange={(v) => cambiaPrecio(v.nativeEvent.text)}
-            >
-              {userInfo.walkSalary}
-            </TextInput>
-            <Button
-              buttonStyle={globalStyles.createAccommodationBtn}
-              containerStyle={globalStyles.createAccommodationBtnContainer}
-              title="Añadir Precio"
-              onPress={() => {
-                if (newPrice >= 5) {
-                  const salary = ((newPrice * 1.3 * 100) / 100).toFixed(2);
-                  db.ref("wauwers/" + userInfo.id)
-                    .update({
-                      price: salary,
-                      walkSalary: newPrice,
-                    })
-                    .then(() => {
-                      setUpdate(true);
-                    });
-                  Alert.alert("Precio añadido con éxito");
+              onChange={(val) => {
+                let precio;
+                if (val.nativeEvent.text !== "") {
+                  precio = parseInt(val.nativeEvent.text);
                 } else {
-                  Alert.alert("Su salario debe ser mayor o igual a 5");
+                  precio = 0;
                 }
+                const salary = Math.round(precio * 1.3 * 10) / 10;
+
+                db.ref("wauwers/" + userInfo.id)
+                  .update({
+                    price: salary,
+                    walkSalary: precio,
+                  })
+                  .then(() => {
+                    setSueldo(precio);
+                    //setUpdate(true);
+                  });
               }}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="content-save"
-                  size={25}
-                  color="white"
-                  marginLeft={5}
-                />
-              }
-              titleStyle={globalStyles.createAccommodationBtnTxt}
-            />
+            >
+              {sueldo}
+            </TextInput>
 
             <Collapse style={walkerFormStyles.walkerFormList2}>
               <CollapseHeader style={walkerFormStyles.walkerFormList}>

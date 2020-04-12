@@ -24,14 +24,12 @@ export default function Chats(props) {
   let otherUserPhoto;
   let otherUserName;
 
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      currentUser = snap.val();
-    });
+  db.ref("wauwers").orderByChild("email").equalTo(email).on("child_added", (snap) => {
+    currentUser = snap.val();
+  });
 
   useEffect(() => {
+    db.ref("wauwers").child(currentUser.id).update({ hasMessages: false });
     db.ref("requests").on("value", (snap) => {
       const allData = [];
       snap.forEach((child) => {
@@ -68,6 +66,7 @@ export default function Chats(props) {
           requestsData.push(child.val().type);
           requestsData.push(otherUserPhoto);
           requestsData.push(child.val().id);
+          requestsData.push(otherUserID);
           allData.push(requestsData);
         }
       });
@@ -86,11 +85,10 @@ export default function Chats(props) {
                 requestsData={requestsData}
                 navigation={navigation}
                 currentUser={currentUser}
+                otherUserID={otherUserID}
               />
             )}
-            keyExtractor={(requestsData) => {
-              requestsData;
-            }}
+            keyExtractor={(requestsData) => requestsData.id}
           />
         ) : (
           <BlankView text={"No tiene conversaciones abiertas"} />
@@ -112,6 +110,7 @@ function RequestChat(props) {
             _id: currentUser.id,
             avatar: currentUser.photo,
             requestID: requestsData.item[3],
+            otherUserID: requestsData.item[4],
           })
         }
       >
