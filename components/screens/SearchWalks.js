@@ -63,7 +63,13 @@ function SearchWalks(props) {
       <ScrollView>
         <Text style={searchWalksStyles.searchWalkTxt}>
           {"Escoja al paseador que desee\n\n"}
-          {"para los "+interval.day+" de "+interval.startTime+"h a "+interval.endDate+"h"}
+          {"para los " +
+            interval.day +
+            " de " +
+            interval.startTime +
+            "h a " +
+            interval.endDate +
+            "h"}
         </Text>
 
         <Loading isVisible={loading} text={"Un momento..."} />
@@ -75,6 +81,7 @@ function SearchWalks(props) {
                 wauwerData={wauwerData}
                 petNumber={petNumber}
                 navigation={navigation}
+                interval={interval}
               />
             )}
             keyExtractor={(wauwerData) => {
@@ -91,9 +98,8 @@ function SearchWalks(props) {
 }
 
 function Wauwer(props) {
-  const { wauwerData, petNumber, navigation } = props;
+  const { wauwerData, petNumber, navigation, interval } = props;
   const id = wauwerData.item[0];
-  console.log(wauwerData);
 
   let user;
   db.ref("wauwers/" + id).once("value", (snap) => {
@@ -113,7 +119,8 @@ function Wauwer(props) {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
         wauwer: user,
-        price: price, //TODO: MODIFICAR LA REDIRECCIÓN
+        price: price,
+        interval: interval,
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");

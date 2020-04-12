@@ -45,6 +45,7 @@ function createRequest(props) {
   const [newAvailability, setNewAvailability] = useState([]);
 
   const [wauwerPrices, setWauwerPrices] = useState([]);
+  const value = navigation.state.params.interval;
 
   useEffect(() => {
     // To retrieve the walker availabilities
@@ -98,11 +99,12 @@ function createRequest(props) {
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
     );
     setSelect(value);
-    console.log(wauwerPrices);
     setNewPrice(wauwerPrices[itemPosition]);
   };
 
   const addRequest = () => {
+    const intervalo =
+      value.day + " " + value.startTime + "h - " + value.endDate + "h";
     let id = db.ref("requests").push().key;
     setError(null);
     setIsLoading(true);
@@ -117,8 +119,8 @@ function createRequest(props) {
       price: newPrice,
       type: "walk",
       worker: newWorker.id,
-      interval: newInterval,
-      availability: newAvailability,
+      interval: intervalo,
+      availability: value.id,
       isFinished: newIsFinished,
       isRated: newIsRated,
     };
@@ -163,7 +165,8 @@ function createRequest(props) {
             </Text>
 
             <Text style={searchWalksStyles.searchWalkTxt7}>
-              {"¿Cuándo quiere que pasee a su perro?"}
+              {"Intervalo seleccionado\n"}
+              {value.day + " " + value.startTime + "h - " + value.endDate + "h"}
             </Text>
             {/* <View style={searchWalksStyles.searchWalksView2}>
               <Picker
