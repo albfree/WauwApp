@@ -9,7 +9,7 @@ import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
 import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
 import ShowWalkScreen from "../screens/Profile/ShowWalk";
-import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestToMyAccommodationList";
+import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 
 const morado = "#443099";
