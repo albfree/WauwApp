@@ -16,6 +16,8 @@ import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
 import MyWalksScreen from "../screens/Profile/ProfileMyWalks";
 import AboutUsScreen from "../screens/Profile/AboutUs";
 import LastConexionsScreen from "../screens/Profile/LastConexion";
+import FeedbackScreen from "../screens/Profile/Feedback";
+
 import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
@@ -115,6 +117,20 @@ export default createDrawerNavigator(
         ),
       },
     },
+    Feedback: {
+      screen: FeedbackScreen,
+      navigationOptions: {
+        drawerLabel: "Feedback",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-icons"
+            name="feedback"
+            size={17}
+            color="#443099"
+          />
+        )
+      }
+    }
 
     /* MyDogs: {
       screen: MyDogsScreen,
