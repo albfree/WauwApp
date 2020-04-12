@@ -13,6 +13,7 @@ import { db } from "../population/config";
 import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
 import { globalStyles } from "../styles/global";
+import BlankView from "./BlankView";
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
@@ -43,7 +44,7 @@ export default function ListMyNotifications(props) {
   }, [reloadRequests]);
 
   return (
-    <SafeAreaView style={globalStyles.safeNotificationsArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
         {requestsList.length > 0 ? (
           <FlatList
@@ -61,9 +62,7 @@ export default function ListMyNotifications(props) {
             keyExtractor={(request) => request.id}
           />
         ) : (
-          <View>
-            <Text>No hay Notificaciones</Text>
-          </View>
+          <BlankView text={"No tiene notificaciones"} />
         )}
         <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
       </ScrollView>

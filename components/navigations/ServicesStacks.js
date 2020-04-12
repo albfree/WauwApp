@@ -4,11 +4,12 @@ import SearchAccommodationsScreen from "../screens/SearchAccommodations";
 import ChangeAvailabilityScreen from "../screens/ChangeAvailability";
 import CreateAccommodationScreen from "../screens/CreateAccommodation";
 import SearchWalksScreen from "../screens/SearchWalks";
-
+import PublicProfileScreen from "../account/PublicProfile";
 import CreateRequestWalkScreen from "../screens/CreateRequestWalk";
-
+import FormFilterByAvailabilityScreen from "../screens/FormFilterByAvailability";
 import CreateRequestAccommodationScreen from "../screens/CreateRequestAccommodation";
 import FormRequestAccommodationScreen from "../screens/FormRequestAccommodation";
+import FormFilterByDateScreen from "../screens/FormFilterByDate";
 
 const morado = "#443099";
 const blanco = "white";
@@ -124,6 +125,35 @@ const ServicesScreenStacks = createStackNavigator({
         color: blanco,
       },
       headerTintColor: blanco,
+    }),
+  },
+  PublicProfile: {
+    screen: PublicProfileScreen,
+    navigationOptions: () => ({
+      title: "Perfil",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+
+  FormFilterByAvailability: {
+    screen: FormFilterByAvailabilityScreen,
+    navigationOptions: () => ({
+      title: "Filtrar paseos",
+      headerTitleAlign: "center",
+    }),
+  },
+  FormFilterByDate: {
+    screen: FormFilterByDateScreen,
+    navigationOptions: () => ({
+      title: "Filtrar Alojamientos",
+      headerTitleAlign: "center",
     }),
   },
 });

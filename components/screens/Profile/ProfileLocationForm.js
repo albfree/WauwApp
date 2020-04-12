@@ -8,10 +8,10 @@ import * as Permissions from "expo-permissions";
 import MapView from "react-native-maps";
 import Modal from "../../account/Modal";
 import { globalStyles } from "../../styles/global";
+import { locationStyles } from "../../styles/locationStyles";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
-  //Dirección postal
   const [wauwerAddress, setWauwerAddress] = useState("");
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
@@ -22,15 +22,15 @@ export default function ProfileLocationForm(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function(snap) {
-        snap.forEach(function(child) {
+      .on("value", function (snap) {
+        snap.forEach(function (child) {
           setWauwer(child.val());
         });
       });
   }, []);
 
   return (
-    <SafeAreaView style={globalStyles.safeShowRequestArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <FormAdd
         setWauwerAddress={setWauwerAddress}
         setIsVisibleMap={setIsVisibleMap}
@@ -55,7 +55,7 @@ function FormAdd(props) {
     locationWauwer,
     wauwer,
     wauwerAddress,
-    navigation
+    navigation,
   } = props;
 
   const guardarLocation = () => {
@@ -65,11 +65,11 @@ function FormAdd(props) {
       );
     } else {
       let location = {
-        location: locationWauwer
+        location: locationWauwer,
       };
 
       let add = {
-        address: wauwerAddress
+        address: wauwerAddress,
       };
       db.ref("wauwers/" + wauwer.id).update(location);
       db.ref("wauwers/" + wauwer.id).update(add);
@@ -84,40 +84,35 @@ function FormAdd(props) {
   };
 
   return (
-    <View style={globalStyles.showRequestFeed}>
+    <View style={locationStyles.locationView}>
       <View style={globalStyles.viewFlex1}>
-        <View style={globalStyles.showRequestRow}>
-          <View style={globalStyles.editAccommodationColumn3}>
-            <Input
-              placeholder="Dirección"
-              containerStyle={globalStyles.locationImput}
-              rightIcon={{
-                type: "material-community",
-                name: "google-maps",
-                color: locationWauwer ? "#00a680" : "#c2c2c2",
-                onPress: () => setIsVisibleMap(true)
-              }}
-              onChange={e => setWauwerAddress(e.nativeEvent.text)}
-
+        <Input
+          placeholder="Dirección"
+          containerStyle={locationStyles.locationImput}
+          rightIcon={{
+            type: "material-community",
+            name: "google-maps",
+            color: locationWauwer ? "#00a680" : "#c2c2c2",
+            onPress: () => setIsVisibleMap(true),
+          }}
+          onChange={(e) => setWauwerAddress(e.nativeEvent.text)}
+        />
+        <Button
+          buttonStyle={locationStyles.locationBtn}
+          containerStyle={locationStyles.locationBtnContainer}
+          title="Guardar Ubicación"
+          onPress={guardarLocation}
+          icon={
+            <Icon
+              type="material-community"
+              name="content-save"
+              size={25}
+              color="white"
+              marginLeft={30}
             />
-            <Button
-              buttonStyle={globalStyles.addDogBtn}
-              containerStyle={globalStyles.addDogBtnContainer}
-              title="Guardar Ubicación"
-              onPress={guardarLocation}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="content-save"
-                  size={25}
-                  color="white"
-                  marginLeft={30}
-                />
-              }
-              titleStyle={globalStyles.addDogBtnTxt}
-            />
-          </View>
-        </View>
+          }
+          titleStyle={locationStyles.locationBtnTxt}
+        />
       </View>
     </View>
   );
@@ -142,7 +137,7 @@ function Map(props) {
           latitude: loc.coords.latitude,
           longitude: loc.coords.longitude,
           latitudeDelta: 0.001,
-          longitudeDelta: 0.001
+          longitudeDelta: 0.001,
         });
       }
     })();
@@ -159,36 +154,35 @@ function Map(props) {
       <View>
         {location && (
           <MapView
-            style={globalStyles.locationMapStyle}
+            style={locationStyles.locationMapStyle}
             initialRegion={location}
             showsUserLocation={true}
-            onRegionChange={region => setLocation(region)}
+            onRegionChange={(region) => setLocation(region)}
           >
             <MapView.Marker
               coordinate={{
                 latitude: location.latitude,
-                longitude: location.longitude
+                longitude: location.longitude,
               }}
               draggable
             />
           </MapView>
         )}
-        <View style={globalStyles.locationViewMapBtn}>
+        <View style={locationStyles.locationViewMapBtn}>
           <Button
             title="Guardar Ubicacion"
             onPress={confirmLocation}
-            containerStyle={globalStyles.locationMapBtnContainerSave}
-            buttonStyle={globalStyles.locationMapBtnSave}
+            containerStyle={locationStyles.locationMapBtnContainerSave}
+            buttonStyle={locationStyles.locationMapBtnSave}
           />
           <Button
             title="Cancelar Ubicación"
             onPress={() => setIsVisibleMap(false)}
-            containerStyle={globalStyles.locationMapBtnContainerCancel}
-            buttonStyle={globalStyles.locationMapBtnCancel}
+            containerStyle={locationStyles.locationMapBtnContainerCancel}
+            buttonStyle={locationStyles.locationMapBtnCancel}
           />
         </View>
       </View>
     </Modal>
   );
 }
-

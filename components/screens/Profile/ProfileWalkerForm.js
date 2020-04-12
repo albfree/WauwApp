@@ -1,33 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  StyleSheet,
   SafeAreaView,
   Text,
   View,
   Alert,
-  TextInput
+  TextInput,
+  ScrollView,
+  TouchableOpacity,
 } from "react-native";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import Loading from "./../../Loading";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
-import { YellowBox } from "react-native";
 import _ from "lodash";
 import {
   Collapse,
   CollapseHeader,
-  CollapseBody
+  CollapseBody,
 } from "accordion-collapse-react-native";
 import Toast from "react-native-easy-toast";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
+import { globalStyles } from "../../styles/global";
+import { walkerFormStyles } from "../../styles/walkerFormStyle";
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
@@ -45,14 +38,14 @@ function ProfileWalkerForm(props) {
     ["Jueves", 48],
     ["Viernes", 64],
     ["Sábado", 80],
-    ["Domingo", 96]
+    ["Domingo", 96],
   ];
 
   let userInfo;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       userInfo = snap.val();
     });
 
@@ -61,8 +54,8 @@ function ProfileWalkerForm(props) {
     const resulHours = [];
     db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities").on(
       "value",
-      snap => {
-        snap.forEach(child => {
+      (snap) => {
+        snap.forEach((child) => {
           let hour =
             child.val().day +
             ": " +
@@ -86,9 +79,9 @@ function ProfileWalkerForm(props) {
 
   useEffect(() => {
     // To retrieve global availabilities
-    db.ref("availability").on("value", snap => {
+    db.ref("availability").on("value", (snap) => {
       const global = [];
-      snap.forEach(child => {
+      snap.forEach((child) => {
         const hueco = [];
         let hour =
           child.val().day +
@@ -107,17 +100,13 @@ function ProfileWalkerForm(props) {
     setUpdate(true);
   }, [reloadData]);
 
-  const addAv = id => {
+  const addAv = (id) => {
     //To save availability selected and then, update screen's info
     setIsVisibleLoading(true);
-    db.ref("wauwers/" + userInfo.id).update({
-      isWalker: true
-    });
-
     let availability;
     db.ref("availability")
       .child(id)
-      .on("value", snap => {
+      .on("value", (snap) => {
         availability = snap.val();
       });
 
@@ -137,23 +126,21 @@ function ProfileWalkerForm(props) {
       });
   };
 
-  const deleteAv = id => {
+  const deleteAv = (id) => {
     //To delete availability selected and then, update screen's info
     setIsVisibleLoading(true);
     db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities")
       .child(id)
       .remove()
       .then(() => {
-        db.ref("availabilities-wauwers/" + userInfo.id).once("value", snap => {
-          if (snap.numChildren() == 1) {
-            db.ref("availabilities-wauwers/" + userInfo.id).remove();
-            db.ref()
-              .child("wauwers/" + userInfo.id)
-              .update({
-                isWalker: false
-              });
+        db.ref("availabilities-wauwers/" + userInfo.id).once(
+          "value",
+          (snap) => {
+            if (snap.numChildren() == 1) {
+              db.ref("availabilities-wauwers/" + userInfo.id).remove();
+            }
           }
-        });
+        );
         setUpdate(true);
         toastRef.current.show("Disponibilidad eliminada");
       })
@@ -162,7 +149,7 @@ function ProfileWalkerForm(props) {
       });
   };
 
-  const confirmAdd = id => {
+  const confirmAdd = (id) => {
     Alert.alert(
       "No dispone de esta disponibilidad",
       "¿Desea incluirla?",
@@ -170,18 +157,18 @@ function ProfileWalkerForm(props) {
         {
           text: "Sí",
           onPress: () => addAv(id),
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "No",
-          style: "cancel"
-        }
+          style: "cancel",
+        },
       ],
       { cancelable: false }
     );
   };
 
-  const confirmDelete = id => {
+  const confirmDelete = (id) => {
     Alert.alert(
       "Esta disponibilidad está añadida",
       "¿Desea eliminarla?",
@@ -189,25 +176,25 @@ function ProfileWalkerForm(props) {
         {
           text: "Sí",
           onPress: () => deleteAv(id),
-          style: "cancel"
+          style: "cancel",
         },
         {
           text: "No",
-          style: "cancel"
-        }
+          style: "cancel",
+        },
       ],
       { cancelable: false }
     );
   };
 
-  const isAdded = id => {
+  const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.price != 0) {
+      if (userInfo.walkSalary >= 5) {
         confirmAdd(id);
       } else {
         Alert.alert(
           "No puede añadir disponibilidades",
-          "Su salario no puede ser 0"
+          "Su salario debe ser mayor o igual a 5"
         );
       }
     } else {
@@ -216,45 +203,50 @@ function ProfileWalkerForm(props) {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View>
-          <View>
-            <Text style={styles.text}> Salario </Text>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView keyboardShouldPersistTaps={false}>
+        <View style={globalStyles.viewFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <Text style={walkerFormStyles.walkerFormTxt}> Salario </Text>
+            <Text style={walkerFormStyles.walkerFormTxt3}>
+              {" "}
+              (precio / hora){" "}
+            </Text>
             <TextInput
-              style={styles.data}
+              style={walkerFormStyles.walkerFormImput}
               keyboardType={"numeric"}
-              onChange={val => {
+              onChange={(val) => {
                 let precio;
                 if (val.nativeEvent.text !== "") {
                   precio = parseInt(val.nativeEvent.text);
                 } else {
                   precio = 0;
                 }
+                const salary = Math.round(precio * 1.3 * 10) / 10;
 
                 db.ref("wauwers/" + userInfo.id)
                   .update({
-                    price: precio
+                    price: salary,
+                    walkSalary: precio,
                   })
                   .then(() => {
                     setUpdate(true);
                   });
               }}
             >
-              {userInfo.price}
+              {userInfo.walkSalary}
             </TextInput>
-          </View>
-          <View>
-            <Collapse>
-              <CollapseHeader
-                style={{ backgroundColor: "rgba(191, 191, 191, 0.4)" }}
-              >
-                <Text style={styles.textHeader}>↓ Mi disponibilidad ↓</Text>
+
+            <Collapse style={walkerFormStyles.walkerFormList2}>
+              <CollapseHeader style={walkerFormStyles.walkerFormList}>
+                <Text style={walkerFormStyles.walkerFormTxt2}>
+                  ↓ Mi disponibilidad ↓
+                </Text>
               </CollapseHeader>
               <CollapseBody>
-                <View style={styles.avContainer}>
+                <View style={walkerFormStyles.walkerFormView}>
                   {hours.map((hour, index) => (
-                    <View key={index} style={styles.availability}>
+                    <View key={index} style={walkerFormStyles.walkerFormView2}>
                       <TouchableOpacity
                         onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
@@ -265,25 +257,26 @@ function ProfileWalkerForm(props) {
                 </View>
               </CollapseBody>
             </Collapse>
-          </View>
-          <Text style={(styles.text, { marginTop: 15 })}>
-            {" "}
-            Disponibilidades semanales{" "}
-          </Text>
-          <View>
-            {rangos.map(rango => (
+
+            <Text style={walkerFormStyles.walkerFormTxt}>
+              Disponibilidades semanales
+            </Text>
+
+            {rangos.map((rango) => (
               <Collapse key={rango[0]}>
-                <CollapseHeader style={styles.collapseHeader}>
-                  <Text style={styles.textHeader}>{rango[0]}</Text>
+                <CollapseHeader style={walkerFormStyles.walkerFormList3}>
+                  <Text style={walkerFormStyles.walkerFormTxt2}>
+                    {rango[0]}
+                  </Text>
                 </CollapseHeader>
                 <CollapseBody>
-                  <View style={styles.avContainer}>
-                    {globales.slice(rango[1], rango[1] + 16).map(av => (
+                  <View style={walkerFormStyles.walkerFormView}>
+                    {globales.slice(rango[1], rango[1] + 16).map((av) => (
                       <TouchableOpacity
                         key={av[1]}
                         onPress={() => isAdded(av[1])}
                       >
-                        <View style={styles.availability}>
+                        <View style={walkerFormStyles.walkerFormView2}>
                           <Text>{av[0]}</Text>
                         </View>
                       </TouchableOpacity>
@@ -292,30 +285,6 @@ function ProfileWalkerForm(props) {
                 </CollapseBody>
               </Collapse>
             ))}
-          </View>
-          <View>
-            <Text style={styles.text}>
-              {" "}
-              ¿Cuál es el número máximo de perros que te gustaría pasear?{" "}
-            </Text>
-            <TextInput
-              style={styles.data}
-              keyboardType={"numeric"}
-              onChange={val => {
-                let amountDogs;
-                if (val.nativeEvent.text !== "") {
-                  amountDogs = parseInt(val.nativeEvent.text);
-                } else {
-                  amountDogs = 0;
-                }
-
-                db.ref("wauwers/" + userInfo.id).update({
-                  petNumberWalk: amountDogs
-                });
-              }}
-            >
-              {userInfo.petNumberWalk}
-            </TextInput>
           </View>
         </View>
       </ScrollView>
@@ -326,56 +295,3 @@ function ProfileWalkerForm(props) {
 }
 
 export default withNavigation(ProfileWalkerForm);
-
-const styles = StyleSheet.create({
-  textHeader: {
-    textAlign: "center",
-    padding: 3
-  },
-  collapseHeader: {
-    margin: 3,
-    backgroundColor: "rgba(191, 191, 191, 0.8)"
-  },
-  avContainer: {
-    borderColor: "red",
-    marginLeft: 9,
-    flex: 1,
-    flexDirection: "row",
-    flexWrap: "wrap"
-  },
-  availability: {
-    margin: 5,
-    borderWidth: 1,
-    borderColor: "rgba(11,156,49,0.5)",
-    borderRadius: 5,
-    padding: 5
-  },
-  text: {
-    paddingHorizontal: 8,
-    paddingVertical: 6,
-    borderTopWidth: 1,
-    borderTopColor: "#ddd"
-  },
-  data: {
-    paddingHorizontal: 8,
-    color: "grey"
-  },
-  buttonContainer: {
-    marginTop: 20
-  },
-  view: {
-    alignItems: "center",
-    paddingTop: 10,
-    paddingBottom: 10
-  },
-  input: {
-    marginBottom: 10
-  },
-  btnContainer: {
-    marginTop: 20,
-    width: "95%"
-  },
-  btn: {
-    backgroundColor: "#00a680"
-  }
-});

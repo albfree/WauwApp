@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  TextInput,
-  View,
-  Image,
-  SafeAreaView,
-  Alert,
-} from "react-native";
+import React from "react";
+import { Text, View, Image, SafeAreaView, Alert } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
@@ -21,6 +14,16 @@ function showRequest(props) {
   var status = "";
   var worker = [];
   var pago = "";
+  let valorado;
+  let desabilitado;
+
+  if (!request.isRated) {
+    valorado = "Valorar servicio";
+    desabilitado = false;
+  } else {
+    valorado = "Servicio valorado";
+    desabilitado = true;
+  }
 
   db.ref("wauwers")
     .orderByChild("id")
@@ -31,6 +34,7 @@ function showRequest(props) {
 
   const cancel = () => {
     var idRequest = request.id;
+    var query = db.ref().child("requests/" + idRequest);
     //var query = db.ref().child("requests/" + idRequest);
 
     query.update({
@@ -66,6 +70,17 @@ function showRequest(props) {
   } else {
     pago = "Pendiente de pago";
   }
+
+  const checkIsRated = () => {
+    if (!request.rated) {
+      navigation.navigate("AddReviewService", {
+        request: request,
+        worker: worker,
+      });
+    } else {
+      Alert.alert("Ya ha valorado este servicio", "");
+    }
+  };
 
   if (request.pending && request.type == "walk") {
     return (
@@ -195,6 +210,25 @@ function showRequest(props) {
                   marginLeft={10}
                 />
               }
+              titleStyle={globalStyles.showRequestBtnTittle}
+            />
+            <Button
+              // buttonStyle={globalStyles.showRequestBtn}
+              // containerStyle={globalStyles.showRequestBtnContainer}
+              title={valorado}
+              onPress={() =>
+                navigation.navigate("AddReviewService", {
+                  request: request,
+                  worker: worker,
+                })
+              }
+              disabled={desabilitado}
+              // icon={
+              //   <Icon
+              //     size={25}
+              //     color="white"
+              //   />
+              // }
               titleStyle={globalStyles.showRequestBtnTittle}
             />
           </View>
@@ -477,6 +511,23 @@ function showRequest(props) {
                   marginLeft={10}
                 />
               }
+              titleStyle={globalStyles.showRequestBtnTittle}
+            />
+            <Button
+              // buttonStyle={globalStyles.showRequestBtn}
+              // containerStyle={globalStyles.showRequestBtnContainer}
+              title={valorado}
+              onPress={navigation.navigate("AddReviewService", {
+                request: request,
+                worker: worker,
+              })}
+              disabled={desabilitado}
+              // icon={
+              //   <Icon
+              //     size={25}
+              //     color="white"
+              //   />
+              // }
               titleStyle={globalStyles.showRequestBtnTittle}
             />
           </View>

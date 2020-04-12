@@ -41,7 +41,7 @@ function FormRequestAccommodation(props) {
     setStartTime(currentDate);
   };
 
-  const showModeS = currentMode => {
+  const showModeS = (currentMode) => {
     setShowS(true);
     setModeS(currentMode);
   };
@@ -56,7 +56,7 @@ function FormRequestAccommodation(props) {
     setEndTime(currentDate);
   };
 
-  const showModeE = currentMode => {
+  const showModeE = (currentMode) => {
     setShowE(true);
     setModeE(currentMode);
   };
@@ -67,16 +67,13 @@ function FormRequestAccommodation(props) {
 
   useEffect(() => {
     // To retrieve my pets' names
-    db.ref("pet")
-      .orderByChild("owner/email")
-      .equalTo(email)
-      .on("value", snap => {
-        const pets = [];
-        snap.forEach(child => {
-          pets.push(child.val().name);
-        });
-        setPetNames(pets);
+    db.ref("pet/" + navigation.state.params.id).on("value", (snap) => {
+      const pets = [];
+      snap.forEach((child) => {
+        pets.push(child.val().name);
       });
+      setPetNames(pets);
+    });
   }, []);
 
   const sendForm = () => {
@@ -88,17 +85,17 @@ function FormRequestAccommodation(props) {
       isCanceled: navigation.state.params.accommodation.isCanceled,
       startTime: newStartTime,
       endTime: newEndTime,
-      petNumber: petNumber
+      petNumber: petNumber,
     };
 
     if (
       newStartTime === null ||
       newEndTime === null ||
-      newStartTime < new Date() ||
-      newEndTime.getDate() - newStartTime.getDate() == 0 ||
-      petNumber === null ||
-      newStartTime.getTime() - startAccommodation.getTime() < 0 ||
-      newEndTime.getTime() - endAccommodation.getTime() > 0
+      new Date() - newStartTime > 10000 ||
+      newEndTime.getTime() - newStartTime.getTime() < -10000 ||
+      petNumber === 0 ||
+      startAccommodation.getTime() - newStartTime.getTime() > 43200000 ||
+      endAccommodation.getTime() - newEndTime.getTime() < -43200000
     ) {
       let errores = "";
       if (newStartTime === null) {
@@ -108,14 +105,14 @@ function FormRequestAccommodation(props) {
         errores = errores.concat("Debe escribir una fecha de salida.\n");
       }
 
-      if (newStartTime < new Date()) {
+      if (new Date() - newStartTime > 10000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime.getDate() - newStartTime.getDate() == 0) {
+      if (newEndTime.getTime() - newStartTime.getTime() < -10000) {
         errores = errores.concat(
-          "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+          "La fecha de entrada debe ser anterior a la fecha de salida.\n"
         );
       }
       if (petNumber === 0 && petNames === null) {
@@ -128,152 +125,153 @@ function FormRequestAccommodation(props) {
           "Tienes que seleccionar alguna mascota para el alojamiento.\n"
         );
       }
-      if (newStartTime.getTime() - startAccommodation.getTime() < 0) {
+
+      if (startAccommodation.getTime() - newStartTime.getTime() > 43200000) {
         errores = errores.concat(
           "La fecha de inicio no puede ser anterior a la fecha de inicio del alojamiento.\n"
         );
       }
-      if (newEndTime.getTime() - endAccommodation.getTime() > 0) {
+      if (endAccommodation.getTime() - newEndTime.getTime() < -43200000) {
         errores = errores.concat(
           "La fecha de fin no puede ser posterior a la fecha de fin del alojamiento.\n"
         );
       }
 
       Alert.alert("Advertencia", errores.toString());
+      // } else {
+      //   let errores = "";
+      //   if (newStartTime < new Date() || newEndTime < newStartTime) {
+      //     errores = errores.concat(
+      //       "La fecha de entrada debe ser posterior o igual a la actual.\n"
+      //     );
+      //     errores = errores.concat(
+      //       "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+      //     );
+
+      //     Alert.alert("Advertencia", errores.toString());
     } else {
-      let errores = "";
-      if (newStartTime < new Date() || newEndTime < newStartTime) {
-        errores = errores.concat(
-          "La fecha de entrada debe ser posterior o igual a la actual.\n"
-        );
-        errores = errores.concat(
-          "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
-        );
+      setIsLoading(true);
 
-        Alert.alert("Advertencia", errores.toString());
-      } else {
-        setIsLoading(true);
-
-        navigation.navigate("CreateRequestAccommodation", {
-          formData: formData
-        });
-        Alert.alert("Éxito", "Confirme su solicitud.");
-      }
+      navigation.navigate("CreateRequestAccommodation", {
+        formData: formData,
+      });
+      Alert.alert("Éxito", "Confirme su solicitud.");
     }
+    // }
   };
 
   return (
     <SafeAreaView style={globalStyles.safeShowRequestArea}>
       <ScrollView>
-      <View style={globalStyles.showRequestFeed}>
-        <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.showRequestRow}>
-            <View style={globalStyles.editAccommodationColumn1}>
-              <Button
-                buttonStyle={globalStyles.editAccommodationEditDateBtn}
-                containerStyle={
-                  globalStyles.editAccommodationEditDateBtnContainer
-                }
-                title="Fecha de Entrada"
-                onPress={showDatepickerS}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="calendar-import"
-                    size={20}
-                    color="white"
-                  />
-                }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
-              />
-              {showS && (
-                <DateTimePicker
-                  testID="dateTimePickerS"
-                  timeZoneOffsetInMinutes={0}
-                  value={newStartTime}
-                  mode={modeS}
-                  is24Hour={true}
-                  display="default"
-                  onChange={onChangeS}
+        <View style={globalStyles.showRequestFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <View style={globalStyles.showRequestRow}>
+              <View style={globalStyles.editAccommodationColumn1}>
+                <Button
+                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
+                  containerStyle={
+                    globalStyles.editAccommodationEditDateBtnContainer
+                  }
+                  title="Fecha de Entrada"
+                  onPress={showDatepickerS}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="calendar-import"
+                      size={20}
+                      color="white"
+                    />
+                  }
+                  titleStyle={globalStyles.editAccommodationEditDateTittle}
                 />
-              )}
-            </View>
-            <View style={globalStyles.editAccommodationColumn2}>
-              <Text style={globalStyles.accommodationDate}>
-                Introduzca las fechas que desea
-              </Text>
-              <Text style={globalStyles.accommodationDate2}>
-                Fechas Disponibles
-              </Text>
-              <Text style={globalStyles.accommodationDate3}>
-                Del{" "}
-                {startAccommodation.toLocaleString("en-US").substring(0, 10)}{" "}
-                hasta el{" "}
-                {endAccommodation.toLocaleString("en-US").substring(0, 10)}
-              </Text>
-              <Text style={globalStyles.accommodationPets}>
-                ¿Qué mascotas quiere que pasee?
-              </Text>
-              <View>
-                {petNames.map(pet => (
-                  <PetCheckbox
-                    name={pet}
-                    petNumber={petNumber}
-                    setPetNumber={setPetNumber}
+                {showS && (
+                  <DateTimePicker
+                    testID="dateTimePickerS"
+                    timeZoneOffsetInMinutes={0}
+                    value={newStartTime}
+                    mode={modeS}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChangeS}
                   />
-                ))}
+                )}
               </View>
-              <Button
-                buttonStyle={globalStyles.accommodationBtn}
-                containerStyle={globalStyles.accommodationBtnCnt}
-                title="Crear"
-                onPress={sendForm}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="content-save"
-                    size={20}
-                    color="white"
-                    marginLeft={10}
-                  />
-                }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
-              />
-            </View>
-            <View style={globalStyles.editAccommodationColumn3}>
-              <Button
-                buttonStyle={globalStyles.editAccommodationEditDateBtn}
-                containerStyle={
-                  globalStyles.editAccommodationEditDateBtnContainer2
-                }
-                title="Fecha de Salida"
-                onPress={showDatepickerE}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="calendar-export"
-                    size={20}
-                    color="white"
-                  />
-                }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
-              />
-
-              {showE && (
-                <DateTimePicker
-                  testID="dateTimePickerE"
-                  timeZoneOffsetInMinutes={0}
-                  value={newEndTime}
-                  mode={modeE}
-                  is24Hour={true}
-                  display="default"
-                  onChange={onChangeE}
+              <View style={globalStyles.editAccommodationColumn2}>
+                <Text style={globalStyles.accommodationDate}>
+                  Introduzca las fechas que desea
+                </Text>
+                <Text style={globalStyles.accommodationDate2}>
+                  Fechas Disponibles
+                </Text>
+                <Text style={globalStyles.accommodationDate3}>
+                  Del{" "}
+                  {startAccommodation.toLocaleString("en-US").substring(0, 10)}{" "}
+                  hasta el{" "}
+                  {endAccommodation.toLocaleString("en-US").substring(0, 10)}
+                </Text>
+                <Text style={globalStyles.accommodationPets}>
+                  ¿Qué mascotas quiere alojar?
+                </Text>
+                <View>
+                  {petNames.map((pet) => (
+                    <PetCheckbox
+                      name={pet}
+                      petNumber={petNumber}
+                      setPetNumber={setPetNumber}
+                    />
+                  ))}
+                </View>
+                <Button
+                  buttonStyle={globalStyles.accommodationBtn}
+                  containerStyle={globalStyles.accommodationBtnCnt}
+                  title="Crear"
+                  onPress={sendForm}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="content-save"
+                      size={20}
+                      color="white"
+                      marginLeft={10}
+                    />
+                  }
+                  titleStyle={globalStyles.editAccommodationEditDateTittle}
                 />
-              )}
+              </View>
+              <View style={globalStyles.editAccommodationColumn3}>
+                <Button
+                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
+                  containerStyle={
+                    globalStyles.editAccommodationEditDateBtnContainer2
+                  }
+                  title="Fecha de Salida"
+                  onPress={showDatepickerE}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="calendar-export"
+                      size={20}
+                      color="white"
+                    />
+                  }
+                  titleStyle={globalStyles.editAccommodationEditDateTittle}
+                />
+
+                {showE && (
+                  <DateTimePicker
+                    testID="dateTimePickerE"
+                    timeZoneOffsetInMinutes={0}
+                    value={newEndTime}
+                    mode={modeE}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChangeE}
+                  />
+                )}
+              </View>
             </View>
           </View>
         </View>
-      </View>
       </ScrollView>
     </SafeAreaView>
   );
