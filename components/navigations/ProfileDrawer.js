@@ -90,7 +90,7 @@ export default createDrawerNavigator(
     },
 
     DeleteData: {
-      screen: ProfileDeleteData,
+      screen: DeleteDataScreen,
       navigationOptions: {
         drawerLabel: "Eliminar Cuenta",
         drawerIcon: ({ tintColor }) => (
