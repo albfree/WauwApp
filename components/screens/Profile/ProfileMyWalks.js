@@ -155,7 +155,7 @@ function Request(requestIn) {
               </Text>
               <Text style={statusC}>{status} </Text>
               <Text style={globalStyles.myRequestsPrice}>
-                {request.item.price} € <Text style={payC}>{pay}</Text>
+                {(request.item.price * 0.77).toFixed(2)}€ <Text style={payC}>{pay}</Text>
               </Text>
             </View>
             <View style={globalStyles.myRequestsColumn2}>
