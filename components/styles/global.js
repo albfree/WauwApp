@@ -27,7 +27,10 @@ export const globalStyles = StyleSheet.create({
     marginTop: 30,
     width: "100%",
   },
-
+  blankView4: {
+    flex: 1,
+    paddingTop: 10,
+  },
   btnStyle: {
     backgroundColor: "#443099",
     width: "75%",
@@ -961,12 +964,12 @@ export const globalStyles = StyleSheet.create({
     textAlignVertical: "center",
   },
   userInfoPublicAvatar: {
-    marginLeft: "10%"
+    marginLeft: "10%",
   },
   userInfoPublicDisplayName: {
     color: "black",
     fontSize: 16,
-    marginLeft: "14%"
+    marginLeft: "14%",
   },
   userInfoPublicGlobal: {
     flex: 1,
@@ -974,7 +977,7 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 25,
     backgroundColor: "white",
     borderColor: "#d6d6e8",
-    marginTop: "10%"
+    marginTop: "10%",
   },
   userInfoPublicTitleDescription: {
     textAlign: "center",
@@ -995,16 +998,16 @@ export const globalStyles = StyleSheet.create({
     textAlign: "center",
   },
   userPublicGlobal: {
-    paddingTop: "25%"
+    paddingTop: "25%",
   },
-  textInformationPublicPro:{
+  textInformationPublicPro: {
     textAlign: "left",
     paddingLeft: 50,
     color: "#4d399a",
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
-  textInformationPublicPro1:{
+  textInformationPublicPro1: {
     textAlign: "left",
     paddingLeft: 50,
     fontSize: 20,
@@ -1012,14 +1015,14 @@ export const globalStyles = StyleSheet.create({
   textReviewsPublicPro: {
     textAlign: "right",
     paddingRight: 50,
-    fontSize: 20
+    fontSize: 20,
   },
   textReviewsPublicPro1: {
     textAlign: "right",
     paddingRight: 50,
     fontSize: 20,
     color: "#4d399a",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   tabBarPublicPro: {
     alignItems: "center",
@@ -1027,12 +1030,12 @@ export const globalStyles = StyleSheet.create({
     flexDirection: "row",
     paddingTop: 10,
     paddingBottom: 5,
-    textAlignVertical: "center"
+    textAlignVertical: "center",
   },
-  infoUserScore:{
+  infoUserScore: {
     paddingRight: 70,
     paddingTop: 15,
     color: "#4d399a",
-    fontWeight: "bold"
-  }
+    fontWeight: "bold",
+  },
 });
