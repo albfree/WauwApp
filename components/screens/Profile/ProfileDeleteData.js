@@ -98,8 +98,6 @@ function ProfileDeleteData(props) {
 
   const validateAndDelete = () =>  {
 
-    console.log(requestsOwnerList);
-    console.log(requestsWorkerList);
 
     if(requestsWorkerList && requestsWorkerList.length) {
       for (let i = 0; i < requestsWorkerList.length; i++) {
@@ -160,9 +158,7 @@ function ProfileDeleteData(props) {
 
 function deleteData(props) {
 
- 
   let wauwerId = props;
-  
   
   var user = [];
   db.ref("users")
@@ -173,37 +169,33 @@ function deleteData(props) {
      user.push(child.val());
     });
   });
-
-  
-   //BORRADO DE MASCOTAS
-  
-      db.ref("pet/"+ wauwerId).remove();
-      
-   
-   
-
-  //BORRADO DE ALOJAMIENTOS
-  
-      db.ref("accommodation")
-      .orderByChild("worker")
-      .equalTo(wauwerId)
-      .on("value", (snap) => {
-        snap.forEach((child) => {
-          child.ref.remove();
-        });
-      });
-      
-
-  //BORRADO DE DISPONIBILIDADES DEL WAUWER
-  
-      db.ref("availabilities-wauwers/" + wauwerId).remove();
  
-
- //BORRADO DE USER Y WAUWER
 
   if (!user[0].hasOwnProperty("last_logged_in")) {
     Alert.alert("Lo sentimos. Para poder eliminar la cuenta debe haber iniciado sesión más de una vez");
   } else {
+    //BORRADO DE MASCOTAS
+  
+    db.ref("pet/"+ wauwerId).remove();
+
+    //BORRADO DE ALOJAMIENTOS
+    
+        db.ref("accommodation")
+        .orderByChild("worker")
+        .equalTo(wauwerId)
+        .on("value", (snap) => {
+          snap.forEach((child) => {
+            child.ref.remove();
+          });
+        });
+        
+  
+    //BORRADO DE DISPONIBILIDADES DEL WAUWER
+    
+        db.ref("availabilities-wauwers/" + wauwerId).remove();
+
+        //BORRADO DE USER Y WAUWER
+
     var currentUser = firebase.auth().currentUser;
     var userUid = currentUser.uid;
     currentUser.delete().then(function() {
