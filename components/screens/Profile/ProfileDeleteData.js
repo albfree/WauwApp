@@ -175,13 +175,8 @@ function deleteData(props) {
    //BORRADO DE MASCOTAS
   
       db.ref("pet")
-      .orderByChild("owner/id")
-      .equalTo(wauwerId)
-      .on("value", (snap) => {
-        snap.forEach((child) => {
-          child.ref.remove();
-        });
-      });
+      .child(wauwerId)
+      .remove();
       
    
    
