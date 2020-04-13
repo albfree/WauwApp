@@ -248,7 +248,7 @@ function ProfileWalkerForm(props) {
                   {hours.map((hour, index) => (
                     <View key={index} style={walkerFormStyles.walkerFormView2}>
                       <TouchableOpacity
-                        onPress={() => confirmDelete(ids[index])}
+                        onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
                         <Text>{hour[0]}</Text>
                         <Text>Salario: {hour[1]}</Text>

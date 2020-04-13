@@ -169,9 +169,7 @@ function SearchWalks(props) {
                 interval={interval}
               />
             )}
-            keyExtractor={(wauwerData) => {
-              wauwerData.id;
-            }}
+            keyExtractor={(wauwerData) => wauwerData.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
