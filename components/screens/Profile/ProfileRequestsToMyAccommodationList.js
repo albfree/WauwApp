@@ -82,6 +82,8 @@ function Request(requestIn) {
     toFinish = true;
   }
 
+  const verde = "#0a0";
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -103,7 +105,7 @@ function Request(requestIn) {
                 )}
               {toFinish === true ? (
                 <View>
-                  <Text style={{color:"#0a0"}}>Servicio cumplido</Text>
+                  <Text style={{color:verde}}>Servicio cumplido</Text>
                 </View>
               ):(<View></View>)}
             </View>
