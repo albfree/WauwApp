@@ -1,5 +1,12 @@
 import React, { useState, useEffect, Component } from "react";
-import { Text, View, Image, Alert, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
 import { Button } from "react-native-elements";
@@ -135,43 +142,45 @@ function LoginScreen(props) {
   };
 
   return (
-    <View style={loginStyles.loginView}>
-      <Text style={loginStyles.loginTxt}>WAUW</Text>
-      <Image
-        source={require("../../assets/images/logo.png")}
-        style={loginStyles.loginImage}
-      />
-      <Image
-        source={require("../../assets/images/prints.png")}
-        style={loginStyles.loginPrints}
-      />
-      <View style={loginStyles.loginView2}>
-        <CheckBox checked={isChecked} onPress={changeChecked} />
-        <Text>
-          He leído y acepto los
-          <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
-            {" "}
-            términos y condiciones de uso
+    <ScrollView>
+      <View style={loginStyles.loginView}>
+        <Text style={loginStyles.loginTxt}>WAUW</Text>
+        <Image
+          source={require("../../assets/images/logo.png")}
+          style={loginStyles.loginImage}
+        />
+        <Image
+          source={require("../../assets/images/prints.png")}
+          style={loginStyles.loginPrints}
+        />
+        <View style={loginStyles.loginView2}>
+          <CheckBox checked={isChecked} onPress={changeChecked} />
+          <Text>
+            He leído y acepto los
+            <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
+              {" "}
+              términos y condiciones de uso
+            </Text>
           </Text>
-        </Text>
+        </View>
+        <Button
+          buttonStyle={loginStyles.loginBtn}
+          containerStyle={loginStyles.loginBtnContainer}
+          title="Entrar con Google"
+          onPress={funct}
+          icon={
+            <Icon
+              type="material-community"
+              name="google"
+              size={30}
+              color="white"
+              marginLeft={25}
+            />
+          }
+          titleStyle={loginStyles.loginBtnTittle}
+        />
       </View>
-      <Button
-        buttonStyle={loginStyles.loginBtn}
-        containerStyle={loginStyles.loginBtnContainer}
-        title="Entrar con Google"
-        onPress={funct}
-        icon={
-          <Icon
-            type="material-community"
-            name="google"
-            size={30}
-            color="white"
-            marginLeft={25}
-          />
-        }
-        titleStyle={loginStyles.loginBtnTittle}
-      />
-    </View>
+    </ScrollView>
   );
 }
 

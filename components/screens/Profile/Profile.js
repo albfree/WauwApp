@@ -15,6 +15,10 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
 
+import {db } from '../../population/config';
+
+import { email } from "../../account/QueriesProfile";
+
 function Profile(props) {
   const { navigation } = props;
 
@@ -159,23 +163,6 @@ function Profile(props) {
                   requestOwner: requestOwner,
                 })
               }
-              icon={
-                <Icon
-                  type="material-community"
-                  name="information-variant"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
-
-            <Button
-              buttonStyle={globalStyles.profileBtn}
-              containerStyle={globalStyles.profileBtnContainer}
-              title="Pagar"
-              onPress={() => navigation.navigate("Pagar")}
               icon={
                 <Icon
                   type="material-community"

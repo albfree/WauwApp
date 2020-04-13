@@ -124,9 +124,6 @@ const ProfileScreenStacks = createStackNavigator({
     screen: UserDataScreen,
     navigationOptions: () => ({
       title: "Ver información recopilada",
-      headerTitleAlign: "center"
-    })
-  }
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
@@ -135,8 +132,9 @@ const ProfileScreenStacks = createStackNavigator({
         color: blanco,
       },
       headerTintColor: blanco,
-    }),
+    })
   },
+  
   AddReviewService: {
     screen: AddReviewServiceScreen,
     navigationOptions: () => ({
