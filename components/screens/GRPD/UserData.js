@@ -22,7 +22,6 @@ export default function UserData(props) {
   var requestOwner = props.navigation.state.params.requestOwner;
   var pets = props.navigation.state.params.pets;
 
-  console.log("pets", pets);
 
   sendEmail = () => {
     var userEmail = "Datos de usuario\n\n";
@@ -124,10 +123,8 @@ export default function UserData(props) {
     } else {
       requestWorkerEmail += "Actualmente tiene 0 solicitudes realizadas\n";
     }
-    console.log(userEmail);
-    console.log(petsEmail);
-    console.log(requestWorkerEmail);
-    console.log(requestOwnerEmail);
+
+
 
     var bodyEmail = "";
     bodyEmail += userEmail + "\n";
@@ -135,7 +132,6 @@ export default function UserData(props) {
     bodyEmail += requestOwnerEmail + "\n";
     bodyEmail += requestWorkerEmail + "\n";
 
-    console.log("bodyEmail", bodyEmail);
 
     email("wauwispp1920@gmail.com", {
       cc: "",

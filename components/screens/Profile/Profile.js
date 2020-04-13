@@ -15,7 +15,7 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
 
-import {db } from '../../population/config';
+import {db } from "../../population/config";
 
 import { email } from "../../account/QueriesProfile";
 
@@ -59,15 +59,11 @@ function Profile(props) {
   var pets = [];
 
   db.ref("pet/" + userInfo.id).on("value", (snap) => {
-    console.log(userInfo.id);
-    console.log("snap.val()", snap.val());
     snap.forEach((child) => {
       pets.push(child);
-      console.log("child snap", child);
     });
   });
 
-  console.log("pets", pets);
 
   var accommodations = [];
 
