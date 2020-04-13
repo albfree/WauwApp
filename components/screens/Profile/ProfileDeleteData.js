@@ -109,23 +109,29 @@ function ProfileDeleteData(props) {
         Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
         break;
           }
-        } else {
+        }
+        if (requestWorkerOk == true) {
           let idWorker = {
             worker: anonWauwerId
           };
           db.ref("requests/" + requestsWorkerList[i].id).update(idWorker);
         }
       }
+
     } else {
+      
     if(requestsOwnerList && requestsOwnerList.length) {
       for (let i = 0; i < requestsOwnerList.length; i++) {
+
         if(requestsOwnerList[i].pending == false) {
           if(requestsOwnerList[i].pending == false && requestsOwnerList[i].isFinished == false || requestsOwnerList[i].isPayed == false || requestsOwnerList[i].isRated == false) {
             requestOwnerOk = false;
           Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
           break;
             }
-        } else {
+        }
+
+        if (requestOwnerOk == true) {
           let idOwner = {
             owner: anonWauwerId
           };
