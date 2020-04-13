@@ -35,7 +35,7 @@ function FormFilterByAvailability(props) {
   useEffect(() => {
     const query = db.ref("availabilities-wauwers");
     query.on("value", (snap) => {
-      const allAvailability = [];
+      let allAvailability = [];
       const allIds = [];
       snap.forEach((child) => {
         if (child.key !== id) {
@@ -51,6 +51,9 @@ function FormFilterByAvailability(props) {
               });
             });
         }
+      });
+      allAvailability.sort((a, b) => {
+        return a.id > b.id;
       });
       setAvailabilities(allAvailability);
     });

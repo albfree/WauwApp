@@ -191,8 +191,9 @@ function createRequest(props) {
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Qué perro desea que pasee ?"}
             </Text>
-            {petNames.map((pet) => (
+            {petNames.map((pet, index) => (
               <PetCheckBox
+                key={index}
                 name={pet}
                 petNumber={petNumber}
                 setPetNumber={setPetNumber}
