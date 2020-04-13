@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
-//import KeyboardSpacer from "react-native-keyboard-spacer";
+import KeyboardSpacer from "react-native-keyboard-spacer";
 import { StyleSheet, View } from "react-native";
 import { db } from "../population/config.js";
 import firebase from "firebase";
@@ -16,6 +16,8 @@ export default class Chat extends Component {
     };
   }
 
+  // En el keyboardSpacer se pone un número en función del teléfono
+
   render() {
     return (
       <View style={styles.chatStyle}>
@@ -24,6 +26,7 @@ export default class Chat extends Component {
           onSend={this.send}
           user={this.props.navigation.state.params}
         />
+        <KeyboardSpacer topSpacing={-50}></KeyboardSpacer>
       </View>
     );
   }
