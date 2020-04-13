@@ -24,7 +24,6 @@ export default function InfoUser(props) {
       });
       if (!result.cancelled) {
         if (result.height <= 400 && result.width <= 400){
-          console.log("PASA POR AQUI");
           setAvatar(result.uri);
           let userData = {
             photo: avatar
