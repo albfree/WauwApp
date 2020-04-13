@@ -1,13 +1,48 @@
-import React from "react";
-import { View, Text } from "react-native";
+import React, { useState } from "react";
+import { View, Text, Alert } from "react-native";
 import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
+import * as ImagePicker from "expo-image-picker";
+import { db } from "../population/config.js";
 
 export default function InfoUser(props) {
   const { userInfo } = props;
+  const [ error, setError ] = useState("");
+  const [ avatar, setAvatar ] = useState(userInfo.photo);
 
-  changeAvatar = () => {
-    console.log("Estás cambiando el avatar...");
+  const changeAvatar = async () => {
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 0.1,
+      });
+      if (!result.cancelled) {
+        if (result.height <= 400 && result.width <= 400){
+          setAvatar(result.uri);
+          let userData = {
+            photo: avatar
+          };
+          await db.ref("wauwers")
+            .child(userInfo.id)
+            .update(userData)
+            .then(() => {
+            })
+            .catch(() => {
+              setError("Ha ocurrido un error");
+              Alert.alert("Error", error.toString(), [{text: "Atrás"}], {cancelable: true});
+            });
+        }else{
+          setError("Seleccione una imagen de menor tamaño.\nEl tamaño máximo permitido es 400x400 píxeles.");
+          Alert.alert("Aviso", error, [{text: "OK"}], {cancelable: true});
+        }
+      }
+      
+    } catch (E) {
+      // console.log(E);
+    }
+
   };
 
   //const actualizaNombre = () => {
@@ -29,8 +64,9 @@ export default function InfoUser(props) {
           onEditPress={changeAvatar}
           containerStyle={globalStyles.userInfoAvatar}
           source={{
-            uri: userInfo.photo
+            uri: avatar
           }}
+          errorMessage={error}
         />
 
         <View>
