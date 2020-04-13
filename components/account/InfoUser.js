@@ -40,7 +40,7 @@ export default function InfoUser(props) {
       }
       
     } catch (E) {
-      
+      // console.log(E);
     }
 
   };
