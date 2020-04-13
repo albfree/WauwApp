@@ -24,6 +24,8 @@ function DisplayFinishRequest(props){
 
   const [isLoading, setIsLoading] = useState(false);
   const [setReloadData] = useState(false);
+  const [visibleModal, setIsVisibleModal] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     db.ref("wauwers")
