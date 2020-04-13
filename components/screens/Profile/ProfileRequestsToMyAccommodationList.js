@@ -18,7 +18,7 @@ function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;
 
   const [loading, setLoading] = useState(true);
-  const [RequestsList, setRequestsList] = useState([]);
+  const [requestsList, setRequestsList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
   let wauwerId;
@@ -30,51 +30,39 @@ function ProfileRequestToMyRequestList(props) {
     });
 
   useEffect(() => {
-    db.ref("Request")
+    db.ref("requests")
       .orderByChild("worker")
       .equalTo(wauwerId)
       .on("value", (snap) => {
-        const Requests = [];
+        const requests = [];
         snap.forEach((child) => {
           var endTime = new Date(child.val().endTime);
-          if (endTime > new Date() || child.val().isFinished === false) {
-            Requests.push(child.val());
+          if ((endTime > new Date() 
+              || child.val().isFinished === false) 
+              && child.val().accommodation === navigation.state.params.accommodation.id) {
+            requests.push(child.val());
           }
         });
-        setRequestsList(Requests);
+        setRequestsList(requests);
       });
     setReloadData(false);
     setLoading(false);
-  }, [reloadData]);
-
+  }, [reloadData]);  
 
   return (
-    <SafeAreaView style={globalStyles.viewFlex1}>
-      <TouchableOpacity
-        style={globalStyles.drawerMenuView}
-        onPress={navigation.openDrawer}
-      >
-        <View>
-          <View style={globalStyles.drawerTitle}>
-            <Text style={globalStyles.drawerTxt}>Solicitudes a mi alojamiento</Text>
-          </View>
-          <View style={globalStyles.drawerIcon}>
-            <FontAwesome name="bars" size={24} color="#161924" />
-          </View>
-        </View>
-      </TouchableOpacity>
+    <SafeAreaView>
       <ScrollView>
-        {RequestsList.length > 0 ? (
+        {requestsList.length > 0 ? (
           <FlatList
-            data={RequestsList}
+            data={requestsList}
             style={globalStyles.myRequestsFeed}
-            renderItem={(Request) => (
+            renderItem={(request) => (
               <Request
-                Request={Request}
+                request={request}
                 navigation={navigation}
               />
             )}
-            keyExtractor={(Request) => Request.id}
+            keyExtractor={(request) => request.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
@@ -87,21 +75,17 @@ function ProfileRequestToMyRequestList(props) {
 
 function Request(requestIn) {
   const { request, navigation } = requestIn;
-  let status = "";
-  let color = "rgba(0,128,0,0.6)";
   let toFinish = false;
-  var startTime = new Date(request.item.startTime);
+  var endTime = new Date(request.item.endTime);
 
-  const tarjeta = {
-    fontSize: 13,
-    marginTop: 4,
-    color,
-  };
+  if(endTime < new Date()){
+    toFinish = true;
+  }
 
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate("DisplayFinishRequest", {
+        navigation.navigate("DisplayFinishRequests", {
           request: request.item,
           toFinish,
         })
@@ -111,23 +95,46 @@ function Request(requestIn) {
         <View style={globalStyles.viewFlex1}>
           <View style={globalStyles.myRequestsRow}>
             <View style={globalStyles.myRequestsColumn1}>
-              <Text style={globalStyles.myRequestsNum}>Solicitud</Text>
-              <Text style={tarjeta}>{status}</Text>
+              <NameByOwner id={request.item.owner} navigation={navigation}/>
+              {request.item.petNumber >1 ?(
+                <Text>{"Alojamiento para " + request.item.petNumber + " perros"}</Text>
+                ):(
+                <Text>{"Alojamiento para " + request.item.petNumber + " perro"}</Text>
+                )}
+              {toFinish === true ? (
+                <View>
+                  <Text style={{color:"#0a0"}}>Servicio cumplido</Text>
+                </View>
+              ):(<View></View>)}
             </View>
-            <View style={globalStyles.myRequestsColumn2}>
+            <View >
               <Text style={globalStyles.myRequestsPrice}>
                 {(request.item.price * 0.8).toFixed(2)} €
-              </Text>
-            </View>
-            <View style={globalStyles.myRequestsColumn2}>
-              <Text style={globalStyles.myRequestsPrice}>
-                {request.item.owner}
               </Text>
             </View>
           </View>
         </View>
       </View>
     </TouchableOpacity>
+  );
+}
+
+function NameByOwner(ownerId){
+  const { id, navigation } = ownerId;
+  let wauwerName;
+  db.ref("wauwers")
+  .orderByChild("id")
+  .equalTo(id)
+  .on("child_added", (snap) => {
+    wauwerName = snap.val().name + " " + snap.val().surname;
+  });
+
+  return(
+    <View>
+      <Text>
+        {"Solicitud de " + wauwerName}
+      </Text>
+    </View>
   );
 }
 

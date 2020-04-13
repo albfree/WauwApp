@@ -138,7 +138,7 @@ const ProfileScreenStacks = createStackNavigator({
   RequestToMyAccommodationList: {
     screen: RequestToMyAccommodationListScreen,
     navigationOptions: () => ({
-      title: "Editar alojamiento",
+      title: "Solicitudes a mi alojamiento",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,

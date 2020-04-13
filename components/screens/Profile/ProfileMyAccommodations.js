@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
+  Button
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
@@ -122,6 +123,9 @@ function Accommodation(accomodationIn) {
     });
   };
 
+  var x = new Date(accommodation.item.startTime);
+  var y = new Date(accommodation.item.endTime);
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -136,17 +140,24 @@ function Accommodation(accomodationIn) {
           <View style={globalStyles.myRequestsRow}>
             <View style={globalStyles.myRequestsColumn1}>
               <Text style={globalStyles.myRequestsNum}>Alojamiento</Text>
+              <Text style={globalStyles.myRequestsPrice}>
+              {(accommodation.item.salary * 0.8).toFixed(2)} €
+              </Text>
+              <Text style={globalStyles.myRequestsPrice}>
+                {x.getDate() +
+                "/" +
+                parseInt(x.getMonth() + 1) +
+                "/" +
+                x.getFullYear() + " a " +
+                y.getDate() +
+                "/" +
+                parseInt(y.getMonth() + 1) +
+                "/" +
+                y.getFullYear()}</Text>
               <Text style={tarjeta}>{status}</Text>
             </View>
             <View style={globalStyles.myRequestsColumn2}>
-              <Text style={globalStyles.myRequestsPrice}>
-                {(accommodation.item.salary * 0.8).toFixed(2)} €
-              </Text>
-            </View>
-            <View style={globalStyles.myRequestsColumn2}>
-              <Text style={globalStyles.myRequestsPrice} onPress={onPressRequests}>
-                Ver solicitudes
-              </Text>
+              <Button title="Ver solicitudes" onPress={onPressRequests} />
             </View>
           </View>
         </View>
