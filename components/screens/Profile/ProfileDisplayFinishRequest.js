@@ -3,24 +3,14 @@ import {
   View,
   YellowBox,
   Text,
-  TextInput,
-  SafeAreaView,
   Alert
 } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
-import { globalStyles } from "../../styles/global";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
 function DisplayFinishRequest(props){
   const {navigation} = props;
@@ -63,7 +53,7 @@ function DisplayFinishRequest(props){
       });
     Alert.alert("Éxito", "Servicio finalizado.");
     navigation.navigate("RequestToMyAccommodationList");
-  }
+  };
 
   return(
     <View>
