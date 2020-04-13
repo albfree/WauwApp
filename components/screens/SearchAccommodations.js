@@ -13,13 +13,14 @@ import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
 import { email } from "../account/QueriesProfile";
-import BlankView from "./BlankView";
+import BlankView2 from "./BlankView2";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import { searchWalksStyles } from "../styles/searchWalkStyle.js";
 
 function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
+  const [accommodationsList2, setAccommodationList2] = useState([]);
   const [loading, setLoading] = useState(false);
   const filter = navigation.state.params.formData.startTime;
   let petNumber;
@@ -38,6 +39,7 @@ function ListAccommodations(props) {
       .equalTo(false)
       .on("value", (snap) => {
         const accommodations = [];
+        const accommodations2 = [];
         snap.forEach((child) => {
           if (child.val().worker != id) {
             var endTime = new Date(child.val().endTime);
@@ -49,37 +51,88 @@ function ListAccommodations(props) {
               filter - endTime <= 86400000
             ) {
               accommodations.push(child.val());
+            } else {
+              accommodations2.push(child.val());
             }
           }
         });
         setAccommodationList(accommodations);
+        setAccommodationList2(accommodations2);
       });
   }, []);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        {accommodationsList.length > 0 ? (
+          <List1
+            accommodationsList={accommodationsList}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        ) : (
+          <List2
+            accommodationsList={accommodationsList2}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+function List1(props) {
+  const { accommodationsList, navigation, petNumber, id } = props;
+  return (
+    <SafeAreaView>
       <Text style={searchAccommodationStyles.searchAccommodationTxt}>
         {"Escoja al cuidador que desee"}
       </Text>
-      <ScrollView>
-        {accommodationsList.length > 0 ? (
-          <FlatList
-            data={accommodationsList}
-            renderItem={(accommodation) => (
-              <Accommodation
-                accommodation={accommodation}
-                petNumber={petNumber}
-                myId={id}
-                navigation={navigation}
-              />
-            )}
-            keyExtractor={(accommodation) => accommodation.id}
-            showsVerticalScrollIndicator={false}
+      <FlatList
+        data={accommodationsList}
+        renderItem={(accommodation) => (
+          <Accommodation
+            accommodation={accommodation}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
           />
-        ) : (
-          <BlankView text={"No hay alojamientos disponibles"} />
         )}
-      </ScrollView>
+        keyExtractor={(accommodation) => accommodation.id}
+        showsVerticalScrollIndicator={false}
+      />
+    </SafeAreaView>
+  );
+}
+
+function List2(props) {
+  const { accommodationsList, navigation, petNumber, id } = props;
+  return (
+    <SafeAreaView>
+      <BlankView2
+        text={"No hay alojamientos disponibles para la fecha seleccionada"}
+      />
+
+      <Text style={searchAccommodationStyles.searchAccommodationTxt}>
+        {"Puede que le interesen..."}
+      </Text>
+
+      <FlatList
+        data={accommodationsList}
+        renderItem={(accommodation) => (
+          <Accommodation
+            accommodation={accommodation}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
+        keyExtractor={(accommodation) => accommodation.id}
+        showsVerticalScrollIndicator={false}
+      />
     </SafeAreaView>
   );
 }

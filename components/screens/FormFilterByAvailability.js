@@ -10,7 +10,7 @@ import {
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
-
+import BlankView from "./BlankView";
 import { globalStyles } from "../styles/global";
 import Loading from "../Loading";
 import { formSearchWalkStyles } from "../styles/formSearchWalksStyle";
@@ -62,22 +62,24 @@ function FormFilterByAvailability(props) {
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
-        <Text style={formSearchWalkStyles.formSearchWalkTxt}>
-          {"Seleccione la fecha y hora para su paseo"}
-        </Text>
         <Loading isVisible={loading} text={"Un momento..."} />
-        {availabilities ? (
-          <FlatList
-            data={availabilities}
-            renderItem={(interval) => (
-              <Availability interval={interval} navigation={navigation} />
-            )}
-            keyExtractor={(interval) => interval.id}
-            showsVerticalScrollIndicator={false}
-          />
+        {availabilities.length > 0 ? (
+          <View>
+            <Text style={formSearchWalkStyles.formSearchWalkTxt}>
+              {"Seleccione la fecha y hora para su paseo"}
+            </Text>
+            <FlatList
+              data={availabilities}
+              renderItem={(interval) => (
+                <Availability interval={interval} navigation={navigation} />
+              )}
+              keyExtractor={(interval) => interval.id}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
         ) : (
           <View>
-            <Text> No hay paseadores disponibles </Text>
+            <BlankView text={"No hay paseadores disponibles"} />
           </View>
         )}
       </ScrollView>

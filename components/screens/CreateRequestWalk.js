@@ -14,7 +14,7 @@ import { CheckBox } from "react-native-elements";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
-import { searchWalkStyles, searchWalksStyles } from "../styles/searchWalkStyle";
+import { searchWalksStyles } from "../styles/searchWalkStyle";
 
 function createRequest(props) {
   const { navigation } = props;
