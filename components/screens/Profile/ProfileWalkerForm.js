@@ -57,6 +57,7 @@ function ProfileWalkerForm(props) {
       "value",
       (snap) => {
         snap.forEach((child) => {
+          const hourPrice = [];
           let hour =
             child.val().availability.day +
             ": " +
@@ -64,18 +65,16 @@ function ProfileWalkerForm(props) {
             " - " +
             child.val().availability.endDate;
           let id = child.val().availability.id;
+          const price = Math.round(((child.val().price / 1.3) * 10) / 10);
           resulIds.push(id);
-          resulHours.push(hour);
+          hourPrice.push(hour);
+          hourPrice.push(price);
+          resulHours.push(hourPrice);
         });
         setIds(resulIds);
         setHours(resulHours);
       }
     );
-    // if (ids.length >= 1) {
-    //   db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").update({
-    //     price: sueldo,
-    //   });
-    // }
     setUpdate(false);
     setIsVisibleLoading(false);
   }, [update]);
@@ -142,14 +141,6 @@ function ProfileWalkerForm(props) {
       .child(id)
       .remove()
       .then(() => {
-        db.ref("availabilities-wauwers/" + userInfo.id).once(
-          "value",
-          (snap) => {
-            if (snap.numChildren() == 1) {
-              db.ref("availabilities-wauwers/" + userInfo.id).remove();
-            }
-          }
-        );
         setUpdate(true);
         toastRef.current.show("Disponibilidad eliminada");
       })
@@ -240,7 +231,6 @@ function ProfileWalkerForm(props) {
                   })
                   .then(() => {
                     setSueldo(precio);
-                    //setUpdate(true);
                   });
               }}
             >
@@ -258,9 +248,10 @@ function ProfileWalkerForm(props) {
                   {hours.map((hour, index) => (
                     <View key={index} style={walkerFormStyles.walkerFormView2}>
                       <TouchableOpacity
-                        onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
+                        onPress={() => confirmDelete(ids[index])}
                       >
-                        <Text>{hour}</Text>
+                        <Text>{hour[0]}</Text>
+                        <Text>Salario: {hour[1]}</Text>
                       </TouchableOpacity>
                     </View>
                   ))}
