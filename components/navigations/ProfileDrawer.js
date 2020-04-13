@@ -6,18 +6,22 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
-  Image
+  Image,
 } from "react-native";
 import { createDrawerNavigator, DrawerItems } from "react-navigation-drawer";
 import { Icon } from "react-native-elements";
 import MyRequestsScreen from "../screens/Profile/ProfileMyRequests";
 import MyDogsScreen from "../screens//Profile/ProfileMyDogs";
 import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
+import MyWalksScreen from "../screens/Profile/ProfileMyWalks";
+import AboutUsScreen from "../screens/Profile/AboutUs";
+import LastConexionsScreen from "../screens/Profile/LastConexion";
+import FeedbackScreen from "../screens/Profile/Feedback";
 
 import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
-const CustomDrawerComponent = props => (
+const CustomDrawerComponent = (props) => (
   <SafeAreaView>
     <View style={globalStyles.drawerView}>
       <Image
@@ -44,8 +48,8 @@ export default createDrawerNavigator(
             size={17}
             color="#443099"
           />
-        )
-      }
+        ),
+      },
     },
     MyRequests: {
       screen: MyRequestsScreen,
@@ -58,8 +62,8 @@ export default createDrawerNavigator(
             size={17}
             color="#443099"
           />
-        )
-      }
+        ),
+      },
     },
     MyAccommodations: {
       screen: MyAccommodationsScreen,
@@ -67,6 +71,63 @@ export default createDrawerNavigator(
         drawerLabel: "Mis Alojamientos",
         drawerIcon: ({ tintColor }) => (
           <Icon type="font-awesome" name="bed" size={17} color="#443099" />
+        ),
+      },
+    },
+    MyWalks: {
+      screen: MyWalksScreen,
+      navigationOptions: {
+        drawerLabel: "Mis Paseos",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog-service"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+
+    AboutUs: {
+      screen: AboutUsScreen,
+      navigationOptions: {
+        drawerLabel: "Sobre Nosotros",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+    LastConexion: {
+      screen: LastConexionsScreen,
+      navigationOptions: {
+        drawerLabel: "Últimas Conexiones",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="security"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+    Feedback: {
+      screen: FeedbackScreen,
+      navigationOptions: {
+        drawerLabel: "Feedback",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-icons"
+            name="feedback"
+            size={17}
+            color="#443099"
+          />
         )
       }
     }
@@ -88,6 +149,6 @@ export default createDrawerNavigator(
   },
   {
     drawerPosition: "right",
-    contentComponent: CustomDrawerComponent
+    contentComponent: CustomDrawerComponent,
   }
 );

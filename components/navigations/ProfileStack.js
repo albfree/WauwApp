@@ -7,50 +7,111 @@ import ProfileDrawerNavigator from "./ProfileDrawer";
 import ShowRequestScreen from "../screens/Profile/ShowRequest";
 import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
+import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
+import ShowWalkScreen from "../screens/Profile/ShowWalk";
 import UserDataScreen from '../screens/GRPD/UserData';
+
+const morado = "#443099";
+const blanco = "white";
 
 const ProfileScreenStacks = createStackNavigator({
   ProfileDrawer: {
     screen: ProfileDrawerNavigator,
     navigationOptions: () => ({
       title: "Mis Datos",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
   },
   ProfileWalkerForm: {
     screen: ProfileWalkerFormScreen,
     navigationOptions: () => ({
       title: "Datos de Paseador",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
   },
   ProfileAddDogForm: {
     screen: ProfileAddDogFormScreen,
     navigationOptions: () => ({
       title: "Datos del Perro",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
   },
   ProfileLocationForm: {
     screen: ProfileLocationFormScreen,
     navigationOptions: () => ({
       title: "Escoger Localización",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
   },
   ShowRequest: {
     screen: ShowRequestScreen,
     navigationOptions: () => ({
       title: "Solicitud",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  ShowWalk: {
+    screen: ShowWalkScreen,
+    navigationOptions: () => ({
+      title: "Paseo",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
   },
   PayRequest: {
     screen: PayRequestScreen,
     navigationOptions: () => ({
       title: "Pago",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
   },
   EditDeleteAccommodation: {
     screen: EditDeleteAccommodationScreen,
@@ -66,6 +127,23 @@ const ProfileScreenStacks = createStackNavigator({
       headerTitleAlign: "center"
     })
   }
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  AddReviewService: {
+    screen: AddReviewServiceScreen,
+    navigationOptions: () => ({
+      title: "Formulario Rating",
+      headerTitleAlign: "center",
+    }),
+  },
 });
 
 export default ProfileScreenStacks;

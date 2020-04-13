@@ -11,20 +11,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
 import { Button, Icon } from "react-native-elements";
-import { YellowBox } from "react-native";
-import _ from "lodash";
+
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
-import { db } from "../../population/config.js";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = (message) => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
 function Profile(props) {
   const { navigation } = props;
@@ -145,9 +134,7 @@ function Profile(props) {
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Paseador"
-              onPress={() =>
-                navigation.navigate("ProfileWalkerForm", { userInfo: userInfo })
-              }
+              onPress={() => navigation.navigate("ProfileWalkerForm")}
               icon={
                 <Icon
                   type="material-community"
@@ -222,6 +209,7 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
+            <Text>Última conexión: "Introdudir aquí última conexión"</Text>
           </View>
         </View>
       </ScrollView>

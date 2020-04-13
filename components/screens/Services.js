@@ -1,126 +1,141 @@
-import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView,
+  Dimensions,
+} from "react-native";
 import { Button } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
-import { YellowBox } from 'react-native';
-import _ from 'lodash';
-
-YellowBox.ignoreWarnings(['Setting a timer']);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf('Setting a timer') <= -1) {
-    _console.warn(message);
-  }
-};
+import _ from "lodash";
+import { servicesStyles } from "../styles/servicesStyle";
 
 function Services(props) {
   const { navigation } = props;
+  const [imageUri, setImageUri] = useState(
+    require("../../assets/images/SearchWalk.jpg")
+  );
+  const [tittle, setTittle] = useState("Buscar Paseador");
+  const [description, setDescription] = useState(
+    "Encuentra a los usuarios disponibles para pasear a tu perro"
+  );
+
+  useEffect(() => {}, [imageUri]);
+
+  const changeToWalk = () => {
+    setImageUri(require("../../assets/images/SearchWalk.jpg"));
+    setTittle("Buscar Paseador");
+    setDescription(
+      "Encuentra a los usuarios disponibles para pasear a tu perro"
+    );
+  };
+
+  const changeToAccS = () => {
+    setImageUri(require("../../assets/images/SearchAccommodation.jpg"));
+    setTittle("Buscar Alojamiento");
+    setDescription("Encuentra los alojamientos disponibles para tu perro");
+  };
+
+  const changeToAccC = () => {
+    setImageUri(require("../../assets/images/CreateAccommodation.jpg"));
+    setTittle("Crear Alojamiento");
+    setDescription(
+      "Crea tus propios alojamientos para los perros de los demás usuarios"
+    );
+  };
+
+  const check = () => {
+    if (tittle === "Buscar Paseador") {
+      navigation.navigate("FormFilterByAvailability");
+    } else if (tittle === "Buscar Alojamiento") {
+      navigation.navigate("FormFilterByDate");
+    } else {
+      navigation.navigate("CreateAccommodation");
+    }
+  };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <View style={styles.column}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("SearchWalks")}
-            activeOpacity={0.5}
-          >
-            <Image
-              source={require("../../assets/images/search-walks.png")}
-              style={styles.ImageIconStyle}
-            />
-          </TouchableOpacity>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView scrollEventThrottle={16}>
+        <View style={servicesStyles.servicesView}>
+          <Text style={servicesStyles.servicesTxt}>
+            ¿A qué servicio desea acceder?
+          </Text>
 
-          <Button
-            buttonStyle={globalStyles.btnStyle}
-            titleStyle={globalStyles.btnTextStyle}
-            title="Buscar Paseos"
-            onPress={() => navigation.navigate("SearchWalks")}
-          />
+          <View style={servicesStyles.servicesView2}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+            >
+              <TouchableOpacity
+                style={servicesStyles.servicesView3}
+                onPress={changeToWalk}
+              >
+                <View style={globalStyles.viewFlex2}>
+                  <Image
+                    source={require("../../assets/images/SearchWalk.jpg")}
+                    style={servicesStyles.servicesImage}
+                  />
+                </View>
+                <View style={globalStyles.servicesView4}>
+                  <Text style={servicesStyles.servicesTxt3}>
+                    Buscar Paseador
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={servicesStyles.servicesView3}
+                onPress={changeToAccS}
+              >
+                <View style={globalStyles.viewFlex2}>
+                  <Image
+                    source={require("../../assets/images/SearchAccommodation.jpg")}
+                    style={servicesStyles.servicesImage}
+                  />
+                </View>
+                <View style={globalStyles.servicesView4}>
+                  <Text style={servicesStyles.servicesTxt3}>
+                    Buscar Alojamiento
+                  </Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={servicesStyles.servicesView3}
+                onPress={changeToAccC}
+              >
+                <View style={globalStyles.viewFlex2}>
+                  <Image
+                    source={require("../../assets/images/CreateAccommodation.jpg")}
+                    style={servicesStyles.servicesImage}
+                  />
+                </View>
+                <View style={globalStyles.servicesView4}>
+                  <Text style={servicesStyles.servicesTxt3}>
+                    Crear Alojamiento
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </ScrollView>
+          </View>
+          <View style={servicesStyles.servicesView5}>
+            <Text style={servicesStyles.servicesTxt}> {tittle}</Text>
+            <Text style={servicesStyles.servicesTxt2}>{description}</Text>
+            <TouchableOpacity
+              style={servicesStyles.servicesView6}
+              onPress={check}
+            >
+              <Image source={imageUri} style={servicesStyles.servicesImage2} />
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.column}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("SearchAccommodations")}
-            activeOpacity={0.5}
-          >
-            <Image
-              source={require("../../assets/images/search-accommodations.png")}
-              style={styles.ImageIconStyle}
-            />
-          </TouchableOpacity>
-          <Button
-            buttonStyle={globalStyles.btnStyle}
-            titleStyle={globalStyles.btnTextStyle}
-            title="Buscar alojamientos"
-            onPress={() => navigation.navigate("SearchAccommodations")}
-          />
-        </View>
-      </View>
-
-      <View style={styles.row}>
-        {/* <View style={styles.column}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ChangeAvailability")}
-            activeOpacity={0.5}
-          >
-            <Image
-              source={require("../../assets/images/create-walk.png")}
-              style={styles.ImageIconStyle}
-            />
-          </TouchableOpacity>
-          <Button
-            buttonStyle={globalStyles.btnStyle}
-            titleStyle={globalStyles.btnTextStyle}
-            title="Cambiar disponibilidad"
-            onPress={() => navigation.navigate("ChangeAvailability")}
-          />
-        </View> */}
-        <View style={styles.column}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("CreateAccommodation")}
-            activeOpacity={0.5}
-          >
-            <Image
-              source={require("../../assets/images/create-accommodation.png")}
-              style={styles.ImageIconStyle}
-            />
-          </TouchableOpacity>
-          <Button
-            buttonStyle={globalStyles.btnStyle}
-            titleStyle={globalStyles.btnTextStyle}
-            title="Crear alojamientos"
-            onPress={() => navigation.navigate("CreateAccommodation")}
-          />
-        </View>
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 export default withNavigation(Services);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-    paddingVertical: 70
-  },
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between"
-  },
-  ImageIconStyle: {
-    margin: 15,
-    height: 90,
-    width: 110,
-    resizeMode: "stretch"
-  }
-});

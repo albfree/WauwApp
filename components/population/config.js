@@ -10,6 +10,7 @@ var firebaseConfig = {
   appId: "1:191130769894:web:b866775f14d7f420cb1e27",
 };
 
+
 // Initialize Firebase
 var app = firebase.initializeApp(firebaseConfig);
 
@@ -36,15 +37,15 @@ db.ref()
   });
 
 //Get all requests
-export let requests = [];
-db.ref("pruebasRequests")
-  .orderByChild("pending")
-  .equalTo(true)
-  .on("value", function (snap) {
-    snap.forEach(function (child) {
-      requests.push(child.val());
-    });
-  });
+// export let requests = [];
+// db.ref("pruebasRequests")
+//   .orderByChild("pending")
+//   .equalTo(true)
+//   .on("value", function (snap) {
+//     snap.forEach(function (child) {
+//       requests.push(child.val());
+//     });
+//   });
 
 // export let requests = [];
 // db.ref()

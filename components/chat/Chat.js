@@ -11,9 +11,9 @@ export default class Chat extends Component {
 
     this.state = {
       messages: [],
-      requestID: this.props.navigation.state.params.requestID
+      requestID: this.props.navigation.state.params.requestID,
+      otherUserID: this.props.navigation.state.params.otherUserID,
     };
-
   }
 
   render() {
@@ -30,9 +30,9 @@ export default class Chat extends Component {
   }
 
   componentDidMount() {
-    this.on(message =>
-      this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, message)
+    this.on((message) =>
+      this.setState((previousState) => ({
+        messages: GiftedChat.append(previousState.messages, message),
       }))
     );
   }
@@ -43,12 +43,12 @@ export default class Chat extends Component {
   }
 
   // Traerse los x últimos mensajes del chat
-  on = callback =>
+  on = (callback) =>
     db
       .ref("chats")
       .child(this.state.requestID + "/messages")
       .limitToLast(30)
-      .on("child_added", snapshot => callback(this.parse(snapshot)));
+      .on("child_added", (snapshot) => callback(this.parse(snapshot)));
 
   // Obtener tiempo actual
   get timestamp() {
@@ -56,20 +56,25 @@ export default class Chat extends Component {
   }
 
   // Crear mensaje y enviarlo
-  send = messages => {
+  send = (messages) => {
     for (let i = 0; i < messages.length; i++) {
       const { text, user } = messages[i];
       const message = {
         text,
         user,
-        timestamp: this.timestamp
+        timestamp: this.timestamp,
       };
-      db.ref("chats/" + this.state.requestID  + "/messages")
-        .push(message);
+      db.ref("chats/" + this.state.requestID + "/messages")
+        .push(message)
+        .then(() => {
+          db.ref("wauwers")
+            .child(this.state.otherUserID)
+            .update({ hasMessages: true });
+        });
     }
   };
 
-  parse = snapshot => {
+  parse = (snapshot) => {
     const { timestamp: numberStamp, text, user } = snapshot.val();
     const { key: _id } = snapshot;
     const timestamp = new Date(numberStamp);
@@ -77,7 +82,7 @@ export default class Chat extends Component {
       _id,
       timestamp,
       text,
-      user
+      user,
     };
     return message;
   };
@@ -88,6 +93,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: "100%",
     height: "100%",
-    borderRadius: 50
-  }
+    borderRadius: 50,
+  },
 });

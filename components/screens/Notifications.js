@@ -6,8 +6,6 @@ import { YellowBox } from "react-native";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
 
-
-
 export default function Notifications() {
   const toastRef = useRef();
   return (
