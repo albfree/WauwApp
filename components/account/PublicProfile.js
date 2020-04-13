@@ -72,12 +72,6 @@ function PublicProfile(props) {
               <Text style={globalStyles.userInfoPublicDescription}>
                 {userInfo.description}
               </Text>
-              <Text style={globalStyles.userInfoPublicTitleDescription}>
-                Ubicación
-              </Text>
-              <Text style={globalStyles.userInfoPublicDescription}>
-                {userInfo.location}
-              </Text>
             </View>
           )}
         </View>

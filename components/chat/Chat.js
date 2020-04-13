@@ -16,6 +16,8 @@ export default class Chat extends Component {
     };
   }
 
+  // En el keyboardSpacer se pone un número en función del teléfono
+
   render() {
     return (
       <View style={styles.chatStyle}>
@@ -24,7 +26,7 @@ export default class Chat extends Component {
           onSend={this.send}
           user={this.props.navigation.state.params}
         />
-        <KeyboardSpacer topSpacing={-50} />
+        <KeyboardSpacer topSpacing={-50}/>
       </View>
     );
   }

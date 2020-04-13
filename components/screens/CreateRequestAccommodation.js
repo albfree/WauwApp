@@ -22,8 +22,11 @@ function createRequestAccommodation(props) {
   const newPetNumber = navigation.state.params.formData.petNumber;
 
   //Poner fechas medianamente bonitas
-  const newStartTime = startTime.toLocaleString("en-US").substring(0, 10);
-  const newEndTime = endTime.toLocaleString("en-US").substring(0, 10);
+  const newStartTime = startTime;
+  const newEndTime = endTime;
+
+  var x = new Date(startTime);
+  var y = new Date(endTime);
 
   //Atributos definidos
 
@@ -89,8 +92,8 @@ function createRequestAccommodation(props) {
       price: newPrice,
       type: newType,
       isCanceled: newIsCanceled,
-      startTime: newStartTime,
-      endTime: newEndTime,
+      startTime: x.toISOString(),
+      endTime: y.toISOString(),
       worker: newWorker.id,
       petNumber: newPetNumber,
       accommodation: newIdAccommodation,
@@ -134,13 +137,21 @@ function createRequestAccommodation(props) {
               <Text style={globalStyles.accommodationSitter}>
                 {"Fecha de inicio\n"}
                 <Text style={globalStyles.accommodationSitter2}>
-                  {newStartTime}
+                  {x.getDate() +
+                  "/" +
+                  parseInt(x.getMonth() + 1) +
+                  "/" +
+                  x.getFullYear()}
                 </Text>{" "}
               </Text>
               <Text style={globalStyles.accommodationSitter}>
                 {"Fecha de finalización\n"}
                 <Text style={globalStyles.accommodationSitter2}>
-                  {newEndTime}
+                  {y.getDate() +
+                  "/" +
+                  parseInt(y.getMonth() + 1) +
+                  "/" +
+                  y.getFullYear()}
                 </Text>{" "}
               </Text>
 

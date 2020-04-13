@@ -9,6 +9,8 @@ import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
 import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
 import ShowWalkScreen from "../screens/Profile/ShowWalk";
+import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
+import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 
 const morado = "#443099";
 const blanco = "white";
@@ -131,6 +133,34 @@ const ProfileScreenStacks = createStackNavigator({
     navigationOptions: () => ({
       title: "Formulario Rating",
       headerTitleAlign: "center",
+    }),
+  },
+  RequestToMyAccommodationList: {
+    screen: RequestToMyAccommodationListScreen,
+    navigationOptions: () => ({
+      title: "Solicitudes a mi alojamiento",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  DisplayFinishRequests: {
+    screen: DisplayFinishRequestScreen,
+    navigationOptions: () => ({
+      title: "Solicitud a mi alojamiento",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
     }),
   },
 });
