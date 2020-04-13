@@ -110,6 +110,9 @@ function Accommodation(props) {
     });
   };
 
+  var x = new Date(accommodation.item.startTime);
+  var y = new Date(accommodation.item.endTime);
+
   return (
     <TouchableOpacity onPress={checkHasPets}>
       <View style={searchAccommodationStyles.searchAccommodationFeed}>
@@ -136,16 +139,18 @@ function Accommodation(props) {
                 Disponibilidad
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                Del{" "}
-                {accommodation.item.startTime
-                  .toLocaleString("en-US")
-                  .substring(0, 10)}
+                {"Del " + x.getDate() +
+                "/" +
+                parseInt(x.getMonth() + 1) +
+                "/" +
+                x.getFullYear()}
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                al{" "}
-                {accommodation.item.endTime
-                  .toLocaleString("en-US")
-                  .substring(0, 10)}
+                {"al " + y.getDate() +
+                "/" +
+                parseInt(y.getMonth() + 1) +
+                "/" +
+                y.getFullYear()}
               </Text>
             </View>
           </View>
