@@ -98,12 +98,17 @@ function ProfileDeleteData(props) {
 
   const validateAndDelete = () =>  {
 
+    var requestWorkerOk = true;
+    var requestOwnerOk = true;
 
     if(requestsWorkerList && requestsWorkerList.length) {
       for (let i = 0; i < requestsWorkerList.length; i++) {
-        if(requestsWorkerList[i].pending == false && requestsWorkerList[i].isFinished == false || requestsWorkerList[i].isPayed == false || requestsWorkerList[i].isRated == false) {
+      if(requestsWorkerList[i].pending == false) {
+        if(requestsWorkerList[i].isFinished == false || requestsWorkerList[i].isPayed == false || requestsWorkerList[i].isRated == false) {
+          requestWorkerOk = false;
         Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
         break;
+          }
         } else {
           let idWorker = {
             worker: anonWauwerId
@@ -112,21 +117,27 @@ function ProfileDeleteData(props) {
         }
       }
     } else {
-      if(requestsOwnerList && requestsOwnerList.length) {
-        for (let i = 0; i < requestsOwnerList.length; i++) {
+    if(requestsOwnerList && requestsOwnerList.length) {
+      for (let i = 0; i < requestsOwnerList.length; i++) {
+        if(requestsOwnerList[i].pending == false) {
           if(requestsOwnerList[i].pending == false && requestsOwnerList[i].isFinished == false || requestsOwnerList[i].isPayed == false || requestsOwnerList[i].isRated == false) {
+            requestOwnerOk = false;
           Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
           break;
-          } else {
-            let idOwner = {
-              owner: anonWauwerId
-            };
-            db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
-          }
-        } 
-    } else {
+            }
+        } else {
+          let idOwner = {
+            owner: anonWauwerId
+          };
+          db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
+        }
+      } 
+    } 
+
+    if(requestWorkerOk && requestOwnerOk) {
       deleteData(wauwerId);
     }
+
     }
   };
 
