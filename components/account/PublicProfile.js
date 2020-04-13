@@ -76,7 +76,7 @@ function PublicProfile(props) {
                 Ubicación
               </Text>
               <Text style={globalStyles.userInfoPublicDescription}>
-                {userInfo.location}
+                {userInfo.address}
               </Text>
             </View>
           )}
