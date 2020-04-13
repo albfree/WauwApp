@@ -26,7 +26,7 @@ export default class Chat extends Component {
           onSend={this.send}
           user={this.props.navigation.state.params}
         />
-        <KeyboardSpacer topSpacing={-50}></KeyboardSpacer>
+        <KeyboardSpacer topSpacing={-50}/>
       </View>
     );
   }

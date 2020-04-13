@@ -90,7 +90,7 @@ const NavigationStacks = createBottomTabNavigator(
       showIcon: true,
       inactiveTintColor: "#6c7075",
       activeTintColor: "#443099",
-      keyboardHidesTabBar: true,
+      keyboardHidesTabBar: false,
     },
     lazy: "false",
   }
