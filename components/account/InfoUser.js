@@ -4,9 +4,6 @@ import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import * as ImagePicker from 'expo-image-picker';
 import { db } from "../population/config.js";
-import * as Permissions from 'expo-permissions';
-import Constants from 'expo-constants';
-import { getPermissionsAsync } from "expo-location";
 
 export default function InfoUser(props) {
   const { userInfo } = props;
@@ -14,7 +11,6 @@ export default function InfoUser(props) {
   const [ avatar, setAvatar ] = useState(userInfo.photo);
 
   changeAvatar = async () => {
-    //console.log("Estás cambiando el avatar...");
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -32,7 +28,6 @@ export default function InfoUser(props) {
             .child(userInfo.id)
             .update(userData)
             .then(() => {
-              //console.log("Cambiado: " + userData);
             })
             .catch(() => {
               setError("Ha ocurrido un error");
@@ -43,9 +38,9 @@ export default function InfoUser(props) {
           Alert.alert('Aviso', error, [{text: "OK"}], {cancelable: true});
         }
       }
-      //console.log(result);
+      
     } catch (E) {
-      //console.log(E);
+      
     }
 
   };
