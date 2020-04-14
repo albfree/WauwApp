@@ -7,7 +7,30 @@ import NotificationsScreenStack from "./NotificationsStack";
 import ServicesScreenStacks from "./ServicesStacks";
 import ProfileScreenStack from "./ProfileStack";
 import ChatsScreenStack from "./ChatsStack";
-import { HeaderStyleInterpolators } from "react-navigation-stack";
+import { db } from "../population/config";
+import { email } from "../account/QueriesProfile";
+
+const morado = "#443099";
+const gris = "#6c7075";
+const color = "rgba(0,128,0,0.6)";
+
+let notf;
+db.ref("wauwers")
+  .orderByChild("email")
+  .equalTo(email)
+  .on("child_added", (snap) => {
+    notf = snap.val().hasRequests;
+  });
+
+const Reload = () => {
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      notf = snap.val().hasRequests;
+    });
+  navigate("Notifications");
+};
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -15,7 +38,7 @@ const NavigationStacks = createBottomTabNavigator(
       screen: HomeScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Home",
-        tabBarIcon: ({ tintColor }) => (
+        tabBarIcon: ({ tintColor, not }) => (
           <Icon
             type="material-community"
             name="home"
@@ -53,6 +76,7 @@ const NavigationStacks = createBottomTabNavigator(
         ),
       }),
     },
+
     Notifications: {
       screen: NotificationsScreenStack,
       navigationOptions: () => ({
@@ -62,14 +86,16 @@ const NavigationStacks = createBottomTabNavigator(
             type="material-community"
             name="bell"
             size={31}
-            color={tintColor}
+            color={notf ? color : tintColor}
           />
         ),
       }),
     },
+
     Profile: {
       screen: ProfileScreenStack,
       navigationOptions: () => ({
+        activeTintColor: color,
         tabBarLabel: "Profile",
         tabBarIcon: ({ tintColor }) => (
           <Icon
@@ -88,11 +114,11 @@ const NavigationStacks = createBottomTabNavigator(
     tabBarOptions: {
       showLabel: false,
       showIcon: true,
-      inactiveTintColor: "#6c7075",
-      activeTintColor: "#443099",
+      inactiveTintColor: gris,
+      activeTintColor: morado,
       keyboardHidesTabBar: false,
     },
-    lazy: "false",
+    lazy: "true",
   }
 );
 

@@ -23,6 +23,18 @@ export const searchAccommodationStyles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "100%",
   },
+  searchAccommodationColumn: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  searchAccommodationColumn2: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  searchAccommodationColumn3: {
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
+  },
   searchAccommodationContainer: {
     alignSelf: "center",
     backgroundColor: morado,
@@ -55,18 +67,7 @@ export const searchAccommodationStyles = StyleSheet.create({
     marginBottom: 5,
     width: "45%",
   },
-  searchAccommodationColumn: {
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-  },
-  searchAccommodationColumn2: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  searchAccommodationColumn3: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-  },
+
   searchAccommodationFeed: {
     alignItems: "center",
     backgroundColor: blanco,
@@ -122,7 +123,7 @@ export const searchAccommodationStyles = StyleSheet.create({
     justifyContent: "space-between",
   },
   searchAccommodationView2: {
-    paddingBottom: 10,
     marginBottom: 5,
+    paddingBottom: 10,
   },
 });

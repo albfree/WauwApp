@@ -157,7 +157,7 @@ function CreateAccommodation(props) {
             setIsLoading(false);
           });
         Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
-        navigation.navigate("Services");
+        navigation.popToTop();
       }
     }
   };

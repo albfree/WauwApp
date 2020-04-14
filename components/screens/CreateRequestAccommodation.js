@@ -74,7 +74,7 @@ function createRequestAccommodation(props) {
   const all = () => {
     addRequestAccommodation();
     Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-    navigation.navigate("Home");
+    navigation.popToTop();
   };
 
   //Añadir la request a la db
