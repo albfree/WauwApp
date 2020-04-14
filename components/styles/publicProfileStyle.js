@@ -39,8 +39,9 @@ export const publicProfileStyles = StyleSheet.create({
   },
   publicProfileTxt6: {
     color: gris,
-    marginVertical: 10,
     marginHorizontal: 10,
+    marginVertical: 10,
+
     textAlign: "center",
   },
   publicProfileTxt7: {
@@ -83,8 +84,8 @@ export const publicProfileStyles = StyleSheet.create({
   publicProfileView4: {
     backgroundColor: blanco,
     borderColor: lila,
-    borderWidth: 1,
     borderRadius: 10,
+    borderWidth: 1,
     flex: 1,
     flexDirection: "row",
     marginHorizontal: 20,
