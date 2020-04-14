@@ -18,6 +18,10 @@ export default function Pagar(props) {
   var email = props.navigation.state.params.email;
 
   const [accessToken, setAccessToken] = useState("");
+  const [paypalUrl, setPaypalUrl] = useState("");
+  const [shouldShowWebViewLoading, setShouldShowWebviewLoading] = useState(
+    true
+  );
 
   //Fix bug btoa
   useEffect(() => {
@@ -33,8 +37,7 @@ export default function Pagar(props) {
   var paymentURL = "https://api.sandbox.paypal.com/v1/payments/payouts";
 
   payment = async () => {
-    var randomNumber = (Math.floor(Math.random() * 10000000) + 1);
-    console.log(randomNumber);
+    var randomNumber = Math.floor(Math.random() * 10000000) + 1;
     var sender_batch_header = {
       sender_batch_id: randomNumber,
       email_subject: "¡Tu pago por el paseo o alojamiento!",
@@ -86,7 +89,7 @@ export default function Pagar(props) {
         axios
           .post(
             `https://api.sandbox.paypal.com/v1/payments/payouts`,
-            [sender_batch_header, items],
+            { sender_batch_header, items },
             {
               headers: {
                 "Content-Type": "application/json",
@@ -95,11 +98,9 @@ export default function Pagar(props) {
             }
           )
           .then((response) => {
-            console.log("Entra al then del segundo axios");
-            console.log("response", response);
-
-            //console.log("response", links);
-            //setPaypalUrl(approvalUrl);
+            const link = JSON.parse(JSON.stringify(response.data.links[0]));
+            setPaypalUrl(link.href);
+            console.log("paypalUrl", paypalUrl);
           })
           .catch((err) => {
             console.log("Error primer catch");
@@ -110,6 +111,7 @@ export default function Pagar(props) {
         console.log("Error segundo catch");
         console.log(err);
       });
+
   };
 
   return (
