@@ -12,16 +12,27 @@ import axios from "axios";
 import qs from "qs";
 import { decode, encode } from "base-64";
 import { db } from "../../population/config.js";
-
+import { email } from "../../account/QueriesProfile";
 
 function PayRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
   const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
-  const [accessToken, setAccessToken] = useState("");
-  const priceRequest = request.price;
+  const [accessToken, setAccessToken] = useState("")
+  const [priceRequest, setPriceRequest] = useState(request.price);
   const requestId = request.id;
+
+  let currentUserID;
+  let currentUserWauwPoints;
+
+  db.ref("wauwers").orderByChild("email").equalTo(email).on("child_added", (snap) => {
+    currentUserID = snap.val().id;
+    currentUserWauwPoints = snap.val().wauwPoints;
+  });
+
+  console.log(Math.round((currentUserWauwPoints * 0.65 * 100) / 100));
+  console.log(priceRequest);
 
   //Le vamos a pasar de props al pago la request entera. De ahí, coges el precio y se lo pasas al data details. Si response.status = 200, entonces setearemos 
   //isPayed de esa request a true. En la vista de showRequest, el botón de pago se mostrará cuando isCanceled = false, isPending = false, isPayed = false, 
@@ -36,6 +47,10 @@ function PayRequest(props) {
     if (!global.atob) {
       global.atob = decode;
     }
+  }, []);
+
+  useEffect(() => {
+
   }, []);
 
   //When loading paypal page it refirects lots of times. This prop to control start loading only first time
@@ -213,25 +228,23 @@ function PayRequest(props) {
 
   return (
     <React.Fragment>
-      <View style={styles.container}>
-        <Text>Click here to pay with</Text>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={buyBook}
-          style={styles.btn}
-        >
-          <Text
-            style={{
-              fontSize: 22,
-              fontWeight: "400",
-              textAlign: "center",
-              color: "#ffffff"
-            }}
-          >
-            PayPal
-          </Text>
-        </TouchableOpacity>
-      </View>
+
+      {currentUserWauwPoints === 0 ? (
+        <WithoutWauwPoints buyBook={buyBook}></WithoutWauwPoints>
+      ) : null}
+
+      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) === priceRequest ? (
+        <PointsEqualToPrice buyBook={buyBook}></PointsEqualToPrice>
+      ) : null}
+
+      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) < priceRequest ? (
+        <PointsLessToPrice buyBook={buyBook}></PointsLessToPrice>
+      ) : null}
+
+      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) > priceRequest ? (
+        <PointsMoreToPrice buyBook={buyBook}></PointsMoreToPrice>
+      ) : null}
+
       {paypalUrl ? (
         <View style={styles.webview}>
           <WebView
@@ -262,6 +275,111 @@ function PayRequest(props) {
   );
 }
 
+function WithoutWauwPoints(props) {
+  const { buyBook } = props;
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={buyBook}
+        style={styles.btn}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "400",
+            textAlign: "center",
+            color: "#ffffff"
+          }}
+        >
+          Pagar con PayPal
+          </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+}
+
+function PointsEqualToPrice(props) {
+  const { buyBook } = props;
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={buyBook}
+        style={styles.btn}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "400",
+            textAlign: "center",
+            color: "#ffffff"
+          }}
+        >
+          Pagar con Wauw Points iguales
+          </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+}
+
+function PointsLessToPrice(props) {
+  const { buyBook } = props;
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={buyBook}
+        style={styles.btn}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "400",
+            textAlign: "center",
+            color: "#ffffff"
+          }}
+        >
+          Pagar con Wauw Points menores
+          </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+}
+
+function PointsMoreToPrice(props) {
+  const { buyBook } = props;
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={buyBook}
+        style={styles.btn}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "400",
+            textAlign: "center",
+            color: "#ffffff"
+          }}
+        >
+          Pagar con Wauw Points de más
+          </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+}
+
+
 // App.navigationOptions = {
 //   title: "App"
 // };
@@ -287,10 +405,11 @@ const styles = StyleSheet.create({
   btn: {
     paddingVertical: 5,
     paddingHorizontal: 15,
-    borderRadius: 10,
+    borderRadius: 15,
     backgroundColor: "#1e477a",
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center"
+    alignContent: "center",
+    backgroundColor: "#ff7549"
   }
 });
