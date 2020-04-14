@@ -23,6 +23,7 @@ export default function UserData(props) {
   var pets = props.navigation.state.params.pets;
 
 
+
   sendEmail = () => {
     var userEmail = "Datos de usuario\n\n";
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
@@ -63,65 +64,68 @@ export default function UserData(props) {
     }
 
     if (requestOwner.length !== 0) {
+      console.log("Entra al if")
       requestOwner.map((reqOwner) => {
+        let reqParse = JSON.parse(JSON.stringify(reqOwner));
         if (reqOwner.interval !== undefined) {
           requestOwnerEmail += "Alojamiento\n";
         } else {
-          requestOwnerEmail += reqOwner.interval;
+          requestOwnerEmail += reqParse.interval;
         }
         requestOwnerEmail += "¿Cancelada?: ";
-        if (reqOwner.isCanceled) {
+        if (reqParse.isCanceled) {
           requestOwnerEmail += "Sí\n";
         } else {
           requestOwnerEmail += "No\n";
         }
         requestOwnerEmail += "¿Pagada?: ";
-        if (reqOwner.isPayed) {
+        if (reqParse.isPayed) {
           requestOwnerEmail += "Sí\n";
         } else {
           requestOwnerEmail += "No\n";
         }
         requestOwnerEmail += "¿Finalizada?: ";
-        if (reqOwner.isFinished) {
+        if (reqParse.isFinished) {
           requestOwnerEmail += "Sí\n";
         } else {
           requestOwnerEmail += "No\n";
         }
-        requestOwnerEmail += "Precio: " + reqOwner.price;
+        requestOwnerEmail += "Precio: " + reqParse.price;
       });
     } else {
-      requestOwnerEmail += "Actualmente tiene 0 solicitudes recibidas\n";
+      requestOwnerEmail += "Actualmente tiene 0 solicitudes realizadas\n";
     }
 
     if (requestWorker.length !== 0) {
       requestWorker.map((reqWorker) => {
-        if (reqWorker.interval !== undefined) {
+        let reqParse = JSON.parse(JSON.stringify(reqWorker));
+        if (reqParse.interval === undefined) {
           requestWorkerEmail += "Alojamiento\n";
         } else {
-          requestWorkerEmail += reqOwner.interval;
+          requestWorkerEmail += ("Disponibilidad del paseo: " + reqParse.interval);
         }
         requestWorkerEmail += "¿Cancelada?: ";
-        if (reqWorker.isCanceled) {
+        if (reqParse.isCanceled) {
           requestWorkerEmail += "Sí\n";
         } else {
           requestWorkerEmail += "No\n";
         }
         requestWorkerEmail += "¿Pagada?: ";
-        if (reqWorker.isPayed) {
+        if (reqParse.isPayed) {
           requestWorkerEmail += "Sí\n";
         } else {
           requestWorkerEmail += "No\n";
         }
         requestWorkerEmail += "¿Finalizada?: ";
-        if (reqWorker.isFinished) {
+        if (reqParse.isFinished) {
           requestWorkerEmail += "Sí\n";
         } else {
           requestWorkerEmail += "No\n";
         }
-        requestWorkerEmail += "Precio: " + reqWorker.price;
+        requestWorkerEmail += "Precio: " + reqParse.price;
       });
     } else {
-      requestWorkerEmail += "Actualmente tiene 0 solicitudes realizadas\n";
+      requestWorkerEmail += "Actualmente tiene 0 solicitudes recibidas\n";
     }
 
 
