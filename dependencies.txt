@@ -37,3 +37,4 @@ npm install --save react-redux
 npm install --save redux
 npm i accordion-collapse-react-native
 npm i react-native-ratings
+expo install expo-image-picker
