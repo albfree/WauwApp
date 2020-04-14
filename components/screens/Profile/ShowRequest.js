@@ -17,10 +17,13 @@ function showRequest(props) {
   let valorado;
   let desabilitado;
 
-  if (!request.isRated) {
+  if (!request.isFinished) {
+    valorado = "Aún no puede valorar";
+    desabilitado = true;
+  } else if (request.isFinished && !request.isRated) {
     valorado = "Valorar servicio";
     desabilitado = false;
-  } else {
+  } else if (request.isRated) {
     valorado = "Servicio valorado";
     desabilitado = true;
   }
@@ -517,10 +520,12 @@ function showRequest(props) {
               // buttonStyle={globalStyles.showRequestBtn}
               // containerStyle={globalStyles.showRequestBtnContainer}
               title={valorado}
-              onPress={navigation.navigate("AddReviewService", {
-                request: request,
-                worker: worker,
-              })}
+              onPress={() =>
+                navigation.navigate("AddReviewService", {
+                  request: request,
+                  worker: worker,
+                })
+              }
               disabled={desabilitado}
               // icon={
               //   <Icon

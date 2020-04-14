@@ -31,6 +31,7 @@ function ProfileWalkerForm(props) {
   const [update, setUpdate] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [globales, setGlobales] = useState([]);
+  const [sueldo, setSueldo] = useState(0);
   const rangos = [
     ["Lunes", 0],
     ["Martes", 16],
@@ -56,23 +57,24 @@ function ProfileWalkerForm(props) {
       "value",
       (snap) => {
         snap.forEach((child) => {
+          const hourPrice = [];
           let hour =
-            child.val().day +
+            child.val().availability.day +
             ": " +
-            child.val().startTime +
+            child.val().availability.startTime +
             " - " +
-            child.val().endDate;
-          let id = child.val().id;
+            child.val().availability.endDate;
+          let id = child.val().availability.id;
+          const price = Math.round(((child.val().price / 1.3) * 10) / 10);
           resulIds.push(id);
-          resulHours.push(hour);
+          hourPrice.push(hour);
+          hourPrice.push(price);
+          resulHours.push(hourPrice);
         });
         setIds(resulIds);
         setHours(resulHours);
       }
     );
-    if (ids.length == 1) {
-      db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").set(userInfo);
-    }
     setUpdate(false);
     setIsVisibleLoading(false);
   }, [update]);
@@ -110,13 +112,19 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
+    const money = Math.round(sueldo * 1.3 * 10) / 10;
+    const walkData = {
+      availability: availability,
+      price: money,
+    };
+
     db.ref(
       "availabilities-wauwers/" +
         userInfo.id +
         "/availabilities/" +
         availability.id
     )
-      .set(availability)
+      .set(walkData)
       .then(() => {
         setUpdate(true);
         toastRef.current.show("Disponibilidad añadida");
@@ -133,14 +141,6 @@ function ProfileWalkerForm(props) {
       .child(id)
       .remove()
       .then(() => {
-        db.ref("availabilities-wauwers/" + userInfo.id).once(
-          "value",
-          (snap) => {
-            if (snap.numChildren() == 1) {
-              db.ref("availabilities-wauwers/" + userInfo.id).remove();
-            }
-          }
-        );
         setUpdate(true);
         toastRef.current.show("Disponibilidad eliminada");
       })
@@ -189,7 +189,7 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (userInfo.walkSalary >= 5) {
+      if (sueldo >= 5) {
         confirmAdd(id);
       } else {
         Alert.alert(
@@ -230,11 +230,11 @@ function ProfileWalkerForm(props) {
                     walkSalary: precio,
                   })
                   .then(() => {
-                    setUpdate(true);
+                    setSueldo(precio);
                   });
               }}
             >
-              {userInfo.walkSalary}
+              {sueldo}
             </TextInput>
 
             <Collapse style={walkerFormStyles.walkerFormList2}>
@@ -250,7 +250,8 @@ function ProfileWalkerForm(props) {
                       <TouchableOpacity
                         onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
-                        <Text>{hour}</Text>
+                        <Text>{hour[0]}</Text>
+                        <Text>Salario: {hour[1]}</Text>
                       </TouchableOpacity>
                     </View>
                   ))}

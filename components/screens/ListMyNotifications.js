@@ -29,6 +29,7 @@ export default function ListMyNotifications(props) {
     });
 
   useEffect(() => {
+    db.ref("wauwers").child(id).update({ hasRequests: false });
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(id)

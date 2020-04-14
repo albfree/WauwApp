@@ -5,13 +5,13 @@ import {
   Image,
   ScrollView,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
 import { Button, Icon } from "react-native-elements";
-
+import LastLogged from "../../account/LastLogged";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
 
@@ -109,6 +109,7 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
+            <LastLogged />
           </View>
         </View>
       </ScrollView>

@@ -204,10 +204,17 @@ function FormRequestAccommodation(props) {
                   Fechas Disponibles
                 </Text>
                 <Text style={globalStyles.accommodationDate3}>
-                  Del{" "}
-                  {startAccommodation.toLocaleString("en-US").substring(0, 10)}{" "}
-                  hasta el{" "}
-                  {endAccommodation.toLocaleString("en-US").substring(0, 10)}
+                  {"Del " + startAccommodation.getDate() +
+                  "/" +
+                  parseInt(startAccommodation.getMonth() + 1) +
+                  "/" +
+                  startAccommodation.getFullYear()
+                  + " al " +
+                  endAccommodation.getDate() +
+                  "/" +
+                  parseInt(endAccommodation.getMonth() + 1) +
+                  "/" +
+                  endAccommodation.getFullYear()}
                 </Text>
                 <Text style={globalStyles.accommodationPets}>
                   ¿Qué mascotas quiere alojar?

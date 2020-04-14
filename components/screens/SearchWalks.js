@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   View,
   Text,
@@ -7,8 +7,9 @@ import {
   SafeAreaView,
   Alert,
   ScrollView,
+  Button,
 } from "react-native";
-import { SearchBar, Avatar, Icon } from "react-native-elements";
+import { Avatar, Icon, Input } from "react-native-elements";
 import BlankView from "./BlankView";
 import { db } from "../population/config";
 import Loading from "../Loading";
@@ -17,12 +18,16 @@ import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
 import { searchWalksStyles } from "../styles/searchWalkStyle";
+import Toast from "react-native-easy-toast";
 
 function SearchWalks(props) {
   const { navigation } = props;
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(null);
+  const [minRating, setMinRating] = useState(null);
+  const toastRef = useRef();
 
   const interval = navigation.state.params.interval;
 
@@ -38,12 +43,33 @@ function SearchWalks(props) {
 
   useEffect(() => {
     db.ref("availabilities-wauwers").on("value", (snap) => {
-      const allData = [];
+      let allData = [];
       snap.forEach((child) => {
-        if (child.val().wauwer.id != id) {
+        if (child.key !== id) {
           for (var availability in child.val().availabilities) {
             if (availability === interval.id) {
-              allData.push(child.val().wauwer);
+              const wData = [];
+              wData.push(child.key);
+              wData.push(interval.id);
+              allData.push(wData);
+
+              const precio = child
+                .child("availabilities")
+                .child(interval.id)
+                .child("price")
+                .val();
+
+              let rating;
+              db.ref("wauwers/" + child.key).once("value", (snap) => {
+                rating = snap.val().avgScore;
+              });
+
+              if (
+                (maxPrice !== null && precio > maxPrice) ||
+                (minRating !== null && rating < minRating)
+              ) {
+                allData.pop();
+              }
             }
           }
         }
@@ -55,12 +81,81 @@ function SearchWalks(props) {
     setLoading(false);
   }, [reloadData]); //esto es el disparador del useEffect
 
+  const applyFilter = () => {
+    if (
+      (maxPrice === null && minRating === null) ||
+      isNaN(maxPrice) ||
+      isNaN(minRating)
+    ) {
+      toastRef.current.show("Filtros de búsqueda inválidos");
+      setMaxPrice(null);
+      setMinRating(null);
+    } else {
+      if (
+        !Number.isInteger(maxPrice * 10) ||
+        !Number.isInteger(minRating * 10)
+      ) {
+        toastRef.current.show("Valores enteros o con 1 decimal");
+        setMaxPrice(null);
+        setMinRating(null);
+      } else {
+        if (minRating < 0 || minRating > 5) {
+          toastRef.current.show("Valoración entre 0 y 5");
+          setMaxPrice(null);
+          setMinRating(null);
+        } else {
+          setReloadData(true);
+          toastRef.current.show("Filtro aplicado");
+        }
+      }
+    }
+  };
+
+  const clearFilter = () => {
+    setMaxPrice(null);
+    setMinRating(null);
+    setReloadData(true);
+  };
+
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
         <Text style={searchWalksStyles.searchWalkTxt}>
-          {"Escoja al paseador que desee"}
+          {"Escoja al paseador que desee\n\n"}
+          {"para los " +
+            interval.day +
+            " de " +
+            interval.startTime +
+            "h a " +
+            interval.endDate +
+            "h"}
         </Text>
+        <Input
+          keyboardType="numeric"
+          placeholder="Precio máximo de..."
+          onChange={(val) => {
+            if (val.nativeEvent.text !== "") {
+              setMaxPrice(val.nativeEvent.text);
+            } else {
+              setMaxPrice(null);
+            }
+          }}
+          defaultValue={maxPrice}
+        />
+        <Input
+          keyboardType="numeric"
+          placeholder="Valoración mínima de..."
+          onChange={(val) => {
+            if (val.nativeEvent.text !== "") {
+              setMinRating(val.nativeEvent.text);
+            } else {
+              setMinRating(null);
+            }
+          }}
+          defaultValue={minRating}
+        />
+        <Button title="Buscar" onPress={applyFilter} />
+        <Button title="Limpiar filtro" onPress={clearFilter} />
 
         <Loading isVisible={loading} text={"Un momento..."} />
         {data.length > 0 ? (
@@ -71,33 +166,45 @@ function SearchWalks(props) {
                 wauwerData={wauwerData}
                 petNumber={petNumber}
                 navigation={navigation}
+                interval={interval}
               />
             )}
-            keyExtractor={(wauwerData) => {
-              wauwerData.id;
-            }}
+            keyExtractor={(wauwerData) => wauwerData.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
           <BlankView text={"No hay paseos disponibles"} />
         )}
       </ScrollView>
+      <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
 }
 
 function Wauwer(props) {
-  const { wauwerData, petNumber, navigation } = props;
-  const id = wauwerData.item.id;
+  const { wauwerData, petNumber, navigation, interval } = props;
+  const id = wauwerData.item[0];
+
   let user;
   db.ref("wauwers/" + id).once("value", (snap) => {
     user = snap.val();
   });
 
+  let price;
+  db.ref("availabilities-wauwers")
+    .child(id)
+    .child("availabilities")
+    .child(wauwerData.item[1])
+    .once("value", (snap) => {
+      price = snap.val().price;
+    });
+
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("CreateRequestWalk", {
-        wauwer: user, //TODO: MODIFICAR LA REDIRECCIÓN
+        wauwer: user,
+        price: price,
+        interval: interval,
       });
     } else {
       Alert.alert("¡No tienes mascotas que pasear!", "");
@@ -137,7 +244,7 @@ function Wauwer(props) {
                 />
               </View>
               <Text style={searchWalksStyles.searchWalkTxt2}>
-                Precio / Hora: {user.price} €
+                Precio / Hora: {price} €
               </Text>
             </View>
           </View>
