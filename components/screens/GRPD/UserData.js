@@ -102,7 +102,7 @@ export default function UserData(props) {
         if (reqParse.interval === undefined) {
           requestWorkerEmail += "Alojamiento\n";
         } else {
-          requestWorkerEmail += ("Disponibilidad del paseo: " + reqParse.interval);
+          requestWorkerEmail += ("Disponibilidad del paseo: " + reqParse.interval + "\n");
         }
         requestWorkerEmail += "¿Cancelada?: ";
         if (reqParse.isCanceled) {
@@ -122,7 +122,7 @@ export default function UserData(props) {
         } else {
           requestWorkerEmail += "No\n";
         }
-        requestWorkerEmail += "Precio: " + reqParse.price;
+        requestWorkerEmail += "Precio: " + reqParse.price + "\n";
       });
     } else {
       requestWorkerEmail += "Actualmente tiene 0 solicitudes recibidas\n";
