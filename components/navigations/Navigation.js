@@ -7,30 +7,9 @@ import NotificationsScreenStack from "./NotificationsStack";
 import ServicesScreenStacks from "./ServicesStacks";
 import ProfileScreenStack from "./ProfileStack";
 import ChatsScreenStack from "./ChatsStack";
-import { db } from "../population/config";
-import { email } from "../account/QueriesProfile";
 
 const morado = "#443099";
 const gris = "#6c7075";
-const color = "rgba(0,128,0,0.6)";
-
-let notf;
-db.ref("wauwers")
-  .orderByChild("email")
-  .equalTo(email)
-  .on("child_added", (snap) => {
-    notf = snap.val().hasRequests;
-  });
-
-const Reload = () => {
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      notf = snap.val().hasRequests;
-    });
-  navigate("Notifications");
-};
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -38,7 +17,7 @@ const NavigationStacks = createBottomTabNavigator(
       screen: HomeScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Home",
-        tabBarIcon: ({ tintColor, not }) => (
+        tabBarIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
             name="home"
@@ -86,7 +65,7 @@ const NavigationStacks = createBottomTabNavigator(
             type="material-community"
             name="bell"
             size={31}
-            color={notf ? color : tintColor}
+            color={tintColor}
           />
         ),
       }),
@@ -95,7 +74,6 @@ const NavigationStacks = createBottomTabNavigator(
     Profile: {
       screen: ProfileScreenStack,
       navigationOptions: () => ({
-        activeTintColor: color,
         tabBarLabel: "Profile",
         tabBarIcon: ({ tintColor }) => (
           <Icon

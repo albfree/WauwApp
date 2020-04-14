@@ -193,7 +193,7 @@ function FormRequestAccommodation(props) {
                     marginLeft={10}
                   />
                 }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
+                titleStyle={searchAccommodationStyles.searchAccommodationTxt4}
               />
               {showS && (
                 <DateTimePicker

@@ -126,4 +126,7 @@ export const searchAccommodationStyles = StyleSheet.create({
     marginBottom: 5,
     paddingBottom: 10,
   },
+  searchAccommodationView3: {
+    textAlign: "center",
+  },
 });
