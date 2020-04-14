@@ -76,7 +76,7 @@ function LoginScreen(props) {
                     first_name: result.additionalUserInfo.profile.given_name,
                     last_name: result.additionalUserInfo.profile.family_name,
                     created_at: Date.now(),
-                    last_logged_in: new Date().toISOString(),
+                    last_logged_in: new Date().toISOString(), 
                   });
                 let idLogin = db.ref("logins").push().key;
                 firebase
