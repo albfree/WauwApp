@@ -18,6 +18,29 @@ import { withNavigation } from "react-navigation";
 function Profile(props) {
   const { navigation } = props;
 
+
+  const checkHasLocation = () =>{
+    let ck ;
+    let newOwner;
+    db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      newOwner = snap.val();
+    });
+
+    if(newOwner.hasOwnProperty("location")){
+      navigation.navigate("ProfileAddDogForm");
+    }else{
+      Alert.alert("¡NO TIENES LOCALIZACIÓN INTRODUCIDA!","Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil");
+
+    }
+    
+
+
+  }
+
+
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
       <TouchableOpacity
@@ -76,7 +99,7 @@ function Profile(props) {
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Paseador"
-              onPress={() => navigation.navigate("ProfileWalkerForm")}
+              onPress={() => checkHasLocation()}
               icon={
                 <Icon
                   type="material-community"

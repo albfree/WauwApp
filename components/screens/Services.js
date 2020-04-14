@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
+  Alert,
   Dimensions,
 } from "react-native";
 import { Button } from "react-native-elements";
@@ -14,6 +15,10 @@ import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import _ from "lodash";
 import { servicesStyles } from "../styles/servicesStyle";
+import { email } from "../account/QueriesProfile";
+import { db } from "../population/config.js";
+
+
 
 function Services(props) {
   const { navigation } = props;
@@ -49,14 +54,39 @@ function Services(props) {
     );
   };
 
+  const checkHasLocation = () =>{
+    let ck ;
+    let newOwner;
+    db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      newOwner = snap.val();
+    });
+
+    if(newOwner.hasOwnProperty("location")){
+       ck = true;
+    }else{
+       ck = false;
+    }
+    return ck;
+
+
+  }
+
   const check = () => {
-    if (tittle === "Buscar Paseador") {
+  if(checkHasLocation()){
+  if (tittle === "Buscar Paseador") {
       navigation.navigate("FormFilterByAvailability");
     } else if (tittle === "Buscar Alojamiento") {
       navigation.navigate("FormFilterByDate");
     } else {
       navigation.navigate("CreateAccommodation");
     }
+  }else{
+    Alert.alert("¡NO TIENES LOCALIZACIÓN INTRODUCIDA!","Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil");
+
+  }
   };
 
   return (
