@@ -234,15 +234,15 @@ function PayRequest(props) {
       ) : null}
 
       {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) === priceRequest ? (
-        <PointsEqualToPrice buyBook={buyBook}></PointsEqualToPrice>
+        <PointsEqualToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}></PointsEqualToPrice>
       ) : null}
 
       {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) < priceRequest ? (
-        <PointsLessToPrice buyBook={buyBook}></PointsLessToPrice>
+        <PointsLessToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}></PointsLessToPrice>
       ) : null}
 
       {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) > priceRequest ? (
-        <PointsMoreToPrice buyBook={buyBook}></PointsMoreToPrice>
+        <PointsMoreToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}></PointsMoreToPrice>
       ) : null}
 
       {paypalUrl ? (
@@ -296,13 +296,14 @@ function WithoutWauwPoints(props) {
           Pagar con PayPal
           </Text>
       </TouchableOpacity>
+      <Text>No tienes Wauw Points para canjear.</Text>
     </View>
   );
 
 }
 
 function PointsEqualToPrice(props) {
-  const { buyBook } = props;
+  const { buyBook, wauwPoints, priceRequest } = props;
 
   return (
     <View style={styles.container}>
@@ -319,16 +320,19 @@ function PointsEqualToPrice(props) {
             color: "#ffffff"
           }}
         >
-          Pagar con Wauw Points iguales
+          Pagar con Paypal.
           </Text>
       </TouchableOpacity>
+      <Text>Tienes {wauwPoints} Wauw Points que equivalen a {priceRequest}€. ¿Quieres canjearlos?</Text>
     </View>
   );
 
 }
 
 function PointsLessToPrice(props) {
-  const { buyBook } = props;
+  const { buyBook, wauwPoints, priceRequest } = props;
+
+  let resta = priceRequest - Math.round((wauwPoints * 0.65 * 100) / 100);
 
   return (
     <View style={styles.container}>
@@ -345,16 +349,19 @@ function PointsLessToPrice(props) {
             color: "#ffffff"
           }}
         >
-          Pagar con Wauw Points menores
+          Pagar con Paypal
           </Text>
       </TouchableOpacity>
+      <Text>Tienes {wauwPoints} Wauw Points que restan {resta}€ a los {priceRequest}€. ¿Quieres canjearlos?</Text>
     </View>
   );
 
 }
 
 function PointsMoreToPrice(props) {
-  const { buyBook } = props;
+  const { buyBook, wauwPoints, priceRequest } = props;
+
+  let deMas = wauwPoints - Math.round(priceRequest/0.65);
 
   return (
     <View style={styles.container}>
@@ -371,9 +378,10 @@ function PointsMoreToPrice(props) {
             color: "#ffffff"
           }}
         >
-          Pagar con Wauw Points de más
+          Pagar con Paypal
           </Text>
       </TouchableOpacity>
+      <Text>Tienes {wauwPoints} Wauw Points que se quedan en {deMas} al canjearlos por los {priceRequest}€. ¿Quieres canjearlos?</Text>
     </View>
   );
 
