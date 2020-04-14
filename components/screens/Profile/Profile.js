@@ -16,6 +16,7 @@ import _ from "lodash";
 import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
+import { decode, encode } from "base-64";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 const _console = _.clone(console);
@@ -26,6 +27,14 @@ console.warn = (message) => {
 };
 
 function Profile(props) {
+
+  if (!global.btoa) {
+    global.btoa = encode;
+  }
+
+  if (!global.atob) {
+    global.atob = decode;
+  }
   const { navigation } = props;
 
   console.log("Email", email);

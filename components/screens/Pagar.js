@@ -32,53 +32,83 @@ export default function Pagar(props) {
 
   var paymentURL = "https://api.sandbox.paypal.com/v1/payments/payouts";
 
-  var sender_batch_header = {
-    sender_batch_id: "10042020",
-    email_subject: "¡Tu pago por el paseo o alojamiento!",
-    email_message:
-      "Gracias por tu paseo o alojamiento a nuestra aplicación. Con tu servicio, hemos conseguido aportar un granito de arena a las protectoras de animales",
-  };
-
-  var items = {
-    recipient_type: "EMAIL",
-    amount: {
-      value: "9.87",
-      currency: "EUR",
-    },
-    note: "Gracias por tu servicio!",
-    receiver: email,
-  };
-
-  const auth = {
-    username:
-      "AUrtghWgBuLlBCqUDRK4NfYpHNRxRPlxdQFu1m0nV8XSrVnfGT734v_CrmSWFjGvJ9GgcVlEyJ6GsgXq", //"your_paypal-app-client-ID",
-    password:
-      "EMc9eBqWueUaCtRuB92j3smvFqF4jyog2nzyFFY1Ud5us5vxm5F_KOKFj2QN1fVnaj8f33zBlh8eOGz2", //"your-paypal-app-secret-ID
-  };
-
-  const data = {
-    grant_type: "client_credentials",
-  };
-
-  const options = {
-    method: "post",
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-      "Access-Control-Allow-Credentials": true,
-    },
-    data: qs.stringify(data),
-    url: paymentURL,
-    auth: auth,
-  };
-
   payment = async () => {
-    console.log("Entra al pago");
-    await axios(options)
+    var randomNumber = (Math.floor(Math.random() * 10000000) + 1);
+    console.log(randomNumber);
+    var sender_batch_header = {
+      sender_batch_id: randomNumber,
+      email_subject: "¡Tu pago por el paseo o alojamiento!",
+      email_message:
+        "Gracias por tu paseo o alojamiento a nuestra aplicación. Con tu servicio, hemos conseguido aportar un granito de arena a las protectoras de animales",
+    };
+
+    var items = [
+      {
+        recipient_type: "EMAIL",
+        amount: {
+          value: "9.87",
+          currency: "EUR",
+        },
+        note: "Gracias por tu servicio!",
+        receiver: email,
+      },
+    ];
+
+    const url = `https://api.sandbox.paypal.com/v1/oauth2/token`;
+
+    const data = {
+      grant_type: "client_credentials",
+    };
+
+    const auth = {
+      username:
+        "AUrtghWgBuLlBCqUDRK4NfYpHNRxRPlxdQFu1m0nV8XSrVnfGT734v_CrmSWFjGvJ9GgcVlEyJ6GsgXq", //"your_paypal-app-client-ID",
+      password:
+        "EMc9eBqWueUaCtRuB92j3smvFqF4jyog2nzyFFY1Ud5us5vxm5F_KOKFj2QN1fVnaj8f33zBlh8eOGz2", //"your-paypal-app-secret-ID
+    };
+
+    const options = {
+      method: "post",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+        "Access-Control-Allow-Credentials": true,
+      },
+
+      //Make sure you use the qs.stringify for data
+      data: qs.stringify(data),
+      auth: auth,
+      url,
+    };
+
+    axios(options)
       .then((response) => {
-        console.log("access_token", response.data);
+        setAccessToken(response.data.access_token);
+        axios
+          .post(
+            `https://api.sandbox.paypal.com/v1/payments/payouts`,
+            [sender_batch_header, items],
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${response.data.access_token}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log("Entra al then del segundo axios");
+            console.log("response", response);
+
+            //console.log("response", links);
+            //setPaypalUrl(approvalUrl);
+          })
+          .catch((err) => {
+            console.log("Error primer catch");
+            console.log({ err });
+          });
       })
       .catch((err) => {
-        console.log("Error", err);
+        console.log("Error segundo catch");
+        console.log(err);
       });
   };
 
