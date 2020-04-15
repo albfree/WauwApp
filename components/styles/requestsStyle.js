@@ -84,6 +84,42 @@ export const requestsStyles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "500",
   },
+  requestsTxt10: {
+    alignSelf: "center",
+    color: rojo,
+    marginTop: 8,
+    textAlign: "center",
+  },
+  requestsTxt11: {
+    alignSelf: "center",
+    fontSize: 17,
+    marginBottom: 10,
+    marginTop: 30,
+    textAlign: "center",
+  },
+  requestsTxt12: {
+    alignSelf: "center",
+    color: rojo,
+    fontSize: 18,
+    marginTop: 15,
+    textAlign: "center",
+  },
+  requestsTxt13: {
+    alignSelf: "center",
+    color: verde,
+    marginBottom: 10,
+    marginTop: 5,
+    textAlign: "center",
+  },
+  requestsTxt14: {
+    color: verde,
+    marginTop: 15,
+  },
+  requestsTxt15: {
+    alignSelf: "center",
+    marginTop: 15,
+    textAlign: "center",
+  },
   requestsTxt2: {
     color: gris,
     fontSize: 14,
@@ -133,42 +169,7 @@ export const requestsStyles = StyleSheet.create({
     marginTop: 5,
     textAlign: "center",
   },
-  requestsTxt10: {
-    alignSelf: "center",
-    color: rojo,
-    marginTop: 8,
-    textAlign: "center",
-  },
-  requestsTxt11: {
-    alignSelf: "center",
-    fontSize: 17,
-    marginBottom: 10,
-    marginTop: 30,
-    textAlign: "center",
-  },
-  requestsTxt12: {
-    alignSelf: "center",
-    color: rojo,
-    fontSize: 18,
-    marginTop: 15,
-    textAlign: "center",
-  },
-  requestsTxt13: {
-    alignSelf: "center",
-    color: verde,
-    marginBottom: 10,
-    marginTop: 5,
-    textAlign: "center",
-  },
-  requestsTxt14: {
-    color: verde,
-    marginTop: 15,
-  },
-  requestsTxt15: {
-    alignSelf: "center",
-    marginTop: 15,
-    textAlign: "center",
-  },
+
   requestsView: {
     alignItems: "center",
     flexDirection: "row",
