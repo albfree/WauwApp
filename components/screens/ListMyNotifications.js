@@ -14,6 +14,7 @@ import Loading from "../Loading";
 import { email } from "../account/QueriesProfile";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
+import { notificationsStyles } from "../styles/notificationsStyle";
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
@@ -79,6 +80,9 @@ function Request(props) {
   let color = "white";
   let ownerInfo;
   let dogs = "perro";
+  const naranja = "rgba(255,128,0,0.6)";
+  const verde = "rgba(0,128,0,0.6)";
+  const rojo = "rgba(255,0,0,0.6)";
   if (req.item.petNumber > 1) {
     dogs = "perros";
   }
@@ -90,16 +94,16 @@ function Request(props) {
 
   if (req.item.pending) {
     estado = "Pendiente";
-    color = "rgba(255,128,0,0.6)";
+    color = naranja;
   } else {
     switch (req.item.isCanceled) {
       case false:
         estado = "Aceptada";
-        color = "rgba(0,128,0,0.6)";
+        color = verde;
         break;
       case true:
         estado = "Rechazada";
-        color = "rgba(255,0,0,0.6)";
+        color = rojo;
         break;
       default:
         break;
@@ -235,10 +239,10 @@ function Request(props) {
 
   return (
     <TouchableOpacity onPress={checkRequestsState}>
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={notificationsStyles.notificationsFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
-            <View style={globalStyles.notificationsColumn1}>
+          <View style={notificationsStyles.notificationsView}>
+            <View style={notificationsStyles.notificationsColumn}>
               <Avatar
                 rounded
                 size="large"
@@ -246,19 +250,19 @@ function Request(props) {
                   uri: ownerInfo.photo,
                 }}
               />
-              <Text style={globalStyles.notificationsNum}>
+            </View>
+            <View style={notificationsStyles.notificationsColumn}>
+              <Text style={notificationsStyles.notificationsTxt}>
                 {ownerInfo.name}
               </Text>
-            </View>
-            <View style={globalStyles.notificationsColumn2}>
-              <Text style={globalStyles.myRequestsType}>
+              <Text style={notificationsStyles.notificationsTxt2}>
                 Solicitud de {tipo}
               </Text>
-              <Text style={globalStyles.myRequestsNum}>
+              <Text style={notificationsStyles.notificationsTxt}>
                 Servicio para {req.item.petNumber} {dogs}
               </Text>
-              <Text style={globalStyles.myRequestsPrice}>{fecha}</Text>
-              <Text style={globalStyles.myRequestsNum}>
+              <Text style={notificationsStyles.notificationsTxt2}>{fecha}</Text>
+              <Text style={notificationsStyles.notificationsTxt}>
                 Estado: <Text style={tarjeta}>{estado}</Text>
               </Text>
             </View>

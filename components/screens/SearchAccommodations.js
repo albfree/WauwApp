@@ -7,19 +7,20 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
-import { Image, Avatar } from "react-native-elements";
+import { Image, Avatar, Icon } from "react-native-elements";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
 import { email } from "../account/QueriesProfile";
-import BlankView from "./BlankView";
+import BlankView2 from "./BlankView2";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import { searchWalksStyles } from "../styles/searchWalkStyle.js";
 
 function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
+  const [accommodationsList2, setAccommodationList2] = useState([]);
   const [loading, setLoading] = useState(false);
   const filter = navigation.state.params.formData.startTime;
   let petNumber;
@@ -38,6 +39,7 @@ function ListAccommodations(props) {
       .equalTo(false)
       .on("value", (snap) => {
         const accommodations = [];
+        const accommodations2 = [];
         snap.forEach((child) => {
           if (child.val().worker != id) {
             var endTime = new Date(child.val().endTime);
@@ -49,37 +51,88 @@ function ListAccommodations(props) {
               filter - endTime <= 86400000
             ) {
               accommodations.push(child.val());
+            } else {
+              accommodations2.push(child.val());
             }
           }
         });
         setAccommodationList(accommodations);
+        setAccommodationList2(accommodations2);
       });
   }, []);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        {accommodationsList.length > 0 ? (
+          <List1
+            accommodationsList={accommodationsList}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        ) : (
+          <List2
+            accommodationsList={accommodationsList2}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+function List1(props) {
+  const { accommodationsList, navigation, petNumber, id } = props;
+  return (
+    <SafeAreaView>
       <Text style={searchAccommodationStyles.searchAccommodationTxt}>
         {"Escoja al cuidador que desee"}
       </Text>
-      <ScrollView>
-        {accommodationsList.length > 0 ? (
-          <FlatList
-            data={accommodationsList}
-            renderItem={(accommodation) => (
-              <Accommodation
-                accommodation={accommodation}
-                petNumber={petNumber}
-                myId={id}
-                navigation={navigation}
-              />
-            )}
-            keyExtractor={(accommodation) => accommodation.id}
-            showsVerticalScrollIndicator={false}
+      <FlatList
+        data={accommodationsList}
+        renderItem={(accommodation) => (
+          <Accommodation
+            accommodation={accommodation}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
           />
-        ) : (
-          <BlankView text={"No hay alojamientos disponibles"} />
         )}
-      </ScrollView>
+        keyExtractor={(accommodation) => accommodation.id}
+        showsVerticalScrollIndicator={false}
+      />
+    </SafeAreaView>
+  );
+}
+
+function List2(props) {
+  const { accommodationsList, navigation, petNumber, id } = props;
+  return (
+    <SafeAreaView>
+      <BlankView2
+        text={"No hay alojamientos disponibles para la fecha seleccionada"}
+      />
+
+      <Text style={searchAccommodationStyles.searchAccommodationTxt}>
+        {"Puede que le interesen..."}
+      </Text>
+
+      <FlatList
+        data={accommodationsList}
+        renderItem={(accommodation) => (
+          <Accommodation
+            accommodation={accommodation}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
+        keyExtractor={(accommodation) => accommodation.id}
+        showsVerticalScrollIndicator={false}
+      />
     </SafeAreaView>
   );
 }
@@ -110,6 +163,9 @@ function Accommodation(props) {
     });
   };
 
+  var x = new Date(accommodation.item.startTime);
+  var y = new Date(accommodation.item.endTime);
+
   return (
     <TouchableOpacity onPress={checkHasPets}>
       <View style={searchAccommodationStyles.searchAccommodationFeed}>
@@ -130,22 +186,40 @@ function Accommodation(props) {
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
                 {accommodation.item.salary} €
               </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
+                Valoración
+              </Text>
+              <View style={searchAccommodationStyles.searchAccommodationView}>
+                <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                  {worker.avgScore}{" "}
+                </Text>
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={20}
+                  color="yellow"
+                />
+              </View>
             </View>
             <View style={searchAccommodationStyles.searchAccommodationColumn3}>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
                 Disponibilidad
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                Del{" "}
-                {accommodation.item.startTime
-                  .toLocaleString("en-US")
-                  .substring(0, 10)}
+                {"Del " +
+                  x.getDate() +
+                  "/" +
+                  parseInt(x.getMonth() + 1) +
+                  "/" +
+                  x.getFullYear()}
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                al{" "}
-                {accommodation.item.endTime
-                  .toLocaleString("en-US")
-                  .substring(0, 10)}
+                {"al " +
+                  y.getDate() +
+                  "/" +
+                  parseInt(y.getMonth() + 1) +
+                  "/" +
+                  y.getFullYear()}
               </Text>
             </View>
           </View>

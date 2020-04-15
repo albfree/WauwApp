@@ -142,45 +142,42 @@ function LoginScreen(props) {
   };
 
   return (
-    <ScrollView>
-      <View style={loginStyles.loginView}>
-        <Text style={loginStyles.loginTxt}>WAUW</Text>
-        <Image
-          source={require("../../assets/images/logo.png")}
-          style={loginStyles.loginImage}
-        />
-        <Image
-          source={require("../../assets/images/prints.png")}
-          style={loginStyles.loginPrints}
-        />
-        <View style={loginStyles.loginView2}>
-          <CheckBox checked={isChecked} onPress={changeChecked} />
-          <Text>
-            He leído y acepto los
-            <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
-              {" "}
-              términos y condiciones de uso
-            </Text>
-          </Text>
-        </View>
-        <Button
-          buttonStyle={loginStyles.loginBtn}
-          containerStyle={loginStyles.loginBtnContainer}
-          title="Entrar con Google"
-          onPress={funct}
-          icon={
-            <Icon
-              type="material-community"
-              name="google"
-              size={30}
-              color="white"
-              marginLeft={25}
-            />
-          }
-          titleStyle={loginStyles.loginBtnTittle}
-        />
-      </View>
-    </ScrollView>
+    <View style={loginStyles.loginView}>
+      <Text style={loginStyles.loginTxt}>WAUW</Text>
+      <Image
+        source={require("../../assets/images/logo.png")}
+        style={loginStyles.loginImage}
+      />
+      <Image
+        source={require("../../assets/images/prints.png")}
+        style={loginStyles.loginPrints}
+      />
+      <CheckBox checked={isChecked} onPress={changeChecked} />
+      <Text>
+        He leído y acepto los
+        <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
+          {" "}
+          términos y condiciones de uso
+        </Text>
+      </Text>
+
+      <Button
+        buttonStyle={loginStyles.loginBtn}
+        containerStyle={loginStyles.loginBtnContainer}
+        title="Entrar con Google"
+        onPress={funct}
+        icon={
+          <Icon
+            type="material-community"
+            name="google"
+            size={30}
+            color="white"
+            marginLeft={25}
+          />
+        }
+        titleStyle={loginStyles.loginBtnTittle}
+      />
+    </View>
   );
 }
 

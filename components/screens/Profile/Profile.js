@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   ScrollView,
+  Alert,
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
@@ -11,13 +12,12 @@ import { FontAwesome } from "@expo/vector-icons";
 import firebase from "firebase";
 import UserGuest from "../../account/UserGuest";
 import { Button, Icon } from "react-native-elements";
-
+import LastLogged from "../../account/LastLogged";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
 
-import {db } from "../../population/config";
-
 import { email } from "../../account/QueriesProfile";
+import { db } from "../../population/config.js";
 
 function Profile(props) {
   const { navigation } = props;
@@ -75,6 +75,27 @@ function Profile(props) {
         accommodations.push(pretty);
       });
     });
+
+
+  const checkHasLocation = () => {
+    let ck;
+    let newOwner;
+    db.ref("wauwers")
+      .orderByChild("email")
+      .equalTo(email)
+      .on("child_added", (snap) => {
+        newOwner = snap.val();
+      });
+
+    if (newOwner.hasOwnProperty("location")) {
+      navigation.navigate("ProfileWalkerForm");
+    } else {
+      Alert.alert(
+        "¡NO TIENES LOCALIZACIÓN INTRODUCIDA!",
+        "Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil"
+      );
+    }
+  };
 
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
@@ -134,7 +155,7 @@ function Profile(props) {
               buttonStyle={globalStyles.profileBtn}
               containerStyle={globalStyles.profileBtnContainer}
               title="Quiero ser Paseador"
-              onPress={() => navigation.navigate("ProfileWalkerForm")}
+              onPress={() => checkHasLocation()}
               icon={
                 <Icon
                   type="material-community"
@@ -192,7 +213,7 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
-            <Text>Última conexión: "Introdudir aquí última conexión"</Text>
+            <LastLogged />
           </View>
         </View>
       </ScrollView>

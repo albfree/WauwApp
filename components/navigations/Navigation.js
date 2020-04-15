@@ -7,7 +7,9 @@ import NotificationsScreenStack from "./NotificationsStack";
 import ServicesScreenStacks from "./ServicesStacks";
 import ProfileScreenStack from "./ProfileStack";
 import ChatsScreenStack from "./ChatsStack";
-import { HeaderStyleInterpolators } from "react-navigation-stack";
+
+const morado = "#443099";
+const gris = "#6c7075";
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -53,6 +55,7 @@ const NavigationStacks = createBottomTabNavigator(
         ),
       }),
     },
+
     Notifications: {
       screen: NotificationsScreenStack,
       navigationOptions: () => ({
@@ -67,6 +70,7 @@ const NavigationStacks = createBottomTabNavigator(
         ),
       }),
     },
+
     Profile: {
       screen: ProfileScreenStack,
       navigationOptions: () => ({
@@ -88,11 +92,11 @@ const NavigationStacks = createBottomTabNavigator(
     tabBarOptions: {
       showLabel: false,
       showIcon: true,
-      inactiveTintColor: "#6c7075",
-      activeTintColor: "#443099",
+      inactiveTintColor: gris,
+      activeTintColor: morado,
       keyboardHidesTabBar: false,
     },
-    lazy: "false",
+    lazy: "true",
   }
 );
 
