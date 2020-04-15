@@ -26,18 +26,13 @@ function PayRequest(props) {
   const requestId = request.id;
   const [checked, setIsChecked] = useState(false);
 
-  let currentUserWauwPointsConst;
   let currentUserID;
   let currentUserWauwPoints;
 
   db.ref("wauwers").orderByChild("email").equalTo(email).on("child_added", (snap) => {
     currentUserID = snap.val().id;
-    currentUserWauwPointsConst = snap.val().wauwPoints;
     currentUserWauwPoints = snap.val().wauwPoints;
   });
-
-  /* console.log(Math.round((currentUserWauwPoints * 0.65 * 100) / 100));
-  console.log(priceRequest); */
 
   //Le vamos a pasar de props al pago la request entera. De ahí, coges el precio y se lo pasas al data details. Si response.status = 200, entonces setearemos 
   //isPayed de esa request a true. En la vista de showRequest, el botón de pago se mostrará cuando isCanceled = false, isPending = false, isPayed = false, 
@@ -520,9 +515,4 @@ const styles = StyleSheet.create({
     fontSize: 17
   }
 });
-
-
-// App.navigationOptions = {
-//   title: "App"
-// };
 
