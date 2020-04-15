@@ -318,7 +318,7 @@ function PointsEqualToPrice(props) {
     alert("Has realizado el pago del servicio con Wauw Points correctamente. Tu saldo de Wauw Points se ha agotado.");
 
     navigation.popToTop("Services");
-  }
+  };
 
   return (
     <View style={styles.container}>
