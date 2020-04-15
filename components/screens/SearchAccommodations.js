@@ -275,8 +275,6 @@ function Accommodation(props) {
       worker = snap.val();
     });
 
-  const rating = accommodation.item[1];
-
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("FormRequestAccommodation", {
@@ -317,6 +315,20 @@ function Accommodation(props) {
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
                 {accommodation.item[0].salary} €
               </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
+                Valoración
+              </Text>
+              <View style={searchAccommodationStyles.searchAccommodationView}>
+                <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                  {worker.avgScore}{" "}
+                </Text>
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={20}
+                  color="yellow"
+                />
+              </View>
             </View>
             <View style={searchAccommodationStyles.searchAccommodationColumn3}>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
