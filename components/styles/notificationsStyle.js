@@ -11,10 +11,6 @@ export const notificationsStyles = StyleSheet.create({
     justifyContent: "flex-start",
     paddingLeft: 10,
   },
-  searchWalkColumn2: {
-    alignItems: "flex-end",
-    justifyContent: "flex-end",
-  },
   notificationsFeed: {
     alignItems: "center",
     backgroundColor: blanco,
