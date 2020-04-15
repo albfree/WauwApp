@@ -27,7 +27,10 @@ export const globalStyles = StyleSheet.create({
     marginTop: 30,
     width: "100%",
   },
-
+  blankView4: {
+    flex: 1,
+    paddingTop: 10,
+  },
   btnStyle: {
     backgroundColor: "#443099",
     width: "75%",
@@ -952,87 +955,4 @@ export const globalStyles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
   },
-  infoUserPublic: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 5,
-    textAlignVertical: "center",
-  },
-  userInfoPublicAvatar: {
-    marginLeft: "10%"
-  },
-  userInfoPublicDisplayName: {
-    color: "black",
-    fontSize: 16,
-    marginLeft: "14%"
-  },
-  userInfoPublicGlobal: {
-    flex: 1,
-    borderWidth: 1,
-    borderRadius: 25,
-    backgroundColor: "white",
-    borderColor: "#d6d6e8",
-    marginTop: "10%"
-  },
-  userInfoPublicTitleDescription: {
-    textAlign: "center",
-    paddingBottom: 5,
-    fontSize: 16,
-    borderRadius: 25,
-    color: "#4d399a",
-    paddingTop: 10,
-  },
-  userInfoPublicDescription: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 15,
-    marginRight: 15,
-    borderRadius: 25,
-    color: "black",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  userPublicGlobal: {
-    paddingTop: "25%"
-  },
-  textInformationPublicPro:{
-    textAlign: "left",
-    paddingLeft: 50,
-    color: "#4d399a",
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  textInformationPublicPro1:{
-    textAlign: "left",
-    paddingLeft: 50,
-    fontSize: 20,
-  },
-  textReviewsPublicPro: {
-    textAlign: "right",
-    paddingRight: 50,
-    fontSize: 20
-  },
-  textReviewsPublicPro1: {
-    textAlign: "right",
-    paddingRight: 50,
-    fontSize: 20,
-    color: "#4d399a",
-    fontWeight: "bold"
-  },
-  tabBarPublicPro: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 5,
-    textAlignVertical: "center"
-  },
-  infoUserScore:{
-    paddingRight: 70,
-    paddingTop: 15,
-    color: "#4d399a",
-    fontWeight: "bold"
-  }
 });

@@ -1,12 +1,13 @@
 import { createStackNavigator } from "react-navigation-stack";
 import LoginScreen from "../screens/LoginScreen";
 import TermsAndConditionsScreen from "../screens/TermsAndConditions";
+import { hide } from "expo/build/launch/SplashScreen";
 
 const LoginStack = createStackNavigator({
   Login: {
     screen: LoginScreen,
     navigationOptions: () => ({
-      header: null,
+      header: hide,
     }),
   },
   Terms: {

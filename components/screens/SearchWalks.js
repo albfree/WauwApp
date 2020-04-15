@@ -7,9 +7,8 @@ import {
   SafeAreaView,
   Alert,
   ScrollView,
-  Button,
 } from "react-native";
-import { Avatar, Icon, Input } from "react-native-elements";
+import { Avatar, Button, Icon, Input } from "react-native-elements";
 import BlankView from "./BlankView";
 import { db } from "../population/config";
 import Loading from "../Loading";
@@ -130,9 +129,12 @@ function SearchWalks(props) {
             interval.endDate +
             "h"}
         </Text>
+
         <Input
+          inputContainerStyle={searchWalksStyles.searchWalksView3}
+          inputStyle={searchWalksStyles.searchWalkTxt8}
           keyboardType="numeric"
-          placeholder="Precio máximo de..."
+          placeholder="Precio máximo del paseo"
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMaxPrice(val.nativeEvent.text);
@@ -143,8 +145,10 @@ function SearchWalks(props) {
           defaultValue={maxPrice}
         />
         <Input
+          inputContainerStyle={searchWalksStyles.searchWalksView3}
+          inputStyle={searchWalksStyles.searchWalkTxt9}
           keyboardType="numeric"
-          placeholder="Valoración mínima de..."
+          placeholder="Valoración mínima del paseador"
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMinRating(val.nativeEvent.text);
@@ -154,9 +158,40 @@ function SearchWalks(props) {
           }}
           defaultValue={minRating}
         />
-        <Button title="Buscar" onPress={applyFilter} />
-        <Button title="Limpiar filtro" onPress={clearFilter} />
-
+        <View style={searchWalksStyles.searchWalksView4}>
+          <Button
+            buttonStyle={searchWalksStyles.searchWalksBtn2}
+            containerStyle={searchWalksStyles.searchWalksBtnContainer2}
+            title="Filtrar"
+            onPress={applyFilter}
+            icon={
+              <Icon
+                type="material-community"
+                name="filter"
+                size={20}
+                color="white"
+                marginRight={10}
+              />
+            }
+            titleStyle={searchWalksStyles.searchWalktxt10}
+          />
+          <Button
+            buttonStyle={searchWalksStyles.searchWalksBtn3}
+            containerStyle={searchWalksStyles.searchWalksBtnContainer3}
+            title="Limpiar filtro"
+            onPress={clearFilter}
+            icon={
+              <Icon
+                type="material-community"
+                name="filter-remove"
+                size={20}
+                color="white"
+                marginRight={10}
+              />
+            }
+            titleStyle={searchWalksStyles.searchWalktxt10}
+          />
+        </View>
         <Loading isVisible={loading} text={"Un momento..."} />
         {data.length > 0 ? (
           <FlatList
@@ -173,7 +208,7 @@ function SearchWalks(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <BlankView text={"No hay paseos disponibles"} />
+          <BlankView text={"No hay paseadores disponibles"} />
         )}
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
