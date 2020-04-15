@@ -22,9 +22,7 @@ export default function UserData(props) {
   var requestOwner = props.navigation.state.params.requestOwner;
   var pets = props.navigation.state.params.pets;
 
-
-
-  var sendEmail = function() {
+  var sendEmail = function () {
     var userEmail = "Datos de usuario\n\n";
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";
@@ -32,7 +30,7 @@ export default function UserData(props) {
 
     userEmail += "Nombre: " + user.name + "\n";
     userEmail += "Apellidos: " + user.surname + "\n";
-    if (user.address !== undefined) {
+    if (user.hasOwnProperty("address")) {
       userEmail += "Dirección: " + user.address + "\n";
     }
     userEmail += "Descripción: " + user.description + "\n";
@@ -41,7 +39,7 @@ export default function UserData(props) {
     userEmail += "Salario: " + user.price + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
-    if (user.location !== undefined) {
+    if (user.hasOwnProperty("location")) {
       userEmail += user.location.latitude + "\n";
       userEmail += user.location.latitudeDelta + "\n";
       userEmail += user.location.longitude + "\n";
@@ -53,9 +51,9 @@ export default function UserData(props) {
       {
         pets.map((pet) => {
           let petParse = JSON.parse(JSON.stringify(pet));
-          petsEmail += ("Nombre: " + petParse.name + "\n");
-          petsEmail += ("Descripción: " + petParse.description + "\n");
-          petsEmail += ("Raza: " + petParse.breed + "\n");
+          petsEmail += "Nombre: " + petParse.name + "\n";
+          petsEmail += "Descripción: " + petParse.description + "\n";
+          petsEmail += "Raza: " + petParse.breed + "\n";
           petsEmail += "\n";
         });
       }
@@ -64,10 +62,9 @@ export default function UserData(props) {
     }
 
     if (requestOwner.length !== 0) {
-      console.log("Entra al if")
       requestOwner.map((reqOwner) => {
         let reqParse = JSON.parse(JSON.stringify(reqOwner));
-        if (reqOwner.interval !== undefined) {
+        if (!reqOwner.hasOwnProperty("interval")) {
           requestOwnerEmail += "Alojamiento\n";
         } else {
           requestOwnerEmail += reqParse.interval;
@@ -99,10 +96,11 @@ export default function UserData(props) {
     if (requestWorker.length !== 0) {
       requestWorker.map((reqWorker) => {
         let reqParse = JSON.parse(JSON.stringify(reqWorker));
-        if (reqParse.interval === undefined) {
+        if (!reqParse.hasOwnProperty("interval")) {
           requestWorkerEmail += "Alojamiento\n";
         } else {
-          requestWorkerEmail += ("Disponibilidad del paseo: " + reqParse.interval + "\n");
+          requestWorkerEmail +=
+            "Disponibilidad del paseo: " + reqParse.interval + "\n";
         }
         requestWorkerEmail += "¿Cancelada?: ";
         if (reqParse.isCanceled) {
@@ -128,14 +126,11 @@ export default function UserData(props) {
       requestWorkerEmail += "Actualmente tiene 0 solicitudes recibidas\n";
     }
 
-
-
     var bodyEmail = "";
     bodyEmail += userEmail + "\n";
     bodyEmail += petsEmail + "\n";
     bodyEmail += requestOwnerEmail + "\n";
     bodyEmail += requestWorkerEmail + "\n";
-
 
     email("wauwispp1920@gmail.com", {
       cc: "",
@@ -144,7 +139,7 @@ export default function UserData(props) {
       subject: "GDPR Datos de usuario",
     })
       .then(() => {
-        console.log("Mensaje enviado con éxito");
+        alert("Se va a abrir su aplicación de email");
       })
       .catch((e) => {
         alert(
@@ -161,14 +156,20 @@ export default function UserData(props) {
           <Text> {"\n"} </Text>
           <Text>Nombre: {user.name}</Text>
           <Text>Apellidos: {user.surname}</Text>
-          <Text>Dirección: {user.address}</Text>
+          {user.hasOwnProperty("address") ? (
+            <View>
+              <Text>Dirección: {user.address}</Text>
+            </View>
+          ) : (
+            <Text> </Text>
+          )}
           <Text>Descripción: {user.description}</Text>
           <Text>Email: {user.email}</Text>
           <Text>Número de mascotas: {user.petNumber}</Text>
           <Text>Salario: {user.price}</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
-          {user.location !== undefined ? (
+          {user.hasOwnProperty("location") ? (
             <View>
               <Text> La localización es visible sólo para ti</Text>
               <Text>{user.location.latitude}</Text>
@@ -209,7 +210,7 @@ export default function UserData(props) {
               let reqParse = JSON.parse(JSON.stringify(request));
               return (
                 <View>
-                  {reqParse.interval !== undefined ? (
+                  {reqParse.hasOwnProperty("interval") ? (
                     <Text>Disponibilidad del paseo: {reqParse.interval}</Text>
                   ) : (
                     <Text> Alojamiento </Text>
@@ -237,7 +238,7 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-        <Text>Actualmente tiene 0 solicitudes recibidas{"\n"}</Text>
+          <Text>Actualmente tiene 0 solicitudes recibidas{"\n"}</Text>
         )}
 
         {requestOwner.length !== 0 ? (
@@ -248,7 +249,7 @@ export default function UserData(props) {
               let reqParse = JSON.parse(JSON.stringify(request));
               return (
                 <View>
-                  {reqParse.interval !== undefined ? (
+                  {reqParse.hasOwnProperty("interval") ? (
                     <Text>Disponibilidad del paseo: {reqParse.interval}</Text>
                   ) : (
                     <Text> Alojamiento </Text>
@@ -291,8 +292,8 @@ export default function UserData(props) {
 const styles = StyleSheet.create({
   fieldSet: {
     margin: 10,
-    paddingHorizontal: 10,
     paddingBottom: 10,
+    paddingHorizontal: 10,
     borderRadius: 5,
     borderWidth: 1,
     alignItems: "flex-start",
