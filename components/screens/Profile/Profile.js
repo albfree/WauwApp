@@ -22,28 +22,25 @@ import { db } from "../../population/config.js";
 function Profile(props) {
   const { navigation } = props;
 
-
-  const checkHasLocation = () =>{
-    let ck ;
+  const checkHasLocation = () => {
+    let ck;
     let newOwner;
     db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      newOwner = snap.val();
-    });
+      .orderByChild("email")
+      .equalTo(email)
+      .on("child_added", (snap) => {
+        newOwner = snap.val();
+      });
 
-    if(newOwner.hasOwnProperty("location")){
+    if (newOwner.hasOwnProperty("location")) {
       navigation.navigate("ProfileWalkerForm");
-    }else{
-      Alert.alert("¡NO TIENES LOCALIZACIÓN INTRODUCIDA!","Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil");
-
+    } else {
+      Alert.alert(
+        "¡NO TIENES LOCALIZACIÓN INTRODUCIDA!",
+        "Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil"
+      );
     }
-    
-
-
-  }
-
+  };
 
   return (
     <SafeAreaView style={globalStyles.safeProfileArea}>
