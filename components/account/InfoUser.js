@@ -64,7 +64,7 @@ export default function InfoUser(props) {
           onEditPress={changeAvatar}
           containerStyle={globalStyles.userInfoAvatar}
           source={{
-            uri: avatar
+            uri: (avatar !== undefined) ? avatar : userInfo.photo
           }}
           errorMessage={error}
         />
