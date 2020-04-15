@@ -13,6 +13,7 @@ import qs from "qs";
 import { decode, encode } from "base-64";
 import { db } from "../../population/config.js";
 import { email } from "../../account/QueriesProfile";
+import { CheckBox } from "react-native-elements";
 
 function PayRequest(props) {
   const { navigation } = props;
@@ -21,18 +22,22 @@ function PayRequest(props) {
   const [paypalUrl, setPaypalUrl] = useState("");
   const [accessToken, setAccessToken] = useState("")
   const [priceRequest, setPriceRequest] = useState(request.price);
+  const priceRequestConst = request.price;
   const requestId = request.id;
+  const [checked, setIsChecked] = useState(false);
 
+  let currentUserWauwPointsConst;
   let currentUserID;
   let currentUserWauwPoints;
 
   db.ref("wauwers").orderByChild("email").equalTo(email).on("child_added", (snap) => {
     currentUserID = snap.val().id;
+    currentUserWauwPointsConst = snap.val().wauwPoints;
     currentUserWauwPoints = snap.val().wauwPoints;
   });
 
-  console.log(Math.round((currentUserWauwPoints * 0.65 * 100) / 100));
-  console.log(priceRequest);
+  /* console.log(Math.round((currentUserWauwPoints * 0.65 * 100) / 100));
+  console.log(priceRequest); */
 
   //Le vamos a pasar de props al pago la request entera. De ahí, coges el precio y se lo pasas al data details. Si response.status = 200, entonces setearemos 
   //isPayed de esa request a true. En la vista de showRequest, el botón de pago se mostrará cuando isCanceled = false, isPending = false, isPayed = false, 
@@ -215,14 +220,15 @@ function PayRequest(props) {
           query.update({
             isPayed: true
           })
-
-
-
         })
         .catch(err => {
           setShouldShowWebviewLoading(true);
           //console.log({ ...err });
         });
+
+      if (checked) {
+        db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
+      }
     }
   };
 
@@ -237,8 +243,9 @@ function PayRequest(props) {
         <PointsEqualToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}></PointsEqualToPrice>
       ) : null}
 
-      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) < priceRequest ? (
-        <PointsLessToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}></PointsLessToPrice>
+      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) < priceRequest || checked ? (
+        <PointsLessToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest} setPriceRequest={setPriceRequest}
+          checked={checked} setIsChecked={setIsChecked} priceRequestConst={priceRequestConst}></PointsLessToPrice>
       ) : null}
 
       {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) > priceRequest ? (
@@ -305,6 +312,9 @@ function WithoutWauwPoints(props) {
 function PointsEqualToPrice(props) {
   const { buyBook, wauwPoints, priceRequest } = props;
 
+  const canjeoIgual = async () => { }
+
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -324,15 +334,46 @@ function PointsEqualToPrice(props) {
           </Text>
       </TouchableOpacity>
       <Text>Tienes {wauwPoints} Wauw Points que equivalen a {priceRequest}€. ¿Quieres canjearlos?</Text>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={canjeoIgual}
+        style={styles.btnCanjear}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "400",
+            textAlign: "center",
+            color: "#ffffff"
+          }}
+        >
+          Canjear
+          </Text>
+      </TouchableOpacity>
     </View>
   );
 
 }
 
 function PointsLessToPrice(props) {
-  const { buyBook, wauwPoints, priceRequest } = props;
+  const { buyBook, wauwPoints, priceRequest, setPriceRequest, checked, setIsChecked, priceRequestConst } = props;
 
-  let resta = priceRequest - Math.round((wauwPoints * 0.65 * 100) / 100);
+  let resta = Math.round((wauwPoints * 0.65 * 100) / 100);
+
+  console.log(priceRequest);
+
+  const setChecked = () => {
+    if (checked === false) {
+      setPriceRequest(priceRequest - resta);
+    } else {
+      setPriceRequest(priceRequest + resta);
+    }
+    setIsChecked(!checked);
+  };
+
+  const easterEgg = () => {
+    alert("Has encontrado un Easter Egg: aprobar ISPP con 6h/semanales, dificultad DIOS! 🐶");
+  };
 
   return (
     <View style={styles.container}>
@@ -352,7 +393,9 @@ function PointsLessToPrice(props) {
           Pagar con Paypal
           </Text>
       </TouchableOpacity>
-      <Text>Tienes {wauwPoints} Wauw Points que restan {resta}€ a los {priceRequest}€. ¿Quieres canjearlos?</Text>
+      <Text style={styles.texts}>Tienes {wauwPoints} Wauw Points que restan {resta}€ a los {priceRequestConst}€ del servicio. ¿Quieres usarlos?</Text>
+      <CheckBox onLongPress={easterEgg} containerStyle={styles.check} textStyle={styles.textCheck} checkedColor={"white"}
+        title={"Aplicar"} checked={checked} onPress={setChecked}></CheckBox>
     </View>
   );
 
@@ -361,7 +404,9 @@ function PointsLessToPrice(props) {
 function PointsMoreToPrice(props) {
   const { buyBook, wauwPoints, priceRequest } = props;
 
-  let deMas = wauwPoints - Math.round(priceRequest/0.65);
+  let deMas = wauwPoints - Math.round(priceRequest / 0.65);
+
+  const canjeoMayor = async () => { }
 
   return (
     <View style={styles.container}>
@@ -382,15 +427,26 @@ function PointsMoreToPrice(props) {
           </Text>
       </TouchableOpacity>
       <Text>Tienes {wauwPoints} Wauw Points que se quedan en {deMas} al canjearlos por los {priceRequest}€. ¿Quieres canjearlos?</Text>
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={canjeoMayor}
+        style={styles.btnCanjear}
+      >
+        <Text
+          style={{
+            fontSize: 22,
+            fontWeight: "400",
+            textAlign: "center",
+            color: "#ffffff"
+          }}
+        >
+          Canjear
+          </Text>
+      </TouchableOpacity>
     </View>
   );
 
 }
-
-
-// App.navigationOptions = {
-//   title: "App"
-// };
 
 export default withNavigation(PayRequest);
 
@@ -399,7 +455,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingRight: 20,
+    paddingLeft: 20,
+    paddingBottom: 20,
+    paddingTop: 20
   },
   webview: {
     width: "100%",
@@ -414,10 +474,35 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 15,
-    backgroundColor: "#1e477a",
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center",
     backgroundColor: "#ff7549"
+  },
+  btnCanjear: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    backgroundColor: "#4d399a",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center"
+  },
+  check: {
+    backgroundColor: "#4d399a",
+    borderRadius: 15
+  },
+  textCheck: {
+    color: "white"
+  },
+  texts: {
+    textAlign: "center",
+    fontSize: 17
   }
 });
+
+
+// App.navigationOptions = {
+//   title: "App"
+// };
+
