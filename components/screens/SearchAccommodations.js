@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
-import { Image, Avatar } from "react-native-elements";
+import { Image, Avatar, Icon } from "react-native-elements";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
@@ -186,24 +186,40 @@ function Accommodation(props) {
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
                 {accommodation.item.salary} €
               </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
+                Valoración
+              </Text>
+              <View style={searchAccommodationStyles.searchAccommodationView}>
+                <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                  {worker.avgScore}{" "}
+                </Text>
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={20}
+                  color="yellow"
+                />
+              </View>
             </View>
             <View style={searchAccommodationStyles.searchAccommodationColumn3}>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
                 Disponibilidad
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {"Del " + x.getDate() +
-                "/" +
-                parseInt(x.getMonth() + 1) +
-                "/" +
-                x.getFullYear()}
+                {"Del " +
+                  x.getDate() +
+                  "/" +
+                  parseInt(x.getMonth() + 1) +
+                  "/" +
+                  x.getFullYear()}
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {"al " + y.getDate() +
-                "/" +
-                parseInt(y.getMonth() + 1) +
-                "/" +
-                y.getFullYear()}
+                {"al " +
+                  y.getDate() +
+                  "/" +
+                  parseInt(y.getMonth() + 1) +
+                  "/" +
+                  y.getFullYear()}
               </Text>
             </View>
           </View>
