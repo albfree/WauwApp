@@ -267,7 +267,6 @@ function List2(props) {
 
 function Accommodation(props) {
   const { accommodation, navigation, petNumber, myId } = props;
-  console.log(accommodation);
 
   let worker;
   db.ref("wauwers")
@@ -277,7 +276,6 @@ function Accommodation(props) {
     });
 
   const rating = accommodation.item[1];
-  console.log("rating:", rating);
 
   const checkHasPets = () => {
     if (petNumber > 0) {
