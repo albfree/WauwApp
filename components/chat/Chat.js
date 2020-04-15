@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import { db } from "../population/config.js";
 import firebase from "firebase";
+import { chatsStyles } from "../styles/chatsStyle";
 
 export default class Chat extends Component {
   constructor(props) {
@@ -20,14 +21,14 @@ export default class Chat extends Component {
 
   render() {
     return (
-      <View style={styles.chatStyle}>
+      <SafeAreaView style={chatsStyles.chatsView2}>
         <GiftedChat
           messages={this.state.messages}
           onSend={this.send}
           user={this.props.navigation.state.params}
         />
-        <KeyboardSpacer topSpacing={-50}/>
-      </View>
+        <KeyboardSpacer topSpacing={-5000} />
+      </SafeAreaView>
     );
   }
 
@@ -89,12 +90,3 @@ export default class Chat extends Component {
     return message;
   };
 }
-
-const styles = StyleSheet.create({
-  chatStyle: {
-    backgroundColor: "white",
-    width: "100%",
-    height: "100%",
-    borderRadius: 50,
-  },
-});
