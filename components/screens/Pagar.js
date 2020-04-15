@@ -15,7 +15,8 @@ import { decode, encode } from "base-64";
 import { db } from "../population/config.js";
 
 export default function Pagar(props) {
-  var email = props.navigation.state.params.email;
+  //var email = props.navigation.state.params.email;
+  var email = "sb-qs47l5748001@personal.example.com";
 
   const [accessToken, setAccessToken] = useState("");
   const [paypalUrl, setPaypalUrl] = useState("");
@@ -49,7 +50,7 @@ export default function Pagar(props) {
       {
         recipient_type: "EMAIL",
         amount: {
-          value: "9.87",
+          value: "3.99",
           currency: "EUR",
         },
         note: "Gracias por tu servicio!",
@@ -113,6 +114,7 @@ export default function Pagar(props) {
       });
 
   };
+
 
   return (
     <View>
