@@ -4,6 +4,7 @@ import {
   Text,
   Image,
   ScrollView,
+  Alert,
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
@@ -14,6 +15,9 @@ import { Button, Icon } from "react-native-elements";
 import LastLogged from "../../account/LastLogged";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
+
+import { email } from "../../account/QueriesProfile";
+import { db } from "../../population/config.js";
 
 function Profile(props) {
   const { navigation } = props;
@@ -30,7 +34,7 @@ function Profile(props) {
     });
 
     if(newOwner.hasOwnProperty("location")){
-      navigation.navigate("ProfileAddDogForm");
+      navigation.navigate("ProfileWalkerForm");
     }else{
       Alert.alert("¡NO TIENES LOCALIZACIÓN INTRODUCIDA!","Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil");
 

@@ -85,7 +85,7 @@ function Services(props) {
     }
   }else{
     Alert.alert("¡NO TIENES LOCALIZACIÓN INTRODUCIDA!","Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil");
-
+    navigation.navigate("Profile");
   }
   };
 
