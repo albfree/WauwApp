@@ -164,7 +164,7 @@ function CreateAccommodation(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView keyboardShouldPersistTaps={"never"}>
+      <ScrollView keyboardShouldPersistTaps="never">
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
             <Text style={globalStyles.editAccommodationEditDate}>
