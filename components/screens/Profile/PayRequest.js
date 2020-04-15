@@ -214,7 +214,7 @@ function PayRequest(props) {
 
           alert("El pago se ha realizado correctamente");
 
-          navigation.navigate("Home");
+          navigation.popToTop("Services");
 
           var query = db.ref().child("requests/" + idRequest);
           query.update({
@@ -240,7 +240,8 @@ function PayRequest(props) {
       ) : null}
 
       {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) === priceRequest ? (
-        <PointsEqualToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}></PointsEqualToPrice>
+        <PointsEqualToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
+          requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsEqualToPrice>
       ) : null}
 
       {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) < priceRequest || checked ? (
@@ -249,7 +250,8 @@ function PayRequest(props) {
       ) : null}
 
       {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) > priceRequest ? (
-        <PointsMoreToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}></PointsMoreToPrice>
+        <PointsMoreToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
+          requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsMoreToPrice>
       ) : null}
 
       {paypalUrl ? (
@@ -310,9 +312,19 @@ function WithoutWauwPoints(props) {
 }
 
 function PointsEqualToPrice(props) {
-  const { buyBook, wauwPoints, priceRequest } = props;
+  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation } = props;
 
-  const canjeoIgual = async () => { }
+  const canjeoIgual = async () => {
+    db.ref("requests/" + requestId).update({
+      isPayed: true
+    });
+
+    db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
+
+    alert("Has realizado el pago del servicio con Wauw Points correctamente.");
+
+    navigation.popToTop("Services");
+  }
 
 
   return (
@@ -333,7 +345,7 @@ function PointsEqualToPrice(props) {
           Pagar con Paypal.
           </Text>
       </TouchableOpacity>
-      <Text>Tienes {wauwPoints} Wauw Points que equivalen a {priceRequest}€. ¿Quieres canjearlos?</Text>
+      <Text>Tienes {wauwPoints} Wauw Points que equivalen a los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoIgual}
@@ -402,11 +414,21 @@ function PointsLessToPrice(props) {
 }
 
 function PointsMoreToPrice(props) {
-  const { buyBook, wauwPoints, priceRequest } = props;
+  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation } = props;
 
   let deMas = wauwPoints - Math.round(priceRequest / 0.65);
 
-  const canjeoMayor = async () => { }
+  const canjeoMayor = async () => {
+    db.ref("requests/" + requestId).update({
+      isPayed: true
+    });
+
+    db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
+
+    alert("Has realizado el pago del servicio con Wauw Points correctamente.");
+
+    navigation.popToTop("Services");
+  }
 
   return (
     <View style={styles.container}>
@@ -426,7 +448,7 @@ function PointsMoreToPrice(props) {
           Pagar con Paypal
           </Text>
       </TouchableOpacity>
-      <Text>Tienes {wauwPoints} Wauw Points que se quedan en {deMas} al canjearlos por los {priceRequest}€. ¿Quieres canjearlos?</Text>
+      <Text>Tienes {wauwPoints} Wauw Points que se quedan en {deMas} al canjearlos por los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoMayor}
