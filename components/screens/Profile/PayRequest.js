@@ -20,7 +20,7 @@ function PayRequest(props) {
   const request = navigation.state.params.request;
   const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
-  const [accessToken, setAccessToken] = useState("")
+  const [accessToken, setAccessToken] = useState("");
   const [priceRequest, setPriceRequest] = useState(request.price);
   const priceRequestConst = request.price;
   const requestId = request.id;
@@ -365,8 +365,6 @@ function PointsLessToPrice(props) {
 
   let resta = Math.round((wauwPoints * 0.65 * 100) / 100);
 
-  console.log(priceRequest);
-
   const setChecked = () => {
     if (checked === false) {
       setPriceRequest(priceRequest - resta);
@@ -421,7 +419,7 @@ function PointsMoreToPrice(props) {
     alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas + " Wauw Points.");
 
     navigation.popToTop("Services");
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -465,6 +463,9 @@ function PointsMoreToPrice(props) {
 
 export default withNavigation(PayRequest);
 
+const morado = "#4d399a";
+const blanco = "white";
+
 const styles = StyleSheet.create({
   container: {
     width: "100%",
@@ -498,21 +499,21 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 15,
-    backgroundColor: "#4d399a",
+    backgroundColor: morado,
     justifyContent: "center",
     alignItems: "center",
     alignContent: "center"
   },
   check: {
-    backgroundColor: "#4d399a",
+    backgroundColor: morado,
     borderRadius: 15
   },
   textCheck: {
-    color: "white"
+    color: blanco
   },
   texts: {
-    textAlign: "center",
-    fontSize: 17
+    fontSize: 17,
+    textAlign: "center"
   }
 });
 
