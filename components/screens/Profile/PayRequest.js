@@ -212,7 +212,7 @@ function PayRequest(props) {
           var idRequest = request.id;
           // console.log("id requests", idRequest);
 
-          alert("El pago se ha realizado correctamente");
+          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + Math.round((priceRequest * 0.65 * 100) / 100) + " Wauw Points a tu saldo de puntos.");
 
           navigation.popToTop("Services");
 
@@ -226,9 +226,8 @@ function PayRequest(props) {
           //console.log({ ...err });
         });
 
-      if (checked) {
-        db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
-      }
+        let newPoints = Math.round((priceRequest * 0.65 * 100) / 100);
+        db.ref("wauwers/" + currentUserID).update({ wauwPoints: newPoints });
     }
   };
 
@@ -321,11 +320,10 @@ function PointsEqualToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
 
-    alert("Has realizado el pago del servicio con Wauw Points correctamente.");
+    alert("Has realizado el pago del servicio con Wauw Points correctamente. Tu saldo de Wauw Points se ha agotado.");
 
     navigation.popToTop("Services");
   }
-
 
   return (
     <View style={styles.container}>
@@ -423,9 +421,9 @@ function PointsMoreToPrice(props) {
       isPayed: true
     });
 
-    db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
+    db.ref("wauwers/" + currentUserID).update({ wauwPoints: deMas });
 
-    alert("Has realizado el pago del servicio con Wauw Points correctamente.");
+    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas + " Wauw Points.");
 
     navigation.popToTop("Services");
   }
