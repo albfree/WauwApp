@@ -10,11 +10,6 @@ const verde = "rgba(0,128,0,0.6)";
 const rojo = "rgba(255,0,0,0.6)";
 
 export const requestsStyles = StyleSheet.create({
-  requestsBtnTittle: {
-    alignSelf: "center",
-    flex: 4,
-    fontSize: 16,
-  },
   requestsBtn: {
     backgroundColor: rojo,
     borderRadius: 30,
@@ -48,6 +43,11 @@ export const requestsStyles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 5,
     width: "75%",
+  },
+  requestsBtnTittle: {
+    alignSelf: "center",
+    flex: 4,
+    fontSize: 16,
   },
   requestsFeed: {
     alignItems: "center",
