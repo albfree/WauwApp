@@ -209,7 +209,6 @@ function showRequest(props) {
               titleStyle={requestsStyles.requestsBtnTittle}
             />
             <Text style={requestsStyles.requestsTxt7}>
-              {" "}
               Esperando el cierre del servicio
             </Text>
           </View>
@@ -269,8 +268,8 @@ function showRequest(props) {
               titleStyle={requestsStyles.requestsBtnTittle}
             />
             <Button
-              buttonStyle={requestsStyles.requestsBtn3}
-              containerStyle={requestsStyles.requestsBtnContainer3}
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
               title="Valorar Servicio"
               onPress={() =>
                 navigation.navigate("AddReviewService", {
@@ -367,8 +366,8 @@ function showRequest(props) {
             </View>
 
             <Button
-              buttonStyle={requestsStyles.requestsBtn3}
-              containerStyle={requestsStyles.requestsBtnContainer3}
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
               title="Proceder al Pago"
               onPress={() =>
                 navigation.navigate("PayRequest", {
@@ -392,43 +391,41 @@ function showRequest(props) {
     );
   } else if (request.pending && request.type == "sitter") {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>
-                  Fecha Inicio:{" "}
-                </Text>
-                <Text style={globalStyles.showRequestDate2}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Inicio</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}{" "}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn2}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
 
-                <Text style={globalStyles.showRequestPay}> {pago} </Text>
+                <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus}>{status}</Text>
-                <Text style={globalStyles.showRequestDate3}>Fecha de Fin:</Text>
-                <Text style={globalStyles.showRequestDate4}>
+                <Text style={requestsStyles.requestsTxt9}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Fin</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.endTime.toLocaleString("en-En").substring(0, 10)}
                 </Text>
               </View>
             </View>
 
             <Button
-              buttonStyle={globalStyles.showRequestBtn}
-              containerStyle={globalStyles.showRequestBtnContainer}
+              buttonStyle={requestsStyles.requestsBtn}
+              containerStyle={requestsStyles.requestsBtnContainer}
               title="Cancelar solicitud"
               onPress={cancel}
               icon={
@@ -437,10 +434,10 @@ function showRequest(props) {
                   name="cancel"
                   size={30}
                   color="white"
-                  marginLeft={10}
+                  marginLeft={20}
                 />
               }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
           </View>
         </View>
@@ -452,36 +449,32 @@ function showRequest(props) {
     request.type == "sitter"
   ) {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow2}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>
-                  Fecha Inicio:{" "}
-                </Text>
-                <Text style={globalStyles.showRequestDate2}>
-                  {request.startTime}
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Inicio</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.startTime.toLocaleString("en-En").substring(0, 10)}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn2}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
-
-                <Text style={globalStyles.showRequestPay}> {pago} </Text>
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus2}>{status}</Text>
-                <Text style={globalStyles.showRequestDate3}>Fecha de Fin:</Text>
-                <Text style={globalStyles.showRequestDate4}>
-                  {request.endTime}
+                <Text style={requestsStyles.requestsTxt10}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt15}>Fecha de Fin</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.endTime.toLocaleString("en-En").substring(0, 10)}
                 </Text>
               </View>
             </View>
@@ -496,43 +489,41 @@ function showRequest(props) {
     request.type == "sitter"
   ) {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>
-                  Fecha Inicio:{" "}
-                </Text>
-                <Text style={globalStyles.showRequestDate2}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Inicio</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}{" "}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn2}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
 
-                <Text style={globalStyles.showRequestPay}> {pago} </Text>
+                <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus}>{status}</Text>
-                <Text style={globalStyles.showRequestDate3}>Fecha de Fin:</Text>
-                <Text style={globalStyles.showRequestDate4}>
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Fin</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.endTime.toLocaleString("en-En").substring(0, 10)}
                 </Text>
               </View>
             </View>
 
             <Button
-              buttonStyle={globalStyles.showRequestBtn}
-              containerStyle={globalStyles.showRequestBtnContainer}
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
               title="Proceder al Pago"
               onPress={() =>
                 navigation.navigate("PayRequest", {
@@ -545,54 +536,58 @@ function showRequest(props) {
                   name="paypal"
                   size={30}
                   color="white"
-                  marginLeft={10}
+                  marginLeft={20}
                 />
               }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
           </View>
         </View>
       </SafeAreaView>
     );
-  } else {
+  } else if (
+    !request.pending &&
+    !request.isCanceled &&
+    request.isPayed &&
+    !request.isFinished &&
+    request.type == "sitter"
+  ) {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>
-                  Fecha Inicio:{" "}
-                </Text>
-                <Text style={globalStyles.showRequestDate2}>
-                  {request.startTime}
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Inicio</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.startTime.toLocaleString("en-En").substring(0, 10)}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn2}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
 
-                <Text style={globalStyles.showRequestPay2}> {pago} </Text>
+                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus3}>{status}</Text>
-                <Text style={globalStyles.showRequestDate3}>Fecha de Fin:</Text>
-                <Text style={globalStyles.showRequestDate4}>
-                  {request.endTime}
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Fin</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.endTime.toLocaleString("en-En").substring(0, 10)}
                 </Text>
               </View>
             </View>
 
             <Button
-              buttonStyle={globalStyles.showRequestBtn}
-              containerStyle={globalStyles.showRequestBtnContainer}
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
               title="Abrir Chat"
               onPress={() =>
                 navigation.navigate("Chats", {
@@ -605,30 +600,135 @@ function showRequest(props) {
                   name="chat"
                   size={30}
                   color="white"
-                  marginLeft={10}
+                  marginLeft={20}
                 />
               }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              titleStyle={requestsStyles.requestsBtnTittle}
+            />
+            <Text style={requestsStyles.requestsTxt7}>
+              Esperando el cierre del servicio
+            </Text>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  } else if (
+    !request.pending &&
+    !request.isCanceled &&
+    request.isPayed &&
+    request.isFinished &&
+    !request.isRated &&
+    request.type == "sitter"
+  ) {
+    return (
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
+          <View style={globalStyles.viewFlex1}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Inicio</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.startTime.toLocaleString("en-En").substring(0, 10)}
+                </Text>
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Image
+                  style={requestsStyles.requestsImage}
+                  source={{ uri: worker.photo }}
+                />
+
+                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
+                  {request.price} €
+                </Text>
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Fin</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.endTime.toLocaleString("en-En").substring(0, 10)}
+                </Text>
+              </View>
+            </View>
+
+            <Button
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
+              title="Abrir Chat"
+              onPress={() =>
+                navigation.navigate("Chats", {
+                  request,
+                })
+              }
+              icon={
+                <Icon
+                  type="material-community"
+                  name="chat"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
             <Button
-              // buttonStyle={globalStyles.showRequestBtn}
-              // containerStyle={globalStyles.showRequestBtnContainer}
-              title={valorado}
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
+              title="Valorar Servicio"
               onPress={() =>
                 navigation.navigate("AddReviewService", {
                   request: request,
                   worker: worker,
                 })
               }
-              disabled={desabilitado}
-              // icon={
-              //   <Icon
-              //     size={25}
-              //     color="white"
-              //   />
-              // }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
+          <View style={globalStyles.viewFlex1}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Inicio</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.startTime.toLocaleString("en-En").substring(0, 10)}
+                </Text>
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Image
+                  style={requestsStyles.requestsImage}
+                  source={{ uri: worker.photo }}
+                />
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
+                  {request.price} €
+                </Text>
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de Fin</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.endTime.toLocaleString("en-En").substring(0, 10)}
+                </Text>
+              </View>
+            </View>
           </View>
         </View>
       </SafeAreaView>
