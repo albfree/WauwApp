@@ -4,6 +4,7 @@ import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
+import { requestsStyles } from "../../styles/requestsStyle";
 
 function showRequest(props) {
   const { navigation } = props;
@@ -16,17 +17,6 @@ function showRequest(props) {
   var pago = "";
   let valorado;
   let desabilitado;
-
-  if (!request.isFinished) {
-    valorado = "Aún no puede valorar";
-    desabilitado = true;
-  } else if (request.isFinished && !request.isRated) {
-    valorado = "Valorar servicio";
-    desabilitado = false;
-  } else if (request.isRated) {
-    valorado = "Servicio valorado";
-    desabilitado = true;
-  }
 
   db.ref("wauwers")
     .orderByChild("id")
@@ -46,7 +36,7 @@ function showRequest(props) {
     });
 
     alert("Se ha cancelado la solicitud correctamente");
-    navigation.navigate("Home");
+    navigation.popToTop();
   };
 
   if (request.type == "sitter") {
@@ -64,8 +54,10 @@ function showRequest(props) {
     status = "Esperando aceptación";
   } else if (!request.pending && request.isCanceled) {
     status = "Solicitud denegada";
-  } else {
+  } else if (!request.isRated) {
     status = "Solicitud aceptada";
+  } else {
+    status = "Servicio Finalizado";
   }
 
   if (request.isPayed) {
@@ -87,36 +79,36 @@ function showRequest(props) {
 
   if (request.pending && request.type == "walk") {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType2}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>Fecha:</Text>
-                <Text style={globalStyles.showRequestDate2}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn22}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage2}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus4}>{status}</Text>
-                <Text style={globalStyles.showRequestPay4}> {pago} </Text>
+                <Text style={requestsStyles.requestsTxt9}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
               </View>
             </View>
 
             <Button
-              buttonStyle={globalStyles.showRequestBtn}
-              containerStyle={globalStyles.showRequestBtnContainer}
+              buttonStyle={requestsStyles.requestsBtn}
+              containerStyle={requestsStyles.requestsBtnContainer}
               title="Cancelar Solicitud"
               onPress={cancel}
               icon={
@@ -125,10 +117,10 @@ function showRequest(props) {
                   name="cancel"
                   size={30}
                   color="white"
-                  marginLeft={10}
+                  marginLeft={20}
                 />
               }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
           </View>
         </View>
@@ -136,29 +128,29 @@ function showRequest(props) {
     );
   } else if (!request.pending && request.isCanceled && request.type == "walk") {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType2}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>Fecha:</Text>
-                <Text style={globalStyles.showRequestDate2}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn22}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage2}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt11}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus5}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt12}>{status}</Text>
               </View>
             </View>
           </View>
@@ -169,39 +161,40 @@ function showRequest(props) {
     !request.pending &&
     !request.isCanceled &&
     request.isPayed &&
-    request.type == "walk"
+    request.type === "walk" &&
+    !request.isFinished
   ) {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType2}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>Fecha:</Text>
-                <Text style={globalStyles.showRequestDate2}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn22}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage2}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus4}>{status}</Text>
-                <Text style={globalStyles.showRequestPay3}> {pago} </Text>
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
               </View>
             </View>
 
             <Button
-              buttonStyle={globalStyles.showRequestBtn}
-              containerStyle={globalStyles.showRequestBtnContainer}
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
               title="Abrir Chat"
               onPress={() => navigation.navigate("Chats")}
               icon={
@@ -210,30 +203,131 @@ function showRequest(props) {
                   name="chat"
                   size={30}
                   color="white"
-                  marginLeft={10}
+                  marginLeft={20}
                 />
               }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              titleStyle={requestsStyles.requestsBtnTittle}
+            />
+            <Text style={requestsStyles.requestsTxt7}>
+              {" "}
+              Esperando el cierre del servicio
+            </Text>
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  } else if (
+    !request.pending &&
+    !request.isCanceled &&
+    request.isPayed &&
+    request.type === "walk" &&
+    request.isFinished &&
+    !request.isRated
+  ) {
+    return (
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
+          <View style={globalStyles.viewFlex1}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.interval}
+                </Text>
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Image
+                  style={requestsStyles.requestsImage}
+                  source={{ uri: worker.photo }}
+                />
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
+                  {request.price} €
+                </Text>
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
+              </View>
+            </View>
+
+            <Button
+              buttonStyle={requestsStyles.requestsBtn2}
+              containerStyle={requestsStyles.requestsBtnContainer2}
+              title="Abrir Chat"
+              onPress={() => navigation.navigate("Chats")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="chat"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
             <Button
-              // buttonStyle={globalStyles.showRequestBtn}
-              // containerStyle={globalStyles.showRequestBtnContainer}
-              title={valorado}
+              buttonStyle={requestsStyles.requestsBtn3}
+              containerStyle={requestsStyles.requestsBtnContainer3}
+              title="Valorar Servicio"
               onPress={() =>
                 navigation.navigate("AddReviewService", {
                   request: request,
                   worker: worker,
                 })
               }
-              disabled={desabilitado}
-              // icon={
-              //   <Icon
-              //     size={25}
-              //     color="white"
-              //   />
-              // }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
+          </View>
+        </View>
+      </SafeAreaView>
+    );
+  } else if (
+    !request.pending &&
+    !request.isCanceled &&
+    request.isPayed &&
+    request.type === "walk" &&
+    request.isFinished &&
+    request.isRated
+  ) {
+    return (
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
+          <View style={globalStyles.viewFlex1}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt7}>
+                  {request.interval}
+                </Text>
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Image
+                  style={requestsStyles.requestsImage}
+                  source={{ uri: worker.photo }}
+                />
+              </View>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
+                  {request.price} €
+                </Text>
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
+              </View>
+            </View>
           </View>
         </View>
       </SafeAreaView>
@@ -245,36 +339,36 @@ function showRequest(props) {
     request.type == "walk"
   ) {
     return (
-      <SafeAreaView style={globalStyles.safeShowRequestArea}>
-        <View style={globalStyles.showRequestFeed}>
+      <SafeAreaView style={requestsStyles.requestsView4}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.showRequestName}>{worker.name}</Text>
-                <Text style={globalStyles.showRequestType2}>{tipo}</Text>
-                <Text style={globalStyles.showRequestDate1}>Fecha:</Text>
-                <Text style={globalStyles.showRequestDate2}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
+                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn22}>
+              <View style={requestsStyles.requestsView6}>
                 <Image
-                  style={globalStyles.showRequestImage2}
+                  style={requestsStyles.requestsImage}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.showRequestPrice}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt8}>
                   {request.price} €
                 </Text>
-                <Text style={globalStyles.showRequestStatus4}>{status}</Text>
-                <Text style={globalStyles.showRequestPay4}> {pago} </Text>
+                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
+                <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
               </View>
             </View>
 
             <Button
-              buttonStyle={globalStyles.showRequestBtn}
-              containerStyle={globalStyles.showRequestBtnContainer}
+              buttonStyle={requestsStyles.requestsBtn3}
+              containerStyle={requestsStyles.requestsBtnContainer3}
               title="Proceder al Pago"
               onPress={() =>
                 navigation.navigate("PayRequest", {
@@ -287,10 +381,10 @@ function showRequest(props) {
                   name="paypal"
                   size={30}
                   color="white"
-                  marginLeft={10}
+                  marginLeft={20}
                 />
               }
-              titleStyle={globalStyles.showRequestBtnTittle}
+              titleStyle={requestsStyles.requestsBtnTittle}
             />
           </View>
         </View>
