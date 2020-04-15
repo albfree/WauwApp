@@ -24,7 +24,7 @@ export default function UserData(props) {
 
 
 
-  sendEmail = () => {
+  var sendEmail = function() {
     var userEmail = "Datos de usuario\n\n";
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";

@@ -9,7 +9,7 @@ import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
 import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
 import ShowWalkScreen from "../screens/Profile/ShowWalk";
-import UserDataScreen from '../screens/GRPD/UserData';
+import UserDataScreen from "../screens/GRPD/UserData";
 
 const morado = "#443099";
 const blanco = "white";
