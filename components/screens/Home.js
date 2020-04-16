@@ -56,7 +56,7 @@ function Home(props) {
                     name="shield-home"
                     size={30}
                     color="white"
-                    marginLeft={20}
+                    marginLeft={"10%"}
                   />
                 }
                 titleStyle={homeStyles.homeBtnTxt}

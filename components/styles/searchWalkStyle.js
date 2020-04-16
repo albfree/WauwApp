@@ -76,7 +76,9 @@ export const searchWalksStyles = StyleSheet.create({
     marginVertical: 10,
     width: "40%",
   },
-
+  searchWalksBtnTxt: {
+    marginLeft: "10%",
+  },
   searchWalkFeed: {
     alignItems: "center",
     backgroundColor: blanco,
