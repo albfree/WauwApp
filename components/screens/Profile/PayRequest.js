@@ -221,7 +221,7 @@ function PayRequest(props) {
           //console.log({ ...err });
         });
 
-      let newPoints = Math.round((priceRequest / 0.65) * 100) / 100;
+      let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
       db.ref("wauwers/" + currentUserID).update({ wauwPoints: newPoints });
     }
   };
