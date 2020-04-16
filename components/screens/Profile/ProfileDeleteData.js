@@ -20,7 +20,9 @@ function ProfileDeleteData(props) {
     const [loading, setLoading] = useState(true);
     const [requestsWorkerList, setRequestWorkerList] = useState([]);
     const [requestsOwnerList, setRequestOwnerList] = useState([]);
+    comst [userMsgs, setUserMsgs] = useState([]);
     const [user, setUser] = useState();
+    const [anonUser, setAnonUser] = useState();
     const [reloadData, setReloadData] = useState(false);
 
     let wauwerId;
@@ -31,7 +33,7 @@ function ProfileDeleteData(props) {
       wauwerId = snap.val().id;
     });
 
-    let anonWauwerId = "anonimo";
+    let anonWauwerId = "-M4dhmUqMQ9QU-ErapD6";
 
     useEffect(() => {
       db.ref("requests")
@@ -76,7 +78,20 @@ function ProfileDeleteData(props) {
             setLoading(false);
             setReloadData(false);
           }, []);
-          
+
+          useEffect(() => {
+            db.ref("wauwers")
+              .orderByChild("id")
+              .equalTo(anonWauwerId)
+              .on("value", (snap) => {
+                snap.forEach((child) => {
+                  setAnonUser(child.val());
+                });
+              });
+  
+              setLoading(false);
+              setReloadData(false);
+            }, []);
 
   const aviso = () => {
     Alert.alert(
@@ -108,7 +123,20 @@ function ProfileDeleteData(props) {
           requestWorkerOk = false;
         Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
         break;
+          } else {
+            if (requestsWorkerList[i].isPayed == true){
+              db
+              .ref("chats")
+              .child(requestsWorkerList[i].id + "/messages")
+              .on("child_added", (snap) => {
+                snap.forEach(child => {
+                  child.ref.update({_id: anonWauwerId, avatar: anonUser.photo, name: anonUser.name});
+                });
+              });
+            }
           }
+        } else {
+          db.ref("requests/" + requestsWorkerList[i].id).update({pending: false, isCanceled: true});
         }
         if (requestWorkerOk == true) {
           let idWorker = {
@@ -128,7 +156,30 @@ function ProfileDeleteData(props) {
             requestOwnerOk = false;
           Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
           break;
+            } else {
+              if (requestsOwnerList[i].isPayed == true){
+                /*
+                db
+                .ref("chats")
+                .child(requestsOwnerList[i].id + "/messages")
+                .on("value", (snap) => {
+                  snap.forEach(child => {
+                    child.ref.child("user").update({_id: anonWauwerId, avatar: anonUser.photo, name: anonUser.name});
+                  });
+                });*/
+
+                let ref = db.ref("chats"+requestsWorkerList[i].id + "/messages");
+                ref.on("value", snap => {
+                  snap.forEach(child => {
+                    if(child.val().user._id == wauwerId) {
+                      ref.child(child.key).child("user").update({_id: anonWauwerId, avatar: anonUser.photo, name: anonUser.name});
+                    }
+                  });
+                });
+              }
             }
+        } else {
+          db.ref("request/" + requestsOwnerList[i].id).remove();
         }
 
         if (requestOwnerOk == true) {
@@ -205,7 +256,10 @@ function deleteData(props) {
             child.ref.remove();
           });
         });
-        
+
+    //BORRADO DE REVIEWS
+
+    //TODO   
   
     //BORRADO DE DISPONIBILIDADES DEL WAUWER
     
