@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { View, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { db } from "../population/config.js";
-import { globalStyles } from "../styles/global";
+import { profileStyles } from "../styles/profileStyle";
 
 export default function ChangeDescriptionForm(props) {
-  const { id, desc, setIsVisibleModal, setReloadData } = props;
+  const { id, desc, setRenderDescription, setReloadData } = props;
   const [newDesc, setNewDesc] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -14,13 +14,17 @@ export default function ChangeDescriptionForm(props) {
     setError(null);
     if (!newDesc) {
       setError("La descripción no puede ser la misma.");
-    } else if(newDesc.length > 200){
-      setError("La descripción no debe superar los 200 caracteres.\nLongitud actual: " + newDesc.length + " caracteres");
+    } else if (newDesc.length > 200) {
+      setError(
+        "La descripción no debe superar los 200 caracteres.\nLongitud actual: " +
+          newDesc.length +
+          " caracteres"
+      );
       setIsLoading(false);
-    }else{
+    } else {
       setIsLoading(true);
       let userData = {
-        description: newDesc
+        description: newDesc,
       };
       db.ref("wauwers")
         .child(id)
@@ -28,7 +32,7 @@ export default function ChangeDescriptionForm(props) {
         .then(() => {
           setIsLoading(false);
           setReloadData(true);
-          setIsVisibleModal(false);
+          setRenderDescription(false);
         })
         .catch(() => {
           setError("Ha ocurrido un error");
@@ -39,23 +43,23 @@ export default function ChangeDescriptionForm(props) {
   return (
     <View>
       <View>
-        <View style={globalStyles.profileFormView}>
+        <View style={profileStyles.profileView8}>
           <Input
             placeholder="Descripción"
-            containerStyle={globalStyles.profileFormInput}
+            containerStyle={profileStyles.profileTxt5}
             defaultValue={desc && desc}
-            onChange={v => setNewDesc(v.nativeEvent.text)}
+            onChange={(v) => setNewDesc(v.nativeEvent.text)}
             rightIcon={{
               type: "material-community",
               name: "lead-pencil",
-              color: "#443099"
+              color: "#443099",
             }}
             errorMessage={error}
           />
           <Button
             title="Cambiar descripción"
-            containerStyle={globalStyles.profileFormBtnContainer}
-            buttonStyle={globalStyles.profileFormBtn}
+            containerStyle={profileStyles.profileBtnContainer}
+            buttonStyle={profileStyles.profileBtn}
             onPress={updateDescription}
             loading={isLoading}
           />

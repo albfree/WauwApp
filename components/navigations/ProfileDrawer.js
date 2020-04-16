@@ -90,14 +90,14 @@ export default createDrawerNavigator(
       },
     },
 
-    DeleteData: {
-      screen: DeleteDataScreen,
+    LastConexion: {
+      screen: LastConexionsScreen,
       navigationOptions: {
-        drawerLabel: "Eliminar Cuenta",
+        drawerLabel: "Últimas Conexiones",
         drawerIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
-            name="dog-service"
+            name="security"
             size={17}
             color="#443099"
           />
@@ -119,20 +119,7 @@ export default createDrawerNavigator(
         ),
       },
     },
-    LastConexion: {
-      screen: LastConexionsScreen,
-      navigationOptions: {
-        drawerLabel: "Últimas Conexiones",
-        drawerIcon: ({ tintColor }) => (
-          <Icon
-            type="material-community"
-            name="security"
-            size={17}
-            color="#443099"
-          />
-        ),
-      },
-    },
+
     Feedback: {
       screen: FeedbackScreen,
       navigationOptions: {
@@ -144,9 +131,24 @@ export default createDrawerNavigator(
             size={17}
             color="#443099"
           />
-        )
-      }
-    }
+        ),
+      },
+    },
+
+    DeleteData: {
+      screen: DeleteDataScreen,
+      navigationOptions: {
+        drawerLabel: "Eliminar Cuenta",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog-service"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
 
     /* MyDogs: {
       screen: MyDogsScreen,
@@ -168,3 +170,5 @@ export default createDrawerNavigator(
     contentComponent: CustomDrawerComponent,
   }
 );
+
+
