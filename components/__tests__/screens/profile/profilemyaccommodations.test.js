@@ -4,7 +4,7 @@ import ProfileMyAccommodations from '../../../screens/Profile/ProfileMyAccommoda
 import mockStore from 'redux-mock-store';
 
 describe('<ProfileMyAccommodations />', () => {
-  it('testing the ProfileMyAccommodations screen', async () => {
+  it.skip('testing the ProfileMyAccommodations screen', async () => {
     const store = mockStore({
         rehydrated: false,
         navigation: {navigate: jest.fn()},

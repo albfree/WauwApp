@@ -14,7 +14,10 @@ export default function ChangeDescriptionForm(props) {
     setError(null);
     if (!newDesc) {
       setError("La descripción no puede ser la misma.");
-    } else {
+    } else if(newDesc.length > 200){
+      setError("La descripción no debe superar los 200 caracteres.\nLongitud actual: " + newDesc.length + " caracteres");
+      setIsLoading(false);
+    }else{
       setIsLoading(true);
       let userData = {
         description: newDesc

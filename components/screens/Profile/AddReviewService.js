@@ -24,8 +24,7 @@ function AddReviewService(props) {
         user = snap.val();
       });
     const reviewData = {
-      userName: user.name,
-      userPhoto: user.photo,
+      userId:user.id,
       title: title,
       review: review,
       rating: rating,

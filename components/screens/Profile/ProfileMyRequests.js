@@ -13,6 +13,8 @@ import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
+import BlankView from "../BlankView";
+import { requestsStyles } from "../../styles/requestsStyle";
 
 function ProfileMyRequests(props) {
   const { navigation } = props;
@@ -45,7 +47,7 @@ function ProfileMyRequests(props) {
   }, []);
 
   return (
-    <SafeAreaView style={globalStyles.safeMyRequestsArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -63,7 +65,6 @@ function ProfileMyRequests(props) {
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
-            style={globalStyles.myRequestsFeed}
             renderItem={(request) => (
               <Request request={request} navigation={navigation} />
             )}
@@ -71,9 +72,7 @@ function ProfileMyRequests(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <View>
-            <Text> No hay solicitudes </Text>
-          </View>
+          <BlankView text={"No tiene solicitudes realizadas"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -132,7 +131,7 @@ function Request(requestIn) {
   const tarjeta = {
     fontSize: 13,
     marginTop: 4,
-    color: color,
+    color,
   };
 
   return (
@@ -143,21 +142,21 @@ function Request(requestIn) {
         })
       }
     >
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={requestsStyles.requestsFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
-            <View style={globalStyles.myRequestsColumn1}>
-              <Text style={globalStyles.myRequestsNum}>
+          <View style={requestsStyles.requestsView}>
+            <View style={requestsStyles.requestsView2}>
+              <Text style={requestsStyles.requestsTxt}>
                 Número de mascotas: {request.item.petNumber}
               </Text>
               <Text style={tarjeta}>{status} </Text>
-              <Text style={globalStyles.myRequestsPrice}>
+              <Text style={requestsStyles.requestsTxt2}>
                 {request.item.price} €
               </Text>
             </View>
-            <View style={globalStyles.myRequestsColumn2}>
+            <View style={requestsStyles.requestsView3}>
               {icon}
-              <Text style={globalStyles.myRequestsType}>{tipo}</Text>
+              <Text style={requestsStyles.requestsTxt3}>{tipo}</Text>
             </View>
           </View>
         </View>

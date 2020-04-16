@@ -13,6 +13,7 @@ import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
+import { addDogStyles } from "../../styles/addDogStyle";
 
 function ProfileAddDogForm(props) {
   const { setIsVisibleModal, navigation } = props;
@@ -29,6 +30,16 @@ function ProfileAddDogForm(props) {
       .orderByChild("email")
       .equalTo(email)
       .on("child_added", (snap) => {
+        const newNewOwner = {
+          avgScore: snap.val().avgScore,
+          homeDescription: snap.val().homeDescription,
+          email: snap.val().email,
+          id: snap.val().id,
+          name: snap.val().name,
+          photo: snap.val().photo,
+          surname: snap.val().surname,
+          wauwPoints: snap.val().wauwPoints,
+        };
         setnewOwner(snap.val());
       });
     setReloadData(false);
@@ -92,35 +103,33 @@ function ProfileAddDogForm(props) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.safeShowRequestArea}>
-      <ScrollView keyboardShouldPersistTaps={false}>
-        <View style={globalStyles.showRequestFeed}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView keyboardShouldPersistTaps="never">
+        <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
-            <Text style={globalStyles.addDogTittle}>
-              ¿Cómo se llama su perro?
-            </Text>
+            <Text style={addDogStyles.addDogTxt}>¿Cómo se llama su perro?</Text>
             <TextInput
-              style={globalStyles.addDogCnt1}
+              style={addDogStyles.addDogTxt2}
               placeholder="Ej.: Fluffy"
               onChange={(v) => setNewName(v.nativeEvent.text)}
             />
-            <Text style={globalStyles.addDogTittle}>¿De qué raza es?</Text>
+            <Text style={addDogStyles.addDogTxt}>¿De qué raza es?</Text>
             <TextInput
-              style={globalStyles.addDogCnt1}
+              style={addDogStyles.addDogTxt2}
               placeholder="Ej.: Chiguagua"
               onChange={(v) => setNewBreed(v.nativeEvent.text)}
             />
-            <Text style={globalStyles.addDogTittle}>Describa a su perro</Text>
+            <Text style={addDogStyles.addDogTxt}>Describa a su perro</Text>
             <TextInput
-              style={globalStyles.addDogCnt1}
+              style={addDogStyles.addDogTxt2}
               placeholder="Ej.: Muy manso"
               multiline={true}
               numberOfLines={5}
               onChange={(v) => setNewDescription(v.nativeEvent.text)}
             />
             <Button
-              buttonStyle={globalStyles.addDogBtn}
-              containerStyle={globalStyles.addDogBtnContainer}
+              buttonStyle={addDogStyles.addDogBtn}
+              containerStyle={addDogStyles.addDogBtnContainer}
               title="Crear"
               onPress={addPet}
               icon={
@@ -132,7 +141,7 @@ function ProfileAddDogForm(props) {
                   marginLeft={30}
                 />
               }
-              titleStyle={globalStyles.addDogBtnTxt}
+              titleStyle={addDogStyles.addDogBtnTxt}
             />
           </View>
         </View>

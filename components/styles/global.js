@@ -1,6 +1,36 @@
 import { StyleSheet } from "react-native";
 
+const gris = "#dddddd";
+const blanco = "#FFF";
+
 export const globalStyles = StyleSheet.create({
+  blankImage: {
+    flex: 1,
+    height: null,
+    resizeMode: "cover",
+    width: null,
+  },
+  blankTxt: {
+    fontSize: 22,
+    fontWeight: "700",
+    textAlign: "center",
+  },
+  blankView: {
+    flex: 1,
+    paddingVertical: "25%",
+  },
+  blankView2: {
+    paddingHorizontal: 20,
+  },
+  blankView3: {
+    height: 200,
+    marginTop: 30,
+    width: "100%",
+  },
+  blankView4: {
+    flex: 1,
+    paddingTop: 10,
+  },
   btnStyle: {
     backgroundColor: "#443099",
     width: "75%",
@@ -12,55 +42,22 @@ export const globalStyles = StyleSheet.create({
   btnTextStyle: {
     flex: 1,
   },
-  /* Home */
+  viewFeed: {
+    backgroundColor: blanco,
+    borderRadius: 20,
+    flex: 1,
+    flexDirection: "row",
+    marginHorizontal: 20,
+    marginVertical: "30%",
+    paddingHorizontal: 20,
+  },
   viewFlex1: {
     flex: 1,
   },
   viewFlex2: {
     flex: 2,
   },
-  homeView: {
-    padding: 20,
-    flex: 1,
-    alignContent: "center",
-    alignItems: "center",
-  },
-  homeView2: {
-    flex: 1,
-    width: "95%",
-    height: 180,
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-  },
-  homeTitle: {
-    fontSize: 24,
-    fontWeight: "700",
-    textAlign: "center",
-  },
-  homeContentText: {
-    fontSize: 18,
-    fontWeight: "100",
-    marginTop: 10,
-    fontWeight: "300",
-    textAlign: "center",
-  },
-  homeImage: {
-    flex: 1,
-    width: "85%",
-    resizeMode: "stretch",
-    borderRadius: 20,
-    borderWidth: 1,
-    alignSelf: "center",
-    justifyContent: "center",
-  },
-  safeHomeArea: {
-    flex: 1,
-    paddingBottom: 5,
-    marginBottom: 20,
-  },
+
   /* Profile */
   safeProfileArea: {
     flex: 1,
@@ -642,72 +639,7 @@ export const globalStyles = StyleSheet.create({
     fontSize: 15,
     alignSelf: "center",
   },
-  /* Add Dog */
-  addDogTittle: {
-    fontSize: 18,
-    alignSelf: "center",
-    marginTop: 10,
-    marginBottom: 10,
-  },
-  addDogCnt1: {
-    borderRadius: 5,
-    borderColor: "#d6d6e8",
-    borderWidth: 1,
-    textAlign: "center",
-    marginHorizontal: 20,
-    paddingHorizontal: 20,
-  },
-  addDogBtnContainer: {
-    borderWidth: 1,
-    borderColor: "#d6d6e8",
-    alignSelf: "center",
-    backgroundColor: "rgba(0,128,0,0.6)",
-    marginTop: 30,
-    marginBottom: 10,
-    justifyContent: "center",
-    width: "60%",
-    height: 45,
-  },
-  addDogBtn: {
-    backgroundColor: "rgba(0,128,0,0.6)",
-    borderRadius: 30,
-    justifyContent: "flex-start",
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
-    marginVertical: 10,
-  },
-  addDogBtnTxt: {
-    flex: 1,
-    fontSize: 18,
-    alignSelf: "center",
-    marginRight: 10,
-  },
-  /* Location */
-  locationMapBtnContainerSave: {
-    paddingRight: 5,
-  },
-  locationMapBtnSave: {
-    backgroundColor: "#00a680",
-  },
-  locationMapBtnContainerCancel: {
-    paddingLeft: 5,
-  },
-  locationMapBtnCancel: {
-    backgroundColor: "#a60d0d",
-  },
-  locationViewMapBtn: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 10,
-  },
-  locationMapStyle: {
-    width: "100%",
-    height: 550,
-  },
-  locationInput: {
-    marginBottom: 10,
-  },
+
   /* Create Accommodation*/
   createAccommodationBtnContainer: {
     borderWidth: 1,
@@ -1023,87 +955,4 @@ export const globalStyles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
   },
-  infoUserPublic: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 5,
-    textAlignVertical: "center",
-  },
-  userInfoPublicAvatar: {
-    marginLeft: "10%"
-  },
-  userInfoPublicDisplayName: {
-    color: "black",
-    fontSize: 16,
-    marginLeft: "14%"
-  },
-  userInfoPublicGlobal: {
-    flex: 1,
-    borderWidth: 1,
-    borderRadius: 25,
-    backgroundColor: "white",
-    borderColor: "#d6d6e8",
-    marginTop: "10%"
-  },
-  userInfoPublicTitleDescription: {
-    textAlign: "center",
-    paddingBottom: 5,
-    fontSize: 16,
-    borderRadius: 25,
-    color: "#4d399a",
-    paddingTop: 10,
-  },
-  userInfoPublicDescription: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: 15,
-    marginRight: 15,
-    borderRadius: 25,
-    color: "black",
-    marginBottom: 10,
-    textAlign: "center",
-  },
-  userPublicGlobal: {
-    paddingTop: "25%"
-  },
-  textInformationPublicPro:{
-    textAlign: "left",
-    paddingLeft: 50,
-    color: "#4d399a",
-    fontSize: 20,
-    fontWeight: "bold"
-  },
-  textInformationPublicPro1:{
-    textAlign: "left",
-    paddingLeft: 50,
-    fontSize: 20,
-  },
-  textReviewsPublicPro: {
-    textAlign: "right",
-    paddingRight: 50,
-    fontSize: 20
-  },
-  textReviewsPublicPro1: {
-    textAlign: "right",
-    paddingRight: 50,
-    fontSize: 20,
-    color: "#4d399a",
-    fontWeight: "bold"
-  },
-  tabBarPublicPro: {
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 5,
-    textAlignVertical: "center"
-  },
-  infoUserScore:{
-    paddingRight: 70,
-    paddingTop: 15,
-    color: "#4d399a",
-    fontWeight: "bold"
-  }
 });

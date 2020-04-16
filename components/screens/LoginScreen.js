@@ -1,5 +1,12 @@
 import React, { useState, useEffect, Component } from "react";
-import { Text, View, Image, Alert, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
 import { Button } from "react-native-elements";
@@ -65,6 +72,7 @@ function LoginScreen(props) {
                   avgScore: 0,
                   walkSalary: 0,
                   location: null,
+                  userId: result.user.uid,
                 });
                 firebase
                   .database()
@@ -75,14 +83,33 @@ function LoginScreen(props) {
                     first_name: result.additionalUserInfo.profile.given_name,
                     last_name: result.additionalUserInfo.profile.family_name,
                     created_at: Date.now(),
+                    last_logged_in: new Date().toISOString(), 
+                  });
+                let idLogin = db.ref("logins").push().key;
+                firebase
+                  .database()
+                  .ref()
+                  .child("logins/" + idLogin)
+                  .set({
+                    fecha: new Date().toISOString(),
+                    user: result.user.uid,
                   });
               } else {
                 firebase
                   .database()
                   .ref("/users/" + result.user.uid)
                   .update({
-                    last_logged_in: Date.now(),
+                    last_logged_in: new Date().toISOString(),
                   });
+                  let idLogin = db.ref("logins").push().key;
+                  firebase
+                    .database()
+                    .ref()
+                    .child("logins/" + idLogin)
+                    .set({
+                      fecha: new Date().toISOString(),
+                      user: result.user.uid,
+                    });
               }
             })
             .catch(function (error) {
@@ -146,14 +173,12 @@ function LoginScreen(props) {
         style={loginStyles.loginPrints}
       />
       <CheckBox checked={isChecked} onPress={changeChecked} />
-
       <Text>
         He leído y acepto los
-        <Text style={loginStyles.hyperlink} onPress={onPressTerms}>
+        <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
           {" "}
           términos y condiciones de uso
         </Text>
-        .
       </Text>
 
       <Button

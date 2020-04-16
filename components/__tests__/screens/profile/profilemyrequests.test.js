@@ -4,7 +4,7 @@ import ProfileMyRequests from '../../../screens/Profile/ProfileMyRequests';
 import mockStore from 'redux-mock-store';
 
 describe('<ProfileMyRequests />', () => {
-  it('testing the ProfileMyRequests screen', async () => {
+  it.skip('testing the ProfileMyRequests screen', async () => {
     const store = mockStore({
         rehydrated: false,
         navigation: {navigate: jest.fn()},

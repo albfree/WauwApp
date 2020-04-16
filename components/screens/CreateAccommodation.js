@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, SafeAreaView, Alert, ScrollView, Keyboard } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  SafeAreaView,
+  Alert,
+  ScrollView,
+  Keyboard,
+} from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { email } from "../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
-
-
+import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 function CreateAccommodation(props) {
   const [newStartTime, setStartTime] = useState(new Date());
   const [newEndTime, setEndTime] = useState(new Date());
@@ -27,7 +34,7 @@ function CreateAccommodation(props) {
     setStartTime(currentDate);
   };
 
-  const showModeS = currentMode => {
+  const showModeS = (currentMode) => {
     setShowS(true);
     setModeS(currentMode);
   };
@@ -42,7 +49,7 @@ function CreateAccommodation(props) {
     setEndTime(currentDate);
   };
 
-  const showModeE = currentMode => {
+  const showModeE = (currentMode) => {
     setShowE(true);
     setModeE(currentMode);
   };
@@ -67,14 +74,16 @@ function CreateAccommodation(props) {
   const [newWorker, setNewWorker] = useState([]);
   const [newSalary, setNewSalary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [newPrice, setNewPrice] = useState(null);
 
   const all = () => {
     addAccommodation();
   };
 
-  const addCommissions = props => {
+  const addCommissions = (props) => {
     let price = props * 1.25;
     setNewSalary(price);
+    setNewPrice(props);
   };
 
   const addAccommodation = () => {
@@ -87,9 +96,9 @@ function CreateAccommodation(props) {
       endTime: newEndTime.toISOString(),
       isCanceled: newIsCanceled,
       salary: newSalary,
-      worker: newWorker
+      worker: newWorker,
+      price: newPrice,
     };
-    console.log(accommodationData);
 
     if (
       newStartTime === null ||
@@ -148,109 +157,105 @@ function CreateAccommodation(props) {
             setIsLoading(false);
           });
         Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
-        navigation.navigate("Services");
+        navigation.popToTop();
       }
     }
   };
 
   return (
-    <SafeAreaView style={globalStyles.safeShowRequestArea}>
-      <ScrollView keyboardShouldPersistTaps={false}>
-        <View style={globalStyles.showRequestFeed}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView keyboardShouldPersistTaps="never">
+        <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.editAccommodationColumn1}>
-                <Button
-                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
-                  containerStyle={
-                    globalStyles.editAccommodationEditDateBtnContainer
-                  }
-                  title="Fecha de Entrada"
-                  onPress={showDatepickerS}
-                  icon={
-                    <Icon
-                      type="material-community"
-                      name="calendar-import"
-                      size={20}
-                      color="white"
-                    />
-                  }
-                  titleStyle={globalStyles.editAccommodationEditDateTittle}
-                />
+            <Text style={globalStyles.editAccommodationEditDate}>
+              Establecer Fecha
+            </Text>
+            <View style={searchAccommodationStyles.searchAccommodationView}>
+              <Button
+                buttonStyle={searchAccommodationStyles.searchAccommodationBtn}
+                containerStyle={
+                  searchAccommodationStyles.searchAccommodationContainer
+                }
+                title="Fecha de Entrada"
+                onPress={showDatepickerS}
+                icon={
+                  <Icon
+                    type="material-community"
+                    name="calendar-import"
+                    size={20}
+                    color="white"
+                  />
+                }
+                titleStyle={searchAccommodationStyles.searchAccommodationTxt4}
+              />
 
-                {showS && (
-                  <DateTimePicker
-                    testID="dateTimePickerS"
-                    timeZoneOffsetInMinutes={0}
-                    value={newStartTime}
-                    mode={modeS}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChangeS}
+              {showS && (
+                <DateTimePicker
+                  testID="dateTimePickerS"
+                  timeZoneOffsetInMinutes={0}
+                  value={newStartTime}
+                  mode={modeS}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeS}
+                />
+              )}
+              <Button
+                buttonStyle={searchAccommodationStyles.searchAccommodationBtn}
+                containerStyle={
+                  searchAccommodationStyles.searchAccommodationContainer2
+                }
+                title="Fecha de Salida"
+                onPress={showDatepickerE}
+                icon={
+                  <Icon
+                    type="material-community"
+                    name="calendar-export"
+                    size={20}
+                    color="white"
                   />
-                )}
-              </View>
-              <View style={globalStyles.editAccommodationColumn2}>
-                <Text style={globalStyles.editAccommodationEditDate}>
-                  Establecer Fecha
-              </Text>
-                <Text style={globalStyles.editAccommodationEditPrize}>
-                  Precio / noche
-              </Text>
-                <TextInput
-                  placeholder="10.00"
-                  keyboardType="numeric"
-                  containerStyle={globalStyles.editAccommodationEditPrize2}
-                  onChange={v => addCommissions(v.nativeEvent.text)}
+                }
+                titleStyle={searchAccommodationStyles.searchAccommodationTxt4}
+              />
+              {showE && (
+                <DateTimePicker
+                  testID="dateTimePickerE"
+                  timeZoneOffsetInMinutes={0}
+                  value={newEndTime}
+                  mode={modeE}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeE}
                 />
-                <Button
-                  buttonStyle={globalStyles.createAccommodationBtn}
-                  containerStyle={globalStyles.createAccommodationBtnContainer}
-                  title="Crear"
-                  onPress={all}
-                  icon={
-                    <Icon
-                      type="material-community"
-                      name="content-save"
-                      size={25}
-                      color="white"
-                      marginLeft={10}
-                    />
-                  }
-                  titleStyle={globalStyles.createAccommodationBtnTxt}
-                />
-              </View>
-              <View style={globalStyles.editAccommodationColumn3}>
-                <Button
-                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
-                  containerStyle={
-                    globalStyles.editAccommodationEditDateBtnContainer2
-                  }
-                  title="Fecha de Salida"
-                  onPress={showDatepickerE}
-                  icon={
-                    <Icon
-                      type="material-community"
-                      name="calendar-export"
-                      size={20}
-                      color="white"
-                    />
-                  }
-                  titleStyle={globalStyles.editAccommodationEditDateTittle}
-                />
-                {showE && (
-                  <DateTimePicker
-                    testID="dateTimePickerE"
-                    timeZoneOffsetInMinutes={0}
-                    value={newEndTime}
-                    mode={modeE}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChangeE}
-                  />
-                )}
-              </View>
+              )}
             </View>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
+              Precio / noche
+            </Text>
+            <TextInput
+              placeholder="10.00"
+              keyboardType="numeric"
+              style={searchAccommodationStyles.searchAccommodationView3}
+              onChange={(v) => addCommissions(v.nativeEvent.text)}
+            />
+            <Button
+              buttonStyle={searchAccommodationStyles.searchAccommodationBtn2}
+              containerStyle={
+                searchAccommodationStyles.searchAccommodationContainer3
+              }
+              title="Crear"
+              onPress={all}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="content-save"
+                  size={25}
+                  color="white"
+                  marginLeft={10}
+                />
+              }
+              titleStyle={searchAccommodationStyles.searchAccommodationTxt4}
+            />
           </View>
         </View>
       </ScrollView>

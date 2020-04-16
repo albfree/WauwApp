@@ -42,8 +42,7 @@ export default function ListAccommodations(props){
 
 
 function Accommodation(accommodation){
-    console.log(accommodation);
-
+    
     return (
         <View style={styles.separacion}>
         <TouchableOpacity>
