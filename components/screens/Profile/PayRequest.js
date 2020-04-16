@@ -207,7 +207,7 @@ function PayRequest(props) {
           var idRequest = request.id;
           // console.log("id requests", idRequest);
 
-          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 0.65) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
+          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 6.5) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
 
           navigation.popToTop("Services");
 
@@ -221,7 +221,7 @@ function PayRequest(props) {
           //console.log({ ...err });
         });
 
-      let newPoints = Math.round((priceRequest / 0.65) * 100) / 100;
+      let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
       db.ref("wauwers/" + currentUserID).update({ wauwPoints: newPoints });
     }
   };
@@ -230,12 +230,12 @@ function PayRequest(props) {
     <React.Fragment>
 
       {currentUserWauwPoints === 0 ? (
-        <WithoutWauwPoints buyBook={buyBook}></WithoutWauwPoints>
+        <WithoutWauwPoints buyBook={buyBook} priceRequestConst={priceRequestConst}></WithoutWauwPoints>
       ) : null}
 
       {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 === priceRequest ? (
         <PointsEqualToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
-          requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsEqualToPrice>
+          requestId={requestId} currentUserID={currentUserID} navigation={navigation} priceRequestConst={priceRequestConst}></PointsEqualToPrice>
       ) : null}
 
       {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 < priceRequest || checked ? (
@@ -245,7 +245,7 @@ function PayRequest(props) {
 
       {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 > priceRequest ? (
         <PointsMoreToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
-          requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsMoreToPrice>
+          requestId={requestId} currentUserID={currentUserID} navigation={navigation} priceRequestConst={priceRequestConst}></PointsMoreToPrice>
       ) : null}
 
       {paypalUrl ? (
@@ -279,7 +279,7 @@ function PayRequest(props) {
 }
 
 function WithoutWauwPoints(props) {
-  const { buyBook } = props;
+  const { buyBook, priceRequestConst } = props;
 
   return (
     <View style={styles.container}>
@@ -299,14 +299,17 @@ function WithoutWauwPoints(props) {
           Pagar con PayPal
           </Text>
       </TouchableOpacity>
-      <Text>No tienes Wauw Points para canjear.</Text>
+      <Text style={styles.texts}>No tienes Wauw Points para canjear.</Text>
+      <Text style={styles.textLess}>Total a pagar: {priceRequestConst}€</Text>
     </View>
   );
 
 }
 
 function PointsEqualToPrice(props) {
-  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation } = props;
+  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation, priceRequestConst } = props;
+
+  let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
 
   const canjeoIgual = async () => {
     db.ref("requests/" + requestId).update({
@@ -338,7 +341,11 @@ function PointsEqualToPrice(props) {
           Pagar con Paypal.
           </Text>
       </TouchableOpacity>
-      <Text>Tienes {wauwPoints} Wauw Points que equivalen a los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
+      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
+      <Text style={styles.textLess}>Valor de los puntos: {valor}€</Text>
+      <Text style={styles.textLess}>Total a pagar sin aplicar descuento: {priceRequestConst}€</Text>
+      <Text style={styles.textLess}>Si canjeas no tendrás que realizar pago.</Text>
+      <Text style={styles.textUsar}>¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoIgual}
@@ -364,6 +371,8 @@ function PointsLessToPrice(props) {
   const { buyBook, wauwPoints, priceRequest, setPriceRequest, checked, setIsChecked, priceRequestConst } = props;
 
   let resta = Math.round(wauwPoints * 0.65 * 100) / 100;
+
+  let totalToPay = Math.round((Math.round((priceRequestConst - resta) * 100) / 100) * 100) / 100;
 
   const setChecked = () => {
     if (checked === false) {
@@ -396,7 +405,11 @@ function PointsLessToPrice(props) {
           Pagar con Paypal
           </Text>
       </TouchableOpacity>
-      <Text style={styles.texts}>Tienes {wauwPoints} Wauw Points que restan {resta}€ a los {priceRequestConst}€ del servicio. ¿Quieres usarlos?</Text>
+      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
+      <Text style={styles.textLess}>Valor de los puntos: {resta}€</Text>
+      <Text style={styles.textLess}>Total a pagar sin aplicar descuento: {priceRequestConst}€</Text>
+      <Text style={styles.textLess}>Total a pagar con descuento: {totalToPay}€</Text>
+      <Text style={styles.textUsar}>¿Quieres usarlos?</Text>
       <CheckBox onLongPress={easterEgg} containerStyle={styles.check} textStyle={styles.textCheck} checkedColor={"white"}
         title={"Aplicar"} checked={checked} onPress={setChecked}></CheckBox>
     </View>
@@ -405,7 +418,9 @@ function PointsLessToPrice(props) {
 }
 
 function PointsMoreToPrice(props) {
-  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation } = props;
+  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation, priceRequestConst } = props;
+
+  let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
 
   let deMas = wauwPoints - (Math.round((priceRequest / 0.65) * 100) / 100);
 
@@ -439,7 +454,12 @@ function PointsMoreToPrice(props) {
           Pagar con Paypal
           </Text>
       </TouchableOpacity>
-      <Text>Tienes {wauwPoints} Wauw Points que se quedan en {deMas} al canjearlos por los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
+      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
+      <Text style={styles.textLess}>Valor de los puntos: {valor}€</Text>
+      <Text style={styles.textLess}>Total a pagar sin aplicar descuento: {priceRequestConst}€</Text>
+      <Text style={styles.textLess}>Wauw Points que te quedarán después de canjear este servicio: {deMas}</Text>
+      <Text style={styles.textLess}>Si canjeas no tendrás que realizar pago.</Text>
+      <Text style={styles.textUsar}>¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoMayor}
@@ -496,24 +516,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff7549"
   },
   btnCanjear: {
-    paddingVertical: 5,
+    paddingVertical: 7,
     paddingHorizontal: 15,
     borderRadius: 15,
     backgroundColor: morado,
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center"
+    alignContent: "center",
+    marginTop: 15
   },
   check: {
     backgroundColor: morado,
-    borderRadius: 15
+    borderRadius: 15,
+    marginTop: 15
   },
   textCheck: {
     color: blanco
   },
   texts: {
     fontSize: 17,
+    paddingTop: 30,
+    paddingBottom: 10,
     textAlign: "center"
+  },
+  textLess: {
+    fontSize: 17,
+    paddingBottom: 10
+  },
+  textUsar: {
+    fontSize: 17,
+    textAlign: "center",
+    paddingTop: 15
   }
 });
 
