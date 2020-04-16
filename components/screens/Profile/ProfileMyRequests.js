@@ -62,6 +62,10 @@ function ProfileMyRequests(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
+        <Text style={requestsStyles.requestsTxt16}>
+          Listado de las solicitudes realizadas
+        </Text>
+
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}

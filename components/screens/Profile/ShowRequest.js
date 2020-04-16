@@ -117,7 +117,7 @@ function showRequest(props) {
                   name="cancel"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -172,7 +172,7 @@ function showRequest(props) {
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
                 <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
                 <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
@@ -203,7 +203,7 @@ function showRequest(props) {
                   name="chat"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -231,7 +231,7 @@ function showRequest(props) {
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
                 <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
                 <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
@@ -262,7 +262,7 @@ function showRequest(props) {
                   name="chat"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -283,7 +283,7 @@ function showRequest(props) {
                   name="star"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -308,7 +308,7 @@ function showRequest(props) {
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
                 <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
                 <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
@@ -345,7 +345,7 @@ function showRequest(props) {
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
                 <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha:</Text>
+                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
                 <Text style={requestsStyles.requestsTxt7}>
                   {request.interval}
                 </Text>
@@ -380,7 +380,7 @@ function showRequest(props) {
                   name="paypal"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -434,7 +434,7 @@ function showRequest(props) {
                   name="cancel"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -536,7 +536,7 @@ function showRequest(props) {
                   name="paypal"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -600,7 +600,7 @@ function showRequest(props) {
                   name="chat"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
@@ -668,7 +668,7 @@ function showRequest(props) {
                   name="chat"
                   size={30}
                   color="white"
-                  marginLeft={20}
+                  marginLeft={"10%"}
                 />
               }
               titleStyle={requestsStyles.requestsBtnTittle}
