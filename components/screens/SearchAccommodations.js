@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
-import { Avatar, Input, Button, Icon } from "react-native-elements";
+import { Avatar, Input, Button, Icon, Rating } from "react-native-elements";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
@@ -229,10 +229,10 @@ function ListAccommodations(props) {
                 name="filter"
                 size={20}
                 color="white"
-                marginRight={10}
+                marginLeft={"10%"}
               />
             }
-            titleStyle={searchWalksStyles.searchWalktxt10}
+            titleStyle={searchWalksStyles.searchWalkTxt11}
           />
           <Button
             buttonStyle={searchWalksStyles.searchWalksBtn3}
@@ -379,17 +379,8 @@ function Accommodation(props) {
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
                 Valoración
               </Text>
-              <View style={searchAccommodationStyles.searchAccommodationView}>
-                <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                  {worker.avgScore}{" "}
-                </Text>
-                <Icon
-                  type="material-community"
-                  name="star"
-                  size={20}
-                  color="yellow"
-                />
-              </View>
+
+              <Rating imageSize={20} readonly startingValue={worker.avgScore} />
             </View>
             <View style={searchAccommodationStyles.searchAccommodationColumn3}>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>

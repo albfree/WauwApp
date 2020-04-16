@@ -145,7 +145,7 @@ const ServicesScreenStacks = createStackNavigator({
   FormFilterByAvailability: {
     screen: FormFilterByAvailabilityScreen,
     navigationOptions: () => ({
-      title: "Filtrar paseos",
+      title: "Filtrar Paseos",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,

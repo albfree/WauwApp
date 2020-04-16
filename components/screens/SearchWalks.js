@@ -8,7 +8,7 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { Avatar, Button, Icon, Input } from "react-native-elements";
+import { Avatar, Button, Icon, Input, Rating } from "react-native-elements";
 import BlankView from "./BlankView";
 import { db } from "../population/config";
 import Loading from "../Loading";
@@ -210,10 +210,10 @@ function SearchWalks(props) {
                 name="filter"
                 size={20}
                 color="white"
-                marginRight={10}
+                marginLeft={"10%"}
               />
             }
-            titleStyle={searchWalksStyles.searchWalktxt10}
+            titleStyle={searchWalksStyles.searchWalkTxt11}
           />
           <Button
             buttonStyle={searchWalksStyles.searchWalksBtn3}
@@ -308,17 +308,8 @@ function Wauwer(props) {
                 {" "}
                 {user.name}{" "}
               </Text>
-              <View style={searchWalksStyles.searchWalksView}>
-                <Text style={searchWalksStyles.searchWalkTxt3}>
-                  Valoración: {user.avgScore}
-                </Text>
-                <Icon
-                  type="material-community"
-                  name="star"
-                  size={20}
-                  color="yellow"
-                />
-              </View>
+              <Rating imageSize={20} readonly startingValue={user.avgScore} />
+
               <Text style={searchWalksStyles.searchWalkTxt2}>
                 Precio / Hora: {price} € {dis} km
               </Text>
