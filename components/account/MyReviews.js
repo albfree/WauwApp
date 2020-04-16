@@ -3,6 +3,12 @@ import { db } from "../population/config.js";
 import { View, Text, SafeAreaView } from "react-native";
 import { Rating } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
+import BlankView2 from "../screens/BlankView2";
+import { globalStyles } from "../styles/global";
+import {
+  publicProfileStyle,
+  publicProfileStyles,
+} from "../styles/publicProfileStyle";
 
 export default function MyReviews(props) {
   const user = props.userInfo;
@@ -23,7 +29,7 @@ export default function MyReviews(props) {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
         {val === true ? (
           <View>
@@ -32,9 +38,7 @@ export default function MyReviews(props) {
             ))}
           </View>
         ) : (
-          <View>
-            <Text>No tienes valoraciones</Text>
-          </View>
+          <BlankView2 text={"No hay valoraciones disponibles"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -50,13 +54,26 @@ function Review(props) {
   });
 
   return (
-    <View>
-      <View>
-        <Text>{user.name}</Text>
+    <View style={publicProfileStyles.publicProfileView4}>
+      <View style={globalStyles.viewFlex1}>
+        <Rating
+          imageSize={20}
+          readonly
+          startingValue={parseInt(review.rating)}
+        />
+
+        <View>
+          <Text style={publicProfileStyles.publicProfileTxt7}>
+            Usuario: {user.name}
+          </Text>
+        </View>
+        <Text style={publicProfileStyles.publicProfileTxt8}>
+          {review.title}
+        </Text>
+        <Text style={publicProfileStyles.publicProfileTxt9}>
+          {review.review}
+        </Text>
       </View>
-      <Rating imageSize={20} readonly startingValue={parseInt(review.rating)} />
-      <Text>{review.title}</Text>
-      <Text>{review.review}</Text>
     </View>
   );
 }

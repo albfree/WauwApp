@@ -1,5 +1,12 @@
 import React, { useState, useEffect, Component } from "react";
-import { Text, View, Image, Alert, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
 import { Button } from "react-native-elements";
@@ -145,16 +152,15 @@ function LoginScreen(props) {
         source={require("../../assets/images/prints.png")}
         style={loginStyles.loginPrints}
       />
-      
-        <CheckBox checked={isChecked} onPress={changeChecked} />
-        <Text>
-          He leído y acepto los
-          <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
-            {" "}
-            términos y condiciones de uso
-          </Text>
+      <CheckBox checked={isChecked} onPress={changeChecked} />
+      <Text>
+        He leído y acepto los
+        <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
+          {" "}
+          términos y condiciones de uso
         </Text>
-      
+      </Text>
+
       <Button
         buttonStyle={loginStyles.loginBtn}
         containerStyle={loginStyles.loginBtnContainer}

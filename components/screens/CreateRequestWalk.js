@@ -14,7 +14,7 @@ import { CheckBox } from "react-native-elements";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
-import { searchWalkStyles, searchWalksStyles } from "../styles/searchWalkStyle";
+import { searchWalksStyles } from "../styles/searchWalkStyle";
 
 function createRequest(props) {
   const { navigation } = props;
@@ -191,8 +191,9 @@ function createRequest(props) {
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Qué perro desea que pasee ?"}
             </Text>
-            {petNames.map((pet) => (
+            {petNames.map((pet, index) => (
               <PetCheckBox
+                key={index}
                 name={pet}
                 petNumber={petNumber}
                 setPetNumber={setPetNumber}

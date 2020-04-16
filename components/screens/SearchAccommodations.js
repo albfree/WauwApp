@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -7,21 +7,27 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
-import { Image, Avatar } from "react-native-elements";
+import { Avatar, Input, Button, Icon } from "react-native-elements";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
 import { email } from "../account/QueriesProfile";
-import BlankView from "./BlankView";
+import BlankView2 from "./BlankView2";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import { searchWalksStyles } from "../styles/searchWalkStyle.js";
+import Toast from "react-native-easy-toast";
 
 function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
+  const [accommodationsList2, setAccommodationList2] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [reloadData, setReloadData] = useState(false);
+  const [maxPrice, setMaxPrice] = useState(null);
+  const [minRating, setMinRating] = useState(null);
   const filter = navigation.state.params.formData.startTime;
+  const toastRef = useRef();
   let petNumber;
   let id;
   db.ref("wauwers")
@@ -38,57 +44,233 @@ function ListAccommodations(props) {
       .equalTo(false)
       .on("value", (snap) => {
         const accommodations = [];
+        const accommodations2 = [];
         snap.forEach((child) => {
-          if (child.val().worker != id) {
+          if (child.val().worker !== id) {
+            const myAccomodation = [];
             var endTime = new Date(child.val().endTime);
             var startTime = new Date(child.val().startTime);
+            let score;
+            db.ref("wauwers/" + child.val().worker).once("value", (snap) => {
+              score = snap.val().avgScore;
+            });
 
             if (
               endTime > new Date() &&
               filter - startTime >= -86400000 &&
               filter - endTime <= 86400000
             ) {
-              accommodations.push(child.val());
+              myAccomodation.push(child.val());
+              myAccomodation.push(score);
+              accommodations.push(myAccomodation);
+            } else {
+              myAccomodation.push(child.val());
+              myAccomodation.push(score);
+              accommodations2.push(myAccomodation);
             }
           }
         });
         setAccommodationList(accommodations);
+        setAccommodationList2(accommodations2);
       });
-  }, []);
+    setReloadData(false);
+  }, [reloadData]);
+
+  const filterList = () => {
+    let accomodations = [];
+    accommodationsList.map((acc) => {
+      if (
+        (maxPrice !== null && acc[0].salary <= maxPrice) ||
+        (minRating !== null && acc[1] >= minRating)
+      ) {
+        accomodations.push(acc);
+      }
+    });
+    setAccommodationList(accomodations);
+    toastRef.current.show("Filtro aplicado");
+  };
+
+  const applyFilter = () => {
+    if (
+      (maxPrice === null && minRating === null) ||
+      isNaN(maxPrice) ||
+      isNaN(minRating)
+    ) {
+      toastRef.current.show("Filtros de búsqueda inválidos");
+      setMaxPrice(null);
+      setMinRating(null);
+    } else {
+      if (!Number.isInteger(maxPrice * 100)) {
+        toastRef.current.show("Precio entero o con 2 decimales");
+        setMaxPrice(null);
+        setMinRating(null);
+      } else if (!Number.isInteger(minRating * 10)) {
+        toastRef.current.show("Valoración entera o con 1 decimal");
+        setMaxPrice(null);
+        setMinRating(null);
+      } else {
+        if (minRating < 0 || minRating > 5) {
+          toastRef.current.show("Valoración entre 0 y 5");
+          setMaxPrice(null);
+          setMinRating(null);
+        } else {
+          filterList();
+        }
+      }
+    }
+  };
+
+  const clearFilter = () => {
+    setMaxPrice(null);
+    setMinRating(null);
+    setReloadData(true);
+  };
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        <Input
+          inputContainerStyle={searchWalksStyles.searchWalksView3}
+          inputStyle={searchWalksStyles.searchWalkTxt8}
+          keyboardType="numeric"
+          placeholder="Precio máximo del paseo"
+          onChange={(val) => {
+            if (val.nativeEvent.text !== "") {
+              setMaxPrice(val.nativeEvent.text);
+            } else {
+              setMaxPrice(null);
+            }
+          }}
+          defaultValue={maxPrice}
+        />
+        <Input
+          inputContainerStyle={searchWalksStyles.searchWalksView3}
+          inputStyle={searchWalksStyles.searchWalkTxt9}
+          keyboardType="numeric"
+          placeholder="Valoración mínima"
+          onChange={(val) => {
+            if (val.nativeEvent.text !== "") {
+              setMinRating(val.nativeEvent.text);
+            } else {
+              setMinRating(null);
+            }
+          }}
+          defaultValue={minRating}
+        />
+        <View style={searchWalksStyles.searchWalksView4}>
+          <Button
+            buttonStyle={searchWalksStyles.searchWalksBtn2}
+            containerStyle={searchWalksStyles.searchWalksBtnContainer2}
+            title="Filtrar"
+            onPress={applyFilter}
+            icon={
+              <Icon
+                type="material-community"
+                name="filter"
+                size={20}
+                color="white"
+                marginRight={10}
+              />
+            }
+            titleStyle={searchWalksStyles.searchWalktxt10}
+          />
+          <Button
+            buttonStyle={searchWalksStyles.searchWalksBtn3}
+            containerStyle={searchWalksStyles.searchWalksBtnContainer3}
+            title="Limpiar filtro"
+            onPress={clearFilter}
+            icon={
+              <Icon
+                type="material-community"
+                name="filter-remove"
+                size={20}
+                color="white"
+                marginRight={10}
+              />
+            }
+            titleStyle={searchWalksStyles.searchWalktxt10}
+          />
+        </View>
+        {accommodationsList.length > 0 ? (
+          <List1
+            accommodationsList={accommodationsList}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        ) : (
+          <List2
+            accommodationsList={accommodationsList2}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
+      </ScrollView>
+      <Toast ref={toastRef} position="center" opacity={0.8} />
+    </SafeAreaView>
+  );
+}
+
+function List1(props) {
+  const { accommodationsList, navigation, petNumber, id } = props;
+  return (
+    <SafeAreaView>
       <Text style={searchAccommodationStyles.searchAccommodationTxt}>
         {"Escoja al cuidador que desee"}
       </Text>
-      <ScrollView>
-        {accommodationsList.length > 0 ? (
-          <FlatList
-            data={accommodationsList}
-            renderItem={(accommodation) => (
-              <Accommodation
-                accommodation={accommodation}
-                petNumber={petNumber}
-                myId={id}
-                navigation={navigation}
-              />
-            )}
-            keyExtractor={(accommodation) => accommodation.id}
-            showsVerticalScrollIndicator={false}
+      <FlatList
+        data={accommodationsList}
+        renderItem={(accommodation) => (
+          <Accommodation
+            key={accommodation.index}
+            accommodation={accommodation}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
           />
-        ) : (
-          <BlankView text={"No hay alojamientos disponibles"} />
         )}
-      </ScrollView>
+        keyExtractor={(accommodation) => accommodation.id}
+      />
+    </SafeAreaView>
+  );
+}
+
+function List2(props) {
+  const { accommodationsList, navigation, petNumber, id } = props;
+  return (
+    <SafeAreaView>
+      <BlankView2
+        text={"No hay alojamientos disponibles para la fecha seleccionada"}
+      />
+
+      <Text style={searchAccommodationStyles.searchAccommodationTxt}>
+        {"Puede que le interesen..."}
+      </Text>
+
+      <FlatList
+        data={accommodationsList}
+        renderItem={(accommodation) => (
+          <Accommodation
+            key={accommodation.index}
+            accommodation={accommodation}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
+        keyExtractor={(accommodation) => accommodation.id}
+      />
     </SafeAreaView>
   );
 }
 
 function Accommodation(props) {
   const { accommodation, navigation, petNumber, myId } = props;
+
   let worker;
   db.ref("wauwers")
-    .child(accommodation.item.worker)
+    .child(accommodation.item[0].worker)
     .on("value", (snap) => {
       worker = snap.val();
     });
@@ -96,7 +278,7 @@ function Accommodation(props) {
   const checkHasPets = () => {
     if (petNumber > 0) {
       navigation.navigate("FormRequestAccommodation", {
-        accommodation: accommodation.item,
+        accommodation: accommodation.item[0],
         id: myId,
       });
     } else {
@@ -109,6 +291,9 @@ function Accommodation(props) {
       user: worker,
     });
   };
+
+  var x = new Date(accommodation.item[0].startTime);
+  var y = new Date(accommodation.item[0].endTime);
 
   return (
     <TouchableOpacity onPress={checkHasPets}>
@@ -128,24 +313,42 @@ function Accommodation(props) {
                 Precio
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {accommodation.item.salary} €
+                {accommodation.item[0].salary} €
               </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
+                Valoración
+              </Text>
+              <View style={searchAccommodationStyles.searchAccommodationView}>
+                <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                  {worker.avgScore}{" "}
+                </Text>
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={20}
+                  color="yellow"
+                />
+              </View>
             </View>
             <View style={searchAccommodationStyles.searchAccommodationColumn3}>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
                 Disponibilidad
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                Del{" "}
-                {accommodation.item.startTime
-                  .toLocaleString("en-US")
-                  .substring(0, 10)}
+                {"Del " +
+                  x.getDate() +
+                  "/" +
+                  parseInt(x.getMonth() + 1) +
+                  "/" +
+                  x.getFullYear()}
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                al{" "}
-                {accommodation.item.endTime
-                  .toLocaleString("en-US")
-                  .substring(0, 10)}
+                {"al " +
+                  y.getDate() +
+                  "/" +
+                  parseInt(y.getMonth() + 1) +
+                  "/" +
+                  y.getFullYear()}
               </Text>
             </View>
           </View>

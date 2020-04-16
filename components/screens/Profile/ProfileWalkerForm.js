@@ -31,7 +31,7 @@ function ProfileWalkerForm(props) {
   const [update, setUpdate] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [globales, setGlobales] = useState([]);
-  const [sueldo, setSueldo] = useState(0);
+  const [sueldo, setSueldo] = useState(null);
   const rangos = [
     ["Lunes", 0],
     ["Martes", 16],
@@ -57,6 +57,7 @@ function ProfileWalkerForm(props) {
       "value",
       (snap) => {
         snap.forEach((child) => {
+          const hourPrice = [];
           let hour =
             child.val().availability.day +
             ": " +
@@ -64,18 +65,16 @@ function ProfileWalkerForm(props) {
             " - " +
             child.val().availability.endDate;
           let id = child.val().availability.id;
+          const price = Math.round(((child.val().price / 1.3) * 10) / 10);
           resulIds.push(id);
-          resulHours.push(hour);
+          hourPrice.push(hour);
+          hourPrice.push(price);
+          resulHours.push(hourPrice);
         });
         setIds(resulIds);
         setHours(resulHours);
       }
     );
-    // if (ids.length >= 1) {
-    //   db.ref("availabilities-wauwers/" + userInfo.id + "/wauwer").update({
-    //     price: sueldo,
-    //   });
-    // }
     setUpdate(false);
     setIsVisibleLoading(false);
   }, [update]);
@@ -142,14 +141,6 @@ function ProfileWalkerForm(props) {
       .child(id)
       .remove()
       .then(() => {
-        db.ref("availabilities-wauwers/" + userInfo.id).once(
-          "value",
-          (snap) => {
-            if (snap.numChildren() == 1) {
-              db.ref("availabilities-wauwers/" + userInfo.id).remove();
-            }
-          }
-        );
         setUpdate(true);
         toastRef.current.show("Disponibilidad eliminada");
       })
@@ -211,9 +202,28 @@ function ProfileWalkerForm(props) {
     }
   };
 
+  const checkSalary = (id) => {
+    if (sueldo === null || isNaN(sueldo)) {
+      toastRef.current.show("Salario inválido");
+      setSueldo(null);
+    } else {
+      if (!Number.isInteger(sueldo * 100)) {
+        toastRef.current.show("Salario con dos decimales máximo");
+        setSueldo(null);
+      } else {
+        if (sueldo < 5) {
+          toastRef.current.show("Salario mínimo de 5");
+          setSueldo(null);
+        } else {
+          isAdded(id);
+        }
+      }
+    }
+  };
+
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView keyboardShouldPersistTaps={false}>
+      <ScrollView keyboardShouldPersistTaps="never">
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
             <Text style={walkerFormStyles.walkerFormTxt}> Salario </Text>
@@ -223,25 +233,25 @@ function ProfileWalkerForm(props) {
             </Text>
             <TextInput
               style={walkerFormStyles.walkerFormImput}
+              placeholder="Introduzca un salario"
               keyboardType={"numeric"}
               onChange={(val) => {
-                let precio;
+                //let precio;
                 if (val.nativeEvent.text !== "") {
-                  precio = parseInt(val.nativeEvent.text);
+                  setSueldo(val.nativeEvent.text);
                 } else {
-                  precio = 0;
+                  setSueldo(null);
                 }
-                const salary = Math.round(precio * 1.3 * 10) / 10;
+                //const salary = Math.round(precio * 1.3 * 10) / 10;
 
-                db.ref("wauwers/" + userInfo.id)
-                  .update({
-                    price: salary,
-                    walkSalary: precio,
-                  })
-                  .then(() => {
-                    setSueldo(precio);
-                    //setUpdate(true);
-                  });
+                // db.ref("wauwers/" + userInfo.id)
+                //   .update({
+                //     price: salary,
+                //     walkSalary: precio,
+                //   })
+                //   .then(() => {
+                //     setSueldo(precio);
+                //   });
               }}
             >
               {sueldo}
@@ -260,7 +270,12 @@ function ProfileWalkerForm(props) {
                       <TouchableOpacity
                         onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
-                        <Text>{hour}</Text>
+                        <Text style={walkerFormStyles.walkerFormTxt3}>
+                          {hour[0]}
+                        </Text>
+                        <Text style={walkerFormStyles.walkerFormTxt3}>
+                          Salario: {hour[1]} €
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   ))}
@@ -284,7 +299,7 @@ function ProfileWalkerForm(props) {
                     {globales.slice(rango[1], rango[1] + 16).map((av) => (
                       <TouchableOpacity
                         key={av[1]}
-                        onPress={() => isAdded(av[1])}
+                        onPress={() => checkSalary(av[1])}
                       >
                         <View style={walkerFormStyles.walkerFormView2}>
                           <Text>{av[0]}</Text>
