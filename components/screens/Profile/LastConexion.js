@@ -35,7 +35,8 @@ export default function LastConexion(props) {
       tope = logins1.length;
     }
     for (let i = 0; i < tope; i++) {
-      let resFecha = logins1[i];
+      let resFecha;
+      logins1[i] = resFecha;
       aux.push(resFecha);
     }
 
