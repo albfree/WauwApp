@@ -22,6 +22,61 @@ import { db } from "../../population/config.js";
 function Profile(props) {
   const { navigation } = props;
 
+  var userInfo;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .once("child_added", (snap) => {
+      userInfo = snap.val();
+    });
+
+  var requestWorker = [];
+
+  // Better way to get some information from DB and send it to UserData
+  db.ref("requests")
+    .orderByChild("worker")
+    .equalTo(userInfo.id)
+    .once("value", (snap) => {
+      //request = snap.val();
+      snap.forEach((child) => {
+        requestWorker.push(child);
+      });
+    });
+
+  var requestOwner = [];
+
+  // Better way to get some information from DB and send it to UserData
+  db.ref("requests")
+    .orderByChild("owner")
+    .equalTo(userInfo.id)
+    .once("value", (snap) => {
+      //request = snap.val();
+      snap.forEach((child) => {
+        requestOwner.push(child);
+      });
+    });
+
+  var pets = [];
+
+  db.ref("pet/" + userInfo.id).on("value", (snap) => {
+    snap.forEach((child) => {
+      pets.push(child);
+    });
+  });
+
+
+  var accommodations = [];
+
+  db.ref("accommodation")
+    .orderByChild("worker")
+    .equalTo(userInfo.id)
+    .once("value", (snap) => {
+      snap.forEach((pretty) => {
+        accommodations.push(pretty);
+      });
+    });
+
+
   const checkHasLocation = () => {
     let ck;
     let newOwner;
@@ -112,6 +167,31 @@ function Profile(props) {
               }
               titleStyle={globalStyles.profileBtnTittle}
             />
+
+            <Button
+              buttonStyle={globalStyles.profileBtn}
+              containerStyle={globalStyles.profileBtnContainer}
+              title="Ver información recopilada"
+              onPress={() =>
+                navigation.navigate("UserData", {
+                  userInfo: userInfo,
+                  requestWorker: requestWorker,
+                  pets: pets,
+                  requestOwner: requestOwner,
+                })
+              }
+              icon={
+                <Icon
+                  type="material-community"
+                  name="information-variant"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />
+              }
+              titleStyle={globalStyles.profileBtnTittle}
+            />
+
             <Image
               source={require("../../../assets/images/prints.png")}
               style={globalStyles.profilePrints}

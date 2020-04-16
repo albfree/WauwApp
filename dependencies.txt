@@ -1,8 +1,9 @@
+// Comandos iniciales
 npm install
 npm audit fix
-npm install --save firebase
 
-// Navegación
+//Módulos (en orden)
+npm install --save firebase
 npm install react-native-elements
 npm install react-native-screens
 expo install react-native-screens
@@ -38,3 +39,4 @@ npm install --save redux
 npm i accordion-collapse-react-native
 npm i react-native-ratings
 expo install expo-image-picker
+npm install react-native-email

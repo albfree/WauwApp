@@ -9,6 +9,7 @@ import PayRequestScreen from "../screens/Profile/PayRequest";
 import EditDeleteAccommodationScreen from "../screens/EditDeleteAccommodation";
 import AddReviewServiceScreen from "../screens/Profile/AddReviewService";
 import ShowWalkScreen from "../screens/Profile/ShowWalk";
+import UserDataScreen from "../screens/GRPD/UserData";
 import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 
@@ -118,6 +119,13 @@ const ProfileScreenStacks = createStackNavigator({
     screen: EditDeleteAccommodationScreen,
     navigationOptions: () => ({
       title: "Editar alojamiento",
+      headerTitleAlign: "center"
+    })
+  },
+  UserData: {
+    screen: UserDataScreen,
+    navigationOptions: () => ({
+      title: "Ver información recopilada",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
@@ -126,8 +134,9 @@ const ProfileScreenStacks = createStackNavigator({
         color: blanco,
       },
       headerTintColor: blanco,
-    }),
+    })
   },
+  
   AddReviewService: {
     screen: AddReviewServiceScreen,
     navigationOptions: () => ({
