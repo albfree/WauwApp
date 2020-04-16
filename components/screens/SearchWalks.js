@@ -86,18 +86,20 @@ function SearchWalks(props) {
         }
       });
       const appToYou = [];
-      allData.map((array, index) => {
-        appToYou.push(array[0]);
-        appToYou.push(array[1]);
+      allData.map((array) => {
+        const krom = [];
+        krom.push(array[0]);
+        krom.push(array[1]);
         const distancia = calculaDistancia(latitudeUser, longitudeUser, array[2][0], array[2][1]);
-        appToYou.push(distancia);
+        krom.push(distancia);
+        appToYou.push(krom);
       });
 
-      allData.sort((a, b) => {
-        return a[2] - b[2];
+      appToYou.sort((a, b) => {
+        return (a[2] - b[2]);
       });
-      allData.reverse();
-      setData(allData);
+
+      setData(appToYou);
     });
 
     setReloadData(false);
@@ -257,6 +259,7 @@ function SearchWalks(props) {
 function Wauwer(props) {
   const { wauwerData, petNumber, navigation, interval } = props;
   const id = wauwerData.item[0];
+  const dis = wauwerData.item[2];
 
   let user;
   db.ref("wauwers/" + id).once("value", (snap) => {
@@ -317,7 +320,7 @@ function Wauwer(props) {
                 />
               </View>
               <Text style={searchWalksStyles.searchWalkTxt2}>
-                Precio / Hora: {price} €
+                Precio / Hora: {price} € {dis} km
               </Text>
             </View>
           </View>

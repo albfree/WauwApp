@@ -2,17 +2,13 @@ import React, { useState, useEffect } from "react";
 import { View, Text, SafeAreaView, FlatList } from "react-native";
 import { db } from "../../population/config";
 import { email } from "../../account/QueriesProfile";
-//import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 import BlankView from "../BlankView";
-import Loading from "../../../components/Loading";
 import { fechaParseada } from "./../../utils/DateParser";
 
 export default function LastConexion(props) {
   const { navigation } = props;
   const [loginsRegistrados, setLoginsRegistrados] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [reloadData, setReloadData] = useState([]);
 
   useEffect(() => {
     let wauwer;
@@ -32,16 +28,18 @@ export default function LastConexion(props) {
       });
     logins1.reverse();
     let aux = [];
-    for (i = 0; i < 10; i++) {
+    let tope;
+    if (logins1.length > 10) {
+      tope = 10;
+    } else {
+      tope = logins1.length;
+    }
+    for (i = 0; i < tope; i++) {
       aux.push(logins1[i]);
     }
 
     setLoginsRegistrados(aux);
-    setReloadData(false);
-    setIsLoading(false);
   }, []);
-
-  //{fechaParseada(loginItem.item)}
 
   return (
     <SafeAreaView>
