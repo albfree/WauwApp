@@ -89,20 +89,6 @@ export default createDrawerNavigator(
       },
     },
 
-    AboutUs: {
-      screen: AboutUsScreen,
-      navigationOptions: {
-        drawerLabel: "Sobre Nosotros",
-        drawerIcon: ({ tintColor }) => (
-          <Icon
-            type="material-community"
-            name="dog"
-            size={17}
-            color="#443099"
-          />
-        ),
-      },
-    },
     LastConexion: {
       screen: LastConexionsScreen,
       navigationOptions: {
@@ -111,6 +97,20 @@ export default createDrawerNavigator(
           <Icon
             type="material-community"
             name="security"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+    AboutUs: {
+      screen: AboutUsScreen,
+      navigationOptions: {
+        drawerLabel: "Sobre Nosotros",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog"
             size={17}
             color="#443099"
           />
@@ -128,9 +128,9 @@ export default createDrawerNavigator(
             size={17}
             color="#443099"
           />
-        )
-      }
-    }
+        ),
+      },
+    },
 
     /* MyDogs: {
       screen: MyDogsScreen,

@@ -119,8 +119,8 @@ const ProfileScreenStacks = createStackNavigator({
     screen: EditDeleteAccommodationScreen,
     navigationOptions: () => ({
       title: "Editar alojamiento",
-      headerTitleAlign: "center"
-    })
+      headerTitleAlign: "center",
+    }),
   },
   UserData: {
     screen: UserDataScreen,
@@ -134,9 +134,9 @@ const ProfileScreenStacks = createStackNavigator({
         color: blanco,
       },
       headerTintColor: blanco,
-    })
+    }),
   },
-  
+
   AddReviewService: {
     screen: AddReviewServiceScreen,
     navigationOptions: () => ({
