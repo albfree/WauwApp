@@ -40,8 +40,7 @@ useEffect(() => {
       setReloadData(false);
       setIsLoading(false);
   }, []);
-  console.log(loginsRegistrados);
-  console.log("hola");
+  
   return (
     <SafeAreaView>
       <ScrollView>
