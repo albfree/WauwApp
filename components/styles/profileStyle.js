@@ -5,6 +5,7 @@ const lila2 = "#5c54a4";
 const blanco = "white";
 const morado = "#443099";
 const naranja = "#ff7549";
+const transparente = "transparent";
 
 export const profileStyles = StyleSheet.create({
   profileAvatar: {
@@ -76,7 +77,7 @@ export const profileStyles = StyleSheet.create({
   },
   profilePrints: {
     alignSelf: "center",
-    backgroundColor: "transparent",
+    backgroundColor: transparente,
     height: "15%",
     marginVertical: 20,
     resizeMode: "stretch",
@@ -108,8 +109,8 @@ export const profileStyles = StyleSheet.create({
   profileTxt4: {
     alignItems: "center",
     justifyContent: "center",
-    marginHorizontal: 15,
     marginBottom: 10,
+    marginHorizontal: 15,
     textAlign: "center",
   },
   profileTxt5: {
@@ -155,8 +156,8 @@ export const profileStyles = StyleSheet.create({
     fontWeight: "bold",
     marginVertical: 15,
     paddingVertical: 10,
-    textAlignVertical: "center",
     textAlign: "center",
+    textAlignVertical: "center",
     width: 200,
   },
   profileView6: {
