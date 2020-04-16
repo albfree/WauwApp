@@ -147,6 +147,13 @@ const ServicesScreenStacks = createStackNavigator({
     navigationOptions: () => ({
       title: "Filtrar paseos",
       headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
     }),
   },
   FormFilterByDate: {
@@ -154,6 +161,13 @@ const ServicesScreenStacks = createStackNavigator({
     navigationOptions: () => ({
       title: "Filtrar Alojamientos",
       headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
     }),
   },
 });
