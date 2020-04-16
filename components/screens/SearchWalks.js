@@ -107,9 +107,9 @@ function SearchWalks(props) {
   }, [reloadData]); //esto es el disparador del useEffect
 
   const calculaDistancia = (lat1, lon1, lat2, lon2) => {
-    rad = function (x) {
+    const rad = function (x) {
       return x * Math.PI / 180;
-    }
+    };
     var R = 6378.137;
     var dLat = rad(lat2 - lat1);
     var dLong = rad(lon2 - lon1);
@@ -117,7 +117,7 @@ function SearchWalks(props) {
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
     return d.toFixed(2);
-  }
+  };
 
 
   const applyFilter = () => {
