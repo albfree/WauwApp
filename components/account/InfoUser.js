@@ -22,20 +22,24 @@ export default function InfoUser(props) {
         if (result.height <= 400 && result.width <= 400){
           setAvatar(result.uri);
           let userData = {
-            photo: avatar
+            photo: (typeof avatar === "undefined") ? userInfo.photo : avatar
           };
-          await db.ref("wauwers")
+          
+          db.ref("wauwers")
             .child(userInfo.id)
             .update(userData)
             .then(() => {
+              let success = "Se ha cambiado la foto de perfil.";
+              Alert.alert("Éxito", success.toString(), [{text: "Atrás"}], {cancelable: true});
             })
             .catch(() => {
               setError("Ha ocurrido un error");
               Alert.alert("Error", error.toString(), [{text: "Atrás"}], {cancelable: true});
             });
         }else{
-          setError("Seleccione una imagen de menor tamaño.\nEl tamaño máximo permitido es 400x400 píxeles.");
-          Alert.alert("Aviso", error, [{text: "OK"}], {cancelable: true});
+          const errorPreparado = "Seleccione una imagen de menor tamaño.\nEl tamaño máximo permitido es 400x400 píxeles.";
+          setError(errorPreparado);
+          Alert.alert("Aviso", errorPreparado, [{text: "OK"}], {cancelable: true});
         }
       }
       
@@ -64,7 +68,7 @@ export default function InfoUser(props) {
           onEditPress={changeAvatar}
           containerStyle={globalStyles.userInfoAvatar}
           source={{
-            uri: (avatar !== undefined) ? avatar : userInfo.photo
+            uri: (typeof avatar === "undefined") ? userInfo.photo : avatar
           }}
           errorMessage={error}
         />
