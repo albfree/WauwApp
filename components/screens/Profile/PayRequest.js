@@ -207,7 +207,7 @@ function PayRequest(props) {
           var idRequest = request.id;
           // console.log("id requests", idRequest);
 
-          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 0.65) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
+          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 6.5) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
 
           navigation.popToTop("Services");
 
