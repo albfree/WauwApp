@@ -207,7 +207,7 @@ function PayRequest(props) {
           var idRequest = request.id;
           // console.log("id requests", idRequest);
 
-          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + Math.round((priceRequest * 0.65 * 100) / 100) + " Wauw Points a tu saldo de puntos.");
+          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + Math.round((priceRequest * 0.65 * 100)) / 100 + " Wauw Points a tu saldo de puntos.");
 
           navigation.popToTop("Services");
 
@@ -221,7 +221,7 @@ function PayRequest(props) {
           //console.log({ ...err });
         });
 
-        let newPoints = Math.round((priceRequest * 0.65 * 100) / 100);
+        let newPoints = Math.round((priceRequest * 0.65 * 100)) / 100;
         db.ref("wauwers/" + currentUserID).update({ wauwPoints: newPoints });
     }
   };
@@ -233,17 +233,17 @@ function PayRequest(props) {
         <WithoutWauwPoints buyBook={buyBook}></WithoutWauwPoints>
       ) : null}
 
-      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) === priceRequest ? (
+      {Math.round((currentUserWauwPoints * 0.65 * 100)) / 100 === priceRequest ? (
         <PointsEqualToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
           requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsEqualToPrice>
       ) : null}
 
-      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) < priceRequest || checked ? (
+      {Math.round((currentUserWauwPoints * 0.65 * 100)) / 100 < priceRequest || checked ? (
         <PointsLessToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest} setPriceRequest={setPriceRequest}
           checked={checked} setIsChecked={setIsChecked} priceRequestConst={priceRequestConst}></PointsLessToPrice>
       ) : null}
 
-      {Math.round((currentUserWauwPoints * 0.65 * 100) / 100) > priceRequest ? (
+      {Math.round((currentUserWauwPoints * 0.65 * 100)) / 100 > priceRequest ? (
         <PointsMoreToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
           requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsMoreToPrice>
       ) : null}
@@ -363,7 +363,7 @@ function PointsEqualToPrice(props) {
 function PointsLessToPrice(props) {
   const { buyBook, wauwPoints, priceRequest, setPriceRequest, checked, setIsChecked, priceRequestConst } = props;
 
-  let resta = Math.round((wauwPoints * 0.65 * 100) / 100);
+  let resta = Math.round((wauwPoints * 0.65 * 100)) / 100;
 
   const setChecked = () => {
     if (checked === false) {
