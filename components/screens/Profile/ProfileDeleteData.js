@@ -29,7 +29,7 @@ function ProfileDeleteData(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       wauwerId = snap.val().id;
     });
 
