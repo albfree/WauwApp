@@ -169,10 +169,10 @@ function ListAccommodations(props) {
                 name="filter"
                 size={20}
                 color="white"
-                marginRight={10}
+                marginLeft={"10%"}
               />
             }
-            titleStyle={searchWalksStyles.searchWalktxt10}
+            titleStyle={searchWalksStyles.searchWalkTxt11}
           />
           <Button
             buttonStyle={searchWalksStyles.searchWalksBtn3}

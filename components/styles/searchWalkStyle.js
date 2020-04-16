@@ -30,7 +30,7 @@ export const searchWalksStyles = StyleSheet.create({
     backgroundColor: verde,
     borderRadius: 30,
     height: "100%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     marginVertical: 10,
     width: "100%",
   },
@@ -62,7 +62,6 @@ export const searchWalksStyles = StyleSheet.create({
     justifyContent: "center",
     marginRight: 2.5,
     marginVertical: 10,
-
     width: "40%",
   },
   searchWalksBtnContainer3: {
@@ -139,6 +138,9 @@ export const searchWalksStyles = StyleSheet.create({
   },
   searchWalkTxt10: {
     textAlign: "center",
+  },
+  searchWalkTxt11: {
+    marginLeft: "15%",
   },
   searchWalksView: {
     alignItems: "center",
