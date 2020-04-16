@@ -407,7 +407,7 @@ function PointsLessToPrice(props) {
 function PointsMoreToPrice(props) {
   const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation } = props;
 
-  let deMas = wauwPoints - Math.round(priceRequest / 0.65);
+  let deMas = wauwPoints - (Math.round((priceRequest / 0.65) * 100) / 100);
 
   const canjeoMayor = async () => {
     db.ref("requests/" + requestId).update({
