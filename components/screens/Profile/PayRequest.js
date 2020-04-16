@@ -315,7 +315,7 @@ function PointsEqualToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
 
-    alert("Has realizado el pago del servicio con Wauw Points correctamente. Tu saldo de Wauw Points se ha agotado.");
+    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.");
 
     navigation.popToTop("Services");
   };
