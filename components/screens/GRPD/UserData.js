@@ -138,9 +138,7 @@ export default function UserData(props) {
       body: bodyEmail,
       subject: "GDPR Datos de usuario",
     })
-      .then(() => {
-        alert("Se va a abrir su aplicación de email");
-      })
+      .then()
       .catch((e) => {
         alert(
           "Se ha producido un error al exportar los datos.\n Revise la aplicación de mensajería que tiene como predeterminada e inténtelo de nuevo"
@@ -282,7 +280,7 @@ export default function UserData(props) {
 
         <Button
           title={"Exportar estos datos a su aplicación de correo"}
-          onPress={this.sendEmail}
+          onPress={sendEmail}
         />
       </ScrollView>
     </SafeAreaView>
