@@ -68,7 +68,7 @@ function ShowWalk(props) {
 
   const confirmFinishRequest = () => {
     Alert.alert(
-      "Finalizar Servicio",
+      "Va a navegar a la página del cobro",
       "¿Estás seguro?",
       [
         {
@@ -85,13 +85,14 @@ function ShowWalk(props) {
   };
 
   const finishRequest = () => {
-    var idRequest = request.id;
+    /*var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
       isFinish: true,
     });
-    alert("Se ha finalizado el servicio correctamente");
-    navigation.popToTop();
+    alert("Se ha finalizado el servicio correctamente");*/
+    //navigation.popToTop();
+    navigation.navigate("Pagar", { request: request });
   };
 
   const acceptRequest = () => {
@@ -277,7 +278,7 @@ function ShowWalk(props) {
             <Button
               buttonStyle={globalStyles.showWalkBtn3}
               containerStyle={globalStyles.showWalkBtnContainer3}
-              title="Finalizar Servicio"
+              title="Proceder al cobro"
               onPress={confirmFinishRequest}
               icon={
                 <Icon
