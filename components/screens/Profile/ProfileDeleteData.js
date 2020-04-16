@@ -118,84 +118,54 @@ function ProfileDeleteData(props) {
 
     if(requestsWorkerList && requestsWorkerList.length) {
       for (let i = 0; i < requestsWorkerList.length; i++) {
-      if(requestsWorkerList[i].pending == false) {
-        if(requestsWorkerList[i].isFinished == false || requestsWorkerList[i].isPayed == false || requestsWorkerList[i].isRated == false) {
-          requestWorkerOk = false;
-        Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
-        break;
+        if(requestsWorkerList[i].pending == false) {
+          if(requestsWorkerList[i].isFinished == false || requestsWorkerList[i].isPayed == false || requestsWorkerList[i].isRated == false) {
+            requestWorkerOk = false;
+            Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
+            break;
           } else {
-            if (requestsWorkerList[i].isPayed == true){
-              db
-              .ref("chats")
-              .child(requestsWorkerList[i].id + "/messages")
-              .on("child_added", (snap) => {
-                snap.forEach(child => {
-                  child.ref.update({_id: anonWauwerId, avatar: anonUser.photo, name: anonUser.name});
-                });
-              });
+            if (requestWorkerOk == true) {
+              let idWorker = {
+                worker: anonWauwerId
+              };
+              db.ref("requests/" + requestsWorkerList[i].id).update(idWorker);
+              db.ref("chats/"+ requestsWorkerList[i].id).remove();
             }
           }
         } else {
-          db.ref("requests/" + requestsWorkerList[i].id).update({pending: false, isCanceled: true});
-        }
-        if (requestWorkerOk == true) {
-          let idWorker = {
-            worker: anonWauwerId
-          };
-          db.ref("requests/" + requestsWorkerList[i].id).update(idWorker);
+          db.ref("requests/" + requestsWorkerList[i].id).update({pending: false, isCanceled: true, worker: anonWauwerId});
         }
       }
-
+      
     } else {
       
-    if(requestsOwnerList && requestsOwnerList.length) {
-      for (let i = 0; i < requestsOwnerList.length; i++) {
-
-        if(requestsOwnerList[i].pending == false) {
-          if(requestsOwnerList[i].pending == false && requestsOwnerList[i].isFinished == false || requestsOwnerList[i].isPayed == false || requestsOwnerList[i].isRated == false) {
-            requestOwnerOk = false;
-          Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
-          break;
+      if(requestsOwnerList && requestsOwnerList.length) {
+        for (let i = 0; i < requestsOwnerList.length; i++) {
+          if(requestsOwnerList[i].pending == false) {
+            if(requestsOwnerList[i].isFinished == false || requestsOwnerList[i].isPayed == false || requestsOwnerList[i].isRated == false) {
+              requestOwnerOk = false;
+              Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
+              break;
             } else {
-              if (requestsOwnerList[i].isPayed == true){
-                /*
-                db
-                .ref("chats")
-                .child(requestsOwnerList[i].id + "/messages")
-                .on("value", (snap) => {
-                  snap.forEach(child => {
-                    child.ref.child("user").update({_id: anonWauwerId, avatar: anonUser.photo, name: anonUser.name});
-                  });
-                });*/
-
-                let ref = db.ref("chats"+requestsWorkerList[i].id + "/messages");
-                ref.on("value", snap => {
-                  snap.forEach(child => {
-                    if(child.val().user._id == wauwerId) {
-                      ref.child(child.key).child("user").update({_id: anonWauwerId, avatar: anonUser.photo, name: anonUser.name});
-                    }
-                  });
-                });
+              if (requestOwnerOk == true) {
+                let idOwner = {
+                  owner: anonWauwerId
+                };
+                db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
+                db.ref("chats/" + requestsOwnerList[i].id).remove();
               }
             }
-        } else {
-          db.ref("request/" + requestsOwnerList[i].id).remove();
-        }
-
-        if (requestOwnerOk == true) {
-          let idOwner = {
-            owner: anonWauwerId
-          };
-          db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
-        }
+          } else {
+            db.ref("request/" + requestsOwnerList[i].id).remove();
+          }
+        } 
       } 
-    } 
+    }
 
     if(requestWorkerOk && requestOwnerOk) {
       deleteData(wauwerId);
     }
-
-    }
+    
   };
 
 
