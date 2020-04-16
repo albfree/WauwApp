@@ -12,6 +12,7 @@ import ShowWalkScreen from "../screens/Profile/ShowWalk";
 import UserDataScreen from "../screens/GRPD/UserData";
 import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
+import AdminPanelScreen from "../screens/Profile/AdminPanel";
 
 const morado = "#443099";
 const blanco = "white";
@@ -162,6 +163,20 @@ const ProfileScreenStacks = createStackNavigator({
     screen: DisplayFinishRequestScreen,
     navigationOptions: () => ({
       title: "Solicitud a mi alojamiento",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  AdminPanel: {
+    screen: AdminPanelScreen,
+    navigationOptions: () => ({
+      title: "Panel de Administración",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
