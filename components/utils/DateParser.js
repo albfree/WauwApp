@@ -1,6 +1,8 @@
 
 export function fechaParseada(fecha){
-    var fechaRecibida = new Date(fecha);    
+    var fechaRecibida = new Date(fecha);
+    let minutos = (fechaRecibida.getMinutes()<10?'0':'') +  fechaRecibida.getMinutes();
+    let horas = (fechaRecibida.getHours()<10?'0':'') +  fechaRecibida.getHours();
     return (
     " " +
     fechaRecibida.getDate() + "/" +
@@ -9,10 +11,10 @@ export function fechaParseada(fecha){
     fechaRecibida.getFullYear() + 
     " " 
     +
-    fechaRecibida.getHours() + 
+    horas + 
     ":" 
     +
-    fechaRecibida.getMinutes()
+    minutos
     );
 }
 
@@ -27,12 +29,14 @@ export function fechaParseadaCorta(fecha){
 }
 
 export function horaParseada(fecha){
-    var fechaRecibida = new Date(fecha);    
+    var fechaRecibida = new Date(fecha);
+    let minutos = (fechaRecibida.getMinutes()<10?'0':'') +  fechaRecibida.getMinutes();
+    let horas = (fechaRecibida.getHours()<10?'0':'') +  fechaRecibida.getHours();    
     return (
     " " +
-    fechaRecibida.getHours() + 
+    horas +
     ":" 
     +
-    fechaRecibida.getMinutes()
+    minutos
     );
 }
