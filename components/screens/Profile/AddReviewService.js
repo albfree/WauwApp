@@ -122,9 +122,9 @@ const styles = StyleSheet.create({
   btnContainer: {
     alignSelf: "center",
     flex: 1,
-    justifyContent: "flex-end",
-    marginBottom: 10,
-    marginTop: 20,
+    //justifyContent: "flex-end",
+    marginBottom: 110,
+    marginTop: 10,
     width: "95%",
   },
   input: {
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   textArea: {
-    height: 150,
+    height: 100,
     margin: 0,
     padding: 0,
     width: "100%",

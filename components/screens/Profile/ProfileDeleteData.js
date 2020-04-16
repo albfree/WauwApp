@@ -20,7 +20,6 @@ function ProfileDeleteData(props) {
     const [loading, setLoading] = useState(true);
     const [requestsWorkerList, setRequestWorkerList] = useState([]);
     const [requestsOwnerList, setRequestOwnerList] = useState([]);
-    comst [userMsgs, setUserMsgs] = useState([]);
     const [user, setUser] = useState();
     const [anonUser, setAnonUser] = useState();
     const [reloadData, setReloadData] = useState(false);
@@ -212,11 +211,21 @@ function deleteData(props) {
   if (!user[0].hasOwnProperty("last_logged_in")) {
     Alert.alert("Lo sentimos. Para poder eliminar la cuenta debe haber iniciado sesión más de una vez");
   } else {
-    //BORRADO DE MASCOTAS
+    let fechaUltimaConexion = new Date(user[0].last_logged_in);
+    let fechaActual = new Date();
+    
+    if(fechaUltimaConexion.getFullYear() == fechaActual.getFullYear()
+        && fechaUltimaConexion.getMonth() == fechaActual.getMonth()
+        && fechaUltimaConexion.getDate() == fechaActual.getDate()
+      ) {
+        if(Math.abs(fechaActual.getMinutes() - fechaUltimaConexion.getMinutes()) > 10 || Math.abs(fechaActual.getHours() - fechaUltimaConexion.getHours()) > 1) {
+          Alert.alert("Por razones de seguridad, necesitamos que vuelvas a iniciar sesión en esta cuenta para poder eliminarla.");
+        } else {
+        //BORRADO DE MASCOTAS
   
-    db.ref("pet/"+ wauwerId).remove();
+        db.ref("pet/"+ wauwerId).remove();
 
-    //BORRADO DE ALOJAMIENTOS
+        //BORRADO DE ALOJAMIENTOS
     
         db.ref("accommodation")
         .orderByChild("worker")
@@ -227,33 +236,35 @@ function deleteData(props) {
           });
         });
 
-    //BORRADO DE REVIEWS
+          //BORRADO DE REVIEWS
 
-    //TODO   
+        db.ref("reviews/" + wauwerId).remove();  
   
-    //BORRADO DE DISPONIBILIDADES DEL WAUWER
+          //BORRADO DE DISPONIBILIDADES DEL WAUWER
     
         db.ref("availabilities-wauwers/" + wauwerId).remove();
 
-        //BORRADO DE USER Y WAUWER
+          //BORRADO DE USER Y WAUWER
 
-    var currentUser = firebase.auth().currentUser;
-    var userUid = currentUser.uid;
-    currentUser.delete().then(function() {
-      db.ref("users/"+userUid).remove();
-      db.ref("wauwers/"+wauwerId).remove();
-      Alert.alert(
-        "Éxito",
-        "Su cuenta y toda la información relacionada han sido eliminados.",
-        [
-          {
-            text: "Ok",
-            style: "cancel", 
-          },
-          ],
-          { cancelable: false }
-        );
-    });
+        var currentUser = firebase.auth().currentUser;
+        var userUid = currentUser.uid;
+        currentUser.delete().then(function() {
+          db.ref("users/"+userUid).remove();
+          db.ref("wauwers/"+wauwerId).remove();
+          Alert.alert(
+            "Éxito",
+            "Su cuenta y toda la información relacionada han sido eliminados.",
+            [
+              {
+                text: "Ok",
+                style: "cancel", 
+              },
+            ],
+            { cancelable: false }
+          );
+        });
+      }
+    }
   }
 }
 
