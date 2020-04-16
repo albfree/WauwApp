@@ -6,6 +6,7 @@ const blanco = "white";
 const morado = "#443099";
 const naranja = "#ff7549";
 const transparente = "transparent";
+const rojo = "rgba(255,0,0,0.6)";
 
 export const profileStyles = StyleSheet.create({
   profileAvatar: {
@@ -39,6 +40,12 @@ export const profileStyles = StyleSheet.create({
     marginVertical: 5,
     width: "90%",
   },
+  profileBtn5: {
+    backgroundColor: rojo,
+    borderRadius: 30,
+    justifyContent: "flex-start",
+    width: "100%",
+  },
   profileBtnContainer: {
     marginTop: 20,
     width: "95%",
@@ -68,6 +75,16 @@ export const profileStyles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 10,
     marginTop: 5,
+    width: "80%",
+  },
+  profileBtnContainer5: {
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: rojo,
+    borderColor: lila,
+    borderWidth: 1,
+    justifyContent: "center",
+    marginTop: 20,
     width: "80%",
   },
   profileBtnTittle: {

@@ -10,6 +10,14 @@ export const globalStyles = StyleSheet.create({
     resizeMode: "cover",
     width: null,
   },
+  blankImage2: {
+    borderRadius: 80,
+    flex: 1,
+    height: null,
+    marginVertical: 10,
+    resizeMode: "cover",
+    width: "90%",
+  },
   blankTxt: {
     fontSize: 22,
     fontWeight: "700",
@@ -30,6 +38,11 @@ export const globalStyles = StyleSheet.create({
   blankView4: {
     flex: 1,
     paddingTop: 10,
+  },
+  blankView5: {
+    flex: 1,
+    paddingTop: "5%",
+    paddingBottom: "15%",
   },
   btnStyle: {
     backgroundColor: "#443099",
