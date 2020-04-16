@@ -4,7 +4,8 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from "react-native";
 import { WebView } from "react-native-webview";
 import { withNavigation } from "react-navigation";
@@ -207,7 +208,7 @@ function PayRequest(props) {
           var idRequest = request.id;
           // console.log("id requests", idRequest);
 
-          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 6.5) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
+          Alert.alert("Pago realizado", "El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 6.5) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
 
           navigation.popToTop("Services");
 
@@ -318,7 +319,7 @@ function PointsEqualToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
 
-    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.");
+    Alert.alert("Pago realizado", "Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.");
 
     navigation.popToTop("Services");
   };
@@ -384,7 +385,7 @@ function PointsLessToPrice(props) {
   };
 
   const easterEgg = () => {
-    alert("Has encontrado un Easter Egg: aprobar ISPP con 6h/semanales, dificultad DIOS! 🐶");
+    Alert.alert("EASTER EGG", "Aprobar ISPP con 6⏳ h/semanales: ¡DIFICULTAD DIOS! 🐶");
   };
 
   return (
@@ -431,7 +432,7 @@ function PointsMoreToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({ wauwPoints: deMas });
 
-    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas + " Wauw Points.");
+    Alert.alert("Pago realizado", "Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas + " Wauw Points.");
 
     navigation.popToTop("Services");
   };
