@@ -15,7 +15,7 @@ import { Button, Icon } from "react-native-elements";
 import LastLogged from "../../account/LastLogged";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
-
+import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
 
@@ -64,7 +64,6 @@ function Profile(props) {
     });
   });
 
-
   var accommodations = [];
 
   db.ref("accommodation")
@@ -75,7 +74,6 @@ function Profile(props) {
         accommodations.push(pretty);
       });
     });
-
 
   const checkHasLocation = () => {
     let ck;
@@ -98,7 +96,7 @@ function Profile(props) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.safeProfileArea}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -113,108 +111,106 @@ function Profile(props) {
         </View>
       </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
-        <View>
-          <View style={globalStyles.profileView}>
-            <UserGuest />
-          </View>
-          <View style={globalStyles.profileView2}>
-            <Button
-              buttonStyle={globalStyles.profileBtn}
-              containerStyle={globalStyles.profileBtnContainer}
-              title="Cambiar mi Localización"
-              onPress={() => navigation.navigate("ProfileLocationForm")}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="map-marker"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
-            <Button
-              buttonStyle={globalStyles.profileBtn}
-              containerStyle={globalStyles.profileBtnContainer}
-              title="Añadir un Perro"
-              onPress={() => navigation.navigate("ProfileAddDogForm")}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="dog"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
+        <View style={profileStyles.profileView}>
+          <UserGuest />
+        </View>
+        <View style={profileStyles.profileView2}>
+          <Button
+            buttonStyle={profileStyles.profileBtn3}
+            containerStyle={profileStyles.profileBtnContainer3}
+            title="Cambiar mi Localización"
+            onPress={() => navigation.navigate("ProfileLocationForm")}
+            icon={
+              <Icon
+                type="material-community"
+                name="map-marker"
+                size={30}
+                color="white"
+                marginLeft={20}
+              />
+            }
+            titleStyle={profileStyles.profileBtnTittle}
+          />
+          <Button
+            buttonStyle={profileStyles.profileBtn3}
+            containerStyle={profileStyles.profileBtnContainer3}
+            title="Añadir un Perro"
+            onPress={() => navigation.navigate("ProfileAddDogForm")}
+            icon={
+              <Icon
+                type="material-community"
+                name="dog"
+                size={30}
+                color="white"
+                marginLeft={20}
+              />
+            }
+            titleStyle={profileStyles.profileBtnTittle}
+          />
 
-            <Button
-              buttonStyle={globalStyles.profileBtn}
-              containerStyle={globalStyles.profileBtnContainer}
-              title="Quiero ser Paseador"
-              onPress={() => checkHasLocation()}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="dog-service"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
+          <Button
+            buttonStyle={profileStyles.profileBtn3}
+            containerStyle={profileStyles.profileBtnContainer3}
+            title="Quiero ser Paseador"
+            onPress={() => checkHasLocation()}
+            icon={
+              <Icon
+                type="material-community"
+                name="dog-service"
+                size={30}
+                color="white"
+                marginLeft={20}
+              />
+            }
+            titleStyle={profileStyles.profileBtnTittle}
+          />
 
-            <Button
-              buttonStyle={globalStyles.profileBtn}
-              containerStyle={globalStyles.profileBtnContainer}
-              title="Ver información recopilada"
-              onPress={() =>
-                navigation.navigate("UserData", {
-                  userInfo: userInfo,
-                  requestWorker: requestWorker,
-                  pets: pets,
-                  requestOwner: requestOwner,
-                })
-              }
-              icon={
-                <Icon
-                  type="material-community"
-                  name="information-variant"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
+          <Button
+            buttonStyle={profileStyles.profileBtn3}
+            containerStyle={profileStyles.profileBtnContainer3}
+            title="Ver información recopilada"
+            onPress={() =>
+              navigation.navigate("UserData", {
+                userInfo: userInfo,
+                requestWorker: requestWorker,
+                pets: pets,
+                requestOwner: requestOwner,
+              })
+            }
+            icon={
+              <Icon
+                type="material-community"
+                name="information-variant"
+                size={30}
+                color="white"
+                marginLeft={20}
+              />
+            }
+            titleStyle={profileStyles.profileBtnTittle}
+          />
 
-            <Image
-              source={require("../../../assets/images/prints.png")}
-              style={globalStyles.profilePrints}
-            />
+          <Image
+            source={require("../../../assets/images/prints.png")}
+            style={profileStyles.profilePrints}
+          />
 
-            <Button
-              buttonStyle={globalStyles.profileSignOut}
-              containerStyle={globalStyles.profileSignOutContainer}
-              title="Cerrar sesión"
-              onPress={() => firebase.auth().signOut()}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="logout"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />
-              }
-              titleStyle={globalStyles.profileBtnTittle}
-            />
-            <LastLogged />
-          </View>
+          <Button
+            buttonStyle={profileStyles.profileBtn4}
+            containerStyle={profileStyles.profileBtnContainer4}
+            title="Cerrar sesión"
+            onPress={() => firebase.auth().signOut()}
+            icon={
+              <Icon
+                type="material-community"
+                name="logout"
+                size={30}
+                color="white"
+                marginLeft={20}
+              />
+            }
+            titleStyle={profileStyles.profileBtnTittle}
+          />
+          <LastLogged />
         </View>
       </ScrollView>
     </SafeAreaView>
