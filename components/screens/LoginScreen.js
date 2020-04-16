@@ -1,5 +1,12 @@
 import React, { useState, useEffect, Component } from "react";
-import { Text, View, Image, Alert, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Alert,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import firebase from "firebase";
 import { db } from "../population/config";
 import { Button } from "react-native-elements";
