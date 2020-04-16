@@ -367,9 +367,9 @@ function PointsLessToPrice(props) {
 
   const setChecked = () => {
     if (checked === false) {
-      setPriceRequest(priceRequest - resta);
+      setPriceRequest(Math.round((priceRequest - resta) * 100) / 100);
     } else {
-      setPriceRequest(priceRequest + resta);
+      setPriceRequest(Math.round((priceRequest + resta) * 100) / 100);
     }
     setIsChecked(!checked);
   };
