@@ -56,7 +56,7 @@ function FormAdd(props) {
   const guardarLocation = () => {
     if (!locationWauwer) {
       Alert.alert(
-        "Por favor, marca una localización usando el botón Editar Unicación"
+        "Por favor, marca una localización usando el botón Editar Ubicación"
       );
     } else {
       let location = {
