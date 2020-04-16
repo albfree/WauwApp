@@ -9,6 +9,7 @@ import {
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
+import { anonEmail } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
@@ -32,7 +33,14 @@ function ProfileDeleteData(props) {
       wauwerId = snap.val().id;
     });
 
-    let anonWauwerId = "-M4dhmUqMQ9QU-ErapD6";
+    let anonWauwerId;
+    db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(anonEmail)
+    .on("child_added", snap => {
+      anonWauwerId = snap.val().id;
+    });
+
 
     useEffect(() => {
       db.ref("requests")
