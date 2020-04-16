@@ -32,12 +32,16 @@ function SearchWalks(props) {
 
   let petNumber;
   let id;
+  let longitudeUser;
+  let latitudeUser;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .on("child_added", (snap) => {
       petNumber = snap.val().petNumber;
       id = snap.val().id;
+      longitudeUser = snap.val().location.longitude;
+      latitudeUser = snap.val().location.latitude;
     });
 
   useEffect(() => {
@@ -50,7 +54,7 @@ function SearchWalks(props) {
               const wData = [];
               wData.push(child.key);
               wData.push(interval.id);
-              allData.push(wData);
+
 
               const precio = child
                 .child("availabilities")
@@ -59,10 +63,18 @@ function SearchWalks(props) {
                 .val();
 
               let rating;
+              let longitudPaseador;
+              let latitudePaseador;
               db.ref("wauwers/" + child.key).once("value", (snap) => {
                 rating = snap.val().avgScore;
+                longitudPaseador = snap.val().location.longitude;
+                latitudePaseador = snap.val().location.latitude;
               });
-
+              const arrayLocation = [];
+              arrayLocation.push(latitudePaseador);
+              arrayLocation.push(longitudPaseador);
+              wData.push(arrayLocation);
+              allData.push(wData);
               if (
                 (maxPrice !== null && precio > maxPrice) ||
                 (minRating !== null && rating < minRating)
@@ -73,12 +85,38 @@ function SearchWalks(props) {
           }
         }
       });
+      const appToYou = [];
+      allData.map((array, index) => {
+        appToYou.push(array[0]);
+        appToYou.push(array[1]);
+        const distancia = calculaDistancia(latitudeUser, longitudeUser, array[2][0], array[2][1]);
+        appToYou.push(distancia);
+      });
+
+      allData.sort((a, b) => {
+        return a[2] - b[2];
+      });
+      allData.reverse();
       setData(allData);
     });
 
     setReloadData(false);
     setLoading(false);
   }, [reloadData]); //esto es el disparador del useEffect
+
+  const calculaDistancia = (lat1, lon1, lat2, lon2) => {
+    rad = function (x) {
+      return x * Math.PI / 180;
+    }
+    var R = 6378.137;
+    var dLat = rad(lat2 - lat1);
+    var dLong = rad(lon2 - lon1);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d.toFixed(2);
+  }
+
 
   const applyFilter = () => {
     if (
@@ -208,8 +246,8 @@ function SearchWalks(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <BlankView text={"No hay paseadores disponibles"} />
-        )}
+            <BlankView text={"No hay paseadores disponibles"} />
+          )}
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
