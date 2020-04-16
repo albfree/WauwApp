@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, SafeAreaView, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
 import { db } from "../../population/config";
 import { email } from "../../account/QueriesProfile";
-import { ScrollView } from "react-native-gesture-handler";
 import BlankView from "../BlankView";
 import { fechaParseada } from "./../../utils/DateParser";
+import { profileStyles } from "../../styles/profileStyle";
+import { globalStyles } from "../../styles/global";
+import { userDataStyles } from "../../styles/userDataStyle";
 
 export default function LastConexion(props) {
   const { navigation } = props;
@@ -43,20 +52,35 @@ export default function LastConexion(props) {
 
   return (
     <SafeAreaView>
-      <ScrollView>
-
-        {loginsRegistrados.length > 0 ? (
-          <View>
-            {loginsRegistrados.map((logdate, index) => (
-              <View key={index}>
-                <Text>{fechaParseada(logdate)}</Text>
-              </View>
-            ))}
+      <TouchableOpacity
+        style={globalStyles.drawerMenuView}
+        onPress={navigation.openDrawer}
+      >
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Últimas Conexiones</Text>
           </View>
-        ) : (
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
+      </TouchableOpacity>
+      <ScrollView>
+        <View style={userDataStyles.userDataView}>
+          {loginsRegistrados.length > 0 ? (
+            <View>
+              {loginsRegistrados.map((logdate, index) => (
+                <View key={index}>
+                  <Text style={userDataStyles.userDataTxt}>
+                    {fechaParseada(logdate)}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          ) : (
             <BlankView text={"No tiene logins"} />
           )}
-
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
