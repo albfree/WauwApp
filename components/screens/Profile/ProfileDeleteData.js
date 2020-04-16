@@ -37,7 +37,7 @@ function ProfileDeleteData(props) {
     db.ref("wauwers")
     .orderByChild("email")
     .equalTo(anonEmail)
-    .on("child_added", snap => {
+    .on("child_added", (snap) => {
       anonWauwerId = snap.val().id;
     });
 
@@ -125,13 +125,13 @@ function ProfileDeleteData(props) {
 
     if(requestsWorkerList && requestsWorkerList.length) {
       for (let i = 0; i < requestsWorkerList.length; i++) {
-        if(requestsWorkerList[i].pending == false) {
-          if(requestsWorkerList[i].isFinished == false || requestsWorkerList[i].isPayed == false || requestsWorkerList[i].isRated == false) {
+        if(requestsWorkerList[i].pending === false) {
+          if(requestsWorkerList[i].isFinished === false || requestsWorkerList[i].isPayed === false || requestsWorkerList[i].isRated === false) {
             requestWorkerOk = false;
             Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
             break;
           } else {
-            if (requestWorkerOk == true) {
+            if (requestWorkerOk === true) {
               let idWorker = {
                 worker: anonWauwerId
               };
@@ -148,13 +148,13 @@ function ProfileDeleteData(props) {
       
       if(requestsOwnerList && requestsOwnerList.length) {
         for (let i = 0; i < requestsOwnerList.length; i++) {
-          if(requestsOwnerList[i].pending == false) {
-            if(requestsOwnerList[i].isFinished == false || requestsOwnerList[i].isPayed == false || requestsOwnerList[i].isRated == false) {
+          if(requestsOwnerList[i].pending === false) {
+            if(requestsOwnerList[i].isFinished === false || requestsOwnerList[i].isPayed === false || requestsOwnerList[i].isRated === false) {
               requestOwnerOk = false;
               Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
               break;
             } else {
-              if (requestOwnerOk == true) {
+              if (requestOwnerOk === true) {
                 let idOwner = {
                   owner: anonWauwerId
                 };
@@ -222,9 +222,9 @@ function deleteData(props) {
     let fechaUltimaConexion = new Date(user[0].last_logged_in);
     let fechaActual = new Date();
     
-    if(fechaUltimaConexion.getFullYear() == fechaActual.getFullYear()
-        && fechaUltimaConexion.getMonth() == fechaActual.getMonth()
-        && fechaUltimaConexion.getDate() == fechaActual.getDate()
+    if(fechaUltimaConexion.getFullYear() === fechaActual.getFullYear()
+        && fechaUltimaConexion.getMonth() === fechaActual.getMonth()
+        && fechaUltimaConexion.getDate() === fechaActual.getDate()
       ) {
         if(Math.abs(fechaActual.getMinutes() - fechaUltimaConexion.getMinutes()) > 10 || Math.abs(fechaActual.getHours() - fechaUltimaConexion.getHours()) > 1) {
           Alert.alert("Por razones de seguridad, necesitamos que vuelvas a iniciar sesión en esta cuenta para poder eliminarla.");

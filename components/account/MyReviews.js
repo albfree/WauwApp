@@ -63,7 +63,7 @@ function Review(props) {
         />
 
         <View>
-          {user == null? (
+          {user === null? (
             <Text style={publicProfileStyles.publicProfileTxt7}>
             Usuario: Anónimo
           </Text>
