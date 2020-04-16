@@ -82,8 +82,8 @@ function CreateAccommodation(props) {
 
   const addCommissions = (props) => {
     let price = props * 1.25;
-    setNewSalary(price);
-    setNewPrice(props);
+    setNewSalary(props);
+    setNewPrice(price);
   };
 
   const addAccommodation = () => {
