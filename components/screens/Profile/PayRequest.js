@@ -207,7 +207,7 @@ function PayRequest(props) {
           var idRequest = request.id;
           // console.log("id requests", idRequest);
 
-          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 0.65) * 100) / 100).replace(".", ",") + " Wauw Points a tu saldo de puntos.");
+          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 0.65) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
 
           navigation.popToTop("Services");
 
@@ -338,7 +338,7 @@ function PointsEqualToPrice(props) {
           Pagar con Paypal.
           </Text>
       </TouchableOpacity>
-      <Text>Tienes {wauwPoints.replace(".", ",")} Wauw Points que equivalen a los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
+      <Text>Tienes {wauwPoints} Wauw Points que equivalen a los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoIgual}
@@ -416,7 +416,7 @@ function PointsMoreToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({ wauwPoints: deMas });
 
-    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas.replace(".", ",") + " Wauw Points.");
+    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas + " Wauw Points.");
 
     navigation.popToTop("Services");
   };
@@ -439,7 +439,7 @@ function PointsMoreToPrice(props) {
           Pagar con Paypal
           </Text>
       </TouchableOpacity>
-      <Text>Tienes {wauwPoints.replace(".", ",")} Wauw Points que se quedan en {deMas.replace(".", ",")} al canjearlos por los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
+      <Text>Tienes {wauwPoints} Wauw Points que se quedan en {deMas} al canjearlos por los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoMayor}
