@@ -14,14 +14,13 @@ import { CheckBox } from "react-native-elements";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
-import { searchWalkStyles, searchWalksStyles } from "../styles/searchWalkStyle";
+import { searchWalksStyles } from "../styles/searchWalkStyle";
 
 function createRequest(props) {
   const { navigation } = props;
-  const [newPrice, setNewPrice] = useState(
-    navigation.state.params.wauwer.price
-  );
-  const price = navigation.state.params.wauwer.price;
+  const [newPrice, setNewPrice] = useState(navigation.state.params.price);
+
+  const price = navigation.state.params.price;
   const [newInterval, setNewInterval] = useState(null);
   //const [newOwner, setNewOwner] = useState([]);
   const newWorker = navigation.state.params.wauwer;
@@ -45,20 +44,33 @@ function createRequest(props) {
   const [availabilities, setAvailabilities] = useState([]);
   const [newAvailability, setNewAvailability] = useState([]);
 
+  const [wauwerPrices, setWauwerPrices] = useState([]);
+  const value = navigation.state.params.interval;
+
   useEffect(() => {
     // To retrieve the walker availabilities
 
-    db.ref("availabilities-wauwers")
+    const ref = db
+      .ref("availabilities-wauwers")
       .child(newWorker.id)
-      .child("availabilities")
-      .on("value", (snap) => {
+      .child("availabilities");
+    ref
+      .once("value", (snap) => {
         var availabilitiesList = [];
         snap.forEach((child) => {
-          availabilitiesList.push(child.val());
+          availabilitiesList.push(child.val().availability);
         });
         setAvailabilities(availabilitiesList);
+      })
+      .then(() => {
+        ref.once("value", (snap) => {
+          const prices = [];
+          snap.forEach((child) => {
+            prices.push(child.val().price);
+          });
+          setWauwerPrices(prices);
+        });
       });
-
     setReloadData(false);
   }, [reloadData]);
 
@@ -81,15 +93,18 @@ function createRequest(props) {
     }
   };
 
-  const funct = (value) => {
+  const funct = (value, itemPosition) => {
     setNewAvailability(value.id);
     setNewInterval(
       value.day + " " + value.startTime + "h - " + value.endDate + "h"
     );
     setSelect(value);
+    //setNewPrice(wauwerPrices[itemPosition]);
   };
 
   const addRequest = () => {
+    const intervalo =
+      value.day + " " + value.startTime + "h - " + value.endDate + "h";
     let id = db.ref("requests").push().key;
     setError(null);
     setIsLoading(true);
@@ -104,19 +119,27 @@ function createRequest(props) {
       price: newPrice,
       type: "walk",
       worker: newWorker.id,
-      interval: newInterval,
-      availability: newAvailability,
+      interval: intervalo,
+      availability: value.id,
       isFinished: newIsFinished,
       isRated: newIsRated,
     };
     db.ref("requests/" + id)
       .set(requestData)
       .then(() => {
-        Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-        navigation.popToTop();
-        setIsLoading(false);
-        setReloadData(true);
-        setIsVisibleModal(false);
+        db.ref("wauwers/" + newWorker.id)
+          .update({ hasRequests: true })
+          .then(() => {
+            Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
+            navigation.popToTop();
+            setIsLoading(false);
+            setReloadData(true);
+            setIsVisibleModal(false);
+          })
+          .catch(() => {
+            setError("Ha ocurrido un error");
+            setIsLoading(false);
+          });
       })
       .catch(() => {
         setError("Ha ocurrido un error");
@@ -142,12 +165,13 @@ function createRequest(props) {
             </Text>
 
             <Text style={searchWalksStyles.searchWalkTxt7}>
-              {"¿Cuándo quiere que pasee a su perro?"}
+              {"Intervalo seleccionado\n"}
+              {value.day + " " + value.startTime + "h - " + value.endDate + "h"}
             </Text>
-            <View style={searchWalksStyles.searchWalksView2}>
+            {/* <View style={searchWalksStyles.searchWalksView2}>
               <Picker
                 selectedValue={select}
-                onValueChange={(value) => funct(value)}
+                onValueChange={(value, itemPosition) => funct(value, itemPosition)}
               >
                 {availabilities.map((item) => (
                   <Picker.Item
@@ -163,12 +187,13 @@ function createRequest(props) {
                   />
                 ))}
               </Picker>
-            </View>
+            </View> */}
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Qué perro desea que pasee ?"}
             </Text>
-            {petNames.map((pet) => (
+            {petNames.map((pet, index) => (
               <PetCheckBox
+                key={index}
                 name={pet}
                 petNumber={petNumber}
                 setPetNumber={setPetNumber}

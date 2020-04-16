@@ -10,7 +10,7 @@ import {
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../account/QueriesProfile";
-
+import BlankView from "./BlankView";
 import { globalStyles } from "../styles/global";
 import Loading from "../Loading";
 import { formSearchWalkStyles } from "../styles/formSearchWalksStyle";
@@ -35,22 +35,25 @@ function FormFilterByAvailability(props) {
   useEffect(() => {
     const query = db.ref("availabilities-wauwers");
     query.on("value", (snap) => {
-      const allAvailability = [];
+      let allAvailability = [];
       const allIds = [];
       snap.forEach((child) => {
-        if (child.val().wauwer.id !== id) {
+        if (child.key !== id) {
           query
-            .child(child.val().wauwer.id)
+            .child(child.key)
             .child("availabilities")
             .on("value", (child) => {
               child.forEach((kid) => {
-                if (!allIds.includes(kid.val().id)) {
-                  allAvailability.push(kid.val());
-                  allIds.push(kid.val().id);
+                if (!allIds.includes(kid.key)) {
+                  allAvailability.push(kid.val().availability);
+                  allIds.push(kid.key);
                 }
               });
             });
         }
+      });
+      allAvailability.sort((a, b) => {
+        return a.id > b.id;
       });
       setAvailabilities(allAvailability);
     });
@@ -62,24 +65,24 @@ function FormFilterByAvailability(props) {
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
-        <Text style={formSearchWalkStyles.formSearchWalkTxt}>
-          {"Seleccione la fecha y hora para su paseo"}
-        </Text>
         <Loading isVisible={loading} text={"Un momento..."} />
-        {availabilities ? (
-          <FlatList
-            data={availabilities}
-            renderItem={(interval) => (
-              <Availability interval={interval} navigation={navigation} />
-            )}
-            keyExtractor={(interval) => {
-              interval;
-            }}
-            showsVerticalScrollIndicator={false}
-          />
+        {availabilities.length > 0 ? (
+          <View>
+            <Text style={formSearchWalkStyles.formSearchWalkTxt}>
+              {"Seleccione la fecha y hora para su paseo"}
+            </Text>
+            <FlatList
+              data={availabilities}
+              renderItem={(interval) => (
+                <Availability interval={interval} navigation={navigation} />
+              )}
+              keyExtractor={(interval) => interval.id}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
         ) : (
           <View>
-            <Text> No hay paseadores disponibles </Text>
+            <BlankView text={"No hay paseadores disponibles"} />
           </View>
         )}
       </ScrollView>
@@ -101,7 +104,7 @@ function Availability(props) {
           <View style={formSearchWalkStyles.formSearchWalkFeed}>
             <View style={globalStyles.viewFlex1}>
               <Text style={formSearchWalkStyles.formSearchWalkTxt2}>
-                {interval.item.day} {interval.item.startTime} {"h - "}{" "}
+                {interval.item.day} {interval.item.startTime} {"h -"}{" "}
                 {interval.item.endDate} {"h"}
               </Text>
             </View>

@@ -5,81 +5,73 @@ import { Avatar, Rating } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
 import MyReviews from "./MyReviews";
+import { publicProfileStyles } from "../styles/publicProfileStyle";
 
 function PublicProfile(props) {
   const userInfo = props.navigation.state.params.user;
   const [profileView, setProfileView] = useState(false);
-
+  const [description, setDescription] = useState(userInfo.description);
   useEffect(() => {}, [profileView]);
 
+  useEffect(() => {
+    if (!userInfo.description) {
+      setDescription("Este usuario no ha proporcionado su descripción");
+    }
+  }, [description]);
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
-        <View style={globalStyles.userPublicGlobal}>
-          <View style={globalStyles.infoUserPublic}>
+        <View style={globalStyles.viewFeed}>
+          <View style={globalStyles.viewFlex1}>
             <Avatar
               rounded
               size="large"
-              containerStyle={globalStyles.userInfoPublicAvatar}
+              containerStyle={publicProfileStyles.publicProfileAvatar}
               source={{
                 uri: userInfo.photo,
               }}
             />
-            <Rating
-              imageSize={20}
-              readonly
-              startingValue={userInfo.avgScore}
-            />
-            <Text style={globalStyles.infoUserScore}>
-              {userInfo.avgScore}/5
-            </Text>
-          </View>
-          <View>
-            <Text style={globalStyles.userInfoPublicDisplayName}>
+            <Text style={publicProfileStyles.publicProfileTxt}>
               {userInfo.name}
             </Text>
-          </View>
 
-          {profileView === true ? (
-            <View style={globalStyles.userInfoPublicGlobal}>
-              <View style={globalStyles.tabBarPublicPro}>
-                <TouchableOpacity onPress={() => setProfileView(false)}>
-                  <Text style={globalStyles.textInformationPublicPro1}>
-                    Información
-                  </Text>
-                </TouchableOpacity>
-                <Text style={globalStyles.textReviewsPublicPro1}>
-                  Valoraciones
-                </Text>
-              </View>
-              <MyReviews userInfo={userInfo} />
-            </View>
-          ) : (
-            <View style={globalStyles.userInfoPublicGlobal}>
-              <View style={globalStyles.tabBarPublicPro}>
-                <Text style={globalStyles.textInformationPublicPro}>
-                  Información
-                </Text>
-                <TouchableOpacity onPress={() => setProfileView(true)}>
-                  <Text style={globalStyles.textReviewsPublicPro}>
+            <Rating imageSize={20} readonly startingValue={userInfo.avgScore} />
+
+            {profileView === true ? (
+              <View>
+                <View style={publicProfileStyles.publicProfileView}>
+                  <TouchableOpacity onPress={() => setProfileView(false)}>
+                    <Text style={publicProfileStyles.publicProfileTxt2}>
+                      Información
+                    </Text>
+                  </TouchableOpacity>
+                  <Text style={publicProfileStyles.publicProfileTxt3}>
                     Valoraciones
                   </Text>
-                </TouchableOpacity>
+                </View>
+                <View style={publicProfileStyles.publicProfileView3}>
+                  <MyReviews userInfo={userInfo} />
+                </View>
               </View>
-              <Text style={globalStyles.userInfoPublicTitleDescription}>
-                Sobre mí
-              </Text>
-              <Text style={globalStyles.userInfoPublicDescription}>
-                {userInfo.description}
-              </Text>
-              <Text style={globalStyles.userInfoPublicTitleDescription}>
-                Ubicación
-              </Text>
-              <Text style={globalStyles.userInfoPublicDescription}>
-                {userInfo.location}
-              </Text>
-            </View>
-          )}
+            ) : (
+              <View>
+                <View style={publicProfileStyles.publicProfileView}>
+                  <Text style={publicProfileStyles.publicProfileTxt4}>
+                    Información
+                  </Text>
+                  <TouchableOpacity onPress={() => setProfileView(true)}>
+                    <Text style={publicProfileStyles.publicProfileTxt5}>
+                      Valoraciones
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <Text style={publicProfileStyles.publicProfileTxt6}>
+                  {description}
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

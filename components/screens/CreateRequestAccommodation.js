@@ -6,6 +6,7 @@ import { email } from "../account/QueriesProfile";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
+import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 
 function createRequestAccommodation(props) {
   const { navigation } = props;
@@ -22,8 +23,11 @@ function createRequestAccommodation(props) {
   const newPetNumber = navigation.state.params.formData.petNumber;
 
   //Poner fechas medianamente bonitas
-  const newStartTime = startTime.toLocaleString("en-US").substring(0, 10);
-  const newEndTime = endTime.toLocaleString("en-US").substring(0, 10);
+  const newStartTime = startTime;
+  const newEndTime = endTime;
+
+  var x = new Date(startTime);
+  var y = new Date(endTime);
 
   //Atributos definidos
 
@@ -73,7 +77,7 @@ function createRequestAccommodation(props) {
   const all = () => {
     addRequestAccommodation();
     Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-    navigation.navigate("Home");
+    navigation.popToTop();
   };
 
   //Añadir la request a la db
@@ -89,8 +93,8 @@ function createRequestAccommodation(props) {
       price: newPrice,
       type: newType,
       isCanceled: newIsCanceled,
-      startTime: newStartTime,
-      endTime: newEndTime,
+      startTime: x.toISOString(),
+      endTime: y.toISOString(),
       worker: newWorker.id,
       petNumber: newPetNumber,
       accommodation: newIdAccommodation,
@@ -115,60 +119,60 @@ function createRequestAccommodation(props) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.safeShowRequestArea}>
-      <View style={globalStyles.showRequestFeed}>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <View style={globalStyles.viewFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.showRequestRow}>
-            <View style={globalStyles.editAccommodationColumn2}>
-              <Text style={globalStyles.accommodationSitter}>
-                {"Nombre del Cuidador\n"}
+          <View style={searchAccommodationStyles.searchAccommodationView2}>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt}>
+              {"Nombre del Cuidador\n"}
 
-                <Text style={globalStyles.accommodationSitter2}>
-                  {newWorker.name}
-                </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                {newWorker.name}
               </Text>
-              <Text style={globalStyles.accommodationSitter3}>
-                {newWorker.description}
-              </Text>
+            </Text>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt5}>
+              {newWorker.description}
+            </Text>
 
-              <Text style={globalStyles.accommodationSitter}>
-                {"Fecha de inicio\n"}
-                <Text style={globalStyles.accommodationSitter2}>
-                  {newStartTime}
-                </Text>{" "}
-              </Text>
-              <Text style={globalStyles.accommodationSitter}>
-                {"Fecha de finalización\n"}
-                <Text style={globalStyles.accommodationSitter2}>
-                  {newEndTime}
-                </Text>{" "}
-              </Text>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
+              {"Fecha de inicio\n"}
+              <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                {newStartTime}
+              </Text>{" "}
+            </Text>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
+              {"Fecha de finalización\n"}
+              <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                {newEndTime}
+              </Text>{" "}
+            </Text>
 
-              <Precio
-                startTime={startTime}
-                endTime={endTime}
-                petNumber={newPetNumber}
-                newPrice={newPrice}
-                setNewPrice={setNewPrice}
-              />
+            <Precio
+              startTime={startTime}
+              endTime={endTime}
+              petNumber={newPetNumber}
+              newPrice={newPrice}
+              setNewPrice={setNewPrice}
+            />
 
-              <Button
-                buttonStyle={globalStyles.accommodationBtn}
-                containerStyle={globalStyles.accommodationBtnCnt}
-                title="Enviar Solicitud"
-                onPress={all}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="send"
-                    size={20}
-                    color="white"
-                    marginLeft={10}
-                  />
-                }
-                titleStyle={globalStyles.editAccommodationEditDateTittle}
-              />
-            </View>
+            <Button
+              buttonStyle={searchAccommodationStyles.searchAccommodationBtn2}
+              containerStyle={
+                searchAccommodationStyles.searchAccommodationContainer3
+              }
+              title="Enviar Solicitud"
+              onPress={all}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="send"
+                  size={20}
+                  color="white"
+                  marginLeft={10}
+                />
+              }
+              titleStyle={globalStyles.editAccommodationEditDateTittle}
+            />
           </View>
         </View>
       </View>
@@ -209,9 +213,11 @@ function Precio(props) {
 
   return (
     <View>
-      <Text style={globalStyles.accommodationSitter}>
+      <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
         {"Precio Total del Alojamiento\n"}
-        <Text style={globalStyles.accommodationSitter2}>{newPrice} €</Text>
+        <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+          {newPrice} €
+        </Text>
       </Text>
     </View>
   );

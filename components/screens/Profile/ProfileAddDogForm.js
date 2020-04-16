@@ -104,7 +104,7 @@ function ProfileAddDogForm(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView keyboardShouldPersistTaps={false}>
+      <ScrollView keyboardShouldPersistTaps="never">
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
             <Text style={addDogStyles.addDogTxt}>¿Cómo se llama su perro?</Text>
