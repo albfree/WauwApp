@@ -14,6 +14,7 @@ import MyRequestsScreen from "../screens/Profile/ProfileMyRequests";
 import MyDogsScreen from "../screens//Profile/ProfileMyDogs";
 import MyAccommodationsScreen from "../screens/Profile/ProfileMyAccommodations";
 import MyWalksScreen from "../screens/Profile/ProfileMyWalks";
+import DeleteDataScreen from "../screens/Profile/ProfileDeleteData";
 import AboutUsScreen from "../screens/Profile/AboutUs";
 import LastConexionsScreen from "../screens/Profile/LastConexion";
 import FeedbackScreen from "../screens/Profile/Feedback";
@@ -103,6 +104,7 @@ export default createDrawerNavigator(
         ),
       },
     },
+
     AboutUs: {
       screen: AboutUsScreen,
       navigationOptions: {
@@ -117,6 +119,7 @@ export default createDrawerNavigator(
         ),
       },
     },
+
     Feedback: {
       screen: FeedbackScreen,
       navigationOptions: {
@@ -125,6 +128,21 @@ export default createDrawerNavigator(
           <Icon
             type="material-icons"
             name="feedback"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+
+    DeleteData: {
+      screen: DeleteDataScreen,
+      navigationOptions: {
+        drawerLabel: "Eliminar Cuenta",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog-service"
             size={17}
             color="#443099"
           />
@@ -152,3 +170,5 @@ export default createDrawerNavigator(
     contentComponent: CustomDrawerComponent,
   }
 );
+
+
