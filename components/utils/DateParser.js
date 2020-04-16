@@ -1,8 +1,8 @@
 
 export function fechaParseada(fecha) {
     var fechaRecibida = new Date(fecha);
-    let minutos = (fechaRecibida.getMinutes() < 10 ? '0' : '') + fechaRecibida.getMinutes();
-    let horas = (fechaRecibida.getHours() < 10 ? '0' : '') + fechaRecibida.getHours();
+    let minutos = (fechaRecibida.getMinutes() < 10 ? "0" : "") + fechaRecibida.getMinutes();
+    let horas = (fechaRecibida.getHours() < 10 ? "0" : "") + fechaRecibida.getHours();
     return (
         " " +
         fechaRecibida.getDate() + "/" +

@@ -34,8 +34,9 @@ export default function LastConexion(props) {
     } else {
       tope = logins1.length;
     }
-    for (i = 0; i < tope; i++) {
-      aux.push(logins1[i]);
+    for (let i = 0; i < tope; i++) {
+      let resFecha = logins1[i];
+      aux.push(resFecha);
     }
 
     setLoginsRegistrados(aux);
