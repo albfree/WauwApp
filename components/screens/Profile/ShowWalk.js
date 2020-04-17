@@ -30,7 +30,17 @@ function ShowWalk(props) {
     .equalTo(id)
     .on("child_added", (snap) => {
       worker = snap.val();
+      if (!worker.isBanned){
+        navigation.navigate("Blocked");
+        console.log(worker.isBanned);
+      }
     });
+
+  const assertIsNotBanned = () => {
+    if (!worker.isBanned){
+      navigation.navigate("Blocked");
+    }
+  }
 
   const confirmDeclineRequest = () => {
     Alert.alert(
@@ -87,6 +97,7 @@ function ShowWalk(props) {
   };
 
   const finishRequest = () => {
+    assertIsNotBanned;
     var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
@@ -97,6 +108,7 @@ function ShowWalk(props) {
   };
 
   const acceptRequest = () => {
+    assertIsNotBanned;
     var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
@@ -108,6 +120,7 @@ function ShowWalk(props) {
   };
 
   const declineRequest = () => {
+    assertIsNotBanned;
     var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({

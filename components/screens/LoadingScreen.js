@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { db } from "../population/config.js";
 
 //We're going to create a function that will tell us if the user is logged or not.
 //in case he's already logged in, we will redirect him to dashboardScreen
@@ -14,9 +15,19 @@ class LoginScreen extends Component {
   checkIfLoggedIn = async () => {
     firebase.auth().onAuthStateChanged(
       function(user) {
-       // console.log("AUTH STATE CHANGE CALLED");
         if (user) {
-          this.props.navigation.navigate("DashboardScreen");
+          let banned;
+          db.ref("wauwers")
+          .orderByChild("email")
+          .equalTo(user.email)
+          .once("child_added", (snap) => {
+            banned = snap.val().isBanned;
+            if(!banned){
+              this.props.navigation.navigate("DashboardScreen");
+            }else{
+              this.props.navigation.navigate("BannedScreen");
+            }
+          });
         } else {
           this.props.navigation.navigate("LoginScreen");
         }

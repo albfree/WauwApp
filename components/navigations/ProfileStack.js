@@ -13,6 +13,8 @@ import UserDataScreen from "../screens/GRPD/UserData";
 import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 import AdminPanelScreen from "../screens/Profile/AdminPanel";
+import UserListScreen from "../screens/Administrator/UserList";
+import BannedSwitchNavigator from "./BannedSwitchNavigator";
 
 const morado = "#443099";
 const blanco = "white";
@@ -137,7 +139,20 @@ const ProfileScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
-
+  UserList: {
+    screen: UserListScreen,
+    navigationOptions: () => ({
+      title: "Lista de usuarios",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
   AddReviewService: {
     screen: AddReviewServiceScreen,
     navigationOptions: () => ({
@@ -187,6 +202,9 @@ const ProfileScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
+  Blocked:{
+    screen: BannedSwitchNavigator,
+  }
 });
 
 export default ProfileScreenStacks;

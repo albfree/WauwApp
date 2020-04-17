@@ -73,6 +73,7 @@ function LoginScreen(props) {
                   walkSalary: 0,
                   location: null,
                   userId: result.user.uid,
+                  isBanned: false,
                 });
                 firebase
                   .database()

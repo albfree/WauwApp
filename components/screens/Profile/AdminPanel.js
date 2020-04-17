@@ -1,10 +1,22 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, View, Button } from "react-native";
+import { withNavigation } from "react-navigation";
 
-export default function AdminPanel() {
+function AdminPanel(props) {
+  const { navigation } = props;
+
+  const goToUserList = () => {
+    navigation.navigate("UserList");
+  }
+
   return (
     <View>
-      <Text>Vista de Administrador</Text>
+      <Button
+       title = "Lista de usuarios"
+       onPress ={goToUserList}
+      />
     </View>
   );
 }
+
+export default withNavigation(AdminPanel);
