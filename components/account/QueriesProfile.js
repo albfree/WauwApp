@@ -7,3 +7,5 @@ firebase.auth().onAuthStateChanged(user => {
     email = user.email;
   }
 });
+
+export var anonEmail="anonimowauwispp@gmail.com";

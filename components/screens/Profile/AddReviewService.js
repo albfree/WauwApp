@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View, Alert, ScrollView, SafeAreaView } from "react-native";
 import { AirbnbRating, Button, Input } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config";
 import { email } from "../../account/QueriesProfile";
 import Toast from "react-native-easy-toast";
+import { globalStyles } from "../../styles/global";
 
 function AddReviewService(props) {
   const { navigation } = props;
@@ -84,6 +85,8 @@ function AddReviewService(props) {
   };
 
   return (
+    <SafeAreaView style={globalStyles.viewFlex1}>
+    <ScrollView keyboardShouldPersistTaps="never">
     <View style={styles.viewBody}>
       <View stlye={viewRating}>
         <AirbnbRating
@@ -115,6 +118,8 @@ function AddReviewService(props) {
       />
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </View>
+    </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -122,9 +127,9 @@ const styles = StyleSheet.create({
   btnContainer: {
     alignSelf: "center",
     flex: 1,
-    justifyContent: "flex-end",
-    marginBottom: 10,
-    marginTop: 20,
+    //justifyContent: "flex-end",
+    marginBottom: 110,
+    marginTop: 10,
     width: "95%",
   },
   input: {
@@ -137,7 +142,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   textArea: {
-    height: 150,
+    height: 100,
     margin: 0,
     padding: 0,
     width: "100%",
