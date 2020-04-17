@@ -17,6 +17,7 @@ function AddReviewService(props) {
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
   const toastRef = useRef();
+  const [paypalUrl, setPaypalUrl] = useState("");
 
   const uploadData = () => {
     let user;
@@ -60,7 +61,7 @@ function AddReviewService(props) {
                   .update({ isRated: true })
                   .then(() => {
                     Alert.alert("Su valoración se ha guardado", "Se va a proceder el pago al usuario. Muchas gracias por usar Wauw!");
-                    payment(idWorker)
+                    payment(idWorker);
                     navigation.popToTop();
                   });
               });
@@ -105,7 +106,7 @@ function AddReviewService(props) {
         },
       ];
 
-      const url = `https://api.sandbox.paypal.com/v1/oauth2/token`;
+      const url = "https://api.sandbox.paypal.com/v1/oauth2/token";
 
       const data = {
         grant_type: "client_credentials",
@@ -135,7 +136,7 @@ function AddReviewService(props) {
         .then((response) => {
           axios
             .post(
-              `https://api.sandbox.paypal.com/v1/payments/payouts`,
+              "https://api.sandbox.paypal.com/v1/payments/payouts",
               { sender_batch_header, items },
               {
                 headers: {
@@ -158,7 +159,7 @@ function AddReviewService(props) {
         })
         .catch((err) => {
         });
-  }
+  };
 
   const btn = {
     backgroundColor: "#00a680",
