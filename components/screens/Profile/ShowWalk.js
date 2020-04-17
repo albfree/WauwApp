@@ -70,7 +70,7 @@ function ShowWalk(props) {
 
   const confirmFinishRequest = () => {
     Alert.alert(
-      "Va a navegar a la página del cobro",
+      "Finalizar Servicio",
       "¿Estás seguro?",
       [
         {
@@ -86,14 +86,35 @@ function ShowWalk(props) {
     );
   };
 
+  const confirmAcceptPayment = () => {
+    Alert.alert(
+      "Acceder a la pasarela de pago",
+      "¿Estás seguro?",
+      [
+        {
+          text: "Si",
+          onPress: goToPayment,
+        },
+        {
+          text: "No",
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+
   const finishRequest = () => {
-    /*var idRequest = request.id;
+    var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
       isFinished: true,
     });
-    alert("Se ha finalizado el servicio correctamente");*/
-    //navigation.popToTop();
+    alert("Se ha finalizado el servicio correctamente");
+    navigation.popToTop();
+  };
+
+  const goToPayment = () => {
     navigation.navigate("Pagar", { request: request });
   };
 
@@ -290,7 +311,7 @@ function ShowWalk(props) {
               title="Finalizar Servicio"
               buttonStyle={globalStyles.showWalkBtn3}
               containerStyle={globalStyles.showWalkBtnContainer3}
-              title="Proceder al cobro"
+              title="Finalizar Servicio"
               onPress={confirmFinishRequest}
               icon={
                 <Icon
@@ -384,6 +405,25 @@ function ShowWalk(props) {
             </View>
           </View>
         </View>
+        <Button
+          buttonStyle={requestsStyles.requestsBtn2}
+          containerStyle={requestsStyles.requestsBtnContainer2}
+          title="Finalizar Servicio"
+          buttonStyle={globalStyles.showWalkBtn3}
+          containerStyle={globalStyles.showWalkBtnContainer3}
+          title="Pasar a la pasarela de cobro"
+          onPress={confirmAcceptPayment}
+          icon={
+            <Icon
+              type="font-awesome"
+              name="thumbs-up"
+              size={30}
+              color="white"
+              marginLeft={"10%"}
+            />
+          }
+          titleStyle={requestsStyles.requestsBtnTittle}
+        />
       </SafeAreaView>
     );
   } else {
