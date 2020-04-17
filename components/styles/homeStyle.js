@@ -8,7 +8,7 @@ export const homeStyles = StyleSheet.create({
     borderRadius: 300,
     height: 50,
     justifyContent: "flex-start",
-    paddingHorizontal: 10,
+    paddingHorizontal: Platform.OS === "ios" ? 25 : 10,
     width: "100%",
   },
   homeBtnContainer: {
