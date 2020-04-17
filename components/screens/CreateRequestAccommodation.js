@@ -192,20 +192,7 @@ function Precio(props) {
   // Si cambia de mes coge los dias bien, pero si esta en el mismo mes coge 1 dia menos
   // estaria bien darle una vuelta a esto. Mientras se queda que suma un dia a todo.
 
-  // const [DefDays, setDefDays] = useState(days);
-  //  console.log(DefDays);
-
   useEffect(() => {
-    // if(startTime.getMonth() != endTime.getMonth()){
-    //   setDefDays(DefDays);
-    //   console.log("Entra if");
-    // }else{
-    //   setDefDays(DefDays + 1);
-    //   console.log("Entra else");
-
-    // }
-
-    // console.log(days);
     let precio = newPrice * days;
     let withPets = precio * petNumber;
     setNewPrice(withPets);

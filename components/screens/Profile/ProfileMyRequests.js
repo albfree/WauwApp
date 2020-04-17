@@ -108,7 +108,7 @@ function Request(requestIn) {
     }
   }
 
-  if (request.item.type == "sitter") {
+  if (request.item.type === "sitter") {
     tipo = "Alojamiento";
     icon = (
       <Icon
@@ -119,7 +119,7 @@ function Request(requestIn) {
         marginLeft={20}
       />
     );
-  } else if (request.item.type == "walk") {
+  } else if (request.item.type === "walk") {
     tipo = "Paseo";
     icon = (
       <Icon

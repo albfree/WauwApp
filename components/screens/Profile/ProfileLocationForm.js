@@ -59,7 +59,7 @@ function FormAdd(props) {
   } = props;
 
   const guardarLocation = () => {
-    if (!locationWauwer || wauwerAddress == "") {
+    if (!locationWauwer || wauwerAddress === "") {
       Alert.alert(
         "Por favor, escribe una dirección y marca una localización usando el icono del mapa"
       );

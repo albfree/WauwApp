@@ -5,7 +5,7 @@ import {
   Text,
   TextInput,
   SafeAreaView,
-  Alert
+  Alert,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -13,14 +13,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
-
-YellowBox.ignoreWarnings(["Setting a timer"]);
-const _console = _.clone(console);
-console.warn = message => {
-  if (message.indexOf("Setting a timer") <= -1) {
-    _console.warn(message);
-  }
-};
 
 function EditDeleteAccommodation(props) {
   const { navigation } = props;
@@ -50,7 +42,7 @@ function EditDeleteAccommodation(props) {
     setStartTime(currentDate);
   };
 
-  const showModeS = currentMode => {
+  const showModeS = (currentMode) => {
     setShowS(true);
     setModeS(currentMode);
   };
@@ -65,7 +57,7 @@ function EditDeleteAccommodation(props) {
     setEndTime(currentDate);
   };
 
-  const showModeE = currentMode => {
+  const showModeE = (currentMode) => {
     setShowE(true);
     setModeE(currentMode);
   };
@@ -83,7 +75,7 @@ function EditDeleteAccommodation(props) {
     updateAccomodation();
   };
 
-  const addCommissions = props => {
+  const addCommissions = (props) => {
     let price = props * 1.25;
     setNewSalary(price);
   };
@@ -97,19 +89,18 @@ function EditDeleteAccommodation(props) {
       [
         {
           text: "Sí",
-          onPress: () => cancelationConfirmed()
+          onPress: () => cancelationConfirmed(),
         },
         {
           text: "No",
-          onPress: () => console.log("Alert closed")
-        }
+        },
       ]
     );
   };
 
   const cancelationConfirmed = () => {
     let accommodationData = {
-      isCanceled: true
+      isCanceled: true,
     };
 
     db.ref("accommodation")
@@ -176,7 +167,7 @@ function EditDeleteAccommodation(props) {
         let accommodationData = {
           startTime: newStartTime.toISOString(),
           endTime: newEndTime.toISOString(),
-          salary: newSalary
+          salary: newSalary,
         };
 
         db.ref("accommodation")
@@ -267,7 +258,7 @@ function EditDeleteAccommodation(props) {
                     .toString()}
                   keyboardType="numeric"
                   style={globalStyles.editAccommodationEditPrize2}
-                  onChange={v => addCommissions(v.nativeEvent.text)}
+                  onChange={(v) => addCommissions(v.nativeEvent.text)}
                 />
               </View>
               <View style={globalStyles.editAccommodationColumn3}>

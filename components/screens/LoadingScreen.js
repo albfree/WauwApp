@@ -13,8 +13,7 @@ class LoginScreen extends Component {
 
   checkIfLoggedIn = async () => {
     firebase.auth().onAuthStateChanged(
-      function(user) {
-       // console.log("AUTH STATE CHANGE CALLED");
+      function (user) {
         if (user) {
           this.props.navigation.navigate("DashboardScreen");
         } else {
@@ -39,6 +38,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
