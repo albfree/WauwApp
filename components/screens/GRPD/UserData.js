@@ -28,8 +28,6 @@ export default function UserData(props) {
     }
     userEmail += "Descripción: " + user.description + "\n";
     userEmail += "Email: " + user.email + "\n";
-    userEmail += "Número de mascotas: " + user.petNumber + "\n";
-    userEmail += "Salario: " + user.price + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
     if (user.hasOwnProperty("location")) {
@@ -155,7 +153,6 @@ export default function UserData(props) {
           )}
           <Text>Descripción: {user.description}</Text>
           <Text>Email: {user.email}</Text>
-          <Text>Número de mascotas: {user.petNumber}</Text>
           <Text>Salario: {user.price} €</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
@@ -237,7 +234,7 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes recibidas{"\n"}</Text>
+          <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
         )}
 
         {requestOwner.length !== 0 ? (
