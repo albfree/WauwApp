@@ -15,11 +15,21 @@ import { Button, Icon } from "react-native-elements";
 import LastLogged from "../../account/LastLogged";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
+import { decode, encode } from "base-64";
+
 import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
 
 function Profile(props) {
+
+  if (!global.btoa) {
+    global.btoa = encode;
+  }
+
+  if (!global.atob) {
+    global.atob = decode;
+  }
   const { navigation } = props;
   var userInfo;
   db.ref("wauwers")

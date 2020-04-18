@@ -16,6 +16,7 @@ import AdminPanelScreen from "../screens/Profile/AdminPanel";
 import UserListScreen from "../screens/Administrator/UserList";
 import BannedSwitchNavigator from "./BannedSwitchNavigator";
 import BroadcastMsgScreen from "../screens/Administrator/AdminBroadcastForm";
+import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
 const blanco = "white";
@@ -193,6 +194,10 @@ const ProfileScreenStacks = createStackNavigator({
     screen: AdminPanelScreen,
     navigationOptions: () => ({
       title: "Panel de Administración",
+  Pagar: {
+    screen: PagarScreen,
+    navigationOptions: () => ({
+      title: "Pagar",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,

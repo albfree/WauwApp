@@ -12,7 +12,6 @@ import { locationStyles } from "../../styles/locationStyles";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
-  const [wauwerAddress, setWauwerAddress] = useState("");
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
   const [error, setError] = useState(null);
@@ -32,11 +31,9 @@ export default function ProfileLocationForm(props) {
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <FormAdd
-        setWauwerAddress={setWauwerAddress}
         setIsVisibleMap={setIsVisibleMap}
         locationWauwer={locationWauwer}
         wauwer={wauwer}
-        wauwerAddress={wauwerAddress}
         navigation={navigation}
       />
       <Map
@@ -50,29 +47,23 @@ export default function ProfileLocationForm(props) {
 
 function FormAdd(props) {
   const {
-    setWauwerAddress,
     setIsVisibleMap,
     locationWauwer,
     wauwer,
-    wauwerAddress,
     navigation,
   } = props;
 
   const guardarLocation = () => {
-    if (!locationWauwer || wauwerAddress == "") {
+    if (!locationWauwer) {
       Alert.alert(
-        "Por favor, escribe una dirección y marca una localización usando el icono del mapa"
+        "Por favor, marca una localización usando el botón Editar Ubicación"
       );
     } else {
       let location = {
         location: locationWauwer,
       };
 
-      let add = {
-        address: wauwerAddress,
-      };
       db.ref("wauwers/" + wauwer.id).update(location);
-      db.ref("wauwers/" + wauwer.id).update(add);
       Alert.alert(
         "Editado",
         "Editado correctamente",
@@ -86,17 +77,14 @@ function FormAdd(props) {
   return (
     <View style={locationStyles.locationView}>
       <View style={globalStyles.viewFlex1}>
-        <Input
-          placeholder="Dirección"
-          containerStyle={locationStyles.locationImput}
-          rightIcon={{
-            type: "material-community",
-            name: "google-maps",
-            color: locationWauwer ? "#00a680" : "#c2c2c2",
-            onPress: () => setIsVisibleMap(true),
-          }}
-          onChange={(e) => setWauwerAddress(e.nativeEvent.text)}
-        />
+
+      <Button
+            title="Editar Ubicación"
+            onPress={() => setIsVisibleMap(true)}
+            containerStyle={locationStyles.locationBtnContainer}
+            buttonStyle={locationStyles.locationBtn}
+          />
+
         <Button
           buttonStyle={locationStyles.locationBtn}
           containerStyle={locationStyles.locationBtnContainer}

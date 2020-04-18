@@ -80,8 +80,8 @@ function ShowWalk(props) {
 
   const confirmFinishRequest = () => {
     Alert.alert(
-      "Finalizar Servicio",
-      "¿Estás seguro?",
+      "Va a navegar hacia una página para poner su email para obtener el cobro",
+      "¿Está seguro?",
       [
         {
           text: "Si",
@@ -96,15 +96,16 @@ function ShowWalk(props) {
     );
   };
 
+
   const finishRequest = () => {
-    assertIsNotBanned;
-    var idRequest = request.id;
+    /*var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
       isFinished: true,
     });
     alert("Se ha finalizado el servicio correctamente");
-    navigation.popToTop();
+    navigation.popToTop();*/
+    navigation.navigate("Pagar", { request: request });
   };
 
   const acceptRequest = () => {
