@@ -133,11 +133,12 @@ function CreateAccommodation(props) {
       let errores = "";
       if (isNaN(newSalary) || newSalary < 10) {
         errores = errores.concat("El precio mínimo es 10.\n");
-        if (new Date().getTime() - newStartTime.getTime() > 10000){ 
+        if (new Date().getTime() - newStartTime.getTime() > 10000) {
           errores = errores.concat(
             "La fecha de entrada debe ser posterior o igual a la actual.\n"
           );
-           } if(newEndTime.getTime() - newStartTime.getTime() < -10000){
+        }
+        if (newEndTime.getTime() - newStartTime.getTime() < -10000) {
           errores = errores.concat(
             "La fecha de entrada debe ser anterior a la fecha de salida.\n"
           );
