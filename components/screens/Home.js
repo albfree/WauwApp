@@ -14,11 +14,11 @@ import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { homeStyles } from "../styles/homeStyle";
 import _ from "lodash";
-import { BannedAssertion } from "../account/BannedAssertion";
+import { bannedAssertion } from "../account/BannedAssertion";
 
 function Home(props) {
   const { navigation } = props;
-  BannedAssertion();
+  bannedAssertion();
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>

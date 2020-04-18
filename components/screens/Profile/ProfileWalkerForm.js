@@ -21,7 +21,7 @@ import {
 import Toast from "react-native-easy-toast";
 import { globalStyles } from "../../styles/global";
 import { walkerFormStyles } from "../../styles/walkerFormStyle";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
@@ -43,7 +43,7 @@ function ProfileWalkerForm(props) {
     ["Domingo", 96],
   ];
 
-  var userInfo = BannedAssertion();
+  var userInfo = bannedAssertion();
 
   useEffect(() => {
     const resulIds = [];

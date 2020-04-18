@@ -14,7 +14,7 @@ import { globalStyles } from "../../styles/global";
 import { myWalksStyles } from "../../styles/myWalksStyle";
 import { requestsStyles } from "../../styles/requestsStyle";
 import firebase from "firebase";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ShowWalk(props) {
   const { navigation } = props;
@@ -27,7 +27,7 @@ function ShowWalk(props) {
   var pago = "";
   var fecha = "";
 
-  BannedAssertion()
+  bannedAssertion();
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
@@ -95,13 +95,13 @@ function ShowWalk(props) {
 
 
   const finishRequest = () => {
-    var idRequest = request.id;
+    /*var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
       isFinished: true,
     });
     alert("Se ha finalizado el servicio correctamente");
-    navigation.popToTop();
+    navigation.popToTop();*/
     navigation.navigate("Pagar", { request: request });
   };
 
@@ -117,7 +117,6 @@ function ShowWalk(props) {
   };
 
   const declineRequest = () => {
-    assertIsNotBanned;
     var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({

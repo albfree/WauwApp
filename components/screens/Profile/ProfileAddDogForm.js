@@ -14,7 +14,7 @@ import { email } from "../../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { addDogStyles } from "../../styles/addDogStyle";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileAddDogForm(props) {
   const { setIsVisibleModal, navigation } = props;
@@ -25,7 +25,7 @@ function ProfileAddDogForm(props) {
   const [reloadData, setReloadData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
-  BannedAssertion();
+  bannedAssertion();
 
   useEffect(() => {
     db.ref("wauwers")

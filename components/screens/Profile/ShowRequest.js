@@ -5,7 +5,7 @@ import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function showRequest(props) {
   const { navigation } = props;
@@ -16,7 +16,7 @@ function showRequest(props) {
   var status = "";
   var worker = [];
   var pago = "";
-  BannedAssertion();
+  bannedAssertion();
 
   db.ref("wauwers")
     .orderByChild("id")

@@ -20,7 +20,7 @@ import { decode, encode } from "base-64";
 import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function Profile(props) {
 
@@ -32,7 +32,7 @@ function Profile(props) {
     global.atob = decode;
   }
   const { navigation } = props;
-  var userInfo = BannedAssertion();
+  var userInfo = bannedAssertion();
   var requestWorker = [];
 
   // Better way to get some information from DB and send it to UserData

@@ -9,7 +9,7 @@ import MapView from "react-native-maps";
 import Modal from "../../account/Modal";
 import { globalStyles } from "../../styles/global";
 import { locationStyles } from "../../styles/locationStyles";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
@@ -19,7 +19,7 @@ export default function ProfileLocationForm(props) {
   const [wauwer, setWauwer] = useState();
   
   useEffect(() => {
-    var wauwer = BannedAssertion();
+    var wauwer = bannedAssertion();
     setWauwer(wauwer);
   }, []);
 

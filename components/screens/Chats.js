@@ -16,13 +16,13 @@ import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { chatsStyles } from "../styles/chatsStyle";
-import { BannedAssertion } from "../account/BannedAssertion";
+import { bannedAssertion } from "../account/BannedAssertion";
 
 export default function Chats(props) {
   const { navigation } = props;
   const [data, setData] = useState([]);
 
-  var currentUser = BannedAssertion();
+  var currentUser = bannedAssertion();
   let otherUserID;
   let otherUserPhoto;
   let otherUserName;

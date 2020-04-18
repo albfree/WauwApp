@@ -17,10 +17,10 @@ import _ from "lodash";
 import { servicesStyles } from "../styles/servicesStyle";
 import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
-import { BannedAssertion } from "../account/BannedAssertion";
+import { bannedAssertion } from "../account/BannedAssertion";
 
 function Services(props) {
-  BannedAssertion();
+  bannedAssertion();
   const { navigation } = props;
   const [imageUri, setImageUri] = useState(
     require("../../assets/images/SearchWalk.jpg")

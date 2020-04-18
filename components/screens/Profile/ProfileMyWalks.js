@@ -15,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileMyWalks(props) {
   const { navigation } = props;
@@ -25,7 +25,7 @@ function ProfileMyWalks(props) {
   const [requestsList, setRequestList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  var wauwer = BannedAssertion();
+  var wauwer = bannedAssertion();
   var wauwerId = wauwer.id;
   
   useEffect(() => {

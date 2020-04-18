@@ -13,7 +13,7 @@ import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;
@@ -22,7 +22,7 @@ function ProfileRequestToMyRequestList(props) {
   const [requestsList, setRequestsList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  var wauwer = BannedAssertion();
+  var wauwer = bannedAssertion();
   var wauwerId = wauwer.id;
 
   useEffect(() => {

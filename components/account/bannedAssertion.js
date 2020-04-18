@@ -3,14 +3,13 @@ import { Alert } from "react-native";
 import firebase from "firebase";
 import { email } from "./QueriesProfile";
 
-export const BannedAssertion = () => {
+export const bannedAssertion = () => {
   let userInfo;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .on("child_added", (snap) => {
       userInfo = snap.val();
-      id = userInfo.id;
       if(userInfo.isBanned){
         Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
         firebase.auth().signOut();
@@ -18,6 +17,4 @@ export const BannedAssertion = () => {
     });
 
   return userInfo;
-}
-
-export var userInfo = userInfo;
+};

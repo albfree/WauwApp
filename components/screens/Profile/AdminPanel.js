@@ -7,7 +7,7 @@ function AdminPanel(props) {
 
   const goToUserList = () => {
     navigation.navigate("UserList");
-  }
+  };
 
   return (
     <View>

@@ -9,7 +9,7 @@ import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
-import { BannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 
@@ -27,7 +27,7 @@ function DisplayFinishRequest(props){
   const [setReloadData] = useState(false);
   const [visibleModal, setIsVisibleModal] = useState(false);
   const [error, setError] = useState("");
-  BannedAssertion();
+  bannedAssertion();
 
   useEffect(() => {
     db.ref("wauwers")
