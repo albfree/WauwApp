@@ -18,6 +18,15 @@ export const globalStyles = StyleSheet.create({
     resizeMode: "cover",
     width: "90%",
   },
+  blankImage3: {
+    alignSelf: "center",
+    borderRadius: 80,
+    flex: 1,
+    height: 230,
+    marginVertical: 10,
+    resizeMode: "cover",
+    width: "90%",
+  },
   blankTxt: {
     fontSize: 22,
     fontWeight: "700",

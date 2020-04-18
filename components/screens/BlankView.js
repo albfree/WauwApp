@@ -16,9 +16,7 @@ export default function BlankView(props) {
       <View style={globalStyles.blankView}>
         <View style={globalStyles.blankView}>
           <TouchableOpacity style={globalStyles.blankView2}>
-            <Text style={globalStyles.blankTxt}>
-              Aquí podrás eliminar tu cuenta...
-            </Text>
+            <Text style={globalStyles.blankTxt}>{text}</Text>
 
             <View style={globalStyles.blankView3}>
               <Image

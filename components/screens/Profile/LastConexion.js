@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { db } from "../../population/config";
@@ -51,7 +52,7 @@ export default function LastConexion(props) {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -66,20 +67,26 @@ export default function LastConexion(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
-        <View style={userDataStyles.userDataView}>
-          {loginsRegistrados.length > 0 ? (
-            <View>
-              {loginsRegistrados.map((logdate, index) => (
-                <View key={index}>
-                  <Text style={userDataStyles.userDataTxt}>
-                    {fechaParseada(logdate)}
-                  </Text>
-                </View>
-              ))}
-            </View>
-          ) : (
-            <BlankView text={"No tiene logins"} />
-          )}
+        <View style={globalStyles.blankView5}>
+          <Image
+            source={require("../../../assets/images/PoliceDog.jpg")}
+            style={globalStyles.blankImage3}
+          />
+          <View style={userDataStyles.userDataView}>
+            {loginsRegistrados.length > 0 ? (
+              <View>
+                {loginsRegistrados.map((logdate, index) => (
+                  <View key={index}>
+                    <Text style={userDataStyles.userDataTxt}>
+                      {fechaParseada(logdate)}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            ) : (
+              <BlankView text={"No tiene últimas conexiones registradas"} />
+            )}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
