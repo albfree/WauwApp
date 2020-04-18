@@ -55,7 +55,6 @@ function AdminBroadcastForm(props) {
                 .set(msgData)
                 .then(() => {
                 setIsLoading(false);
-                setIsVisibleModal(false);
                 })
                 .catch(() => {
                     setError("Ha ocurrido un error");
@@ -64,7 +63,7 @@ function AdminBroadcastForm(props) {
                 Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
                 navigation.popToTop();
             }
-    }
+    };
 
     return (
         <SafeAreaView style={globalStyles.viewFlex1}>
@@ -99,14 +98,9 @@ const styles = StyleSheet.create({
       marginTop: 10,
       width: "95%",
     },
-    input: {
-      marginBottom: 10,
-    },
     btn: {
         paddingVertical: 5,
         paddingHorizontal: 15,
-        borderRadius: 10,
-        backgroundColor: "#1e477a",
         borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",

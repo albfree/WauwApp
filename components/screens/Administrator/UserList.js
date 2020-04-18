@@ -129,7 +129,7 @@ function User(userIn) {
         setIsLoading(false);
       });
     Alert.alert("Éxito", "Cuenta desbloqueada.");
-  }
+  };
 
   return (
     <View>

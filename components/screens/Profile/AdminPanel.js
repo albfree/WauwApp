@@ -7,11 +7,11 @@ function AdminPanel(props) {
 
   const goToUserList = () => {
     navigation.navigate("UserList");
-  }
+  };
 
   const goToBroadcastForm = () => {
     navigation.navigate("BroadcastMsg");
-  }
+  };
 
   return (
     <View>

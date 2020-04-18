@@ -6,7 +6,8 @@ export default function BannedScreen() {
   return (
     <View>
       <Image
-        style={{width: 150, height: 150}}
+        style={{width: 150,
+           height: 150}}
         source={require("../../assets/images/blocked.png")}
       />
       <Text>Cuenta bloqueada {/* Título */}</Text>
