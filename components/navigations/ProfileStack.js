@@ -194,6 +194,16 @@ const ProfileScreenStacks = createStackNavigator({
     screen: AdminPanelScreen,
     navigationOptions: () => ({
       title: "Panel de Administración",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
   Pagar: {
     screen: PagarScreen,
     navigationOptions: () => ({
