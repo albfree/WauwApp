@@ -109,7 +109,7 @@ function User(userIn) {
         setIsLoading(false);
       });
     Alert.alert("Éxito", "Cuenta bloqueada.");
-  }
+  };
 
   const unbanConfirmed = () => {
     let userData = {

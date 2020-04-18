@@ -1,11 +1,12 @@
 import React from "react";
-import { Text, View, Image, Linking} from "react-native";
+import { Text, View, Image, Linking, StyleSheet} from "react-native";
 
 export default function BannedScreen() {
   const celeste = "#33AAFF";
   return (
     <View>
       <Image
+        style={styles.image}
         source={require("../../assets/images/blocked.png")}
       />
       <Text>Cuenta bloqueada {/* Título */}</Text>
@@ -30,4 +31,11 @@ export default function BannedScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  image: {
+          height: 150,
+          width: 150,
+        },
+});
 

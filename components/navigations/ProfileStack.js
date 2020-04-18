@@ -14,6 +14,7 @@ import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileReques
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 import AdminPanelScreen from "../screens/Profile/AdminPanel";
 import UserListScreen from "../screens/Administrator/UserList";
+import BroadcastMsgScreen from "../screens/Administrator/AdminBroadcastForm";
 import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
@@ -216,6 +217,20 @@ const ProfileScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
+  BroadcastMsg: {
+    screen: BroadcastMsgScreen,
+    navigationOptions: () => ({
+      title: "Mensaje a todos los usuarios",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  }
 });
 
 export default ProfileScreenStacks;

@@ -8,66 +8,65 @@ import { profileStyles } from "../styles/profileStyle";
 import ChangeNameForm from "./ChangeNameForm";
 import ChangeDescriptionForm from "./ChangeDescriptionForm";
 import Modal from "./Modal";
+import * as Permissions from "expo-permissions";
+import * as firebase from "firebase";
 
 export default function InfoUser(props) {
-  const { userInfo, setReloadData } = props;
+  const { userInfo, setReloadData, toastRef } = props;
   const [error, setError] = useState("");
-  const [avatar, setAvatar] = useState(userInfo.photo);
   const [renderName, setRenderName] = useState(false);
   const [renderDescription, setRenderDescription] = useState(false);
 
-  const changeAvatar = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 0.1,
-      });
-      if (!result.cancelled) {
-        if (result.height <= 400 && result.width <= 400) {
-          setAvatar(result.uri);
-          let userData = {
-            photo: typeof avatar === "undefined" ? userInfo.photo : avatar,
-          };
+  let pointsToMoney = Math.round(userInfo.wauwPoints * 0.65 * 100) / 100;
+  let moneyPoints = "(" + pointsToMoney + "€)";
 
-          db.ref("wauwers")
-            .child(userInfo.id)
-            .update(userData)
-            .then(() => {
-              let success = "Se ha cambiado la foto de perfil.";
-              Alert.alert("Éxito", success.toString(), [{ text: "Atrás" }], {
-                cancelable: true,
-              });
-            })
-            .catch(() => {
-              setError("Ha ocurrido un error");
-              Alert.alert("Error", error.toString(), [{ text: "Atrás" }], {
-                cancelable: true,
-              });
-            });
-        } else {
-          const errorPreparado =
-            "Seleccione una imagen de menor tamaño.\nEl tamaño máximo permitido es 400x400 píxeles.";
-          setError(errorPreparado);
-          Alert.alert("Aviso", errorPreparado, [{ text: "OK" }], {
-            cancelable: true,
-          });
-        }
+  const changeAvatar = async () => {
+    const resultPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const resultPermissionCamera = resultPermission.permissions.cameraRoll.status;
+
+    if (resultPermissionCamera === "denied") {
+      toastRef.current.show("Es necesario aceptar los permisos de la galería.", 3000);
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [4, 3]
+      });
+
+      if (result.cancelled) {
+        toastRef.current.show("Has cerrado la galería sin seleccionar una imagen.", 3000);
+      } else {
+        uploadImage(result.uri, userInfo.id).then(() => { toastRef.current.show("Foto de perfil actualizada.", 3000); });
+        updatePhotoURL(userInfo.id);
       }
-    } catch (E) {
-      // console.log(E);
     }
+
   };
 
-  //const actualizaNombre = () => {
-  //  var userData = {
-  //    avgScore: 668
-  //  };
-  //  db.ref("wauwers")
-  //    .child(userInfo.id)
-  //    .update(userData);
-  //};
+  const uploadImage = async (uri, nameImage) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const ref = firebase.storage().ref().child(`avatar/${nameImage}`);
+
+    return ref.put(blob);
+  };
+
+  const updatePhotoURL = (id) => {
+    firebase.storage().ref(`avatar/${id}`).getDownloadURL().then(async (result) => {
+      
+      const updatePhoto = {
+        photo: result
+      };
+
+      await db.ref("wauwers")
+        .child(userInfo.id)
+        .update(updatePhoto);
+
+      setReloadData(true);
+    }).catch(() => {
+      toastRef.current.show("Error al recuperar la foto de perfil.", 3000);
+    });
+  };
 
   return (
     <View>
@@ -79,7 +78,7 @@ export default function InfoUser(props) {
           onEditPress={changeAvatar}
           containerStyle={profileStyles.profileAvatar}
           source={{
-            uri: typeof avatar === "undefined" ? userInfo.photo : avatar,
+            uri: userInfo.photo
           }}
           errorMessage={error}
         />
@@ -94,8 +93,8 @@ export default function InfoUser(props) {
                 setReloadData={setReloadData}
               />
             ) : (
-              <Text style={profileStyles.profileTxt}>{userInfo.name} </Text>
-            )}
+                <Text style={profileStyles.profileTxt}>{userInfo.name} </Text>
+              )}
 
             <TouchableOpacity
               onPress={() => {
@@ -122,9 +121,7 @@ export default function InfoUser(props) {
 
       <View>
         <Text style={profileStyles.profileView5}>
-          Wauw points: {` `}
-          {` `}
-          {userInfo.wauwPoints}
+          Wauw Points: {userInfo.wauwPoints} {moneyPoints}
         </Text>
       </View>
 
@@ -158,8 +155,8 @@ export default function InfoUser(props) {
             setReloadData={setReloadData}
           />
         ) : (
-          <Text style={profileStyles.profileTxt4}>{userInfo.description}</Text>
-        )}
+            <Text style={profileStyles.profileTxt4}>{userInfo.description}</Text>
+          )}
       </View>
     </View>
   );

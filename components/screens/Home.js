@@ -63,6 +63,12 @@ function Home(props) {
                 }
                 titleStyle={homeStyles.homeBtnTxt}
               />
+              <Button
+                buttonStyle={homeStyles.homeBtn}
+                title="Noticias"
+                onPress={() => navigation.navigate("News")}
+                titleStyle={homeStyles.homeBtnTxt}
+              />
             </View>
           </View>
         </View>

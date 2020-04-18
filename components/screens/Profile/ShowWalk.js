@@ -33,10 +33,6 @@ function ShowWalk(props) {
     .equalTo(id)
     .on("child_added", (snap) => {
       worker = snap.val();
-      if (worker.isBanned){
-        Alert.alert("Atención", "Su cuenta ha sido bloqueada");
-        firebase.auth().signOut();
-      }
     });
 
   const confirmDeclineRequest = () => {
