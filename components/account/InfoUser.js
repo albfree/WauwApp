@@ -52,10 +52,11 @@ export default function InfoUser(props) {
   };
 
   const updatePhotoURL = (id) => {
-    firebase.storage().ref(`avatar/${id}`).getDownloadURL().then(async result => {
+    firebase.storage().ref(`avatar/${id}`).getDownloadURL().then(async (result) => {
+      
       const updatePhoto = {
         photo: result
-      }
+      };
 
       await db.ref("wauwers")
         .child(userInfo.id)
