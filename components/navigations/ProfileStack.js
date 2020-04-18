@@ -13,6 +13,9 @@ import UserDataScreen from "../screens/GRPD/UserData";
 import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 import AdminPanelScreen from "../screens/Profile/AdminPanel";
+import UserListScreen from "../screens/Administrator/UserList";
+import BannedSwitchNavigator from "./BannedSwitchNavigator";
+import BroadcastMsgScreen from "../screens/Administrator/AdminBroadcastForm";
 import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
@@ -138,7 +141,20 @@ const ProfileScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
-
+  UserList: {
+    screen: UserListScreen,
+    navigationOptions: () => ({
+      title: "Lista de usuarios",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
   AddReviewService: {
     screen: AddReviewServiceScreen,
     navigationOptions: () => ({
@@ -192,6 +208,23 @@ const ProfileScreenStacks = createStackNavigator({
     screen: PagarScreen,
     navigationOptions: () => ({
       title: "Pagar",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  Blocked: {
+    screen: BannedSwitchNavigator,
+  },
+  BroadcastMsg: {
+    screen: BroadcastMsgScreen,
+    navigationOptions: () => ({
+      title: "Mensaje a todos los usuarios",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
