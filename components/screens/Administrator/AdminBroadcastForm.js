@@ -92,10 +92,10 @@ function AdminBroadcastForm(props) {
 const morado = "#ff7549";
 const styles = StyleSheet.create({
     btn: {
-      borderRadius: 15,
-      justifyContent: "center",
       alignItems: "center",
       alignContent: "center",
+      justifyContent: "center",
+      borderRadius: 15,
       paddingHorizontal: 15,
       paddingVertical: 5,
       backgroundColor: morado,
