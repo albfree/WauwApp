@@ -3,11 +3,10 @@ import React from "react";
 // Components for export email information
 import qs from "qs";
 import email from "react-native-email";
-import { db } from "../../population/config";
-import * as firebase from "firebase";
 import { userDataStyles } from "../../styles/userDataStyle";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "react-native-elements";
+import { BannedAssertion } from "../../account/BannedAssertion";
 
 export default function UserData(props) {
   var user = props.navigation.state.params.userInfo;
@@ -20,6 +19,7 @@ export default function UserData(props) {
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";
     var petsEmail = "Mascotas registradas en nuestra aplicación\n\n";
+    BannedAssertion();
 
     userEmail += "Nombre: " + user.name + "\n";
     userEmail += "Apellidos: " + user.surname + "\n";

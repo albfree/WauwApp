@@ -1,11 +1,23 @@
 import { db } from "../population/config.js";
-import * as firebase from "firebase";
+import { Alert } from "react-native";
+import firebase from "firebase";
+import { email } from "./QueriesProfile";
 
-export var email = "";
-firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    email = user.email;
-  }
-});
+export const BannedAssertion = () => {
+  let userInfo;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      userInfo = snap.val();
+      id = userInfo.id;
+      if(userInfo.isBanned){
+        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
+        firebase.auth().signOut();
+      }
+    });
 
-export var anonEmail="anonimowauwispp@gmail.com";
+  return userInfo;
+}
+
+export var userInfo = userInfo;

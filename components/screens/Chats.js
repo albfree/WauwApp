@@ -16,26 +16,17 @@ import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { chatsStyles } from "../styles/chatsStyle";
+import { BannedAssertion } from "../account/BannedAssertion";
 
 export default function Chats(props) {
   const { navigation } = props;
   const [data, setData] = useState([]);
 
-  let currentUser;
+  var currentUser = BannedAssertion();
   let otherUserID;
   let otherUserPhoto;
   let otherUserName;
 
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      currentUser = snap.val();
-      if(!currentUser.isBanned){
-        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
-        firebase.auth().signOut();
-      }
-    });
 
   useEffect(() => {
     db.ref("wauwers").child(currentUser.id).update({ hasMessages: false });

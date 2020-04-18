@@ -9,6 +9,7 @@ import MapView from "react-native-maps";
 import Modal from "../../account/Modal";
 import { globalStyles } from "../../styles/global";
 import { locationStyles } from "../../styles/locationStyles";
+import { BannedAssertion } from "../../account/BannedAssertion";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
@@ -17,16 +18,10 @@ export default function ProfileLocationForm(props) {
   const [locationWauwer, setLocationWauwer] = useState(null);
   const [error, setError] = useState(null);
   const [wauwer, setWauwer] = useState();
-
+  
   useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
-          setWauwer(child.val());
-        });
-      });
+    var wauwer = BannedAssertion();
+    setWauwer(wauwer);
   }, []);
 
   return (

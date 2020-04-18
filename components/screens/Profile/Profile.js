@@ -18,21 +18,11 @@ import { withNavigation } from "react-navigation";
 import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
+import { BannedAssertion } from "../../account/BannedAssertion";
 
 function Profile(props) {
   const { navigation } = props;
-  var userInfo = [];
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .once("child_added", (snap) => {
-      userInfo = snap.val();
-      if(!userInfo.isBanned){
-        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
-        firebase.auth().signOut();
-      }
-    });
-
+  var userInfo = BannedAssertion();
   var requestWorker = [];
 
   // Better way to get some information from DB and send it to UserData

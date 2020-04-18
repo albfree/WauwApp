@@ -14,6 +14,7 @@ import { globalStyles } from "../../styles/global";
 import { myWalksStyles } from "../../styles/myWalksStyle";
 import { requestsStyles } from "../../styles/requestsStyle";
 import firebase from "firebase";
+import { BannedAssertion } from "../../account/BannedAssertion";
 
 function ShowWalk(props) {
   const { navigation } = props;
@@ -26,6 +27,7 @@ function ShowWalk(props) {
   var pago = "";
   var fecha = "";
 
+  BannedAssertion()
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)

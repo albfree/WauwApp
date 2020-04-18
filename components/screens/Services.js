@@ -10,15 +10,17 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import { Button } from "react-native-elements";
+
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import _ from "lodash";
 import { servicesStyles } from "../styles/servicesStyle";
 import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
+import { BannedAssertion } from "../account/BannedAssertion";
 
 function Services(props) {
+  BannedAssertion();
   const { navigation } = props;
   const [imageUri, setImageUri] = useState(
     require("../../assets/images/SearchWalk.jpg")
