@@ -142,7 +142,7 @@ export default createDrawerNavigator(
         drawerIcon: ({ tintColor }) => (
           <Icon
             type="material-community"
-            name="dog-service"
+            name="delete"
             size={17}
             color="#443099"
           />
@@ -170,5 +170,3 @@ export default createDrawerNavigator(
     contentComponent: CustomDrawerComponent,
   }
 );
-
-

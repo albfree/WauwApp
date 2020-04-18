@@ -71,6 +71,7 @@ function LoginScreen(props) {
                   avgScore: 0,
                   location: null,
                   userId: result.user.uid,
+                  isBanned: false,
                 });
                 firebase
                   .database()

@@ -4,6 +4,7 @@ import {  createAppContainer, createSwitchNavigator } from "react-navigation";
 import LoginScreen from "./components/navigations/LoginStack";
 import DashboardScreen from "./components/screens/DashboardScreen";
 import LoadingScreen from "./components/screens/LoadingScreen";
+import BannedScreen from "./components/screens/BannedScreen";
 import { AppLoading } from "expo";
 import React, { useState, Component } from "react";
 
@@ -19,6 +20,7 @@ export default class App extends Component {
 const AppSwitchNavigator = createSwitchNavigator({
   LoadingScreen:LoadingScreen,
   LoginScreen:LoginScreen,
+  BannedScreen:BannedScreen,
   DashboardScreen:DashboardScreen
 })
 

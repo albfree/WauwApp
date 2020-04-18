@@ -31,7 +31,6 @@ function Profile(props) {
     global.atob = decode;
   }
   const { navigation } = props;
-
   var userInfo;
   db.ref("wauwers")
     .orderByChild("email")
@@ -203,7 +202,30 @@ function Profile(props) {
             source={require("../../../assets/images/prints.png")}
             style={profileStyles.profilePrints}
           />
-
+          
+          <View>
+          {userInfo.email === "wauwispp1920@gmail.com" ? (
+            <View>
+            <Button
+              buttonStyle={profileStyles.profileBtn4}
+              containerStyle={profileStyles.profileBtnContainer4}
+              title="Panel de Administración"
+              onPress={() => navigation.navigate("AdminPanel")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="cogs"
+                  size={30}
+                  color="white"
+                  marginLeft={20}
+                />}
+              titleStyle={profileStyles.profileBtnTittle}
+            />  
+            </View>
+          ) : (
+            <View></View>
+          )}
+          </View>
           <Button
             buttonStyle={profileStyles.profileBtn4}
             containerStyle={profileStyles.profileBtnContainer4}
