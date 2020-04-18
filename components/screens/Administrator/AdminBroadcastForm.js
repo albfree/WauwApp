@@ -93,11 +93,11 @@ const morado = "#ff7549";
 const styles = StyleSheet.create({
     btn: {
       borderRadius: 15,
-      paddingHorizontal: 15,
-      paddingVertical: 5,
       justifyContent: "center",
       alignItems: "center",
       alignContent: "center",
+      paddingHorizontal: 15,
+      paddingVertical: 5,
       backgroundColor: morado,
     },
     btnContainer: {
