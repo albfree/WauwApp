@@ -52,7 +52,7 @@ const HomeScreenStack = createStackNavigator({
   News: {
     screen: NewsScreen,
     navigationOptions: () => ({
-      title: "Protectoras",
+      title: "Noticias",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
