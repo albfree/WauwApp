@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ActivityIndicator,Image, Animated } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, Image, Animated } from "react-native";
 import paw from "../../assets/images/paw.png";
 
 //We're going to create a function that will tell us if the user is logged or not.
@@ -14,8 +14,8 @@ class LoginScreen extends Component {
 
   checkIfLoggedIn = async () => {
     firebase.auth().onAuthStateChanged(
-      function(user) {
-       // console.log("AUTH STATE CHANGE CALLED");
+      function (user) {
+        // console.log("AUTH STATE CHANGE CALLED");
         if (user) {
           this.props.navigation.navigate("DashboardScreen");
         } else {
@@ -30,7 +30,7 @@ class LoginScreen extends Component {
 
     return (
       <View style={styles.container}>
-         <ActivityIndicator size="large" color="#FFFFFF" />
+        <ActivityIndicator size="large" color="#FFFFFF" />
       </View>
     );
   }
@@ -39,16 +39,17 @@ class LoginScreen extends Component {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+
+  aboutImage: {
+    resizeMode: "contain",
+    width: 30,
+  },
+
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#443099",
-  },
-
-  aboutImage: {
-    resizeMode: "contain",
-    width: 30,
   }
 
 });

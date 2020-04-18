@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 const morado = "#443099";
 const lila = "#d6d6e8";
 
