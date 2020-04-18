@@ -140,7 +140,7 @@ function ListAccommodations(props) {
     let accomodations = [];
     accommodationsList.map((acc) => {
       if (
-        (maxPrice !== null && acc[0].salary <= maxPrice) ||
+        (maxPrice !== null && acc[0].price <= maxPrice) ||
         (minRating !== null && acc[1] >= minRating)
       ) {
         accomodations.push(acc);
