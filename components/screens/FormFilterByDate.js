@@ -73,58 +73,54 @@ function FormFilterByDate(props) {
       <ScrollView>
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
-            <View style={filterDateStyles.filterDateView}>
-              <View style={filterDateStyles.filterDateView2}>
-                <Text style={filterDateStyles.filterDateTxt}>
-                  Introduzca fecha de entrada
-                </Text>
-                <View style={filterDateStyles.filterDateView}>
-                  <Button
-                    buttonStyle={filterDateStyles.filterDateBtn}
-                    containerStyle={filterDateStyles.filterDateBtnContainer}
-                    title="Fecha de Entrada"
-                    onPress={showDatepickerS}
-                    icon={
-                      <Icon
-                        type="material-community"
-                        name="calendar-import"
-                        size={20}
-                        color="white"
-                        marginLeft={10}
-                      />
-                    }
-                    titleStyle={filterDateStyles.filterDateTittle}
+            <View style={filterDateStyles.filterDateView2}>
+              <Text style={filterDateStyles.filterDateTxt}>
+                Introduzca fecha de entrada
+              </Text>
+              <Button
+                buttonStyle={filterDateStyles.filterDateBtn}
+                containerStyle={filterDateStyles.filterDateBtnContainer}
+                title="Fecha de Entrada"
+                onPress={showDatepickerS}
+                icon={
+                  <Icon
+                    type="material-community"
+                    name="calendar-import"
+                    size={20}
+                    color="white"
+                    marginLeft={"5%"}
                   />
-                  {showS && (
-                    <DateTimePicker
-                      testID="dateTimePickerS"
-                      timeZoneOffsetInMinutes={0}
-                      value={newStartTime}
-                      mode={modeS}
-                      is24Hour={true}
-                      display="default"
-                      onChange={onChangeS}
-                    />
-                  )}
+                }
+                titleStyle={filterDateStyles.filterDateTittle}
+              />
+              {showS && (
+                <DateTimePicker
+                  testID="dateTimePickerS"
+                  timeZoneOffsetInMinutes={0}
+                  value={newStartTime}
+                  mode={modeS}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChangeS}
+                />
+              )}
 
-                  <Button
-                    buttonStyle={filterDateStyles.filterDateBtn2}
-                    containerStyle={filterDateStyles.filterDateBtnContainer2}
-                    title="Buscar"
-                    onPress={sendForm}
-                    icon={
-                      <Icon
-                        type="material-community"
-                        name="magnify"
-                        size={20}
-                        color="white"
-                        marginLeft={10}
-                      />
-                    }
-                    titleStyle={filterDateStyles.filterDateTittle}
+              <Button
+                buttonStyle={filterDateStyles.filterDateBtn2}
+                containerStyle={filterDateStyles.filterDateBtnContainer2}
+                title="Buscar"
+                onPress={sendForm}
+                icon={
+                  <Icon
+                    type="material-community"
+                    name="magnify"
+                    size={20}
+                    color="white"
+                    marginLeft={"5%"}
                   />
-                </View>
-              </View>
+                }
+                titleStyle={filterDateStyles.filterDateTittle}
+              />
             </View>
           </View>
         </View>

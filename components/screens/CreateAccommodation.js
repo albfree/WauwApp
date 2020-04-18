@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   Keyboard,
+  Platform,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";

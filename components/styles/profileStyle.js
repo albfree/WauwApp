@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const lila = "#d6d6e8";
 const lila2 = "#5c54a4";
@@ -12,7 +12,7 @@ export const profileStyles = StyleSheet.create({
   profileAvatar: {
     borderColor: lila,
     borderWidth: 1,
-    marginLeft: "10%",
+    marginLeft: "5%",
   },
   profileBtn: {
     backgroundColor: lila2,
@@ -160,7 +160,7 @@ export const profileStyles = StyleSheet.create({
     textAlignVertical: "center",
   },
   profileView4: {
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
   },
   profileView5: {
     alignSelf: "center",
@@ -197,6 +197,5 @@ export const profileStyles = StyleSheet.create({
   },
   profileView9: {
     flex: 1,
-    marginLeft: "-70%",
   },
 });
