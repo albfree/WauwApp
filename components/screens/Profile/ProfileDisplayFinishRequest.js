@@ -14,6 +14,8 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { myWalksStyles } from "../../styles/myWalksStyle";
 import { requestsStyles } from "../../styles/requestsStyle";
+import { bannedAssertion } from "../../account/BannedAssertion";
+
 YellowBox.ignoreWarnings(["Setting a timer"]);
 
 function DisplayFinishRequest(props) {
@@ -27,7 +29,14 @@ function DisplayFinishRequest(props) {
   var pago = "";
   var fecha = "";
 
-  db.ref("wauwers")
+  const [isLoading, setIsLoading] = useState(false);
+  const [setReloadData] = useState(false);
+  const [visibleModal, setIsVisibleModal] = useState(false);
+  const [error, setError] = useState("");
+  bannedAssertion();
+
+  useEffect(() => {
+    db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
     .on("child_added", (snap) => {

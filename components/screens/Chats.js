@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
+  Alert,
   View,
   Text,
   FlatList,
@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import _ from "lodash";
+import firebase from "firebase";
 import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
 import { ScrollView } from "react-native-gesture-handler";
@@ -15,22 +16,17 @@ import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { chatsStyles } from "../styles/chatsStyle";
+import { bannedAssertion } from "../account/BannedAssertion";
 
 export default function Chats(props) {
   const { navigation } = props;
   const [data, setData] = useState([]);
 
-  let currentUser;
+  var currentUser = bannedAssertion();
   let otherUserID;
   let otherUserPhoto;
   let otherUserName;
 
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      currentUser = snap.val();
-    });
 
   useEffect(() => {
     db.ref("wauwers").child(currentUser.id).update({ hasMessages: false });

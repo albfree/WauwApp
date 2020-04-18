@@ -16,6 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
 import { accommodationStyles } from "../../styles/accommodationStyle";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileMyAccommodations(props) {
   const { navigation } = props;
@@ -24,13 +25,8 @@ function ProfileMyAccommodations(props) {
   const [accommodationsList, setAccommodationsList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  let wauwerId;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      wauwerId = snap.val().id;
-    });
+  var wauwer = bannedAssertion();
+  var wauwerId = wauwer.id;
 
   useEffect(() => {
     db.ref("accommodation")

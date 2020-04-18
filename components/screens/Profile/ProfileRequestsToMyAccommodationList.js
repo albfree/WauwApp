@@ -14,6 +14,7 @@ import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;
@@ -22,13 +23,8 @@ function ProfileRequestToMyRequestList(props) {
   const [requestsList, setRequestsList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  let wauwerId;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      wauwerId = snap.val().id;
-    });
+  var wauwer = bannedAssertion();
+  var wauwerId = wauwer.id;
 
   useEffect(() => {
     db.ref("requests")
