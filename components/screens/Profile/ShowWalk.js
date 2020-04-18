@@ -32,7 +32,6 @@ function ShowWalk(props) {
       worker = snap.val();
       if (!worker.isBanned){
         navigation.navigate("Blocked");
-        console.log(worker.isBanned);
       }
     });
 
@@ -40,7 +39,7 @@ function ShowWalk(props) {
     if (!worker.isBanned){
       navigation.navigate("Blocked");
     }
-  }
+  };
 
   const confirmDeclineRequest = () => {
     Alert.alert(

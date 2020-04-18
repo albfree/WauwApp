@@ -89,6 +89,7 @@ function AdminBroadcastForm(props) {
     );
 }
 
+const morado = "#ff7549"
 const styles = StyleSheet.create({
     btnContainer: {
       alignSelf: "center",
@@ -99,13 +100,13 @@ const styles = StyleSheet.create({
       width: "95%",
     },
     btn: {
-        paddingVertical: 5,
         paddingHorizontal: 15,
+        paddingVertical: 5,
         borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",
         alignContent: "center",
-        backgroundColor: "#ff7549"
+        backgroundColor: morado,
       },
     form: {
       alignItems: "center",
