@@ -61,13 +61,24 @@ function Home(props) {
                 }
                 titleStyle={homeStyles.homeBtnTxt}
               />
-              <Button
-                buttonStyle={homeStyles.homeBtn}
-                title="Noticias"
-                onPress={() => navigation.navigate("News")}
-                titleStyle={homeStyles.homeBtnTxt}
-              />
             </View>
+
+            <Button
+              buttonStyle={homeStyles.homeBtn}
+              containerStyle={homeStyles.homeBtnContainer2}
+              title="Noticias"
+              onPress={() => navigation.navigate("News")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="bulletin-board"
+                  size={30}
+                  color="white"
+                  marginLeft={"10%"}
+                />
+              }
+              titleStyle={homeStyles.homeBtnTxt}
+            />
           </View>
         </View>
       </ScrollView>

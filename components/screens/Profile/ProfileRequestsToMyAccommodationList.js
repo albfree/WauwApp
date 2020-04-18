@@ -13,6 +13,7 @@ import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
+import { requestsStyles } from "../../styles/requestsStyle";
 
 function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;
@@ -37,9 +38,11 @@ function ProfileRequestToMyRequestList(props) {
         const requests = [];
         snap.forEach((child) => {
           var endTime = new Date(child.val().endTime);
-          if ((endTime > new Date() 
-              || child.val().isFinished === false) 
-              && child.val().accommodation === navigation.state.params.accommodation.id) {
+          if (
+            (endTime > new Date() || child.val().isFinished === false) &&
+            child.val().accommodation ===
+              navigation.state.params.accommodation.id
+          ) {
             requests.push(child.val());
           }
         });
@@ -47,26 +50,27 @@ function ProfileRequestToMyRequestList(props) {
       });
     setReloadData(false);
     setLoading(false);
-  }, [reloadData]);  
+  }, [reloadData]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
+        <Text style={requestsStyles.requestsTxt16}>
+          Listado de solicitudes para este alojamiento
+        </Text>
+
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
             style={globalStyles.myRequestsFeed}
             renderItem={(request) => (
-              <Request
-                request={request}
-                navigation={navigation}
-              />
+              <Request request={request} navigation={navigation} />
             )}
             keyExtractor={(request) => request.id}
             showsVerticalScrollIndicator={false}
           />
         ) : (
-          <BlankView text={"No tiene solicitudes para este alojamiento."} />
+          <BlankView text={"No tiene solicitudes para este alojamiento"} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -77,12 +81,36 @@ function Request(requestIn) {
   const { request, navigation } = requestIn;
   let toFinish = false;
   var endTime = new Date(request.item.endTime);
-
-  if(endTime < new Date()){
+  let color = "white";
+  let status = "";
+  if (endTime < new Date()) {
     toFinish = true;
   }
 
   const verde = "#0a0";
+
+  if (request.item.pending) {
+    status = "Pendiente de aceptación";
+    color = "rgba(255,128,0,0.6)";
+  } else {
+    switch (request.item.isCanceled) {
+      case false:
+        status = "Aceptada";
+        color = "rgba(0,128,0,0.6)";
+        break;
+      case true:
+        status = "Denegada";
+        color = "rgba(255,0,0,0.6)";
+        break;
+      default:
+        break;
+    }
+  }
+  const statusC = {
+    color,
+    fontSize: 13,
+    marginTop: 4,
+  };
 
   return (
     <TouchableOpacity
@@ -93,24 +121,24 @@ function Request(requestIn) {
         })
       }
     >
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={requestsStyles.requestsFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
-            <View style={globalStyles.myRequestsColumn1}>
-              <NameByOwner id={request.item.owner} navigation={navigation}/>
-              {request.item.petNumber >1 ?(
-                <Text>{"Alojamiento para " + request.item.petNumber + " perros"}</Text>
-                ):(
-                <Text>{"Alojamiento para " + request.item.petNumber + " perro"}</Text>
-                )}
-              {toFinish === true ? (
-                <View>
-                  <Text style={{color:verde}}>Servicio cumplido</Text>
-                </View>
-              ):(<View></View>)}
+          <View style={requestsStyles.requestsView}>
+            <View style={requestsStyles.requestsView2}>
+              <NameByOwner id={request.item.owner} navigation={navigation} />
+              {request.item.petNumber > 1 ? (
+                <Text style={requestsStyles.requestsTxt}>
+                  {"Alojamiento para " + request.item.petNumber + " perros"}
+                </Text>
+              ) : (
+                <Text>
+                  {"Alojamiento para " + request.item.petNumber + " perro"}
+                </Text>
+              )}
+              <Text style={statusC}>{status} </Text>
             </View>
-            <View >
-              <Text style={globalStyles.myRequestsPrice}>
+            <View style={requestsStyles.requestsView2}>
+              <Text style={requestsStyles.requestsTxt2}>
                 {(request.item.price * 0.8).toFixed(2)} €
               </Text>
             </View>
@@ -121,21 +149,19 @@ function Request(requestIn) {
   );
 }
 
-function NameByOwner(ownerId){
+function NameByOwner(ownerId) {
   const { id, navigation } = ownerId;
   let wauwerName;
   db.ref("wauwers")
-  .orderByChild("id")
-  .equalTo(id)
-  .on("child_added", (snap) => {
-    wauwerName = snap.val().name + " " + snap.val().surname;
-  });
+    .orderByChild("id")
+    .equalTo(id)
+    .on("child_added", (snap) => {
+      wauwerName = snap.val().name + " " + snap.val().surname;
+    });
 
-  return(
+  return (
     <View>
-      <Text>
-        {"Solicitud de " + wauwerName}
-      </Text>
+      <Text>{"Solicitud de " + wauwerName}</Text>
     </View>
   );
 }

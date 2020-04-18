@@ -30,13 +30,13 @@ function ShowWalk(props) {
     .equalTo(id)
     .on("child_added", (snap) => {
       worker = snap.val();
-      if (!worker.isBanned){
+      if (worker.isBanned) {
         navigation.navigate("Blocked");
       }
     });
 
   const assertIsNotBanned = () => {
-    if (!worker.isBanned){
+    if (!worker.isBanned) {
       navigation.navigate("Blocked");
     }
   };
@@ -94,7 +94,6 @@ function ShowWalk(props) {
       { cancelable: false }
     );
   };
-
 
   const finishRequest = () => {
     /*var idRequest = request.id;

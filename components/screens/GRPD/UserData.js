@@ -198,7 +198,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          <View style={userDataStyles.userDataView}>
+            <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          </View>
         )}
 
         {requestWorker.length !== 0 ? (
@@ -234,7 +236,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
+          </View>
         )}
 
         {requestOwner.length !== 0 ? (
@@ -268,7 +272,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          </View>
         )}
         <Button
           buttonStyle={userDataStyles.userDataBtn}

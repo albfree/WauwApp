@@ -44,6 +44,15 @@ export const payStyles = StyleSheet.create({
     marginHorizontal: 10,
     textAlign: "center",
   },
+  payTxt4: {
+    alignSelf: "center",
+    borderColor: lila2,
+    borderBottomWidth: 1,
+    height: 40,
+    marginBottom: 20,
+    textAlign: "center",
+    width: 200,
+  },
   payView: {
     bottom: 0,
     height: "100%",
