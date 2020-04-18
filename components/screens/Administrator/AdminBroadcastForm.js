@@ -89,8 +89,17 @@ function AdminBroadcastForm(props) {
     );
 }
 
-const morado = "#ff7549"
+const morado = "#ff7549";
 const styles = StyleSheet.create({
+    btn: {
+      paddingHorizontal: 15,
+      paddingVertical: 5,
+      borderRadius: 15,
+      justifyContent: "center",
+      alignItems: "center",
+      alignContent: "center",
+      backgroundColor: morado,
+    },
     btnContainer: {
       alignSelf: "center",
       flex: 1,
@@ -99,15 +108,6 @@ const styles = StyleSheet.create({
       marginTop: 10,
       width: "95%",
     },
-    btn: {
-        paddingHorizontal: 15,
-        paddingVertical: 5,
-        borderRadius: 15,
-        justifyContent: "center",
-        alignItems: "center",
-        alignContent: "center",
-        backgroundColor: morado,
-      },
     form: {
       alignItems: "center",
       flex: 1,
