@@ -63,16 +63,9 @@ function Review(props) {
         />
 
         <View>
-          {user === null? (
-            <Text style={publicProfileStyles.publicProfileTxt7}>
-            Usuario: Anónimo
-          </Text>
-          ) : (
-            <Text style={publicProfileStyles.publicProfileTxt7}>
+          <Text style={publicProfileStyles.publicProfileTxt7}>
             Usuario: {user.name}
           </Text>
-          )}
-          
         </View>
         <Text style={publicProfileStyles.publicProfileTxt8}>
           {review.title}

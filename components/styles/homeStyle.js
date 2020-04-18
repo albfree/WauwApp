@@ -24,7 +24,7 @@ export const homeStyles = StyleSheet.create({
   homeBtnTxt: {
     alignSelf: "center",
     fontSize: 17,
-    marginLeft: "10%",
+    marginLeft: "20%",
   },
   homeImage: {
     alignSelf: "center",

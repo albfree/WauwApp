@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
+import { View, Text } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { db } from "../population/config.js";
-import { profileStyles } from "../styles/profileStyle";
+import { globalStyles } from "../styles/global";
 
 export default function ChangeNameForm(props) {
-  const { id, name, setRenderName, setReloadData } = props;
+  const { id, name, setIsVisibleModal, setReloadData } = props;
   const [newName, setNewName] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +17,7 @@ export default function ChangeNameForm(props) {
     } else {
       setIsLoading(true);
       let userData = {
-        name: newName,
+        name: newName
       };
       db.ref("wauwers")
         .child(id)
@@ -25,7 +25,7 @@ export default function ChangeNameForm(props) {
         .then(() => {
           setIsLoading(false);
           setReloadData(true);
-          setRenderName(false);
+          setIsVisibleModal(false);
         })
         .catch(() => {
           setError("Ha ocurrido un error");
@@ -35,22 +35,26 @@ export default function ChangeNameForm(props) {
   };
 
   return (
-    <SafeAreaView style={profileStyles.profileView9}>
+    <View style={globalStyles.profileFormView}>
       <Input
         placeholder="Nombre"
-        containerStyle={profileStyles.profileTxt4}
+        containerStyle={globalStyles.profileFormInput}
         defaultValue={name && name}
-        onChange={(v) => setNewName(v.nativeEvent.text)}
+        onChange={v => setNewName(v.nativeEvent.text)}
+        rightIcon={{
+          type: "material-community",
+          name: "rename-box",
+          color: "#443099"
+        }}
         errorMessage={error}
-        inputStyle={profileStyles.profileTxt6}
       />
       <Button
-        title="Cambiar"
-        containerStyle={profileStyles.profileBtnContainer2}
-        buttonStyle={profileStyles.profileBtn2}
+        title="Cambiar nombre"
+        containerStyle={globalStyles.profileFormBtnContainer}
+        buttonStyle={globalStyles.profileFormBtn}
         onPress={updateName}
         loading={isLoading}
       />
-    </SafeAreaView>
+    </View>
   );
 }

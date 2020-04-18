@@ -15,7 +15,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileMyRequests(props) {
   const { navigation } = props;
@@ -24,8 +23,13 @@ function ProfileMyRequests(props) {
   const [requestsList, setRequestList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  var wauwer = bannedAssertion();
-  var wauwerId = wauwer.id;
+  let wauwerId;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      wauwerId = snap.val().id;
+    });
 
   useEffect(() => {
     db.ref("requests")
@@ -58,10 +62,6 @@ function ProfileMyRequests(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
-        <Text style={requestsStyles.requestsTxt16}>
-          Listado de las solicitudes realizadas
-        </Text>
-
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}

@@ -21,7 +21,6 @@ import {
 import Toast from "react-native-easy-toast";
 import { globalStyles } from "../../styles/global";
 import { walkerFormStyles } from "../../styles/walkerFormStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
@@ -43,7 +42,13 @@ function ProfileWalkerForm(props) {
     ["Domingo", 96],
   ];
 
-  var userInfo = bannedAssertion();
+  let userInfo;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      userInfo = snap.val();
+    });
 
   useEffect(() => {
     const resulIds = [];

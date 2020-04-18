@@ -7,7 +7,7 @@ import {
   SafeAreaView,
   Alert,
 } from "react-native";
-import { Avatar, Input, Button, Icon, Rating } from "react-native-elements";
+import { Avatar, Input, Button, Icon } from "react-native-elements";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
@@ -30,16 +30,12 @@ function ListAccommodations(props) {
   const toastRef = useRef();
   let petNumber;
   let id;
-  let longitudeUser;
-  let latitudeUser;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .on("child_added", (snap) => {
       petNumber = snap.val().petNumber;
       id = snap.val().id;
-      longitudeUser = snap.val().location.longitude;
-      latitudeUser = snap.val().location.latitude;
     });
 
   useEffect(() => {
@@ -55,12 +51,8 @@ function ListAccommodations(props) {
             var endTime = new Date(child.val().endTime);
             var startTime = new Date(child.val().startTime);
             let score;
-            let longitudPaseador;
-            let latitudePaseador;
             db.ref("wauwers/" + child.val().worker).once("value", (snap) => {
               score = snap.val().avgScore;
-              longitudPaseador = snap.val().location.longitude;
-              latitudePaseador = snap.val().location.latitude;
             });
 
             if (
@@ -70,77 +62,25 @@ function ListAccommodations(props) {
             ) {
               myAccomodation.push(child.val());
               myAccomodation.push(score);
-              const arrayLocation = [];
-              arrayLocation.push(latitudePaseador);
-              arrayLocation.push(longitudPaseador);
-              myAccomodation.push(arrayLocation);
               accommodations.push(myAccomodation);
-
             } else {
               myAccomodation.push(child.val());
               myAccomodation.push(score);
-              const arrayLocation = [];
-              arrayLocation.push(latitudePaseador);
-              arrayLocation.push(longitudPaseador);
-              myAccomodation.push(arrayLocation);
               accommodations2.push(myAccomodation);
-
             }
           }
         });
-
-        const appToYou = [];
-        accommodations.map((array) => {
-          const krom = [];
-          krom.push(array[0]);
-          krom.push(array[1]);
-          const distancia = calculaDistancia(latitudeUser, longitudeUser, array[2][0], array[2][1]);
-          krom.push(distancia);
-          appToYou.push(krom);
-        });
-
-        appToYou.sort((a, b) => {
-          return (a[2] - b[2]);
-        });
-
-        const appToYou2 = [];
-        accommodations2.map((array) => {
-          const krom = [];
-          krom.push(array[0]);
-          krom.push(array[1]);
-          const distancia = calculaDistancia(latitudeUser, longitudeUser, array[2][0], array[2][1]);
-          krom.push(distancia);
-          appToYou2.push(krom);
-        });
-
-        appToYou2.sort((a, b) => {
-          return (a[2] - b[2]);
-        });
-
-        setAccommodationList(appToYou);
-        setAccommodationList2(appToYou2);
+        setAccommodationList(accommodations);
+        setAccommodationList2(accommodations2);
       });
     setReloadData(false);
   }, [reloadData]);
-
-  const calculaDistancia = (lat1, lon1, lat2, lon2) => {
-    const rad = function (x) {
-      return x * Math.PI / 180;
-    };
-    var R = 6378.137;
-    var dLat = rad(lat2 - lat1);
-    var dLong = rad(lon2 - lon1);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    var d = R * c;
-    return d.toFixed(2);
-  };
 
   const filterList = () => {
     let accomodations = [];
     accommodationsList.map((acc) => {
       if (
-        (maxPrice !== null && acc[0].price <= maxPrice) ||
+        (maxPrice !== null && acc[0].salary <= maxPrice) ||
         (minRating !== null && acc[1] >= minRating)
       ) {
         accomodations.push(acc);
@@ -229,10 +169,10 @@ function ListAccommodations(props) {
                 name="filter"
                 size={20}
                 color="white"
-                marginLeft={"10%"}
+                marginRight={10}
               />
             }
-            titleStyle={searchWalksStyles.searchWalkTxt11}
+            titleStyle={searchWalksStyles.searchWalktxt10}
           />
           <Button
             buttonStyle={searchWalksStyles.searchWalksBtn3}
@@ -259,13 +199,13 @@ function ListAccommodations(props) {
             navigation={navigation}
           />
         ) : (
-            <List2
-              accommodationsList={accommodationsList2}
-              petNumber={petNumber}
-              myId={id}
-              navigation={navigation}
-            />
-          )}
+          <List2
+            accommodationsList={accommodationsList2}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
@@ -327,7 +267,6 @@ function List2(props) {
 
 function Accommodation(props) {
   const { accommodation, navigation, petNumber, myId } = props;
-  const dis = accommodation.item[2];
 
   let worker;
   db.ref("wauwers")
@@ -374,13 +313,22 @@ function Accommodation(props) {
                 Precio
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {accommodation.item[0].salary} € {dis} km
+                {accommodation.item[0].salary} €
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
                 Valoración
               </Text>
-
-              <Rating imageSize={20} readonly startingValue={worker.avgScore} />
+              <View style={searchAccommodationStyles.searchAccommodationView}>
+                <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                  {worker.avgScore}{" "}
+                </Text>
+                <Icon
+                  type="material-community"
+                  name="star"
+                  size={20}
+                  color="yellow"
+                />
+              </View>
             </View>
             <View style={searchAccommodationStyles.searchAccommodationColumn3}>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>

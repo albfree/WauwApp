@@ -213,7 +213,7 @@ function createRequest(props) {
                   name="send"
                   size={20}
                   color="white"
-                  marginLeft={"15%"}
+                  marginLeft={20}
                 />
               }
               titleStyle={searchWalksStyles.searchWalksBtnTxt}

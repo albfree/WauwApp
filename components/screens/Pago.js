@@ -142,7 +142,6 @@ function Pago(props) {
 
             //console.log("response", links);
             setPaypalUrl(approvalUrl);
-            navigation.popToTop();
           })
           .catch(err => {
             //console.log({ ...err });

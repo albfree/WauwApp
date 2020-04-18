@@ -4,8 +4,7 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity,
-  Alert
+  TouchableOpacity
 } from "react-native";
 import { WebView } from "react-native-webview";
 import { withNavigation } from "react-navigation";
@@ -208,7 +207,7 @@ function PayRequest(props) {
           var idRequest = request.id;
           // console.log("id requests", idRequest);
 
-          Alert.alert("Pago realizado", "El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 6.5) * 100) / 100) + " Wauw Points a tu saldo de puntos.");
+          alert("El pago se ha realizado correctamente. \n\nSe han sumado " + (Math.round((priceRequest / 0.65) * 100) / 100).replace(".", ",") + " Wauw Points a tu saldo de puntos.");
 
           navigation.popToTop("Services");
 
@@ -222,7 +221,7 @@ function PayRequest(props) {
           //console.log({ ...err });
         });
 
-      let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
+      let newPoints = Math.round((priceRequest / 0.65) * 100) / 100;
       db.ref("wauwers/" + currentUserID).update({ wauwPoints: newPoints });
     }
   };
@@ -231,12 +230,12 @@ function PayRequest(props) {
     <React.Fragment>
 
       {currentUserWauwPoints === 0 ? (
-        <WithoutWauwPoints buyBook={buyBook} priceRequestConst={priceRequestConst}></WithoutWauwPoints>
+        <WithoutWauwPoints buyBook={buyBook}></WithoutWauwPoints>
       ) : null}
 
       {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 === priceRequest ? (
         <PointsEqualToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
-          requestId={requestId} currentUserID={currentUserID} navigation={navigation} priceRequestConst={priceRequestConst}></PointsEqualToPrice>
+          requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsEqualToPrice>
       ) : null}
 
       {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 < priceRequest || checked ? (
@@ -246,7 +245,7 @@ function PayRequest(props) {
 
       {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 > priceRequest ? (
         <PointsMoreToPrice buyBook={buyBook} wauwPoints={currentUserWauwPoints} priceRequest={priceRequest}
-          requestId={requestId} currentUserID={currentUserID} navigation={navigation} priceRequestConst={priceRequestConst}></PointsMoreToPrice>
+          requestId={requestId} currentUserID={currentUserID} navigation={navigation}></PointsMoreToPrice>
       ) : null}
 
       {paypalUrl ? (
@@ -280,7 +279,7 @@ function PayRequest(props) {
 }
 
 function WithoutWauwPoints(props) {
-  const { buyBook, priceRequestConst } = props;
+  const { buyBook } = props;
 
   return (
     <View style={styles.container}>
@@ -300,17 +299,14 @@ function WithoutWauwPoints(props) {
           Pagar con PayPal
           </Text>
       </TouchableOpacity>
-      <Text style={styles.texts}>No tienes Wauw Points para canjear.</Text>
-      <Text style={styles.textLess}>Total a pagar: {priceRequestConst}€</Text>
+      <Text>No tienes Wauw Points para canjear.</Text>
     </View>
   );
 
 }
 
 function PointsEqualToPrice(props) {
-  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation, priceRequestConst } = props;
-
-  let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
+  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation } = props;
 
   const canjeoIgual = async () => {
     db.ref("requests/" + requestId).update({
@@ -319,7 +315,7 @@ function PointsEqualToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
 
-    Alert.alert("Pago realizado", "Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.");
+    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.");
 
     navigation.popToTop("Services");
   };
@@ -342,11 +338,7 @@ function PointsEqualToPrice(props) {
           Pagar con Paypal.
           </Text>
       </TouchableOpacity>
-      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
-      <Text style={styles.textLess}>Valor de los puntos: {valor}€</Text>
-      <Text style={styles.textLess}>Total a pagar sin aplicar descuento: {priceRequestConst}€</Text>
-      <Text style={styles.textLess}>Si canjeas no tendrás que realizar pago.</Text>
-      <Text style={styles.textUsar}>¿Quieres canjearlos?</Text>
+      <Text>Tienes {wauwPoints.replace(".", ",")} Wauw Points que equivalen a los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoIgual}
@@ -373,19 +365,17 @@ function PointsLessToPrice(props) {
 
   let resta = Math.round(wauwPoints * 0.65 * 100) / 100;
 
-  let totalToPay = Math.round((Math.round((priceRequestConst - resta) * 100) / 100) * 100) / 100;
-
   const setChecked = () => {
     if (checked === false) {
-      setPriceRequest(Math.round((priceRequest - resta) * 100) / 100);
+      setPriceRequest(priceRequest - resta);
     } else {
-      setPriceRequest(Math.round((priceRequest + resta) * 100) / 100);
+      setPriceRequest(priceRequest + resta);
     }
     setIsChecked(!checked);
   };
 
   const easterEgg = () => {
-    Alert.alert("EASTER EGG", "Aprobar ISPP con 6⏳ h/semanales: ¡DIFICULTAD DIOS! 🐶");
+    alert("Has encontrado un Easter Egg: aprobar ISPP con 6h/semanales, dificultad DIOS! 🐶");
   };
 
   return (
@@ -406,11 +396,7 @@ function PointsLessToPrice(props) {
           Pagar con Paypal
           </Text>
       </TouchableOpacity>
-      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
-      <Text style={styles.textLess}>Valor de los puntos: {resta}€</Text>
-      <Text style={styles.textLess}>Total a pagar sin aplicar descuento: {priceRequestConst}€</Text>
-      <Text style={styles.textLess}>Total a pagar con descuento: {totalToPay}€</Text>
-      <Text style={styles.textUsar}>¿Quieres usarlos?</Text>
+      <Text style={styles.texts}>Tienes {wauwPoints} Wauw Points que restan {resta}€ a los {priceRequestConst}€ del servicio. ¿Quieres usarlos?</Text>
       <CheckBox onLongPress={easterEgg} containerStyle={styles.check} textStyle={styles.textCheck} checkedColor={"white"}
         title={"Aplicar"} checked={checked} onPress={setChecked}></CheckBox>
     </View>
@@ -419,11 +405,9 @@ function PointsLessToPrice(props) {
 }
 
 function PointsMoreToPrice(props) {
-  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation, priceRequestConst } = props;
+  const { buyBook, wauwPoints, priceRequest, requestId, currentUserID, navigation } = props;
 
-  let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
-
-  let deMas = Math.round((wauwPoints - (Math.round((priceRequest / 0.65) * 100) / 100)) * 100) / 100;
+  let deMas = wauwPoints - Math.round(priceRequest / 0.65);
 
   const canjeoMayor = async () => {
     db.ref("requests/" + requestId).update({
@@ -432,7 +416,7 @@ function PointsMoreToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({ wauwPoints: deMas });
 
-    Alert.alert("Pago realizado", "Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas + " Wauw Points.");
+    alert("Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " + deMas.replace(".", ",") + " Wauw Points.");
 
     navigation.popToTop("Services");
   };
@@ -455,12 +439,7 @@ function PointsMoreToPrice(props) {
           Pagar con Paypal
           </Text>
       </TouchableOpacity>
-      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
-      <Text style={styles.textLess}>Valor de los puntos: {valor}€</Text>
-      <Text style={styles.textLess}>Total a pagar sin aplicar descuento: {priceRequestConst}€</Text>
-      <Text style={styles.textLess}>Wauw Points que te quedarán después de canjear este servicio: {deMas}</Text>
-      <Text style={styles.textLess}>Si canjeas no tendrás que realizar pago.</Text>
-      <Text style={styles.textUsar}>¿Quieres canjearlos?</Text>
+      <Text>Tienes {wauwPoints.replace(".", ",")} Wauw Points que se quedan en {deMas.replace(".", ",")} al canjearlos por los {priceRequest}€ del servicio. ¿Quieres canjearlos?</Text>
       <TouchableOpacity
         activeOpacity={0.5}
         onPress={canjeoMayor}
@@ -517,37 +496,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff7549"
   },
   btnCanjear: {
-    paddingVertical: 7,
+    paddingVertical: 5,
     paddingHorizontal: 15,
     borderRadius: 15,
     backgroundColor: morado,
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center",
-    marginTop: 15
+    alignContent: "center"
   },
   check: {
     backgroundColor: morado,
-    borderRadius: 15,
-    marginTop: 15
+    borderRadius: 15
   },
   textCheck: {
     color: blanco
   },
   texts: {
     fontSize: 17,
-    paddingTop: 30,
-    paddingBottom: 10,
     textAlign: "center"
-  },
-  textLess: {
-    fontSize: 17,
-    paddingBottom: 10
-  },
-  textUsar: {
-    fontSize: 17,
-    textAlign: "center",
-    paddingTop: 15
   }
 });
 

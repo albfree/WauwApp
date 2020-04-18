@@ -12,9 +12,6 @@ import ShowWalkScreen from "../screens/Profile/ShowWalk";
 import UserDataScreen from "../screens/GRPD/UserData";
 import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
-import AdminPanelScreen from "../screens/Profile/AdminPanel";
-import UserListScreen from "../screens/Administrator/UserList";
-import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
 const blanco = "white";
@@ -122,8 +119,8 @@ const ProfileScreenStacks = createStackNavigator({
     screen: EditDeleteAccommodationScreen,
     navigationOptions: () => ({
       title: "Editar alojamiento",
-      headerTitleAlign: "center",
-    }),
+      headerTitleAlign: "center"
+    })
   },
   UserData: {
     screen: UserDataScreen,
@@ -137,22 +134,9 @@ const ProfileScreenStacks = createStackNavigator({
         color: blanco,
       },
       headerTintColor: blanco,
-    }),
+    })
   },
-  UserList: {
-    screen: UserListScreen,
-    navigationOptions: () => ({
-      title: "Lista de usuarios",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
+  
   AddReviewService: {
     screen: AddReviewServiceScreen,
     navigationOptions: () => ({
@@ -178,34 +162,6 @@ const ProfileScreenStacks = createStackNavigator({
     screen: DisplayFinishRequestScreen,
     navigationOptions: () => ({
       title: "Solicitud a mi alojamiento",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  AdminPanel: {
-    screen: AdminPanelScreen,
-    navigationOptions: () => ({
-      title: "Panel de Administración",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  Pagar: {
-    screen: PagarScreen,
-    navigationOptions: () => ({
-      title: "Pagar",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,

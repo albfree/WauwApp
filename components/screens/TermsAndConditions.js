@@ -82,8 +82,7 @@ export default class TermsAndConditions extends Component {
             de violencia, racismo, sexismo, discriminación o maltrato animal,
             así como el indebido uso del chat de la aplicación como herramienta
             para acosar, amenazar, extorsionar, o bien, realizar cualquier
-            actividad considerada como Spam, será penalizada con el bloqueo
-            parcial o total de su cuenta de usuario,
+            actividad considerada como Spam, será penalizada,
             pudiendo incluso llegar a procedimientos legales por parte de la
             autoridad competente en proporción a la gravedad de la transgresión.
             Si observa algún comportamiento inadecuado en cualquier momento,

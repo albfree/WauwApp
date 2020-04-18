@@ -1,42 +1,38 @@
 
-export function fechaParseada(fecha) {
-    var fechaRecibida = new Date(fecha);
-    let minutos = (fechaRecibida.getMinutes() < 10 ? "0" : "") + fechaRecibida.getMinutes();
-    let horas = (fechaRecibida.getHours() < 10 ? "0" : "") + fechaRecibida.getHours();
+export function fechaParseada(fecha){
+    var fechaRecibida = new Date(fecha);    
     return (
-        " " +
-        fechaRecibida.getDate() + "/" +
-        parseInt(fechaRecibida.getMonth() + 1) +
-        "/" +
-        fechaRecibida.getFullYear() +
-        " "
-        +
-        horas +
-        ":"
-        +
-        minutos
+    " " +
+    fechaRecibida.getDate() + "/" +
+    parseInt(fechaRecibida.getMonth() + 1) +
+    "/" +
+    fechaRecibida.getFullYear() + 
+    " " 
+    +
+    fechaRecibida.getHours() + 
+    ":" 
+    +
+    fechaRecibida.getMinutes()
     );
 }
 
-export function fechaParseadaCorta(fecha) {
-    var fechaRecibida = new Date(fecha);
+export function fechaParseadaCorta(fecha){
+    var fechaRecibida = new Date(fecha);    
     return (
-        fechaRecibida.getDate() + "/" +
-        parseInt(fechaRecibida.getMonth() + 1) +
-        "/" +
-        fechaRecibida.getFullYear()
+    fechaRecibida.getDate() + "/" +
+    parseInt(fechaRecibida.getMonth() + 1) +
+    "/" +
+    fechaRecibida.getFullYear()
     );
 }
 
-export function horaParseada(fecha) {
-    var fechaRecibida = new Date(fecha);
-    let minutos = (fechaRecibida.getMinutes() < 10 ? "0" : "") + fechaRecibida.getMinutes();
-    let horas = (fechaRecibida.getHours() < 10 ? "0" : "") + fechaRecibida.getHours();
+export function horaParseada(fecha){
+    var fechaRecibida = new Date(fecha);    
     return (
-        " " +
-        horas +
-        ":"
-        +
-        minutos
+    " " +
+    fechaRecibida.getHours() + 
+    ":" 
+    +
+    fechaRecibida.getMinutes()
     );
 }

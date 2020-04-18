@@ -114,23 +114,16 @@ export const requestsStyles = StyleSheet.create({
   requestsTxt14: {
     color: verde,
     marginTop: 15,
-    textAlign: "center",
   },
   requestsTxt15: {
     alignSelf: "center",
     marginTop: 15,
     textAlign: "center",
   },
-  requestsTxt16: {
-    alignSelf: "center",
-    color: gris,
-    fontSize: 14,
-    marginLeft: 3,
-    marginTop: 4,
-  },
   requestsTxt2: {
     color: gris,
     fontSize: 14,
+    marginLeft: 3,
     marginTop: 4,
   },
   requestsTxt3: {

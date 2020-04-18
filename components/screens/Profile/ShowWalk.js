@@ -11,10 +11,6 @@ import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
-import { myWalksStyles } from "../../styles/myWalksStyle";
-import { requestsStyles } from "../../styles/requestsStyle";
-import firebase from "firebase";
-import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ShowWalk(props) {
   const { navigation } = props;
@@ -27,16 +23,11 @@ function ShowWalk(props) {
   var pago = "";
   var fecha = "";
 
-  bannedAssertion();
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
     .on("child_added", (snap) => {
       worker = snap.val();
-      if (worker.isBanned){
-        Alert.alert("Atención", "Su cuenta ha sido bloqueada");
-        firebase.auth().signOut();
-      }
     });
 
   const confirmDeclineRequest = () => {
@@ -77,8 +68,8 @@ function ShowWalk(props) {
 
   const confirmFinishRequest = () => {
     Alert.alert(
-      "Va a navegar hacia una página para poner su email para obtener el cobro",
-      "¿Está seguro?",
+      "Finalizar Servicio",
+      "¿Estás seguro?",
       [
         {
           text: "Si",
@@ -93,16 +84,14 @@ function ShowWalk(props) {
     );
   };
 
-
   const finishRequest = () => {
-    /*var idRequest = request.id;
+    var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
-      isFinished: true,
+      isFinish: true,
     });
     alert("Se ha finalizado el servicio correctamente");
-    navigation.popToTop();*/
-    navigation.navigate("Pagar", { request: request });
+    navigation.popToTop();
   };
 
   const acceptRequest = () => {
@@ -134,10 +123,8 @@ function ShowWalk(props) {
     status = "Esperando aceptación";
   } else if (!request.pending && request.isCanceled) {
     status = "Solicitud denegada";
-  } else if (!request.isFinished) {
-    status = "Solicitud aceptada";
   } else {
-    status = "Servicio Finalizado";
+    status = "Solicitud aceptada";
   }
 
   if (request.isPayed) {
@@ -148,65 +135,67 @@ function ShowWalk(props) {
 
   if (request.pending) {
     return (
-      <SafeAreaView style={requestsStyles.requestsView4}>
-        <View style={requestsStyles.requestsFeed2}>
+      <SafeAreaView style={globalStyles.safeShowRequestArea}>
+        <View style={globalStyles.showWalkFeed}>
           <View style={globalStyles.viewFlex1}>
-            <View style={requestsStyles.requestsView5}>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
-                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
-                <Text style={requestsStyles.requestsTxt7}>
-                  {request.interval}
+            <View style={globalStyles.showWalkRow}>
+              <View style={globalStyles.showRequestColumn1}>
+                <Text style={globalStyles.showWalkName}>{worker.name}</Text>
+                <Text style={globalStyles.showWalkPrice}>
+                  {request.price} €
                 </Text>
+                <Text style={globalStyles.showWalkDate1}>Fecha:</Text>
+                <Text style={globalStyles.showWalkDate2}>
+                  {request.interval.split(" ")[0]}
+                </Text>
+                <Text style={globalStyles.showWalkDate3}>
+                  {request.interval.split(" ")[1]}{" "}
+                  {request.interval.split(" ")[2]}{" "}
+                  {request.interval.split(" ")[3]}
+                </Text>
+                <Button
+                  buttonStyle={globalStyles.showWalkBtn}
+                  containerStyle={globalStyles.showWalkBtnContainer}
+                  title="Aceptar Solicitud"
+                  onPress={confirmAcceptRequest}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="check"
+                      size={30}
+                      color="white"
+                      marginLeft={10}
+                    />
+                  }
+                  titleStyle={globalStyles.showRequestBtnTittle}
+                />
               </View>
-              <View style={requestsStyles.requestsView6}>
+              <View style={globalStyles.showRequestColumn22}>
                 <Image
-                  style={requestsStyles.requestsImage}
+                  style={globalStyles.showWalkImage}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
-                </Text>
-                <Text style={requestsStyles.requestsTxt9}>{status}</Text>
-                <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
+              <View style={globalStyles.showRequestColumn3}>
+                <Text style={globalStyles.showWalkStatus}>{status}</Text>
+                <Text style={globalStyles.showWalkPay}> {pago} </Text>
+                <Button
+                  buttonStyle={globalStyles.showWalkBtn2}
+                  containerStyle={globalStyles.showWalkBtnContainer2}
+                  title="Denegar Solicitud"
+                  onPress={confirmDeclineRequest}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="cancel"
+                      size={30}
+                      color="white"
+                      marginLeft={10}
+                    />
+                  }
+                  titleStyle={globalStyles.showRequestBtnTittle}
+                />
               </View>
-            </View>
-            <View>
-              <Button
-                buttonStyle={myWalksStyles.myWalksBtn}
-                containerStyle={myWalksStyles.myWalksContainer}
-                title="Aceptar Solicitud"
-                onPress={confirmAcceptRequest}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="check"
-                    size={30}
-                    color="white"
-                    marginLeft={"10%"}
-                  />
-                }
-                titleStyle={requestsStyles.requestsBtnTittle}
-              />
-              <Button
-                buttonStyle={requestsStyles.requestsBtn}
-                containerStyle={requestsStyles.requestsBtnContainer}
-                title="Denegar Solicitud"
-                onPress={confirmDeclineRequest}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="cancel"
-                    size={30}
-                    color="white"
-                    marginLeft={"10%"}
-                  />
-                }
-                titleStyle={requestsStyles.requestsBtnTittle}
-              />
             </View>
           </View>
         </View>
@@ -214,29 +203,34 @@ function ShowWalk(props) {
     );
   } else if (!request.pending && request.isCanceled) {
     return (
-      <SafeAreaView style={requestsStyles.requestsView4}>
-        <View style={requestsStyles.requestsFeed2}>
+      <SafeAreaView style={globalStyles.safeShowRequestArea}>
+        <View style={globalStyles.showWalkFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={requestsStyles.requestsView5}>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
-                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
-                <Text style={requestsStyles.requestsTxt7}>
-                  {request.interval}
+            <View style={globalStyles.showWalkRow}>
+              <View style={globalStyles.showRequestColumn1}>
+                <Text style={globalStyles.showWalkName}>{worker.name}</Text>
+                <Text style={globalStyles.showWalkDate1}>Fecha:</Text>
+                <Text style={globalStyles.showWalkDate2}>
+                  {request.interval.split(" ")[0]}
+                </Text>
+                <Text style={globalStyles.showWalkDate3}>
+                  {request.interval.split(" ")[1]}{" "}
+                  {request.interval.split(" ")[2]}{" "}
+                  {request.interval.split(" ")[3]}
                 </Text>
               </View>
-              <View style={requestsStyles.requestsView6}>
+              <View style={globalStyles.showRequestColumn22}>
                 <Image
-                  style={requestsStyles.requestsImage}
+                  style={globalStyles.showWalkImage2}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt11}>
+              <View style={globalStyles.showRequestColumn3}>
+                <Text style={globalStyles.showWalkStatus}>
+                  {" "}
                   {request.price} €
                 </Text>
-                <Text style={requestsStyles.requestsTxt12}>{status}</Text>
+                <Text style={globalStyles.showWalkPay}> {status} </Text>
               </View>
             </View>
           </View>
@@ -247,54 +241,42 @@ function ShowWalk(props) {
     !request.pending &&
     !request.isCanceled &&
     request.isPayed &&
-    !request.isFinished
+    !request.isFinish
   ) {
     return (
-      <SafeAreaView style={requestsStyles.requestsView4}>
-        <View style={requestsStyles.requestsFeed2}>
+      <SafeAreaView style={globalStyles.safeShowRequestArea}>
+        <View style={globalStyles.showWalkFeed}>
           <View style={globalStyles.viewFlex1}>
-            <View style={requestsStyles.requestsView5}>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
-                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
-                <Text style={requestsStyles.requestsTxt7}>
-                  {request.interval}
+            <View style={globalStyles.showWalkRow2}>
+              <View style={globalStyles.showRequestColumn1}>
+                <Text style={globalStyles.showWalkName}>{worker.name}</Text>
+                <Text style={globalStyles.showWalkPrice}>
+                  {request.price} €
+                </Text>
+                <Text style={globalStyles.showWalkDate1}>Fecha:</Text>
+                <Text style={globalStyles.showWalkDate2}>
+                  {request.interval.split(" ")[0]}
+                </Text>
+                <Text style={globalStyles.showWalkDate3}>
+                  {request.interval.split(" ")[1]}{" "}
+                  {request.interval.split(" ")[2]}{" "}
+                  {request.interval.split(" ")[3]}
                 </Text>
               </View>
-              <View style={requestsStyles.requestsView6}>
+              <View style={globalStyles.showRequestColumn22}>
                 <Image
-                  style={requestsStyles.requestsImage}
+                  style={globalStyles.showWalkImage}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
-                </Text>
-                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
-                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
+              <View style={globalStyles.showRequestColumn3}>
+                <Text style={globalStyles.showWalkStatus2}>{status}</Text>
+                <Text style={globalStyles.showWalkPay2}> {pago} </Text>
               </View>
             </View>
             <Button
-              buttonStyle={requestsStyles.requestsBtn2}
-              containerStyle={requestsStyles.requestsBtnContainer2}
-              title="Abrir Chat"
-              onPress={() => navigation.navigate("Chats")}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="chat"
-                  size={30}
-                  color="white"
-                  marginLeft={"10%"}
-                />
-              }
-              titleStyle={requestsStyles.requestsBtnTittle}
-            />
-            <Button
-              buttonStyle={requestsStyles.requestsBtn2}
-              containerStyle={requestsStyles.requestsBtnContainer2}
+              buttonStyle={globalStyles.showWalkBtn3}
+              containerStyle={globalStyles.showWalkBtnContainer3}
               title="Finalizar Servicio"
               onPress={confirmFinishRequest}
               icon={
@@ -303,10 +285,10 @@ function ShowWalk(props) {
                   name="thumbs-up"
                   size={30}
                   color="white"
-                  marginLeft={"10%"}
+                  marginLeft={30}
                 />
               }
-              titleStyle={requestsStyles.requestsBtnTittle}
+              titleStyle={globalStyles.showRequestBtnTittle}
             />
           </View>
         </View>
@@ -316,107 +298,79 @@ function ShowWalk(props) {
     !request.pending &&
     !request.isCanceled &&
     request.isPayed &&
-    request.isFinished &&
-    !request.isRated
+    request.isFinish
   ) {
     return (
-      <SafeAreaView style={requestsStyles.requestsView4}>
-        <View style={requestsStyles.requestsFeed2}>
+      <SafeAreaView style={globalStyles.safeShowRequestArea}>
+        <View style={globalStyles.showWalkFeed}>
           <View style={globalStyles.viewFlex1}>
-            <View style={requestsStyles.requestsView5}>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
-                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
-                <Text style={requestsStyles.requestsTxt7}>
-                  {request.interval}
+            <View style={globalStyles.showWalkRow2}>
+              <View style={globalStyles.showRequestColumn1}>
+                <Text style={globalStyles.showWalkName}>{worker.name}</Text>
+                <Text style={globalStyles.showWalkPrice}>
+                  {request.price} €
+                </Text>
+                <Text style={globalStyles.showWalkDate1}>Fecha:</Text>
+                <Text style={globalStyles.showWalkDate2}>
+                  {request.interval.split(" ")[0]}
+                </Text>
+                <Text style={globalStyles.showWalkDate3}>
+                  {request.interval.split(" ")[1]}{" "}
+                  {request.interval.split(" ")[2]}{" "}
+                  {request.interval.split(" ")[3]}
                 </Text>
               </View>
-              <View style={requestsStyles.requestsView6}>
+              <View style={globalStyles.showRequestColumn22}>
                 <Image
-                  style={requestsStyles.requestsImage}
+                  style={globalStyles.showWalkImage}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
-                </Text>
-                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
-                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
+              <View style={globalStyles.showRequestColumn3}>
+                <Text style={globalStyles.showWalkStatus2}>{status}</Text>
+                <Text style={globalStyles.showWalkPay2}> {pago} </Text>
               </View>
             </View>
-            <Text style={requestsStyles.requestsTxt7}>
+            <Text style={globalStyles.showWalkWaiting2}>
+              Servicio Finalizado
+            </Text>
+            <Text style={globalStyles.showWalkWaiting}>
               Esperando Valoración
             </Text>
           </View>
         </View>
       </SafeAreaView>
     );
-  } else if (
-    !request.pending &&
-    !request.isCanceled &&
-    request.isPayed &&
-    request.isFinished &&
-    request.isRated
-  ) {
-    return (
-      <SafeAreaView style={requestsStyles.requestsView4}>
-        <View style={requestsStyles.requestsFeed2}>
-          <View style={globalStyles.viewFlex1}>
-            <View style={requestsStyles.requestsView5}>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
-                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
-                <Text style={requestsStyles.requestsTxt7}>
-                  {request.interval}
-                </Text>
-              </View>
-              <View style={requestsStyles.requestsView6}>
-                <Image
-                  style={requestsStyles.requestsImage}
-                  source={{ uri: worker.photo }}
-                />
-              </View>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
-                </Text>
-                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
-                <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </SafeAreaView>
-    );
   } else {
     return (
-      <SafeAreaView style={requestsStyles.requestsView4}>
-        <View style={requestsStyles.requestsFeed2}>
+      <SafeAreaView style={globalStyles.safeShowRequestArea}>
+        <View style={globalStyles.showWalkFeed}>
           <View style={globalStyles.viewFlex1}>
-            <View style={requestsStyles.requestsView5}>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt4}>{worker.name}</Text>
-                <Text style={requestsStyles.requestsTxt5}>{tipo}</Text>
-                <Text style={requestsStyles.requestsTxt6}>Fecha</Text>
-                <Text style={requestsStyles.requestsTxt7}>
-                  {request.interval}
+            <View style={globalStyles.showWalkRow}>
+              <View style={globalStyles.showRequestColumn1}>
+                <Text style={globalStyles.showWalkName}>{worker.name}</Text>
+                <Text style={globalStyles.showWalkPrice}>
+                  {request.price} €
+                </Text>
+                <Text style={globalStyles.showWalkDate1}>Fecha:</Text>
+                <Text style={globalStyles.showWalkDate2}>
+                  {request.interval.split(" ")[0]}
+                </Text>
+                <Text style={globalStyles.showWalkDate3}>
+                  {request.interval.split(" ")[1]}{" "}
+                  {request.interval.split(" ")[2]}{" "}
+                  {request.interval.split(" ")[3]}
                 </Text>
               </View>
-              <View style={requestsStyles.requestsView6}>
+              <View style={globalStyles.showRequestColumn22}>
                 <Image
-                  style={requestsStyles.requestsImage}
+                  style={globalStyles.showWalkImage2}
                   source={{ uri: worker.photo }}
                 />
               </View>
-              <View style={requestsStyles.requestsView6}>
-                <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
-                </Text>
-                <Text style={requestsStyles.requestsTxt13}>{status}</Text>
-                <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
+              <View style={globalStyles.showRequestColumn3}>
+                <Text style={globalStyles.showWalkStatus2}>{status}</Text>
+                <Text style={globalStyles.showWalkPay}> {pago} </Text>
               </View>
             </View>
           </View>

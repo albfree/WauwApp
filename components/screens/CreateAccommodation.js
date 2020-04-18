@@ -81,9 +81,9 @@ function CreateAccommodation(props) {
   };
 
   const addCommissions = (props) => {
-    let price = (props * 1.25).toFixed(2);
-    setNewSalary(parseFloat(props).toFixed(2));
-    setNewPrice(price);
+    let price = props * 1.25;
+    setNewSalary(price);
+    setNewPrice(props);
   };
 
   const addAccommodation = () => {

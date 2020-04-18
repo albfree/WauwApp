@@ -15,7 +15,6 @@ import { email } from "../account/QueriesProfile";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { notificationsStyles } from "../styles/notificationsStyle";
-import firebase from "firebase";
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
@@ -23,17 +22,11 @@ export default function ListMyNotifications(props) {
   const [reloadRequests, setReloadRequests] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   let id;
-  let userInfo;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .on("child_added", (snap) => {
-      userInfo = snap.val();
-      id = userInfo.id;
-      if(userInfo.isBanned){
-        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
-        firebase.auth().signOut();
-      }
+      id = snap.val().id;
     });
 
   useEffect(() => {

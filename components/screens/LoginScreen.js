@@ -72,8 +72,6 @@ function LoginScreen(props) {
                   avgScore: 0,
                   walkSalary: 0,
                   location: null,
-                  userId: result.user.uid,
-                  isBanned: false,
                 });
                 firebase
                   .database()
@@ -84,33 +82,14 @@ function LoginScreen(props) {
                     first_name: result.additionalUserInfo.profile.given_name,
                     last_name: result.additionalUserInfo.profile.family_name,
                     created_at: Date.now(),
-                    last_logged_in: new Date().toISOString(), 
-                  });
-                let idLogin = db.ref("logins").push().key;
-                firebase
-                  .database()
-                  .ref()
-                  .child("logins/" + idLogin)
-                  .set({
-                    fecha: new Date().toISOString(),
-                    user: result.user.uid,
                   });
               } else {
                 firebase
                   .database()
                   .ref("/users/" + result.user.uid)
                   .update({
-                    last_logged_in: new Date().toISOString(),
+                    last_logged_in: Date.now(),
                   });
-                  let idLogin = db.ref("logins").push().key;
-                  firebase
-                    .database()
-                    .ref()
-                    .child("logins/" + idLogin)
-                    .set({
-                      fecha: new Date().toISOString(),
-                      user: result.user.uid,
-                    });
               }
             })
             .catch(function (error) {

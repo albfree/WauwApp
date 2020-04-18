@@ -14,16 +14,17 @@ export default function UserGuest() {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
+      .on("value", function(snap) {
+        snap.forEach(function(child) {
           setUserInfo(child.val());
         });
       });
   }, []);
 
   return (
-    <View>
-      <InfoUser userInfo={userInfo} setReloadData={setReloadData} />
+    <View style={globalStyles.profileUserGuestView}>
+      <InfoUser userInfo={userInfo} />
+      <AccountOptions userInfo={userInfo} setReloadData={setReloadData} />
     </View>
   );
 }
