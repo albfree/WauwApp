@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
-  StyleSheet,
+  Alert,
   View,
   Text,
   FlatList,
@@ -8,6 +8,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import _ from "lodash";
+import firebase from "firebase";
 import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
 import { ScrollView } from "react-native-gesture-handler";
@@ -30,6 +31,10 @@ export default function Chats(props) {
     .equalTo(email)
     .on("child_added", (snap) => {
       currentUser = snap.val();
+      if(!currentUser.isBanned){
+        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
+        firebase.auth().signOut();
+      }
     });
 
   useEffect(() => {

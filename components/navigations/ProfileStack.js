@@ -14,7 +14,6 @@ import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileReques
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 import AdminPanelScreen from "../screens/Profile/AdminPanel";
 import UserListScreen from "../screens/Administrator/UserList";
-import BannedSwitchNavigator from "./BannedSwitchNavigator";
 
 const morado = "#443099";
 const blanco = "white";
@@ -202,9 +201,6 @@ const ProfileScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
-  Blocked:{
-    screen: BannedSwitchNavigator,
-  }
 });
 
 export default ProfileScreenStacks;

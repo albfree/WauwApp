@@ -13,6 +13,7 @@ import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
 import { myWalksStyles } from "../../styles/myWalksStyle";
 import { requestsStyles } from "../../styles/requestsStyle";
+import firebase from "firebase";
 
 function ShowWalk(props) {
   const { navigation } = props;
@@ -30,17 +31,11 @@ function ShowWalk(props) {
     .equalTo(id)
     .on("child_added", (snap) => {
       worker = snap.val();
-      if (!worker.isBanned){
-        navigation.navigate("Blocked");
-        console.log(worker.isBanned);
+      if (worker.isBanned){
+        Alert.alert("Atención", "Su cuenta ha sido bloqueada");
+        firebase.auth().signOut();
       }
     });
-
-  const assertIsNotBanned = () => {
-    if (!worker.isBanned){
-      navigation.navigate("Blocked");
-    }
-  }
 
   const confirmDeclineRequest = () => {
     Alert.alert(

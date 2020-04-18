@@ -21,12 +21,16 @@ import { db } from "../../population/config.js";
 
 function Profile(props) {
   const { navigation } = props;
-  var userInfo;
+  var userInfo = [];
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .once("child_added", (snap) => {
       userInfo = snap.val();
+      if(!userInfo.isBanned){
+        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
+        firebase.auth().signOut();
+      }
     });
 
   var requestWorker = [];
