@@ -93,8 +93,8 @@ const morado = "#ff7549";
 const styles = StyleSheet.create({
     btn: {
       alignContent: "center",
-      justifyContent: "center",
       alignItems: "center",
+      justifyContent: "center",
       borderRadius: 15,
       paddingHorizontal: 15,
       paddingVertical: 5,
