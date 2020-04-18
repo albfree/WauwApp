@@ -6,6 +6,9 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Alert,
+  Image,
+  SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import { withNavigation } from "react-navigation";
@@ -15,6 +18,8 @@ import { decode, encode } from "base-64";
 import { db } from "../../population/config.js";
 import { email } from "../../account/QueriesProfile";
 import { CheckBox } from "react-native-elements";
+import { globalStyles } from "../../styles/global";
+import { payStyles } from "../../styles/payStyle";
 
 function PayRequest(props) {
   const { navigation } = props;
@@ -246,7 +251,8 @@ function PayRequest(props) {
         ></PointsEqualToPrice>
       ) : null}
 
-      {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 < priceRequest ||
+      {(currentUserWauwPoints > 0 &&
+        Math.round(currentUserWauwPoints * 0.65 * 100) / 100 < priceRequest) ||
       checked ? (
         <PointsLessToPrice
           buyBook={buyBook}
@@ -272,7 +278,7 @@ function PayRequest(props) {
       ) : null}
 
       {paypalUrl ? (
-        <View style={styles.webview}>
+        <View style={payStyles.payView}>
           <WebView
             style={{ height: "100%", width: "100%" }}
             source={{ uri: paypalUrl }}
@@ -305,26 +311,29 @@ function WithoutWauwPoints(props) {
   const { buyBook, priceRequestConst } = props;
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={buyBook}
-        style={styles.btn}
-      >
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "400",
-            textAlign: "center",
-            color: "#ffffff",
-          }}
-        >
-          Pagar con PayPal
-        </Text>
-      </TouchableOpacity>
-      <Text style={styles.texts}>No tienes Wauw Points para canjear.</Text>
-      <Text style={styles.textLess}>Total a pagar: {priceRequestConst}€</Text>
-    </View>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        <View style={globalStyles.blankView5}>
+          <Image
+            source={require("../../../assets/images/MoneyDog.jpg")}
+            style={globalStyles.blankImage3}
+          />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={buyBook}
+            style={payStyles.payBtn}
+          >
+            <Text style={payStyles.payBtnTxt}>Pagar con PayPal</Text>
+          </TouchableOpacity>
+          <Text style={payStyles.payTxt}>
+            No tienes Wauw Points para canjear.
+          </Text>
+          <Text style={payStyles.payTxt2}>
+            Total a pagar: {priceRequestConst} €
+          </Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -357,49 +366,41 @@ function PointsEqualToPrice(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={buyBook}
-        style={styles.btn}
-      >
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "400",
-            textAlign: "center",
-            color: "#ffffff",
-          }}
-        >
-          Pagar con Paypal.
-        </Text>
-      </TouchableOpacity>
-      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
-      <Text style={styles.textLess}>Valor de los puntos: {valor}€</Text>
-      <Text style={styles.textLess}>
-        Total a pagar sin aplicar descuento: {priceRequestConst}€
-      </Text>
-      <Text style={styles.textLess}>
-        Si canjeas no tendrás que realizar pago.
-      </Text>
-      <Text style={styles.textUsar}>¿Quieres canjearlos?</Text>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={canjeoIgual}
-        style={styles.btnCanjear}
-      >
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "400",
-            textAlign: "center",
-            color: "#ffffff",
-          }}
-        >
-          Canjear
-        </Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        <View style={globalStyles.blankView5}>
+          <Image
+            source={require("../../../assets/images/MoneyDog.jpg")}
+            style={globalStyles.blankImage3}
+          />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={buyBook}
+            style={payStyles.payBtn}
+          >
+            <Text style={payStyles.payBtnTxt}>Pagar con Paypal</Text>
+          </TouchableOpacity>
+          <Text style={payStyles.payTxt}>
+            Wauw Points acumulados: {wauwPoints}
+          </Text>
+          <Text style={payStyles.payTxt2}>Valor de los puntos: {valor} €</Text>
+          <Text style={payStyles.payTxt3}>
+            Total a pagar sin aplicar descuento: {priceRequestConst} €
+          </Text>
+          <Text style={payStyles.payTxt}>
+            Si canjeas no tendrás que realizar pago.
+          </Text>
+          <Text style={payStyles.payTxt2}>¿Quieres canjearlos?</Text>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={canjeoIgual}
+            style={payStyles.payBtn}
+          >
+            <Text style={payStyles.payBtnTxt}>Canjear</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -437,42 +438,43 @@ function PointsLessToPrice(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={buyBook}
-        style={styles.btn}
-      >
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "400",
-            textAlign: "center",
-            color: "#ffffff",
-          }}
-        >
-          Pagar con Paypal
-        </Text>
-      </TouchableOpacity>
-      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
-      <Text style={styles.textLess}>Valor de los puntos: {resta}€</Text>
-      <Text style={styles.textLess}>
-        Total a pagar sin aplicar descuento: {priceRequestConst}€
-      </Text>
-      <Text style={styles.textLess}>
-        Total a pagar con descuento: {totalToPay}€
-      </Text>
-      <Text style={styles.textUsar}>¿Quieres usarlos?</Text>
-      <CheckBox
-        onLongPress={easterEgg}
-        containerStyle={styles.check}
-        textStyle={styles.textCheck}
-        checkedColor={"white"}
-        title={"Aplicar"}
-        checked={checked}
-        onPress={setChecked}
-      ></CheckBox>
-    </View>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        <View style={globalStyles.blankView5}>
+          <Image
+            source={require("../../../assets/images/MoneyDog.jpg")}
+            style={globalStyles.blankImage3}
+          />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={buyBook}
+            style={payStyles.payBtn}
+          >
+            <Text style={payStyles.payBtnTxt}>Pagar con Paypal</Text>
+          </TouchableOpacity>
+          <Text style={payStyles.payTxt}>
+            Wauw Points acumulados: {wauwPoints}
+          </Text>
+          <Text style={payStyles.payTxt2}>Valor de los puntos: {resta} €</Text>
+          <Text style={payStyles.payTxt3}>
+            Total a pagar sin aplicar descuento: {priceRequestConst} €
+          </Text>
+          <Text style={payStyles.payTxt3}>
+            Total a pagar con descuento: {totalToPay} €
+          </Text>
+          <Text style={payStyles.payTxt2}>¿Quieres usarlos?</Text>
+          <CheckBox
+            onLongPress={easterEgg}
+            containerStyle={payStyles.payBtn2}
+            textStyle={payStyles.payBtnTxt}
+            checkedColor={"white"}
+            title={"Aplicar"}
+            checked={checked}
+            onPress={setChecked}
+          ></CheckBox>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -512,120 +514,46 @@ function PointsMoreToPrice(props) {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={buyBook}
-        style={styles.btn}
-      >
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "400",
-            textAlign: "center",
-            color: "#ffffff",
-          }}
-        >
-          Pagar con Paypal
-        </Text>
-      </TouchableOpacity>
-      <Text style={styles.texts}>Wauw Points acumulados: {wauwPoints}</Text>
-      <Text style={styles.textLess}>Valor de los puntos: {valor}€</Text>
-      <Text style={styles.textLess}>
-        Total a pagar sin aplicar descuento: {priceRequestConst}€
-      </Text>
-      <Text style={styles.textLess}>
-        Wauw Points que te quedarán después de canjear este servicio: {deMas}
-      </Text>
-      <Text style={styles.textLess}>
-        Si canjeas no tendrás que realizar pago.
-      </Text>
-      <Text style={styles.textUsar}>¿Quieres canjearlos?</Text>
-      <TouchableOpacity
-        activeOpacity={0.5}
-        onPress={canjeoMayor}
-        style={styles.btnCanjear}
-      >
-        <Text
-          style={{
-            fontSize: 22,
-            fontWeight: "400",
-            textAlign: "center",
-            color: "#ffffff",
-          }}
-        >
-          Canjear
-        </Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        <View style={globalStyles.blankView5}>
+          <Image
+            source={require("../../../assets/images/MoneyDog.jpg")}
+            style={globalStyles.blankImage3}
+          />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={buyBook}
+            style={payStyles.payBtn}
+          >
+            <Text style={payStyles.payBtnTxt}>Pagar con Paypal</Text>
+          </TouchableOpacity>
+          <Text style={payStyles.payTxt}>
+            Wauw Points acumulados: {wauwPoints}
+          </Text>
+          <Text style={payStyles.payTxt2}>Valor de los puntos: {valor}€</Text>
+          <Text style={payStyles.payTxt3}>
+            Total a pagar sin aplicar descuento: {priceRequestConst}€
+          </Text>
+          <Text style={payStyles.payTxt}>
+            Wauw Points que te quedarán después de canjear este servicio:{" "}
+            {deMas}
+          </Text>
+          <Text style={payStyles.payTxt}>
+            Si canjeas no tendrás que realizar pago
+          </Text>
+          <Text style={payStyles.payTxt2}>¿Quieres canjearlos?</Text>
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={canjeoMayor}
+            style={payStyles.payBtn}
+          >
+            <Text style={payStyles.payBtnTxt}>Canjear</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 export default withNavigation(PayRequest);
-
-const morado = "#4d399a";
-const blanco = "white";
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingRight: 20,
-    paddingLeft: 20,
-    paddingBottom: 20,
-    paddingTop: 20,
-  },
-  webview: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  btn: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    backgroundColor: "#ff7549",
-  },
-  btnCanjear: {
-    paddingVertical: 7,
-    paddingHorizontal: 15,
-    borderRadius: 15,
-    backgroundColor: morado,
-    justifyContent: "center",
-    alignItems: "center",
-    alignContent: "center",
-    marginTop: 15,
-  },
-  check: {
-    backgroundColor: morado,
-    borderRadius: 15,
-    marginTop: 15,
-  },
-  textCheck: {
-    color: blanco,
-  },
-  texts: {
-    fontSize: 17,
-    paddingTop: 30,
-    paddingBottom: 10,
-    textAlign: "center",
-  },
-  textLess: {
-    fontSize: 17,
-    paddingBottom: 10,
-  },
-  textUsar: {
-    fontSize: 17,
-    textAlign: "center",
-    paddingTop: 15,
-  },
-});

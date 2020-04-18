@@ -20,6 +20,7 @@ export const globalStyles = StyleSheet.create({
   },
   blankImage3: {
     alignSelf: "center",
+
     borderRadius: 80,
     flex: 1,
     height: 230,
