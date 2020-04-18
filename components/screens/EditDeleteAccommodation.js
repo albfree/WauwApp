@@ -13,6 +13,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
+import { requestsStyles } from "../styles/requestsStyle";
+import { accommodationStyles } from "../styles/accommodationStyle";
 
 function EditDeleteAccommodation(props) {
   const { navigation } = props;
@@ -189,17 +191,15 @@ function EditDeleteAccommodation(props) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.safeShowRequestArea}>
+    <SafeAreaView style={requestsStyles.requestsView4}>
       {navigation.state.params.editable ? (
-        <View style={globalStyles.showRequestFeed}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.editAccommodationColumn1}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
                 <Button
-                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
-                  containerStyle={
-                    globalStyles.editAccommodationEditDateBtnContainer
-                  }
+                  buttonStyle={accommodationStyles.accommodationBtn}
+                  containerStyle={accommodationStyles.accommodationBtnContainer}
                   title="Fecha de Entrada"
                   onPress={showDatepickerS}
                   icon={
@@ -208,9 +208,10 @@ function EditDeleteAccommodation(props) {
                       name="calendar-import"
                       size={20}
                       color="white"
+                      marginLeft={"10%"}
                     />
                   }
-                  titleStyle={globalStyles.editAccommodationEditDateTittle}
+                  titleStyle={accommodationStyles.accommodationBtnTittle}
                 />
                 {showS && (
                   <DateTimePicker
@@ -224,9 +225,9 @@ function EditDeleteAccommodation(props) {
                   />
                 )}
                 <Button
-                  buttonStyle={globalStyles.editAccommodationEditDateBtn3}
+                  buttonStyle={accommodationStyles.accommodationBtn2}
                   containerStyle={
-                    globalStyles.editAccommodationEditDateBtnContainer3
+                    accommodationStyles.accommodationBtnContainer3
                   }
                   title="Guardar"
                   onPress={all}
@@ -236,17 +237,17 @@ function EditDeleteAccommodation(props) {
                       name="content-save"
                       size={20}
                       color="white"
-                      marginLeft={10}
+                      marginLeft={"10%"}
                     />
                   }
-                  titleStyle={globalStyles.editAccommodationEditDateTittle}
+                  titleStyle={accommodationStyles.accommodationBtnTittle}
                 />
               </View>
-              <View style={globalStyles.editAccommodationColumn2}>
-                <Text style={globalStyles.editAccommodationEditDate}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={accommodationStyles.accommodationTxt2}>
                   Editar Fecha
                 </Text>
-                <Text style={globalStyles.editAccommodationEditPrize}>
+                <Text style={accommodationStyles.accommodationTxt3}>
                   Precio / noche
                 </Text>
                 <TextInput
@@ -257,15 +258,15 @@ function EditDeleteAccommodation(props) {
                     .toFixed(2)
                     .toString()}
                   keyboardType="numeric"
-                  style={globalStyles.editAccommodationEditPrize2}
+                  style={accommodationStyles.accommodationTxt4}
                   onChange={(v) => addCommissions(v.nativeEvent.text)}
                 />
               </View>
-              <View style={globalStyles.editAccommodationColumn3}>
+              <View style={requestsStyles.requestsView6}>
                 <Button
-                  buttonStyle={globalStyles.editAccommodationEditDateBtn}
+                  buttonStyle={accommodationStyles.accommodationBtn}
                   containerStyle={
-                    globalStyles.editAccommodationEditDateBtnContainer2
+                    accommodationStyles.accommodationBtnContainer2
                   }
                   title="Fecha de Salida"
                   onPress={showDatepickerE}
@@ -275,9 +276,10 @@ function EditDeleteAccommodation(props) {
                       name="calendar-export"
                       size={20}
                       color="white"
+                      marginLeft={"10%"}
                     />
                   }
-                  titleStyle={globalStyles.editAccommodationEditDateTittle}
+                  titleStyle={accommodationStyles.accommodationBtnTittle}
                 />
 
                 {showE && (
@@ -292,9 +294,9 @@ function EditDeleteAccommodation(props) {
                   />
                 )}
                 <Button
-                  buttonStyle={globalStyles.editAccommodationEditDateBtn4}
+                  buttonStyle={accommodationStyles.accommodationBtn3}
                   containerStyle={
-                    globalStyles.editAccommodationEditDateBtnContainer4
+                    accommodationStyles.accommodationBtnContainer4
                   }
                   title="Cancelar Alojamiento"
                   onPress={cancelAccomodation}
@@ -304,24 +306,22 @@ function EditDeleteAccommodation(props) {
                       name="cancel"
                       size={20}
                       color="white"
-                      marginLeft={10}
+                      marginLeft={"10%"}
                     />
                   }
-                  titleStyle={globalStyles.editAccommodationEditDateTittle2}
+                  titleStyle={accommodationStyles.accommodationBtnTittle}
                 />
               </View>
             </View>
           </View>
         </View>
       ) : (
-        <View style={globalStyles.showRequestFeed}>
+        <View style={requestsStyles.requestsFeed2}>
           <View style={globalStyles.viewFlex1}>
-            <View style={globalStyles.showRequestRow}>
-              <View style={globalStyles.showRequestColumn1}>
-                <Text style={globalStyles.editAccommodationDate1}>
-                  Fecha de inicio:
-                </Text>
-                <Text style={globalStyles.editAccommodationDate2}>
+            <View style={requestsStyles.requestsView5}>
+              <View style={requestsStyles.requestsView6}>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de inicio</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {x.getDate() +
                     "/" +
                     parseInt(x.getMonth() + 1) +
@@ -329,10 +329,8 @@ function EditDeleteAccommodation(props) {
                     x.getFullYear()}
                 </Text>
 
-                <Text style={globalStyles.editAccommodationDate1}>
-                  Fecha de fin:
-                </Text>
-                <Text style={globalStyles.editAccommodationDate2}>
+                <Text style={requestsStyles.requestsTxt6}>Fecha de fin</Text>
+                <Text style={requestsStyles.requestsTxt7}>
                   {y.getDate() +
                     "/" +
                     parseInt(y.getMonth() + 1) +
@@ -340,11 +338,11 @@ function EditDeleteAccommodation(props) {
                     y.getFullYear()}
                 </Text>
               </View>
-              <View style={globalStyles.showRequestColumn3}>
-                <Text style={globalStyles.editAccommodationPrice1}>
-                  Precio por noche:
+              <View style={requestsStyles.requestsView6}>
+                <Text style={accommodationStyles.accommodationTxt}>
+                  Precio por noche
                 </Text>
-                <Text style={globalStyles.editAccommodationPrice2}>
+                <Text style={requestsStyles.requestsTxt13}>
                   {(navigation.state.params.accommodation.salary * 0.8)
                     .toFixed(2)
                     .toString()}{" "}

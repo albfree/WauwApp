@@ -77,6 +77,16 @@ function FormAdd(props) {
           onPress={() => setIsVisibleMap(true)}
           containerStyle={locationStyles.locationBtnContainer}
           buttonStyle={locationStyles.locationBtn}
+          icon={
+            <Icon
+              type="material-community"
+              name="pencil"
+              size={25}
+              color="white"
+              marginLeft={"10%"}
+            />
+          }
+          titleStyle={locationStyles.locationBtnTxt}
         />
 
         <Button
@@ -90,7 +100,7 @@ function FormAdd(props) {
               name="content-save"
               size={25}
               color="white"
-              marginLeft={30}
+              marginLeft={"10%"}
             />
           }
           titleStyle={locationStyles.locationBtnTxt}
