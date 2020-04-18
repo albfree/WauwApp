@@ -489,7 +489,10 @@ function PointsMoreToPrice(props) {
 
   let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
 
-  let deMas = wauwPoints - Math.round((priceRequest / 0.65) * 100) / 100;
+  let deMas =
+    Math.round(
+      (wauwPoints - Math.round((priceRequest / 0.65) * 100) / 100) * 100
+    ) / 100;
 
   const canjeoMayor = async () => {
     db.ref("requests/" + requestId).update({

@@ -140,6 +140,7 @@ function Pago(props) {
             ).href;
 
             setPaypalUrl(approvalUrl);
+            navigation.popToTop();
           })
           .catch((err) => {});
       })

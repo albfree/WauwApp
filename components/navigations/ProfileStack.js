@@ -13,6 +13,7 @@ import UserDataScreen from "../screens/GRPD/UserData";
 import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 import AdminPanelScreen from "../screens/Profile/AdminPanel";
+import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
 const blanco = "white";
@@ -177,6 +178,20 @@ const ProfileScreenStacks = createStackNavigator({
     screen: AdminPanelScreen,
     navigationOptions: () => ({
       title: "Panel de Administración",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  Pagar: {
+    screen: PagarScreen,
+    navigationOptions: () => ({
+      title: "Pagar",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
