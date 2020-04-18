@@ -62,7 +62,6 @@ function ProfileRequestToMyRequestList(props) {
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
-            style={globalStyles.myRequestsFeed}
             renderItem={(request) => (
               <Request request={request} navigation={navigation} />
             )}

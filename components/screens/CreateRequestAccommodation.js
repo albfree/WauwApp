@@ -28,7 +28,7 @@ function createRequestAccommodation(props) {
 
   var x = new Date(startTime);
   var y = new Date(endTime);
- 
+
   //Atributos definidos
 
   const newIsCanceled = false;
@@ -171,7 +171,7 @@ function createRequestAccommodation(props) {
                   marginLeft={10}
                 />
               }
-              titleStyle={globalStyles.editAccommodationEditDateTittle}
+              titleStyle={searchAccommodationStyles.searchAccommodationTxt4}
             />
           </View>
         </View>

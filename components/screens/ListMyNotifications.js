@@ -51,7 +51,6 @@ export default function ListMyNotifications(props) {
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
-            style={globalStyles.notificationsFeed}
             renderItem={(request) => (
               <Request
                 req={request}

@@ -72,7 +72,6 @@ function ProfileMyAccommodations(props) {
         {accommodationsList.length > 0 ? (
           <FlatList
             data={accommodationsList}
-            style={globalStyles.myRequestsFeed}
             renderItem={(accommodation) => (
               <Accommodation
                 accommodation={accommodation}
