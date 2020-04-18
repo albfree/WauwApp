@@ -41,10 +41,8 @@ function DisplayFinishRequest(props) {
     .equalTo(id)
     .on("child_added", (snap) => {
       worker = snap.val();
-      if (worker.isBanned) {
-        navigation.navigate("Blocked");
-      }
     });
+  })
 
   const assertIsNotBanned = () => {
     if (!worker.isBanned) {
@@ -464,7 +462,6 @@ function DisplayFinishRequest(props) {
       </SafeAreaView>
     );
   }  
-  
 }
 
 export default withNavigation(DisplayFinishRequest);
