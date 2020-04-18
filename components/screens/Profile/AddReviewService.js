@@ -1,10 +1,13 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, View, Alert } from "react-native";
+import { StyleSheet, View, Alert, ScrollView, SafeAreaView } from "react-native";
 import { AirbnbRating, Button, Input } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { db } from "../../population/config";
 import { email } from "../../account/QueriesProfile";
 import Toast from "react-native-easy-toast";
+import { globalStyles } from "../../styles/global";
+import qs from "qs";
+import axios from "axios";
 
 function AddReviewService(props) {
   const { navigation } = props;
@@ -14,6 +17,7 @@ function AddReviewService(props) {
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
   const toastRef = useRef();
+  const [paypalUrl, setPaypalUrl] = useState("");
 
   const uploadData = () => {
     let user;
@@ -52,10 +56,12 @@ function AddReviewService(props) {
                 avgScore: score,
               })
               .then(() => {
+                var idWorker = request.worker;
                 db.ref("requests/" + request.id)
                   .update({ isRated: true })
                   .then(() => {
-                    Alert.alert("Su valoración se ha guardado", "");
+                    Alert.alert("Su valoración se ha guardado", "Se va a proceder el pago al usuario. Muchas gracias por usar Wauw!");
+                    payment(idWorker);
                     navigation.popToTop();
                   });
               });
@@ -74,6 +80,87 @@ function AddReviewService(props) {
     }
   };
 
+  const payment = (id) => {
+    var user;
+    db.ref("wauwers/" + id).on("value", (snap) => {
+      user = snap.val();
+    });
+
+    var randomNumber = Math.floor(Math.random() * 100000000000) + 1;
+      var sender_batch_header = {
+        sender_batch_id: randomNumber,
+        email_subject: "¡Tu pago por el paseo o alojamiento!",
+        email_message:
+          "Gracias por tu paseo o alojamiento a nuestra aplicación. Con tu servicio, hemos conseguido aportar un granito de arena a las protectoras de animales",
+      };
+
+      var items = [
+        {
+          recipient_type: "EMAIL",
+          amount: {
+            value: request.price,
+            currency: "EUR",
+          },
+          note: "Gracias por tu servicio!",
+          receiver: user.paypalUrl,
+        },
+      ];
+
+      const url = "https://api.sandbox.paypal.com/v1/oauth2/token";
+
+      const data = {
+        grant_type: "client_credentials",
+      };
+
+      const auth = {
+        username:
+          "AUrtghWgBuLlBCqUDRK4NfYpHNRxRPlxdQFu1m0nV8XSrVnfGT734v_CrmSWFjGvJ9GgcVlEyJ6GsgXq", //"your_paypal-app-client-ID",
+        password:
+          "EMc9eBqWueUaCtRuB92j3smvFqF4jyog2nzyFFY1Ud5us5vxm5F_KOKFj2QN1fVnaj8f33zBlh8eOGz2", //"your-paypal-app-secret-ID
+      };
+
+      const options = {
+        method: "post",
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+          "Access-Control-Allow-Credentials": true,
+        },
+
+        //Make sure you use the qs.stringify for data
+        data: qs.stringify(data),
+        auth: auth,
+        url,
+      };
+
+      axios(options)
+        .then((response) => {
+          axios
+            .post(
+              "https://api.sandbox.paypal.com/v1/payments/payouts",
+              { sender_batch_header, items },
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${response.data.access_token}`,
+                },
+              }
+            )
+            .then((response) => {
+              const link = JSON.parse(JSON.stringify(response.data.links[0]));
+              setPaypalUrl(link.href);
+              var idRequest = request.id;
+              var query = db.ref().child("requests/" + idRequest);
+              query.update({
+                isFinish: true,
+              });
+            })
+            .catch((err) => {
+            });
+        })
+        .catch((err) => {
+        });
+  };
+
   const btn = {
     backgroundColor: "#00a680",
   };
@@ -84,6 +171,8 @@ function AddReviewService(props) {
   };
 
   return (
+    <SafeAreaView style={globalStyles.viewFlex1}>
+    <ScrollView keyboardShouldPersistTaps="never">
     <View style={styles.viewBody}>
       <View stlye={viewRating}>
         <AirbnbRating
@@ -115,6 +204,8 @@ function AddReviewService(props) {
       />
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </View>
+    </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -122,9 +213,9 @@ const styles = StyleSheet.create({
   btnContainer: {
     alignSelf: "center",
     flex: 1,
-    justifyContent: "flex-end",
-    marginBottom: 10,
-    marginTop: 20,
+    //justifyContent: "flex-end",
+    marginBottom: 110,
+    marginTop: 10,
     width: "95%",
   },
   input: {
@@ -137,7 +228,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   textArea: {
-    height: 150,
+    height: 100,
     margin: 0,
     padding: 0,
     width: "100%",

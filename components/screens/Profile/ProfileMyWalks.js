@@ -14,6 +14,8 @@ import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
 import BlankView from "../BlankView";
+import { requestsStyles } from "../../styles/requestsStyle";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ProfileMyWalks(props) {
   const { navigation } = props;
@@ -23,14 +25,9 @@ function ProfileMyWalks(props) {
   const [requestsList, setRequestList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  let wauwerId;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      wauwerId = snap.val().id;
-    });
-
+  var wauwer = bannedAssertion();
+  var wauwerId = wauwer.id;
+  
   useEffect(() => {
     db.ref("requests")
       .orderByChild("worker")
@@ -64,10 +61,10 @@ function ProfileMyWalks(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
+        <Text style={requestsStyles.requestsTxt16}>Listado de sus Paseos</Text>
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
-            style={globalStyles.myRequestsFeed}
             renderItem={(request) => (
               <Request request={request} navigation={navigation} />
             )}
@@ -128,14 +125,14 @@ function Request(requestIn) {
   );
 
   const statusC = {
+    color,
     fontSize: 13,
     marginTop: 4,
-    color,
   };
 
   const payC = {
-    fontSize: 13,
     color: color2,
+    fontSize: 13,
   };
 
   return (
@@ -146,21 +143,21 @@ function Request(requestIn) {
         })
       }
     >
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={requestsStyles.requestsFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
-            <View style={globalStyles.myRequestsColumn1}>
-              <Text style={globalStyles.myRequestsNum}>
+          <View style={requestsStyles.requestsView}>
+            <View style={requestsStyles.requestsView2}>
+              <Text style={requestsStyles.requestsTxt}>
                 Número de mascotas: {request.item.petNumber}
               </Text>
               <Text style={statusC}>{status} </Text>
-              <Text style={globalStyles.myRequestsPrice}>
-                {(request.item.price * 0.77).toFixed(2)}€ <Text style={payC}>{pay}</Text>
+              <Text style={requestsStyles.requestsTxt2}>
+                {request.item.price} € <Text style={payC}>{pay}</Text>
               </Text>
             </View>
-            <View style={globalStyles.myRequestsColumn2}>
+            <View style={requestsStyles.requestsView3}>
               {icon}
-              <Text style={globalStyles.myRequestsType}>{tipo}</Text>
+              <Text style={requestsStyles.requestsTxt3}>{tipo}</Text>
             </View>
           </View>
         </View>

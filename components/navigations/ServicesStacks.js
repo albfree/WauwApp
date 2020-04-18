@@ -10,6 +10,7 @@ import FormFilterByAvailabilityScreen from "../screens/FormFilterByAvailability"
 import CreateRequestAccommodationScreen from "../screens/CreateRequestAccommodation";
 import FormRequestAccommodationScreen from "../screens/FormRequestAccommodation";
 import FormFilterByDateScreen from "../screens/FormFilterByDate";
+import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
 const blanco = "white";
@@ -145,7 +146,7 @@ const ServicesScreenStacks = createStackNavigator({
   FormFilterByAvailability: {
     screen: FormFilterByAvailabilityScreen,
     navigationOptions: () => ({
-      title: "Filtrar paseos",
+      title: "Filtrar Paseos",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
@@ -160,6 +161,20 @@ const ServicesScreenStacks = createStackNavigator({
     screen: FormFilterByDateScreen,
     navigationOptions: () => ({
       title: "Filtrar Alojamientos",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  Pagar: {
+    screen: PagarScreen,
+    navigationOptions: () => ({
+      title: "Recibir dinero por servicio",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,

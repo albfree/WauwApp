@@ -3,18 +3,10 @@ import React from "react";
 // Components for export email information
 import qs from "qs";
 import email from "react-native-email";
-import { db } from "../../population/config";
-import * as firebase from "firebase";
-
-import {
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  Button,
-  StyleSheet,
-  Image,
-} from "react-native";
+import { userDataStyles } from "../../styles/userDataStyle";
+import { View, Text, ScrollView, SafeAreaView } from "react-native";
+import { Button, Icon } from "react-native-elements";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 export default function UserData(props) {
   var user = props.navigation.state.params.userInfo;
@@ -27,6 +19,7 @@ export default function UserData(props) {
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";
     var petsEmail = "Mascotas registradas en nuestra aplicación\n\n";
+    bannedAssertion();
 
     userEmail += "Nombre: " + user.name + "\n";
     userEmail += "Apellidos: " + user.surname + "\n";
@@ -35,8 +28,6 @@ export default function UserData(props) {
     }
     userEmail += "Descripción: " + user.description + "\n";
     userEmail += "Email: " + user.email + "\n";
-    userEmail += "Número de mascotas: " + user.petNumber + "\n";
-    userEmail += "Salario: " + user.price + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
     if (user.hasOwnProperty("location")) {
@@ -149,10 +140,9 @@ export default function UserData(props) {
   return (
     <SafeAreaView>
       <ScrollView>
-        <View style={styles.fieldSet}>
-          <Text style={styles.legend}>Datos personales</Text>
-          <Text> {"\n"} </Text>
-          <Text>Nombre: {user.name}</Text>
+        <View style={userDataStyles.userDataView}>
+          <Text style={userDataStyles.userDataTxt}>Datos personales</Text>
+          <Text style={userDataStyles.userDataTxt3}>Nombre: {user.name}</Text>
           <Text>Apellidos: {user.surname}</Text>
           {user.hasOwnProperty("address") ? (
             <View>
@@ -163,17 +153,24 @@ export default function UserData(props) {
           )}
           <Text>Descripción: {user.description}</Text>
           <Text>Email: {user.email}</Text>
-          <Text>Número de mascotas: {user.petNumber}</Text>
-          <Text>Salario: {user.price}</Text>
+          <Text>Salario: {user.price} €</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
           {user.hasOwnProperty("location") ? (
             <View>
               <Text> La localización es visible sólo para ti</Text>
-              <Text>{user.location.latitude}</Text>
-              <Text>{user.location.latitudeDelta}</Text>
-              <Text>{user.location.longitude}</Text>
-              <Text>{user.location.longitudeDelta}</Text>
+              <Text style={userDataStyles.userDataTxt2}>
+                {user.location.latitude}
+              </Text>
+              <Text style={userDataStyles.userDataTxt2}>
+                {user.location.latitudeDelta}
+              </Text>
+              <Text style={userDataStyles.userDataTxt2}>
+                {user.location.longitude}
+              </Text>
+              <Text style={userDataStyles.userDataTxt2}>
+                {user.location.longitudeDelta}
+              </Text>
             </View>
           ) : (
             <Text></Text>
@@ -181,17 +178,21 @@ export default function UserData(props) {
         </View>
 
         {pets.length !== 0 ? (
-          <View style={styles.fieldSet}>
-            <Text style={styles.legend}>Mascotas registradas</Text>
-            <Text> {"\n"} </Text>
+          <View style={userDataStyles.userDataView}>
+            <Text style={userDataStyles.userDataTxt}>Mascotas registradas</Text>
             {pets.map((pet) => {
               let petParse = JSON.parse(JSON.stringify(pet));
               return (
                 <View>
-                  <Text> Nombre: {petParse.name} </Text>
-                  <Text> Raza: {petParse.breed} </Text>
-                  <Text> Descripción: {petParse.description} </Text>
-                  <Text> {"\n"}</Text>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    Nombre: {petParse.name}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt2}>
+                    Raza: {petParse.breed}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt2}>
+                    Descripción: {petParse.description}
+                  </Text>
                 </View>
               );
             })}
@@ -201,75 +202,67 @@ export default function UserData(props) {
         )}
 
         {requestWorker.length !== 0 ? (
-          <View style={styles.fieldSet}>
-            <Text style={styles.legend}>Solicitudes recibidas</Text>
-            <Text> {"\n"} </Text>
+          <View style={userDataStyles.userDataView}>
+            <Text style={userDataStyles.userDataTxt}>
+              Solicitudes recibidas
+            </Text>
             {requestWorker.map((request) => {
               let reqParse = JSON.parse(JSON.stringify(request));
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
-                    <Text>Disponibilidad del paseo: {reqParse.interval}</Text>
+                    <Text style={userDataStyles.userDataTxt3}>
+                      Disponibilidad del paseo: {reqParse.interval}
+                    </Text>
                   ) : (
-                    <Text> Alojamiento </Text>
+                    <Text style={userDataStyles.userDataTxt3}>Alojamiento</Text>
                   )}
-                  <Text>
-                    {" "}
-                    ¿Cancelada?: {reqParse.isCanceled === true
-                      ? "Sí"
-                      : "No"}{" "}
+                  <Text style={userDataStyles.userDataTxt2}>
+                    ¿Cancelada?: {reqParse.isCanceled === true ? "Sí" : "No"}
                   </Text>
-                  <Text>
-                    {" "}
-                    ¿Pagada?: {reqParse.isPayed === true ? "Sí" : "No"}{" "}
+                  <Text style={userDataStyles.userDataTxt2}>
+                    ¿Pagada?: {reqParse.isPayed === true ? "Sí" : "No"}
                   </Text>
-                  <Text>
-                    {" "}
-                    ¿Finalizada?: {reqParse.isFinished === true
-                      ? "Sí"
-                      : "No"}{" "}
+                  <Text style={userDataStyles.userDataTxt2}>
+                    ¿Finalizada?: {reqParse.isFinished === true ? "Sí" : "No"}
                   </Text>
-                  <Text> Precio: {reqParse.price} </Text>
-                  <Text> {"\n"} </Text>
+                  <Text style={userDataStyles.userDataTxt2}>
+                    Precio: {reqParse.price} €
+                  </Text>
                 </View>
               );
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes recibidas{"\n"}</Text>
+          <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
         )}
 
         {requestOwner.length !== 0 ? (
-          <View style={styles.fieldSet}>
-            <Text style={styles.legend}>Solicitudes recibidas</Text>
-            <Text> {"\n"} </Text>
+          <View style={userDataStyles.userDataView}>
+            <Text style={userDataStyles.userDataTxt}>Solicitudes Enviadas</Text>
             {requestOwner.map((request) => {
               let reqParse = JSON.parse(JSON.stringify(request));
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
-                    <Text>Disponibilidad del paseo: {reqParse.interval}</Text>
+                    <Text style={userDataStyles.userDataTxt3}>
+                      Disponibilidad del paseo: {reqParse.interval}
+                    </Text>
                   ) : (
-                    <Text> Alojamiento </Text>
+                    <Text style={userDataStyles.userDataTxt3}>Alojamiento</Text>
                   )}
-                  <Text>
-                    {" "}
-                    ¿Cancelada?: {reqParse.isCanceled === true
-                      ? "Sí"
-                      : "No"}{" "}
+                  <Text style={userDataStyles.userDataTxt2}>
+                    ¿Cancelada?: {reqParse.isCanceled === true ? "Sí" : "No"}
                   </Text>
-                  <Text>
-                    {" "}
-                    ¿Pagada?: {reqParse.isPayed === true ? "Sí" : "No"}{" "}
+                  <Text style={userDataStyles.userDataTxt2}>
+                    ¿Pagada?: {reqParse.isPayed === true ? "Sí" : "No"}
                   </Text>
-                  <Text>
-                    {" "}
-                    ¿Finalizada?: {reqParse.isFinished === true
-                      ? "Sí"
-                      : "No"}{" "}
+                  <Text style={userDataStyles.userDataTxt2}>
+                    ¿Finalizada?: {reqParse.isFinished === true ? "Sí" : "No"}
                   </Text>
-                  <Text> Precio: {reqParse.price} </Text>
-                  <Text> {"\n"} </Text>
+                  <Text style={userDataStyles.userDataTxt2}>
+                    Precio: {reqParse.price} €
+                  </Text>
                 </View>
               );
             })}
@@ -277,31 +270,23 @@ export default function UserData(props) {
         ) : (
           <Text>Actualmente tiene 0 solicitudes recibidas</Text>
         )}
-
         <Button
-          title={"Exportar estos datos a su aplicación de correo"}
+          buttonStyle={userDataStyles.userDataBtn}
+          containerStyle={userDataStyles.userDataContainer}
+          title={"Exportar datos"}
           onPress={sendEmail}
+          icon={
+            <Icon
+              type="material-community"
+              name="email"
+              size={20}
+              color="white"
+              marginLeft={"20%"}
+            />
+          }
+          titleStyle={userDataStyles.userDataTxt4}
         />
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  fieldSet: {
-    margin: 10,
-    paddingBottom: 10,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    borderWidth: 1,
-    alignItems: "flex-start",
-    borderColor: "#000",
-  },
-  legend: {
-    position: "absolute",
-    top: -10,
-    left: 10,
-    fontWeight: "bold",
-    backgroundColor: "#FFFFFF",
-  },
-});
