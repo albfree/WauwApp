@@ -94,8 +94,8 @@ const styles = StyleSheet.create({
     btn: {
       alignContent: "center",
       alignItems: "center",
-      justifyContent: "center",
       borderRadius: 15,
+      justifyContent: "center",
       paddingHorizontal: 15,
       paddingVertical: 5,
       backgroundColor: morado,
