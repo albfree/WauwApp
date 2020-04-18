@@ -16,7 +16,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
 import { accommodationStyles } from "../../styles/accommodationStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileMyAccommodations(props) {
   const { navigation } = props;

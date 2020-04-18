@@ -15,7 +15,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileMyRequests(props) {
   const { navigation } = props;

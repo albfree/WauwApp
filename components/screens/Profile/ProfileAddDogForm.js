@@ -14,7 +14,7 @@ import { email } from "../../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { addDogStyles } from "../../styles/addDogStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileAddDogForm(props) {
   const { setIsVisibleModal, navigation } = props;

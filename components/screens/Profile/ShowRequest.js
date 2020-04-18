@@ -5,7 +5,7 @@ import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function showRequest(props) {
   const { navigation } = props;

@@ -14,7 +14,7 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { myWalksStyles } from "../../styles/myWalksStyle";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 YellowBox.ignoreWarnings(["Setting a timer"]);
 
@@ -142,6 +142,7 @@ function DisplayFinishRequest(props) {
     alert("Se ha declinado la solicitud correctamente");
     navigation.popToTop();
   };
+
   if (request.pending && !request.isCanceled) {
     status = "Esperando aceptación";
   } else if (!request.pending && request.isCanceled) {
@@ -156,6 +157,7 @@ function DisplayFinishRequest(props) {
   } else {
     pago = "Pendiente de pago";
   }
+
   if (request.pending) {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
@@ -461,7 +463,8 @@ function DisplayFinishRequest(props) {
         </View>
       </SafeAreaView>
     );
-  }
+  }  
+  
 }
 
 export default withNavigation(DisplayFinishRequest);

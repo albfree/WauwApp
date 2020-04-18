@@ -14,7 +14,7 @@ import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;

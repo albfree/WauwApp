@@ -17,7 +17,7 @@ import _ from "lodash";
 import { servicesStyles } from "../styles/servicesStyle";
 import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
-import { bannedAssertion } from "../account/BannedAssertion";
+import { bannedAssertion } from "../account/bannedAssertion";
 
 function Services(props) {
   bannedAssertion();

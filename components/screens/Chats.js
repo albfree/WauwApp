@@ -16,7 +16,7 @@ import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { chatsStyles } from "../styles/chatsStyle";
-import { bannedAssertion } from "../account/BannedAssertion";
+import { bannedAssertion } from "../account/bannedAssertion";
 
 export default function Chats(props) {
   const { navigation } = props;
@@ -26,7 +26,6 @@ export default function Chats(props) {
   let otherUserID;
   let otherUserPhoto;
   let otherUserName;
-
 
   useEffect(() => {
     db.ref("wauwers").child(currentUser.id).update({ hasMessages: false });
