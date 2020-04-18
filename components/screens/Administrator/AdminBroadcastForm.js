@@ -94,11 +94,11 @@ const styles = StyleSheet.create({
     btn: {
       alignContent: "center",
       alignItems: "center",
+      backgroundColor: morado,
       borderRadius: 15,
       justifyContent: "center",
       paddingHorizontal: 15,
       paddingVertical: 5,
-      backgroundColor: morado,
     },
     btnContainer: {
       alignSelf: "center",
