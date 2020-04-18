@@ -14,7 +14,6 @@ import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileReques
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
 import AdminPanelScreen from "../screens/Profile/AdminPanel";
 import UserListScreen from "../screens/Administrator/UserList";
-import BannedSwitchNavigator from "./BannedSwitchNavigator";
 import BroadcastMsgScreen from "../screens/Administrator/AdminBroadcastForm";
 import PagarScreen from "../screens/Pagar";
 
@@ -217,9 +216,6 @@ const ProfileScreenStacks = createStackNavigator({
       },
       headerTintColor: blanco,
     }),
-  },
-  Blocked:{
-    screen: BannedSwitchNavigator,
   },
   BroadcastMsg: {
     screen: BroadcastMsgScreen,

@@ -13,6 +13,8 @@ import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
 import { myWalksStyles } from "../../styles/myWalksStyle";
 import { requestsStyles } from "../../styles/requestsStyle";
+import firebase from "firebase";
+import { bannedAssertion } from "../../account/BannedAssertion";
 
 function ShowWalk(props) {
   const { navigation } = props;
@@ -25,21 +27,13 @@ function ShowWalk(props) {
   var pago = "";
   var fecha = "";
 
+  bannedAssertion();
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
     .on("child_added", (snap) => {
       worker = snap.val();
-      if (!worker.isBanned){
-        navigation.navigate("Blocked");
-      }
     });
-
-  const assertIsNotBanned = () => {
-    if (!worker.isBanned){
-      navigation.navigate("Blocked");
-    }
-  };
 
   const confirmDeclineRequest = () => {
     Alert.alert(
@@ -108,7 +102,6 @@ function ShowWalk(props) {
   };
 
   const acceptRequest = () => {
-    assertIsNotBanned;
     var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
@@ -120,7 +113,6 @@ function ShowWalk(props) {
   };
 
   const declineRequest = () => {
-    assertIsNotBanned;
     var idRequest = request.id;
     var query = db.ref().child("requests/" + idRequest);
     query.update({
