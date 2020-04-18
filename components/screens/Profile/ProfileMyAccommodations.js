@@ -5,8 +5,8 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Button
 } from "react-native";
+import { Icon, Button } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -14,7 +14,9 @@ import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { requestsStyles } from "../../styles/requestsStyle";
+import { accommodationStyles } from "../../styles/accommodationStyle";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileMyAccommodations(props) {
   const { navigation } = props;
@@ -44,7 +46,6 @@ function ProfileMyAccommodations(props) {
     setLoading(false);
   }, [reloadData]);
 
-
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
@@ -61,10 +62,12 @@ function ProfileMyAccommodations(props) {
         </View>
       </TouchableOpacity>
       <ScrollView>
+        <Text style={requestsStyles.requestsTxt16}>
+          Listado de sus alojamientos
+        </Text>
         {accommodationsList.length > 0 ? (
           <FlatList
             data={accommodationsList}
-            style={globalStyles.myRequestsFeed}
             renderItem={(accommodation) => (
               <Accommodation
                 accommodation={accommodation}
@@ -90,15 +93,15 @@ function Accommodation(accomodationIn) {
   var startTime = new Date(accommodation.item.startTime);
 
   if (startTime < new Date()) {
-    status = "en curso";
+    status = "En curso";
   } else {
     switch (accommodation.item.isCanceled) {
       case true:
-        status = "ocupado para la fecha establecida";
-        color = "rgba(0,128,0,0.6)";
+        status = "Cancelado";
+        color = "rgba(255,0,0,0.6)";
         break;
       case false:
-        status = "esperando solicitudes";
+        status = "Esperando solicitudes";
         color = "rgba(255,128,0,0.6)";
         editable = true;
         break;
@@ -108,14 +111,14 @@ function Accommodation(accomodationIn) {
   }
 
   const tarjeta = {
-    fontSize: 13,
-    marginTop: 4,
     color,
+    fontSize: 13,
+    marginBottom: 5,
   };
 
   const onPressRequests = () => {
     navigation.navigate("RequestToMyAccommodationList", {
-      accommodation: accommodation.item
+      accommodation: accommodation.item,
     });
   };
 
@@ -131,29 +134,39 @@ function Accommodation(accomodationIn) {
         })
       }
     >
-      <View style={globalStyles.myRequestsFeedItem}>
+      <View style={requestsStyles.requestsFeed}>
         <View style={globalStyles.viewFlex1}>
-          <View style={globalStyles.myRequestsRow}>
-            <View style={globalStyles.myRequestsColumn1}>
-              <Text style={globalStyles.myRequestsNum}>Alojamiento</Text>
-              <Text style={globalStyles.myRequestsPrice}>
-              {(accommodation.item.salary * 0.8).toFixed(2)} €
+          <View style={requestsStyles.requestsView}>
+            <View style={requestsStyles.requestsView2}>
+              <Text style={requestsStyles.requestsTxt2}>
+                {(accommodation.item.salary * 0.8).toFixed(2)} €
               </Text>
-              <Text style={globalStyles.myRequestsPrice}>
+              <Text style={requestsStyles.requestsTxt2}>
+                Del{" "}
                 {x.getDate() +
-                "/" +
-                parseInt(x.getMonth() + 1) +
-                "/" +
-                x.getFullYear() + " a " +
-                y.getDate() +
-                "/" +
-                parseInt(y.getMonth() + 1) +
-                "/" +
-                y.getFullYear()}</Text>
+                  "/" +
+                  parseInt(x.getMonth() + 1) +
+                  "/" +
+                  x.getFullYear()}
+              </Text>
+              <Text style={requestsStyles.requestsTxt2}>
+                al{" "}
+                {y.getDate() +
+                  "/" +
+                  parseInt(y.getMonth() + 1) +
+                  "/" +
+                  y.getFullYear()}
+              </Text>
               <Text style={tarjeta}>{status}</Text>
             </View>
-            <View style={globalStyles.myRequestsColumn2}>
-              <Button title="Ver solicitudes" onPress={onPressRequests} />
+            <View style={requestsStyles.requestsView2}>
+              <Button
+                title="Solicitudes"
+                onPress={onPressRequests}
+                buttonStyle={accommodationStyles.accommodationBtn}
+                containerStyle={accommodationStyles.accommodationBtnContainer5}
+                titleStyle={requestsStyles.requestsBtnTittle}
+              />
             </View>
           </View>
         </View>

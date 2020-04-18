@@ -22,7 +22,6 @@ export const searchWalksStyles = StyleSheet.create({
     borderRadius: 30,
     height: "100%",
     justifyContent: "flex-start",
-    marginVertical: 10,
     width: "100%",
   },
   searchWalksBtn2: {
@@ -31,7 +30,6 @@ export const searchWalksStyles = StyleSheet.create({
     borderRadius: 30,
     height: "100%",
     justifyContent: "flex-start",
-    marginVertical: 10,
     width: "100%",
   },
   searchWalksBtn3: {
@@ -40,7 +38,6 @@ export const searchWalksStyles = StyleSheet.create({
     borderRadius: 30,
     height: "100%",
     justifyContent: "center",
-    marginVertical: 10,
     width: "100%",
   },
   searchWalksBtnContainer: {

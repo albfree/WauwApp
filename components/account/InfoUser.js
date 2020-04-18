@@ -21,25 +21,35 @@ export default function InfoUser(props) {
   let moneyPoints = "(" + pointsToMoney + "€)";
 
   const changeAvatar = async () => {
-    const resultPermission = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-    const resultPermissionCamera = resultPermission.permissions.cameraRoll.status;
+    const resultPermission = await Permissions.askAsync(
+      Permissions.CAMERA_ROLL
+    );
+    const resultPermissionCamera =
+      resultPermission.permissions.cameraRoll.status;
 
     if (resultPermissionCamera === "denied") {
-      toastRef.current.show("Es necesario aceptar los permisos de la galería.", 3000);
+      toastRef.current.show(
+        "Es necesario aceptar los permisos de la galería.",
+        3000
+      );
     } else {
       const result = await ImagePicker.launchImageLibraryAsync({
         allowsEditing: true,
-        aspect: [4, 3]
+        aspect: [4, 3],
       });
 
       if (result.cancelled) {
-        toastRef.current.show("Has cerrado la galería sin seleccionar una imagen.", 3000);
+        toastRef.current.show(
+          "Has cerrado la galería sin seleccionar una imagen.",
+          3000
+        );
       } else {
-        uploadImage(result.uri, userInfo.id).then(() => { toastRef.current.show("Foto de perfil actualizada.", 3000); });
+        uploadImage(result.uri, userInfo.id).then(() => {
+          toastRef.current.show("Foto de perfil actualizada.", 3000);
+        });
         updatePhotoURL(userInfo.id);
       }
     }
-
   };
 
   const uploadImage = async (uri, nameImage) => {
@@ -52,20 +62,22 @@ export default function InfoUser(props) {
   };
 
   const updatePhotoURL = (id) => {
-    firebase.storage().ref(`avatar/${id}`).getDownloadURL().then(async (result) => {
-      
-      const updatePhoto = {
-        photo: result
-      };
+    firebase
+      .storage()
+      .ref(`avatar/${id}`)
+      .getDownloadURL()
+      .then(async (result) => {
+        const updatePhoto = {
+          photo: result,
+        };
 
-      await db.ref("wauwers")
-        .child(userInfo.id)
-        .update(updatePhoto);
+        await db.ref("wauwers").child(userInfo.id).update(updatePhoto);
 
-      setReloadData(true);
-    }).catch(() => {
-      toastRef.current.show("Error al recuperar la foto de perfil.", 3000);
-    });
+        setReloadData(true);
+      })
+      .catch(() => {
+        toastRef.current.show("Error al recuperar la foto de perfil.", 3000);
+      });
   };
 
   return (
@@ -78,7 +90,7 @@ export default function InfoUser(props) {
           onEditPress={changeAvatar}
           containerStyle={profileStyles.profileAvatar}
           source={{
-            uri: userInfo.photo
+            uri: userInfo.photo,
           }}
           errorMessage={error}
         />
@@ -93,8 +105,8 @@ export default function InfoUser(props) {
                 setReloadData={setReloadData}
               />
             ) : (
-                <Text style={profileStyles.profileTxt}>{userInfo.name} </Text>
-              )}
+              <Text style={profileStyles.profileTxt}>{userInfo.name} </Text>
+            )}
 
             <TouchableOpacity
               onPress={() => {
@@ -155,8 +167,8 @@ export default function InfoUser(props) {
             setReloadData={setReloadData}
           />
         ) : (
-            <Text style={profileStyles.profileTxt4}>{userInfo.description}</Text>
-          )}
+          <Text style={profileStyles.profileTxt4}>{userInfo.description}</Text>
+        )}
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const lila = "#d6d6e8";
 const lila2 = "#5c54a4";
@@ -6,12 +6,13 @@ const blanco = "white";
 const morado = "#443099";
 const naranja = "#ff7549";
 const transparente = "transparent";
+const rojo = "rgba(255,0,0,0.6)";
 
 export const profileStyles = StyleSheet.create({
   profileAvatar: {
     borderColor: lila,
     borderWidth: 1,
-    marginLeft: "10%",
+    marginLeft: "5%",
   },
   profileBtn: {
     backgroundColor: lila2,
@@ -38,6 +39,12 @@ export const profileStyles = StyleSheet.create({
     justifyContent: "flex-start",
     marginVertical: 5,
     width: "90%",
+  },
+  profileBtn5: {
+    backgroundColor: rojo,
+    borderRadius: 30,
+    justifyContent: "flex-start",
+    width: "100%",
   },
   profileBtnContainer: {
     marginTop: 20,
@@ -68,6 +75,16 @@ export const profileStyles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 10,
     marginTop: 5,
+    width: "80%",
+  },
+  profileBtnContainer5: {
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: rojo,
+    borderColor: lila,
+    borderWidth: 1,
+    justifyContent: "center",
+    marginTop: 20,
     width: "80%",
   },
   profileBtnTittle: {
@@ -143,7 +160,7 @@ export const profileStyles = StyleSheet.create({
     textAlignVertical: "center",
   },
   profileView4: {
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
   },
   profileView5: {
     alignSelf: "center",
@@ -180,6 +197,5 @@ export const profileStyles = StyleSheet.create({
   },
   profileView9: {
     flex: 1,
-    marginLeft: "-70%",
   },
 });

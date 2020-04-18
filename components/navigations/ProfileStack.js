@@ -217,6 +217,9 @@ const ProfileScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
+  Blocked: {
+    screen: BannedSwitchNavigator,
+  },
   BroadcastMsg: {
     screen: BroadcastMsgScreen,
     navigationOptions: () => ({
@@ -230,7 +233,7 @@ const ProfileScreenStacks = createStackNavigator({
       },
       headerTintColor: blanco,
     }),
-  }
+  },
 });
 
 export default ProfileScreenStacks;

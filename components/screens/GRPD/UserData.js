@@ -6,7 +6,7 @@ import email from "react-native-email";
 import { userDataStyles } from "../../styles/userDataStyle";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "react-native-elements";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 export default function UserData(props) {
   var user = props.navigation.state.params.userInfo;
@@ -198,7 +198,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          <View style={userDataStyles.userDataView}>
+            <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          </View>
         )}
 
         {requestWorker.length !== 0 ? (
@@ -234,7 +236,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
+          </View>
         )}
 
         {requestOwner.length !== 0 ? (
@@ -268,7 +272,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          </View>
         )}
         <Button
           buttonStyle={userDataStyles.userDataBtn}

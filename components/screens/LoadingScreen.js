@@ -14,20 +14,20 @@ class LoginScreen extends Component {
 
   checkIfLoggedIn = async () => {
     firebase.auth().onAuthStateChanged(
-      function(user) {
+      function (user) {
         if (user) {
           let banned;
           db.ref("wauwers")
-          .orderByChild("email")
-          .equalTo(user.email)
-          .once("child_added", (snap) => {
-            banned = snap.val().isBanned;
-            if(!banned){
-              this.props.navigation.navigate("DashboardScreen");
-            }else{
-              this.props.navigation.navigate("BannedScreen");
-            }
-          });
+            .orderByChild("email")
+            .equalTo(user.email)
+            .once("child_added", (snap) => {
+              banned = snap.val().isBanned;
+              if (!banned) {
+                this.props.navigation.navigate("DashboardScreen");
+              } else {
+                this.props.navigation.navigate("BannedScreen");
+              }
+            });
         } else {
           this.props.navigation.navigate("LoginScreen");
         }
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });

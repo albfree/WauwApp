@@ -9,7 +9,7 @@ import MapView from "react-native-maps";
 import Modal from "../../account/Modal";
 import { globalStyles } from "../../styles/global";
 import { locationStyles } from "../../styles/locationStyles";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
@@ -17,7 +17,7 @@ export default function ProfileLocationForm(props) {
   const [locationWauwer, setLocationWauwer] = useState(null);
   const [error, setError] = useState(null);
   const [wauwer, setWauwer] = useState();
-  
+
   useEffect(() => {
     var wauwer = bannedAssertion();
     setWauwer(wauwer);
@@ -41,12 +41,7 @@ export default function ProfileLocationForm(props) {
 }
 
 function FormAdd(props) {
-  const {
-    setIsVisibleMap,
-    locationWauwer,
-    wauwer,
-    navigation,
-  } = props;
+  const { setIsVisibleMap, locationWauwer, wauwer, navigation } = props;
 
   const guardarLocation = () => {
     if (!locationWauwer) {
@@ -72,13 +67,22 @@ function FormAdd(props) {
   return (
     <View style={locationStyles.locationView}>
       <View style={globalStyles.viewFlex1}>
-
-      <Button
-            title="Editar Ubicación"
-            onPress={() => setIsVisibleMap(true)}
-            containerStyle={locationStyles.locationBtnContainer}
-            buttonStyle={locationStyles.locationBtn}
-          />
+        <Button
+          title="Editar Ubicación"
+          onPress={() => setIsVisibleMap(true)}
+          containerStyle={locationStyles.locationBtnContainer}
+          buttonStyle={locationStyles.locationBtn}
+          icon={
+            <Icon
+              type="material-community"
+              name="pencil"
+              size={25}
+              color="white"
+              marginLeft={"10%"}
+            />
+          }
+          titleStyle={locationStyles.locationBtnTxt}
+        />
 
         <Button
           buttonStyle={locationStyles.locationBtn}
@@ -91,7 +95,7 @@ function FormAdd(props) {
               name="content-save"
               size={25}
               color="white"
-              marginLeft={30}
+              marginLeft={"10%"}
             />
           }
           titleStyle={locationStyles.locationBtnTxt}

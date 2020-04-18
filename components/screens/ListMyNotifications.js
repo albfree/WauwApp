@@ -58,7 +58,6 @@ export default function ListMyNotifications(props) {
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
-            style={globalStyles.notificationsFeed}
             renderItem={(request) => (
               <Request
                 req={request}
@@ -117,10 +116,10 @@ function Request(props) {
     }
   }
 
-  if (req.item.type == "walk") {
+  if (req.item.type === "walk") {
     tipo = "paseo";
     fecha = "Día y hora: ".concat(req.item.interval);
-  } else if (req.item.type == "sitter") {
+  } else if (req.item.type === "sitter") {
     tipo = "alojamiento";
     fecha = "Del "
       .concat(req.item.startTime)
@@ -129,11 +128,11 @@ function Request(props) {
   }
 
   const checkRequestsState = () => {
-    if (estado == "Pendiente") {
+    if (estado === "Pendiente") {
       itemClicked();
-    } else if (estado == "Aceptada") {
+    } else if (estado === "Aceptada") {
       requestClosed("aceptado");
-    } else if (estado == "Rechazada") {
+    } else if (estado === "Rechazada") {
       requestClosed("rechazado");
     }
   };

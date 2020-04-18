@@ -118,7 +118,6 @@ function LoginScreen(props) {
               var credential = error.credential;
             });
         } else {
-          console.log("User already signed-in Firebase.");
         }
       }.bind(this)
     );

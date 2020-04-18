@@ -20,10 +20,9 @@ import { decode, encode } from "base-64";
 import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function Profile(props) {
-
   if (!global.btoa) {
     global.btoa = encode;
   }
@@ -196,29 +195,30 @@ function Profile(props) {
             source={require("../../../assets/images/prints.png")}
             style={profileStyles.profilePrints}
           />
-          
+
           <View>
-          {userInfo.email === "wauwispp1920@gmail.com" ? (
-            <View>
-            <Button
-              buttonStyle={profileStyles.profileBtn4}
-              containerStyle={profileStyles.profileBtnContainer4}
-              title="Panel de Administración"
-              onPress={() => navigation.navigate("AdminPanel")}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="cogs"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />}
-              titleStyle={profileStyles.profileBtnTittle}
-            />  
-            </View>
-          ) : (
-            <View></View>
-          )}
+            {userInfo.email === "wauwispp1920@gmail.com" ? (
+              <View>
+                <Button
+                  buttonStyle={profileStyles.profileBtn4}
+                  containerStyle={profileStyles.profileBtnContainer4}
+                  title="Panel de Administración"
+                  onPress={() => navigation.navigate("AdminPanel")}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="cogs"
+                      size={30}
+                      color="white"
+                      marginLeft={20}
+                    />
+                  }
+                  titleStyle={profileStyles.profileBtnTittle}
+                />
+              </View>
+            ) : (
+              <View></View>
+            )}
           </View>
           <Button
             buttonStyle={profileStyles.profileBtn4}

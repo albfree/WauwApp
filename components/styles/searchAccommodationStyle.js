@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 const blanco = "#FFF";
 const gris = "#838899";
@@ -118,9 +118,9 @@ export const searchAccommodationStyles = StyleSheet.create({
   },
 
   searchAccommodationView: {
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    alignItems: Platform.OS === "ios" ? null : "center",
+    flexDirection: Platform.OS === "ios" ? null : "row",
+    justifyContent: Platform.OS === "ios" ? null : "space-between",
   },
   searchAccommodationView2: {
     marginBottom: 5,

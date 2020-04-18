@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   Keyboard,
+  Platform,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -169,7 +170,7 @@ function CreateAccommodation(props) {
       <ScrollView keyboardShouldPersistTaps="never">
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
-            <Text style={globalStyles.editAccommodationEditDate}>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
               Establecer Fecha
             </Text>
             <View style={searchAccommodationStyles.searchAccommodationView}>
