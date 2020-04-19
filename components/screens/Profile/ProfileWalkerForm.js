@@ -242,16 +242,6 @@ function ProfileWalkerForm(props) {
                 } else {
                   setSueldo(null);
                 }
-                //const salary = Math.round(precio * 1.3 * 10) / 10;
-
-                // db.ref("wauwers/" + userInfo.id)
-                //   .update({
-                //     price: salary,
-                //     walkSalary: precio,
-                //   })
-                //   .then(() => {
-                //     setSueldo(precio);
-                //   });
               }}
             >
               {sueldo}
