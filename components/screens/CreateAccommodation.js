@@ -16,7 +16,10 @@ import { email } from "../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
+import { bannedAssertion } from "../account/bannedAssertion";
+
 function CreateAccommodation(props) {
+  bannedAssertion();
   const [newStartTime, setStartTime] = useState(new Date());
   const [newEndTime, setEndTime] = useState(new Date());
 
