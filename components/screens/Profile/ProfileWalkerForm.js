@@ -60,11 +60,10 @@ function ProfileWalkerForm(props) {
             " - " +
             child.val().availability.endDate;
           let id = child.val().availability.id;
-          const price = Math.round(((child.val().price / 1.3) * 10) / 10);
-          const p = child.val().myPrice;
+          const myPrice = child.val().myPrice;
           resulIds.push(id);
           hourPrice.push(hour);
-          hourPrice.push(p);
+          hourPrice.push(myPrice);
           resulHours.push(hourPrice);
         });
         setIds(resulIds);
