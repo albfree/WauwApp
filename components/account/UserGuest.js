@@ -27,7 +27,11 @@ export default function UserGuest() {
 
   return (
     <View>
-      <InfoUser userInfo={userInfo} setReloadData={setReloadData} toastRef={toastRef}/>
+      <InfoUser
+        userInfo={userInfo}
+        setReloadData={setReloadData}
+        toastRef={toastRef}
+      />
       <Toast ref={toastRef} position="center" opacity={0.9} />
     </View>
   );

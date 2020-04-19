@@ -133,7 +133,10 @@ function Map(props) {
 
   const confirmLocation = () => {
     setLocationWauwer(location);
-    Alert.alert("Localización marcada", "Se ha agregado correctamente la ubicación seleccionada, guárdala para confirmar.");
+    Alert.alert(
+      "Localización marcada",
+      "Se ha agregado correctamente la ubicación seleccionada, guárdala para confirmar."
+    );
     setIsVisibleMap(false);
   };
 

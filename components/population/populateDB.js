@@ -1,10 +1,5 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button
-} from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { db } from "./config";
 
 export default function PopulateDB({ navigation }) {
@@ -13,7 +8,7 @@ export default function PopulateDB({ navigation }) {
 
   const getUsers = () => {
     query = db.ref("users");
-    query.on("value", function(snap) {
+    query.on("value", function (snap) {
       setUser(snap.val());
     });
   };
@@ -35,7 +30,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario2: {
         id: query.push().key,
@@ -50,7 +45,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario3: {
         id: query.push().key,
@@ -65,7 +60,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario4: {
         id: query.push().key,
@@ -80,7 +75,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario5: {
         id: query.push().key,
@@ -95,7 +90,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario6: {
         id: query.push().key,
@@ -110,7 +105,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario7: {
         id: query.push().key,
@@ -125,7 +120,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario8: {
         id: query.push().key,
@@ -140,7 +135,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario9: {
         id: query.push().key,
@@ -155,7 +150,7 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
       },
       usuario10: {
         id: query.push().key,
@@ -170,10 +165,10 @@ export default function PopulateDB({ navigation }) {
           "/" +
           new Date().getFullYear(),
         dogDescriptoin:
-          "Esta es una descripción de perro para que Andrea se quede tranquila"
-      }
+          "Esta es una descripción de perro para que Andrea se quede tranquila",
+      },
     });
-    
+
     alert("Populado de forma correcta");
   };
 
@@ -187,56 +182,48 @@ export default function PopulateDB({ navigation }) {
         email: "nombreWalker" + 1 + "@nombre.com",
         name: "Nombre " + 1,
         surname: "Apellido " + 1,
-        
       },
       walker2: {
         id: query.push().key,
         email: "nombreWalker" + 2 + "@nombre.com",
         name: "Nombre " + 2,
         surname: "Apellido " + 2,
-        
       },
       walker3: {
         id: query.push().key,
         email: "nombreWalker" + 3 + "@nombre.com",
         name: "Nombre " + 3,
         surname: "Apellido " + 3,
-        
       },
       walker4: {
         id: query.push().key,
         email: "nombreWalker" + 4 + "@nombre.com",
         name: "Nombre " + 4,
         surname: "Apellido " + 4,
-        
       },
       walker5: {
         id: query.push().key,
         email: "nombreWalker" + 5 + "@nombre.com",
         name: "Nombre " + 5,
         surname: "Apellido " + 5,
-        
       },
       walker6: {
         id: query.push().key,
         email: "nombreWalker" + 6 + "@nombre.com",
         name: "Nombre " + 6,
         surname: "Apellido " + 6,
-        
       },
       walker7: {
         id: query.push().key,
         email: "nombreWalker" + 7 + "@nombre.com",
         name: "Nombre " + 7,
         surname: "Apellido " + 7,
-        
       },
       walker10: {
         id: query.push().key,
         email: "nombreWalker" + 10 + "@nombre.com",
         name: "Nombre " + 10,
         surname: "Apellido " + 10,
-        
       },
       walker8: {
         id: query.push().key,
@@ -262,17 +249,20 @@ export default function PopulateDB({ navigation }) {
     query = db.ref().child("walks");
     query.set({
       walker: ["walker1"],
-      owner: ["owner1"]
+      owner: ["owner1"],
     });
 
     //Esta 4 líneas son las más cortas y sencillas para asignar el valor de una query en firebase
     let user = [];
-    var queryTest = db.ref().child("walkers").child("walker1").on('value', snap => {
-      user = snap.val();
-    });
+    var queryTest = db
+      .ref()
+      .child("walkers")
+      .child("walker1")
+      .on("value", (snap) => {
+        user = snap.val();
+      });
 
-
-    alert("Paseos populados de forma correcta")
+    alert("Paseos populados de forma correcta");
   };
 
   return (
@@ -297,7 +287,6 @@ export default function PopulateDB({ navigation }) {
       <Button title="Popular usuarios paseadores" onPress={populateWalkers} />
       <Button title="Popular usuarios cuidadores" onPress={populateSitters} />
       <Button title="Popular paseos" onPress={populateWalks} />
-
     </View>
   );
 }
@@ -306,6 +295,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    padding: 40
-  }
+    padding: 40,
+  },
 });
