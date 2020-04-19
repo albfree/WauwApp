@@ -10,15 +10,17 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import { Button } from "react-native-elements";
+
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import _ from "lodash";
 import { servicesStyles } from "../styles/servicesStyle";
 import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
+import { bannedAssertion } from "../account/bannedAssertion";
 
 function Services(props) {
+  bannedAssertion();
   const { navigation } = props;
   const [imageUri, setImageUri] = useState(
     require("../../assets/images/SearchWalk.jpg")
@@ -81,10 +83,9 @@ function Services(props) {
       }
     } else {
       Alert.alert(
-        "¡NO TIENES LOCALIZACIÓN INTRODUCIDA!",
-        "Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil"
+        "No tienes ubicación añadida",
+        "Para poder disfrutar de nuestros servicios debe introducir su ubicación en el perfil."
       );
-      navigation.navigate("Profile");
     }
   };
 

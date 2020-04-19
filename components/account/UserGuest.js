@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { View } from "react-native";
 import InfoUser from "./InfoUser";
 import AccountOptions from "./AccountOptions";
 import { db } from "../population/config";
 import { email } from "./QueriesProfile";
 import { globalStyles } from "../styles/global";
+import Toast from "react-native-easy-toast";
 
 export default function UserGuest() {
   const [userInfo, setUserInfo] = useState([]);
   const [reloadData, setReloadData] = useState(false);
+  const toastRef = useRef();
 
   useEffect(() => {
     db.ref("wauwers")
@@ -19,11 +21,14 @@ export default function UserGuest() {
           setUserInfo(child.val());
         });
       });
-  }, []);
+
+    setReloadData(false);
+  }, [reloadData]);
 
   return (
     <View>
-      <InfoUser userInfo={userInfo} setReloadData={setReloadData} />
+      <InfoUser userInfo={userInfo} setReloadData={setReloadData} toastRef={toastRef}/>
+      <Toast ref={toastRef} position="center" opacity={0.9} />
     </View>
   );
 }

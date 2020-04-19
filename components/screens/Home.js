@@ -14,15 +14,17 @@ import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { homeStyles } from "../styles/homeStyle";
 import _ from "lodash";
+import { bannedAssertion } from "../account/bannedAssertion";
 
 function Home(props) {
   const { navigation } = props;
+  bannedAssertion();
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView scrollEventThrottle={16}>
         <View style={homeStyles.homeView}>
-          <Text style={homeStyles.homeTxt}>¿Conoces nuestros servicios?</Text>
+          <Text style={homeStyles.homeTxt}>Bienvenido a Wauw</Text>
           <Text style={homeStyles.homeTxt2}>
             Wauw no es únicamente una aplicación, Wauw es la forma más sencilla
             de ayudar a las protectoras de animales de tu ciudad. ¡Con cada
@@ -44,7 +46,6 @@ function Home(props) {
               toda la información disponible.
             </Text>
 
-            <View style={homeStyles.homeView2}>
               <Button
                 buttonStyle={homeStyles.homeBtn}
                 containerStyle={homeStyles.homeBtnContainer}
@@ -61,7 +62,23 @@ function Home(props) {
                 }
                 titleStyle={homeStyles.homeBtnTxt}
               />
-            </View>
+
+            <Button
+              buttonStyle={homeStyles.homeBtn}
+              containerStyle={homeStyles.homeBtnContainer2}
+              title="Noticias"
+              onPress={() => navigation.navigate("News")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="bulletin-board"
+                  size={30}
+                  color="white"
+                  marginLeft={"10%"}
+                />
+              }
+              titleStyle={homeStyles.homeBtnTxt}
+            />
           </View>
         </View>
       </ScrollView>

@@ -19,7 +19,22 @@ export const homeStyles = StyleSheet.create({
     borderWidth: 1,
     height: "10%",
     justifyContent: "center",
+    marginTop: 10,
     width: "65%",
+    marginTop: 35,
+    marginBottom: 15
+  },
+  homeBtnContainer2: {
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: morado,
+    borderColor: lila,
+    borderWidth: 1,
+    height: "10%",
+    marginTop: 25,
+    justifyContent: "center",
+    width: "65%",
+    marginBottom: 15
   },
   homeBtnTxt: {
     alignSelf: "center",
@@ -57,7 +72,8 @@ export const homeStyles = StyleSheet.create({
     flex: 1,
     height: 180,
     justifyContent: "center",
-    marginTop: 20,
+    marginVertical: 20,
+    paddingVertical: 10,
     width: "95%",
   },
 });

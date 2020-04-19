@@ -18,18 +18,19 @@ export default class TermsAndConditions extends Component {
             Wauw almacena los datos de los usuarios que utilizan la aplicación,
             y garantiza la seguridad y la confidencialidad de los mismos. El
             registro de los usuarios en esta aplicación está gestionado mediante
-            el sistema de autenticación de Google. Puede consultar pinchando{" "}
+            el sistema de autenticación de Google. Puede consultar su política de 
+            privacidad pinchando{" "}
             <Text
               onPress={() => {
                 Linking.openURL(
-                  "https://policies.google.com/privacy?hl=es&gl=es"
+                  "https://policies.google.com/?hl=es"
                 );
               }}
               style={loginStyles.loginTxt2}
             >
               aquí
-            </Text>{" "}
-            su política de privacidad.
+            </Text>
+            .
           </Text>
 
           <Text style={loginStyles.loginTxt3}>
@@ -82,7 +83,8 @@ export default class TermsAndConditions extends Component {
             de violencia, racismo, sexismo, discriminación o maltrato animal,
             así como el indebido uso del chat de la aplicación como herramienta
             para acosar, amenazar, extorsionar, o bien, realizar cualquier
-            actividad considerada como Spam, será penalizada,
+            actividad considerada como Spam, será penalizada con el bloqueo
+            parcial o total de su cuenta de usuario,
             pudiendo incluso llegar a procedimientos legales por parte de la
             autoridad competente en proporción a la gravedad de la transgresión.
             Si observa algún comportamiento inadecuado en cualquier momento,

@@ -15,6 +15,7 @@ import { email } from "../account/QueriesProfile";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { notificationsStyles } from "../styles/notificationsStyle";
+import firebase from "firebase";
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
@@ -22,11 +23,17 @@ export default function ListMyNotifications(props) {
   const [reloadRequests, setReloadRequests] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   let id;
+  let userInfo;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
     .on("child_added", (snap) => {
-      id = snap.val().id;
+      userInfo = snap.val();
+      id = userInfo.id;
+      if(userInfo.isBanned){
+        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
+        firebase.auth().signOut();
+      }
     });
 
   useEffect(() => {
@@ -51,7 +58,6 @@ export default function ListMyNotifications(props) {
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
-            style={globalStyles.notificationsFeed}
             renderItem={(request) => (
               <Request
                 req={request}
@@ -110,10 +116,10 @@ function Request(props) {
     }
   }
 
-  if (req.item.type == "walk") {
+  if (req.item.type === "walk") {
     tipo = "paseo";
     fecha = "Día y hora: ".concat(req.item.interval);
-  } else if (req.item.type == "sitter") {
+  } else if (req.item.type === "sitter") {
     tipo = "alojamiento";
     fecha = "Del "
       .concat(req.item.startTime)
@@ -122,11 +128,11 @@ function Request(props) {
   }
 
   const checkRequestsState = () => {
-    if (estado == "Pendiente") {
+    if (estado === "Pendiente") {
       itemClicked();
-    } else if (estado == "Aceptada") {
+    } else if (estado === "Aceptada") {
       requestClosed("aceptado");
-    } else if (estado == "Rechazada") {
+    } else if (estado === "Rechazada") {
       requestClosed("rechazado");
     }
   };

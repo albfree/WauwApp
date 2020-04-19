@@ -3,11 +3,10 @@ import React from "react";
 // Components for export email information
 import qs from "qs";
 import email from "react-native-email";
-import { db } from "../../population/config";
-import * as firebase from "firebase";
 import { userDataStyles } from "../../styles/userDataStyle";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "react-native-elements";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 export default function UserData(props) {
   var user = props.navigation.state.params.userInfo;
@@ -20,6 +19,7 @@ export default function UserData(props) {
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";
     var petsEmail = "Mascotas registradas en nuestra aplicación\n\n";
+    bannedAssertion();
 
     userEmail += "Nombre: " + user.name + "\n";
     userEmail += "Apellidos: " + user.surname + "\n";
@@ -28,8 +28,6 @@ export default function UserData(props) {
     }
     userEmail += "Descripción: " + user.description + "\n";
     userEmail += "Email: " + user.email + "\n";
-    userEmail += "Número de mascotas: " + user.petNumber + "\n";
-    userEmail += "Salario: " + user.price + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
     if (user.hasOwnProperty("location")) {
@@ -155,7 +153,6 @@ export default function UserData(props) {
           )}
           <Text>Descripción: {user.description}</Text>
           <Text>Email: {user.email}</Text>
-          <Text>Número de mascotas: {user.petNumber}</Text>
           <Text>Salario: {user.price} €</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
@@ -201,7 +198,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          <View style={userDataStyles.userDataView}>
+            <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          </View>
         )}
 
         {requestWorker.length !== 0 ? (
@@ -237,7 +236,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes recibidas{"\n"}</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
+          </View>
         )}
 
         {requestOwner.length !== 0 ? (
@@ -271,7 +272,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          </View>
         )}
         <Button
           buttonStyle={userDataStyles.userDataBtn}

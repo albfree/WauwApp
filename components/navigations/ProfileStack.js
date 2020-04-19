@@ -12,6 +12,10 @@ import ShowWalkScreen from "../screens/Profile/ShowWalk";
 import UserDataScreen from "../screens/GRPD/UserData";
 import RequestToMyAccommodationListScreen from "../screens/Profile/ProfileRequestsToMyAccommodationList";
 import DisplayFinishRequestScreen from "../screens/Profile/ProfileDisplayFinishRequest";
+import AdminPanelScreen from "../screens/Profile/AdminPanel";
+import UserListScreen from "../screens/Administrator/UserList";
+import BroadcastMsgScreen from "../screens/Administrator/AdminBroadcastForm";
+import PagarScreen from "../screens/Pagar";
 
 const morado = "#443099";
 const blanco = "white";
@@ -136,7 +140,20 @@ const ProfileScreenStacks = createStackNavigator({
       headerTintColor: blanco,
     }),
   },
-
+  UserList: {
+    screen: UserListScreen,
+    navigationOptions: () => ({
+      title: "Lista de usuarios",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
   AddReviewService: {
     screen: AddReviewServiceScreen,
     navigationOptions: () => ({
@@ -162,6 +179,48 @@ const ProfileScreenStacks = createStackNavigator({
     screen: DisplayFinishRequestScreen,
     navigationOptions: () => ({
       title: "Solicitud a mi alojamiento",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  AdminPanel: {
+    screen: AdminPanelScreen,
+    navigationOptions: () => ({
+      title: "Panel de Administración",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  Pagar: {
+    screen: PagarScreen,
+    navigationOptions: () => ({
+      title: "Pagar",
+      headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
+    }),
+  },
+  BroadcastMsg: {
+    screen: BroadcastMsgScreen,
+    navigationOptions: () => ({
+      title: "Mensaje a todos los usuarios",
       headerTitleAlign: "center",
       headerStyle: {
         backgroundColor: morado,
