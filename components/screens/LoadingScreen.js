@@ -40,11 +40,6 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
 
-  aboutImage: {
-    resizeMode: "contain",
-    width: 30,
-  },
-
   container: {
     flex: 1,
     alignItems: "center",
