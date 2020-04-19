@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, Image, Animated } from "react-native";
 import { db } from "../population/config.js";
 
 //We're going to create a function that will tell us if the user is logged or not.
@@ -36,9 +36,11 @@ class LoginScreen extends Component {
   };
 
   render() {
+
+
     return (
       <View style={styles.container}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color="#FFFFFF" />
       </View>
     );
   }
@@ -47,9 +49,11 @@ class LoginScreen extends Component {
 export default LoginScreen;
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
+    backgroundColor: "#443099",
+  }
 });

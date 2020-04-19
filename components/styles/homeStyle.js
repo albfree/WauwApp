@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 const morado = "#443099";
 const lila = "#d6d6e8";
 
@@ -8,7 +8,7 @@ export const homeStyles = StyleSheet.create({
     borderRadius: 300,
     height: 50,
     justifyContent: "flex-start",
-    paddingHorizontal: 10,
+    paddingHorizontal: Platform.OS === "ios" ? 25 : 10,
     width: "100%",
   },
   homeBtnContainer: {
