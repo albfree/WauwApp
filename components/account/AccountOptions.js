@@ -20,7 +20,7 @@ export default function AccountOptions(props) {
       iconColorLeft: "#443099",
       iconNameRight: "chevron-right",
       iconColorRight: "#443099",
-      onPress: () => selectedComponent("name")
+      onPress: () => selectedComponent("name"),
     },
     {
       title: "Cambiar descripción",
@@ -29,11 +29,11 @@ export default function AccountOptions(props) {
       iconColorLeft: "#443099",
       iconNameRight: "chevron-right",
       iconColorRight: "#443099",
-      onPress: () => selectedComponent("description")
-    }
+      onPress: () => selectedComponent("description"),
+    },
   ];
 
-  const selectedComponent = form => {
+  const selectedComponent = (form) => {
     switch (form) {
       case "name":
         setRenderComponent(
@@ -72,12 +72,12 @@ export default function AccountOptions(props) {
           leftIcon={{
             type: menu.iconType,
             name: menu.iconNameLeft,
-            color: menu.iconColorLeft
+            color: menu.iconColorLeft,
           }}
           rightIcon={{
             type: menu.iconType,
             name: menu.iconNameRight,
-            color: menu.iconColorRight
+            color: menu.iconColorRight,
           }}
           onPress={menu.onPress}
           containerStyle={globalStyles.accountItem}

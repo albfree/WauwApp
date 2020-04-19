@@ -37,12 +37,12 @@ function DisplayFinishRequest(props) {
 
   useEffect(() => {
     db.ref("wauwers")
-    .orderByChild("id")
-    .equalTo(id)
-    .on("child_added", (snap) => {
-      worker = snap.val();
-    });
-  })
+      .orderByChild("id")
+      .equalTo(id)
+      .on("child_added", (snap) => {
+        worker = snap.val();
+      });
+  });
 
   const assertIsNotBanned = () => {
     if (!worker.isBanned) {
@@ -461,7 +461,7 @@ function DisplayFinishRequest(props) {
         </View>
       </SafeAreaView>
     );
-  }  
+  }
 }
 
 export default withNavigation(DisplayFinishRequest);

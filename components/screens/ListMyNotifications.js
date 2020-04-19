@@ -30,7 +30,7 @@ export default function ListMyNotifications(props) {
     .on("child_added", (snap) => {
       userInfo = snap.val();
       id = userInfo.id;
-      if(userInfo.isBanned){
+      if (userInfo.isBanned) {
         Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
         firebase.auth().signOut();
       }

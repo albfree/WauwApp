@@ -22,8 +22,7 @@ export const locationStyles = StyleSheet.create({
     borderWidth: 1,
     height: Platform.OS === "ios" ? 70 : 55,
     justifyContent: "center",
-    marginTop: 40,
-    paddingBottom: Platform.OS === "ios" ? 20 : null,
+    marginBottom: 15,
     width: "70%",
   },
 
@@ -58,9 +57,10 @@ export const locationStyles = StyleSheet.create({
     backgroundColor: blanco,
     borderRadius: 20,
     flex: 1,
-    flexDirection: "row",
+    flexDirection: "column",
     marginHorizontal: 20,
     marginVertical: "49%",
+    paddingVertical: "13%",
     paddingHorizontal: 20,
   },
 

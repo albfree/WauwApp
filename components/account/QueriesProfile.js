@@ -2,10 +2,10 @@ import { db } from "../population/config.js";
 import * as firebase from "firebase";
 
 export var email = "";
-firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged((user) => {
   if (user) {
     email = user.email;
   }
 });
 
-export var anonEmail="anonimowauwispp@gmail.com";
+export var anonEmail = "anonimowauwispp@gmail.com";

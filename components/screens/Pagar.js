@@ -83,7 +83,10 @@ function Pagar(props) {
         isFinished: true,
       });
 
-      Alert.alert("Operación realizada", "Se ha finalizado el servicio correctamente y el pago se ha ingresado en su cuenta de PayPal, en breves lo verá reflejado.");
+      Alert.alert(
+        "Operación realizada",
+        "Se ha finalizado el servicio correctamente y el pago se ha ingresado en su cuenta de PayPal, en breves lo verá reflejado."
+      );
 
       var id;
       db.ref("wauwers")

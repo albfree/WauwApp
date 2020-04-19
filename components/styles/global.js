@@ -1,9 +1,63 @@
 import { StyleSheet } from "react-native";
 
-const gris = "#dddddd";
 const blanco = "#FFF";
-
+const verde = "green";
+const rojo = "red";
+const lila = "#d6d6e8";
+const lila2 = "#443099";
+const celeste = "#33AAFF";
 export const globalStyles = StyleSheet.create({
+  adminTxt: {
+    color: blanco,
+    fontSize: 20,
+    textAlign: "center",
+  },
+  adminTxt2: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginHorizontal: 15,
+    textAlign: "center",
+  },
+  adminTxt3: {
+    fontSize: 17,
+    marginHorizontal: 15,
+    textAlign: "center",
+  },
+  adminTxt4: {
+    color: celeste,
+  },
+  adminView: {
+    alignItems: "center",
+    backgroundColor: rojo,
+    borderColor: lila,
+    borderRadius: 20,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    height: 50,
+    justifyContent: "center",
+    marginHorizontal: 30,
+    marginVertical: 10,
+    paddingHorizontal: 20,
+  },
+  adminView2: {
+    alignItems: "center",
+    backgroundColor: verde,
+    borderColor: lila,
+    borderRadius: 20,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    height: 50,
+    marginHorizontal: 30,
+    marginVertical: 10,
+    paddingHorizontal: 20,
+  },
+  adminView3: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
   blankImage: {
     flex: 1,
     height: null,
@@ -20,13 +74,21 @@ export const globalStyles = StyleSheet.create({
   },
   blankImage3: {
     alignSelf: "center",
-
     borderRadius: 80,
     flex: 1,
     height: 230,
     marginVertical: 10,
     resizeMode: "cover",
     width: "90%",
+  },
+  blankImage4: {
+    alignSelf: "center",
+    borderRadius: 80,
+    flex: 1,
+    height: 230,
+    marginVertical: 40,
+    resizeMode: "cover",
+    width: "85%",
   },
   blankTxt: {
     fontSize: 22,
@@ -51,19 +113,8 @@ export const globalStyles = StyleSheet.create({
   },
   blankView5: {
     flex: 1,
-    paddingTop: "5%",
     paddingBottom: "15%",
-  },
-  btnStyle: {
-    backgroundColor: "#443099",
-    width: "75%",
-    height: "45%",
-    borderRadius: 30,
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  btnTextStyle: {
-    flex: 1,
+    paddingTop: "5%",
   },
   drawerIcon: {
     alignSelf: "flex-end",
@@ -78,19 +129,19 @@ export const globalStyles = StyleSheet.create({
     margin: 20,
   },
   drawerTitle: {
-    flex: 1,
     alignItems: "center",
-    marginHorizontal: 5,
     alignSelf: "center",
+    flex: 1,
+    marginHorizontal: 5,
   },
   drawerTxt: {
     fontSize: 20,
     fontWeight: "bold",
   },
   drawerView: {
-    height: 150,
-    backgroundColor: "white",
     alignItems: "center",
+    backgroundColor: "white",
+    height: 150,
     justifyContent: "center",
   },
   viewFeed: {

@@ -10,7 +10,7 @@ export const bannedAssertion = () => {
     .equalTo(email)
     .on("child_added", (snap) => {
       userInfo = snap.val();
-      if(userInfo.isBanned){
+      if (userInfo.isBanned) {
         Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
         firebase.auth().signOut();
       }

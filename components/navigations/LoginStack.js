@@ -3,6 +3,8 @@ import LoginScreen from "../screens/LoginScreen";
 import TermsAndConditionsScreen from "../screens/TermsAndConditions";
 import { hide } from "expo/build/launch/SplashScreen";
 
+const morado = "#443099";
+
 const LoginStack = createStackNavigator({
   Login: {
     screen: LoginScreen,
@@ -15,6 +17,9 @@ const LoginStack = createStackNavigator({
     navigationOptions: () => ({
       title: "Términos y condiciones de uso",
       headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
     }),
   },
 });
