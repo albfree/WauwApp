@@ -92,8 +92,8 @@ function DisplayFinishRequest(props) {
   };
   const confirmFinishRequest = () => {
     Alert.alert(
-      "Va a navegar hacia una página para poner su email para obtener el cobro",
       "¿Está seguro?",
+      "Dará el servicio por finalizado y navegará hacia una vista para recibir el pago.",
       [
         {
           text: "Si",
