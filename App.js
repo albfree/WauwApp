@@ -22,12 +22,3 @@ const AppSwitchNavigator = createSwitchNavigator({
 });
 
 const AppNavigator = createAppContainer(AppSwitchNavigator);
-const blanco = "#fff";
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    backgroundColor: blaco,
-    flex: 1,
-    justifyContent: "center",
-  },
-});
