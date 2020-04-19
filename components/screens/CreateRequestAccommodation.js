@@ -7,7 +7,6 @@ import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
-import { dateParse } from "../utils/DateParser";
 
 function createRequestAccommodation(props) {
   const { navigation } = props;
@@ -48,6 +47,16 @@ function createRequestAccommodation(props) {
   const [newPrice, setNewPrice] = useState(
     navigation.state.params.formData.salary
   );
+
+  function fechaParseadaCorta(fecha) {
+    var fechaRecibida = new Date(fecha);
+    return (
+        fechaRecibida.getDate() + "/" +
+        parseInt(fechaRecibida.getMonth() + 1) +
+        "/" +
+        fechaRecibida.getFullYear()
+    );
+}
 
   //Owner logueado actualmente que realizada la request
   useEffect(() => {
@@ -138,13 +147,13 @@ function createRequestAccommodation(props) {
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
               {"Fecha de inicio\n"}
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {dateParse.fechaParseadaCorta(newStartTime)}
+                {fechaParseadaCorta(newStartTime)}
               </Text>{" "}
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
               {"Fecha de finalización\n"}
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {newEndTime.toLocaleString("en-US").substring(0, 10)}
+                {fechaParseadaCorta(newEndTime)}
               </Text>{" "}
             </Text>
 

@@ -9,7 +9,6 @@ import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
-import  dateParse  from "../utils/DateParser";
 
 function FormRequestAccommodation(props) {
   const { navigation } = props;
@@ -243,7 +242,7 @@ function FormRequestAccommodation(props) {
             <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
               Del {fechaParseadaCorta(startAccommodation)}{" "}
               hasta el{" "}
-              {endAccommodation.toLocaleString("en-US").substring(0, 10)}
+              {fechaParseadaCorta(endAccommodation)}
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt}>
               ¿Qué mascotas quiere alojar?
