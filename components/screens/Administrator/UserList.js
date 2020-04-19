@@ -144,9 +144,14 @@ function User(userIn) {
                   {user.item.surname + ", " + user.item.name}
                 </Text>
               </View>
+              <View style={globalStyles.adminView3}>
+                <Text style={globalStyles.adminTxt}>
+                  {user.item.email}
+                </Text>
+              </View>
             </View>
-            {/* Poner info del user a la izq y botón a la derecha*/}
           </View>
+          
         </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={banUser}>
@@ -156,7 +161,11 @@ function User(userIn) {
                 <Text style={globalStyles.adminTxt}>
                   {user.item.surname + ", " + user.item.name}
                 </Text>
-                {/* Poner info del user a la izq y botón a la derecha*/}
+              </View>
+              <View style={globalStyles.adminView3}>
+                <Text style={globalStyles.adminTxt}>
+                  {user.item.email}
+                </Text>
               </View>
             </View>
           </View>

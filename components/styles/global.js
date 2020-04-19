@@ -9,7 +9,7 @@ const celeste = "#33AAFF";
 export const globalStyles = StyleSheet.create({
   adminTxt: {
     color: blanco,
-    fontSize: 20,
+    fontSize: 15,
     textAlign: "center",
   },
   adminTxt2: {

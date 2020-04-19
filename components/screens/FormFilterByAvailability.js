@@ -15,8 +15,10 @@ import { globalStyles } from "../styles/global";
 import Loading from "../Loading";
 import { formSearchWalkStyles } from "../styles/formSearchWalksStyle";
 import _ from "lodash";
+import { bannedAssertion } from "../account/bannedAssertion";
 
 function FormFilterByAvailability(props) {
+
   const { navigation } = props;
 
   const [loading, setLoading] = useState(true);
@@ -24,13 +26,8 @@ function FormFilterByAvailability(props) {
 
   const [availabilities, setAvailabilities] = useState([]);
 
-  let id;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      id = snap.val().id;
-    });
+  var user = bannedAssertion();
+  var id = user.id;
 
   useEffect(() => {
     const query = db.ref("availabilities-wauwers");

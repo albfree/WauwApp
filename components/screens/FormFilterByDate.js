@@ -6,8 +6,10 @@ import { globalStyles } from "../styles/global";
 import { filterDateStyles } from "../styles/filterDateStyle";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
+import { bannedAssertion } from "../account/bannedAssertion";
 
 function FormFilterByDate(props) {
+  bannedAssertion();
   const { navigation } = props;
 
   const [isLoading, setIsLoading] = useState(false);
