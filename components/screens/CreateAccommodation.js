@@ -101,12 +101,13 @@ function CreateAccommodation(props) {
       price: newPrice,
     };
 
+    console.log(newEndTime.getTime() - newStartTime.getTime());
     if (
       newStartTime === null ||
       newEndTime === null ||
       newSalary === null ||
-      new Date().getTime() - newStartTime.getTime() > 10000 ||
-      newEndTime.getTime() - newStartTime.getTime() < -10000
+      new Date().getTime() - newStartTime.getTime() > 20000 ||
+      newEndTime.getTime() - newStartTime.getTime() < 86300000
     ) {
       let errores = "";
       if (newStartTime === null) {
@@ -119,12 +120,12 @@ function CreateAccommodation(props) {
         errores = errores.concat("El precio mínimo es 10.\n");
       }
 
-      if (new Date().getTime() - newStartTime.getTime() > 10000) {
+      if (new Date().getTime() - newStartTime.getTime() > 20000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime.getTime() - newStartTime.getTime() < -10000) {
+      if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
         errores = errores.concat(
           "La fecha de entrada debe ser anterior a la fecha de salida.\n"
         );
@@ -134,12 +135,12 @@ function CreateAccommodation(props) {
       let errores = "";
       if (isNaN(newSalary) || newSalary < 10) {
         errores = errores.concat("El precio mínimo es 10.\n");
-        if (new Date().getTime() - newStartTime.getTime() > 10000) {
+        if (new Date().getTime() - newStartTime.getTime() > 20000) {
           errores = errores.concat(
             "La fecha de entrada debe ser posterior o igual a la actual.\n"
           );
         }
-        if (newEndTime.getTime() - newStartTime.getTime() < -10000) {
+        if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
           errores = errores.concat(
             "La fecha de entrada debe ser anterior a la fecha de salida.\n"
           );

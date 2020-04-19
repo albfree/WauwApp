@@ -187,7 +187,7 @@ function Precio(props) {
 
   let duration =
     (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24);
-  const days = parseInt(duration, 10) + 1;
+  const days = parseInt(duration, 10);
 
   // Si cambia de mes coge los dias bien, pero si esta en el mismo mes coge 1 dia menos
   // estaria bien darle una vuelta a esto. Mientras se queda que suma un dia a todo.
