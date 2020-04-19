@@ -35,20 +35,16 @@ function FormRequestAccommodation(props) {
     navigation.state.params.accommodation.endTime
   );
 
-  const oneday = 86100000;
-  const actualday = 20000;
-  const sameday = 43200000;
-  const samedayneg = -43200000;
-
-  const fechaParseadaCorta =(fecha) => {
+  const fechaParseadaCorta = (fecha) => {
     var fechaRecibida = new Date(fecha);
     return (
-        fechaRecibida.getDate() + "/" +
-        parseInt(fechaRecibida.getMonth() + 1) +
-        "/" +
-        fechaRecibida.getFullYear()
+      fechaRecibida.getDate() +
+      "/" +
+      parseInt(fechaRecibida.getMonth() + 1) +
+      "/" +
+      fechaRecibida.getFullYear()
     );
-};
+  };
 
   const onChangeS = (event, selectedDate) => {
     const currentDate = selectedDate || new Date();
@@ -114,11 +110,11 @@ function FormRequestAccommodation(props) {
     if (
       newStartTime === null ||
       newEndTime === null ||
-      new Date().getTime() - newStartTime.getTime() > actualday ||
-      newEndTime.getTime() - newStartTime.getTime() < oneday ||
+      new Date().getTime() - newStartTime.getTime() > 10000 ||
+      newEndTime.getTime() - newStartTime.getTime() < 86100000 ||
       petNumber === 0 ||
-      startAccommodation.getTime() - newStartTime.getTime() > sameday ||
-      endAccommodation.getTime() - newEndTime.getTime() < samedayneg
+      startAccommodation.getTime() - newStartTime.getTime() > 43200000 ||
+      endAccommodation.getTime() - newEndTime.getTime() < -43200000
     ) {
       let errores = "";
       if (newStartTime === null) {
@@ -128,12 +124,12 @@ function FormRequestAccommodation(props) {
         errores = errores.concat("Debe escribir una fecha de salida.\n");
       }
 
-      if (new Date().getTime() - newStartTime.getTime() > actualday) {
+      if (new Date().getTime() - newStartTime.getTime() > 10000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime.getTime() - newStartTime.getTime() < oneday) {
+      if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
         errores = errores.concat(
           "La fecha de salida debe ser posterior a la fecha de entrada.\n"
         );
@@ -149,12 +145,12 @@ function FormRequestAccommodation(props) {
         );
       }
 
-      if (startAccommodation.getTime() - newStartTime.getTime() > sameday) {
+      if (startAccommodation.getTime() - newStartTime.getTime() > 43200000) {
         errores = errores.concat(
           "La fecha de inicio no puede ser anterior a la fecha de inicio del alojamiento.\n"
         );
       }
-      if (endAccommodation.getTime() - newEndTime.getTime() < samedayneg) {
+      if (endAccommodation.getTime() - newEndTime.getTime() < -43200000) {
         errores = errores.concat(
           "La fecha de fin no puede ser posterior a la fecha de fin del alojamiento.\n"
         );
@@ -245,8 +241,7 @@ function FormRequestAccommodation(props) {
               Fechas Disponibles
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-              Del {fechaParseadaCorta(startAccommodation)}{" "}
-              hasta el{" "}
+              Del {fechaParseadaCorta(startAccommodation)} hasta el{" "}
               {fechaParseadaCorta(endAccommodation)}
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt}>

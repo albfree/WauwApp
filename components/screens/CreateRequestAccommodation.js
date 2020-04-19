@@ -48,15 +48,16 @@ function createRequestAccommodation(props) {
     navigation.state.params.formData.salary
   );
 
-  const fechaParseadaCorta =(fecha) => {
+  const fechaParseadaCorta = (fecha) => {
     var fechaRecibida = new Date(fecha);
     return (
-        fechaRecibida.getDate() + "/" +
-        parseInt(fechaRecibida.getMonth() + 1) +
-        "/" +
-        fechaRecibida.getFullYear()
+      fechaRecibida.getDate() +
+      "/" +
+      parseInt(fechaRecibida.getMonth() + 1) +
+      "/" +
+      fechaRecibida.getFullYear()
     );
-};
+  };
 
   //Owner logueado actualmente que realizada la request
   useEffect(() => {
