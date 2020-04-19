@@ -43,7 +43,7 @@ function FormRequestAccommodation(props) {
         "/" +
         fechaRecibida.getFullYear()
     );
-}
+};
 
   const onChangeS = (event, selectedDate) => {
     const currentDate = selectedDate || new Date();

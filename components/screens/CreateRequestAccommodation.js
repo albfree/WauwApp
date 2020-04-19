@@ -56,7 +56,7 @@ function createRequestAccommodation(props) {
         "/" +
         fechaRecibida.getFullYear()
     );
-}
+};
 
   //Owner logueado actualmente que realizada la request
   useEffect(() => {
