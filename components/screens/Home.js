@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
@@ -15,10 +16,15 @@ import { globalStyles } from "../styles/global";
 import { homeStyles } from "../styles/homeStyle";
 import _ from "lodash";
 import { bannedAssertion } from "../account/bannedAssertion";
+import { db } from "../population/config";
+import firebase from "firebase";
+import { email } from "../account/QueriesProfile";
+import { popUp } from "../account/popUp";
 
 function Home(props) {
   const { navigation } = props;
   bannedAssertion();
+  popUp();
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -46,22 +52,22 @@ function Home(props) {
               toda la información disponible.
             </Text>
 
-              <Button
-                buttonStyle={homeStyles.homeBtn}
-                containerStyle={homeStyles.homeBtnContainer}
-                title="Protectoras"
-                onPress={() => navigation.navigate("AnimalShelters")}
-                icon={
-                  <Icon
-                    type="material-community"
-                    name="shield-home"
-                    size={30}
-                    color="white"
-                    marginLeft={"10%"}
-                  />
-                }
-                titleStyle={homeStyles.homeBtnTxt}
-              />
+            <Button
+              buttonStyle={homeStyles.homeBtn}
+              containerStyle={homeStyles.homeBtnContainer}
+              title="Protectoras"
+              onPress={() => navigation.navigate("AnimalShelters")}
+              icon={
+                <Icon
+                  type="material-community"
+                  name="shield-home"
+                  size={30}
+                  color="white"
+                  marginLeft={"10%"}
+                />
+              }
+              titleStyle={homeStyles.homeBtnTxt}
+            />
 
             <Button
               buttonStyle={homeStyles.homeBtn}

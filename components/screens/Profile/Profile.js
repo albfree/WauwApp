@@ -21,7 +21,7 @@ import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
 import { bannedAssertion } from "../../account/bannedAssertion";
-
+import { popUp } from "../../account/popUp";
 function Profile(props) {
   if (!global.btoa) {
     global.btoa = encode;
@@ -34,6 +34,7 @@ function Profile(props) {
   var userInfo = bannedAssertion();
   var requestWorker = [];
 
+  popUp();
   // Better way to get some information from DB and send it to UserData
   db.ref("requests")
     .orderByChild("worker")
