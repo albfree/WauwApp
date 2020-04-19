@@ -35,8 +35,19 @@ function FormRequestAccommodation(props) {
     navigation.state.params.accommodation.endTime
   );
 
+  const fechaParseadaCorta = (fecha) => {
+    var fechaRecibida = new Date(fecha);
+    return (
+      fechaRecibida.getDate() +
+      "/" +
+      parseInt(fechaRecibida.getMonth() + 1) +
+      "/" +
+      fechaRecibida.getFullYear()
+    );
+  };
+
   const onChangeS = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || new Date();
     setShowS(Platform.OS === "ios");
     setStartTime(currentDate);
   };
@@ -51,7 +62,7 @@ function FormRequestAccommodation(props) {
   };
 
   const onChangeE = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || new Date();
     setShowE(Platform.OS === "ios");
     setEndTime(currentDate);
   };
@@ -99,8 +110,8 @@ function FormRequestAccommodation(props) {
     if (
       newStartTime === null ||
       newEndTime === null ||
-      new Date() - newStartTime > 10000 ||
-      newEndTime.getTime() - newStartTime.getTime() < -10000 ||
+      new Date().getTime() - newStartTime.getTime() > 10000 ||
+      newEndTime.getTime() - newStartTime.getTime() < 86100000 ||
       petNumber === 0 ||
       startAccommodation.getTime() - newStartTime.getTime() > 43200000 ||
       endAccommodation.getTime() - newEndTime.getTime() < -43200000
@@ -113,14 +124,14 @@ function FormRequestAccommodation(props) {
         errores = errores.concat("Debe escribir una fecha de salida.\n");
       }
 
-      if (new Date() - newStartTime > 10000) {
+      if (new Date().getTime() - newStartTime.getTime() > 10000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime.getTime() - newStartTime.getTime() < -10000) {
+      if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
         errores = errores.concat(
-          "La fecha de entrada debe ser anterior a la fecha de salida.\n"
+          "La fecha de salida debe ser posterior a la fecha de entrada.\n"
         );
       }
       if (petNumber === 0 && petNames === null) {
@@ -146,17 +157,6 @@ function FormRequestAccommodation(props) {
       }
 
       Alert.alert("Advertencia", errores.toString());
-      // } else {
-      //   let errores = "";
-      //   if (newStartTime < new Date() || newEndTime < newStartTime) {
-      //     errores = errores.concat(
-      //       "La fecha de entrada debe ser posterior o igual a la actual.\n"
-      //     );
-      //     errores = errores.concat(
-      //       "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
-      //     );
-
-      //     Alert.alert("Advertencia", errores.toString());
     } else {
       setIsLoading(true);
 
@@ -165,7 +165,6 @@ function FormRequestAccommodation(props) {
       });
       Alert.alert("Éxito", "Confirme su solicitud.");
     }
-    // }
   };
 
   return (
@@ -242,9 +241,8 @@ function FormRequestAccommodation(props) {
               Fechas Disponibles
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-              Del {startAccommodation.toLocaleString("en-US").substring(0, 10)}{" "}
-              hasta el{" "}
-              {endAccommodation.toLocaleString("en-US").substring(0, 10)}
+              Del {fechaParseadaCorta(startAccommodation)} hasta el{" "}
+              {fechaParseadaCorta(endAccommodation)}
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt}>
               ¿Qué mascotas quiere alojar?

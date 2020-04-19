@@ -1,31 +1,26 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Alert,
-  Button
-} from "react-native";
+import { View, Text, TouchableOpacity, Alert, Image } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
 import { email } from "../../account/QueriesProfile";
 import { anonEmail } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
-import { Icon } from "react-native-elements";
+import { Icon, Button } from "react-native-elements";
 import firebase from "firebase";
+import { profileStyles } from "../../styles/profileStyle";
 
 function ProfileDeleteData(props) {
-    const {navigation} = props;
+  const { navigation } = props;
 
-    const [loading, setLoading] = useState(true);
-    const [requestsWorkerList, setRequestWorkerList] = useState([]);
-    const [requestsOwnerList, setRequestOwnerList] = useState([]);
-    const [user, setUser] = useState();
-    const [anonUser, setAnonUser] = useState();
-    const [reloadData, setReloadData] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [requestsWorkerList, setRequestWorkerList] = useState([]);
+  const [requestsOwnerList, setRequestOwnerList] = useState([]);
+  const [user, setUser] = useState();
+  const [anonUser, setAnonUser] = useState();
+  const [reloadData, setReloadData] = useState(false);
 
-    let wauwerId;
+  let wauwerId;
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
@@ -33,130 +28,142 @@ function ProfileDeleteData(props) {
       wauwerId = snap.val().id;
     });
 
-    let anonWauwerId;
-    db.ref("wauwers")
+  let anonWauwerId;
+  db.ref("wauwers")
     .orderByChild("email")
     .equalTo(anonEmail)
     .on("child_added", (snap) => {
       anonWauwerId = snap.val().id;
     });
 
-
-    useEffect(() => {
-      db.ref("requests")
-        .orderByChild("worker")
-        .equalTo(wauwerId)
-        .on("value", (snap) => {
-          const requests = [];
-          snap.forEach((child) => {
-            requests.push(child.val());
-          });
-          setRequestWorkerList(requests);
+  useEffect(() => {
+    db.ref("requests")
+      .orderByChild("worker")
+      .equalTo(wauwerId)
+      .on("value", (snap) => {
+        const requests = [];
+        snap.forEach((child) => {
+          requests.push(child.val());
         });
-        setLoading(false);
-        setReloadData(false);
-      }, []);
+        setRequestWorkerList(requests);
+      });
+    setLoading(false);
+    setReloadData(false);
+  }, []);
 
-      useEffect(() => {
-        db.ref("requests")
-          .orderByChild("owner")
-          .equalTo(wauwerId)
-          .on("value", (snap) => {
-            const requestsO = [];
-            snap.forEach((child) => {
-              requestsO.push(child.val());
-            });
-            setRequestOwnerList(requestsO);
-          });
-          setLoading(false);
-          setReloadData(false);
-        }, []);
+  useEffect(() => {
+    db.ref("requests")
+      .orderByChild("owner")
+      .equalTo(wauwerId)
+      .on("value", (snap) => {
+        const requestsO = [];
+        snap.forEach((child) => {
+          requestsO.push(child.val());
+        });
+        setRequestOwnerList(requestsO);
+      });
+    setLoading(false);
+    setReloadData(false);
+  }, []);
 
-        useEffect(() => {
-          db.ref("users")
-            .orderByChild("gmail")
-            .equalTo(email)
-            .on("value", (snap) => {
-              snap.forEach((child) => {
-                setUser(child.val());
-              });
-            });
+  useEffect(() => {
+    db.ref("users")
+      .orderByChild("gmail")
+      .equalTo(email)
+      .on("value", (snap) => {
+        snap.forEach((child) => {
+          setUser(child.val());
+        });
+      });
 
-            setLoading(false);
-            setReloadData(false);
-          }, []);
+    setLoading(false);
+    setReloadData(false);
+  }, []);
 
-          useEffect(() => {
-            db.ref("wauwers")
-              .orderByChild("id")
-              .equalTo(anonWauwerId)
-              .on("value", (snap) => {
-                snap.forEach((child) => {
-                  setAnonUser(child.val());
-                });
-              });
-  
-              setLoading(false);
-              setReloadData(false);
-            }, []);
+  useEffect(() => {
+    db.ref("wauwers")
+      .orderByChild("id")
+      .equalTo(anonWauwerId)
+      .on("value", (snap) => {
+        snap.forEach((child) => {
+          setAnonUser(child.val());
+        });
+      });
+
+    setLoading(false);
+    setReloadData(false);
+  }, []);
 
   const aviso = () => {
     Alert.alert(
-        "Aviso",
-        "Aviso. Estás a punto de borrar tus datos de esta aplicación. Para volver a usar la aplicación deberás registrarte de nuevo",
-        [
-            {
-             text: "Vale",
-            onPress: validateAndDelete, 
-            },
-            {
-            text: "Cancelar",
-            style: "cancel",
-            },
-        ],
-        { cancelable: false }
-      );
+      "Aviso",
+      "Aviso. Estás a punto de borrar tus datos de esta aplicación. Para volver a usar la aplicación deberás registrarte de nuevo.",
+      [
+        {
+          text: "OK",
+          onPress: validateAndDelete,
+        },
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
-  const validateAndDelete = () =>  {
-
+  const validateAndDelete = () => {
     var requestWorkerOk = true;
     var requestOwnerOk = true;
 
-    if(requestsWorkerList && requestsWorkerList.length) {
+    if (requestsWorkerList && requestsWorkerList.length) {
       for (let i = 0; i < requestsWorkerList.length; i++) {
-        if(requestsWorkerList[i].pending === false) {
-          if(requestsWorkerList[i].isFinished === false || requestsWorkerList[i].isPayed === false || requestsWorkerList[i].isRated === false) {
+        if (requestsWorkerList[i].pending === false) {
+          if (
+            requestsWorkerList[i].isFinished === false ||
+            requestsWorkerList[i].isPayed === false ||
+            requestsWorkerList[i].isRated === false
+          ) {
             requestWorkerOk = false;
-            Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
+            Alert.alert(
+              "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
+            );
             break;
           } else {
             if (requestWorkerOk === true) {
               let idWorker = {
-                worker: anonWauwerId
+                worker: anonWauwerId,
               };
               db.ref("requests/" + requestsWorkerList[i].id).update(idWorker);
-              db.ref("chats/"+ requestsWorkerList[i].id).remove();
+              db.ref("chats/" + requestsWorkerList[i].id).remove();
             }
           }
         } else {
-          db.ref("requests/" + requestsWorkerList[i].id).update({pending: false, isCanceled: true, worker: anonWauwerId});
+          db.ref("requests/" + requestsWorkerList[i].id).update({
+            pending: false,
+            isCanceled: true,
+            worker: anonWauwerId,
+          });
         }
       }
-      
     } else {
-      
-      if(requestsOwnerList && requestsOwnerList.length) {
+      if (requestsOwnerList && requestsOwnerList.length) {
         for (let i = 0; i < requestsOwnerList.length; i++) {
-          if(requestsOwnerList[i].pending === false) {
-            if(requestsOwnerList[i].isFinished === false || requestsOwnerList[i].isPayed === false || requestsOwnerList[i].isRated === false) {
+          if (requestsOwnerList[i].pending === false) {
+            if (
+              requestsOwnerList[i].isFinished === false ||
+              requestsOwnerList[i].isPayed === false ||
+              requestsOwnerList[i].isRated === false
+            ) {
               requestOwnerOk = false;
-              Alert.alert("Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración.");
+              Alert.alert(
+                "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
+              );
               break;
             } else {
               if (requestOwnerOk === true) {
                 let idOwner = {
-                  owner: anonWauwerId
+                  owner: anonWauwerId,
                 };
                 db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
                 db.ref("chats/" + requestsOwnerList[i].id).remove();
@@ -165,20 +172,18 @@ function ProfileDeleteData(props) {
           } else {
             db.ref("request/" + requestsOwnerList[i].id).remove();
           }
-        } 
-      } 
+        }
+      }
     }
 
-    if(requestWorkerOk && requestOwnerOk) {
+    if (requestWorkerOk && requestOwnerOk) {
       deleteData(wauwerId);
     }
-    
   };
 
-
-    return(
-      <View>
-        <TouchableOpacity
+  return (
+    <View style={globalStyles.viewFlex1}>
+      <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
       >
@@ -191,81 +196,108 @@ function ProfileDeleteData(props) {
           </View>
         </View>
       </TouchableOpacity>
+      <View style={globalStyles.blankView5}>
+        <Text style={globalStyles.blankTxt}>
+          Aquí podrá eliminar su cuenta...
+        </Text>
+        <Image
+          source={require("../../../assets/images/SadDog.jpg")}
+          style={globalStyles.blankImage2}
+        />
+        <Text style={globalStyles.blankTxt}>¿Desea abandonarnos?</Text>
         <Button
-        buttonStyle={globalStyles.addDogBtn}
-        containerStyle={globalStyles.addDogBtnContainer}
-        title="Eliminar datos"
-        onPress={aviso}
+          buttonStyle={profileStyles.profileBtn5}
+          containerStyle={profileStyles.profileBtnContainer5}
+          title="Eliminar datos"
+          onPress={aviso}
+          titleStyle={profileStyles.profileBtnTittle}
+          icon={
+            <Icon
+              type="material-community"
+              name="delete"
+              size={30}
+              color="white"
+              marginLeft={20}
+            />
+          }
         />
       </View>
-    );
+    </View>
+  );
 }
 
 function deleteData(props) {
-
   let wauwerId = props;
-  
+
   var user = [];
   db.ref("users")
-  .orderByChild("gmail")
-  .equalTo(email)
-  .on("value", (snap) => {
-    snap.forEach((child) => {
-     user.push(child.val());
+    .orderByChild("gmail")
+    .equalTo(email)
+    .on("value", (snap) => {
+      snap.forEach((child) => {
+        user.push(child.val());
+      });
     });
-  });
- 
 
   if (!user[0].hasOwnProperty("last_logged_in")) {
-    Alert.alert("Lo sentimos. Para poder eliminar la cuenta debe haber iniciado sesión más de una vez");
+    Alert.alert(
+      "Lo sentimos. Para poder eliminar la cuenta debe haber iniciado sesión más de una vez"
+    );
   } else {
     let fechaUltimaConexion = new Date(user[0].last_logged_in);
     let fechaActual = new Date();
-    
-    if(fechaUltimaConexion.getFullYear() === fechaActual.getFullYear()
-        && fechaUltimaConexion.getMonth() === fechaActual.getMonth()
-        && fechaUltimaConexion.getDate() === fechaActual.getDate()
+
+    if (
+      fechaUltimaConexion.getFullYear() === fechaActual.getFullYear() &&
+      fechaUltimaConexion.getMonth() === fechaActual.getMonth() &&
+      fechaUltimaConexion.getDate() === fechaActual.getDate()
+    ) {
+      if (
+        Math.abs(fechaActual.getMinutes() - fechaUltimaConexion.getMinutes()) >
+          10 ||
+        Math.abs(fechaActual.getHours() - fechaUltimaConexion.getHours()) > 1
       ) {
-        if(Math.abs(fechaActual.getMinutes() - fechaUltimaConexion.getMinutes()) > 10 || Math.abs(fechaActual.getHours() - fechaUltimaConexion.getHours()) > 1) {
-          Alert.alert("Por razones de seguridad, necesitamos que vuelvas a iniciar sesión en esta cuenta para poder eliminarla.");
-        } else {
+        Alert.alert(
+          "Por razones de seguridad, necesitamos que vuelvas a iniciar sesión en esta cuenta para poder eliminarla."
+        );
+      } else {
         //BORRADO DE MASCOTAS
-  
-        db.ref("pet/"+ wauwerId).remove();
+
+        db.ref("pet/" + wauwerId).remove();
 
         //BORRADO DE ALOJAMIENTOS
-    
+
         db.ref("accommodation")
-        .orderByChild("worker")
-        .equalTo(wauwerId)
-        .on("value", (snap) => {
-          snap.forEach((child) => {
-            child.ref.remove();
+          .orderByChild("worker")
+          .equalTo(wauwerId)
+          .on("value", (snap) => {
+            snap.forEach((child) => {
+              child.ref.remove();
+            });
           });
-        });
 
-          //BORRADO DE REVIEWS
+        //BORRADO DE REVIEWS
 
-        db.ref("reviews/" + wauwerId).remove();  
-  
-          //BORRADO DE DISPONIBILIDADES DEL WAUWER
-    
+        db.ref("reviews/" + wauwerId).remove();
+
+        //BORRADO DE DISPONIBILIDADES DEL WAUWER
+
         db.ref("availabilities-wauwers/" + wauwerId).remove();
 
-          //BORRADO DE USER Y WAUWER
+        //BORRADO DE USER Y WAUWER
 
         var currentUser = firebase.auth().currentUser;
         var userUid = currentUser.uid;
-        currentUser.delete().then(function() {
-          db.ref("users/"+userUid).remove();
-          db.ref("wauwers/"+wauwerId).remove();
+        currentUser.delete().then(function () {
+          db.ref("users/" + userUid).remove();
+          db.ref("wauwers/" + wauwerId).remove();
           Alert.alert(
             "Éxito",
             "Su cuenta y toda la información relacionada han sido eliminados.",
             [
               {
                 text: "Ok",
-                style: "cancel", 
+                style: "cancel",
               },
             ],
             { cancelable: false }

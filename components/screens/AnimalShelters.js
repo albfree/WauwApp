@@ -47,7 +47,7 @@ export default function AnimalShelters() {
         </View>
       </SafeAreaView>
       <SafeAreaView style={globalStyles.viewFlex1}>
-        <View style={animalStyles.animalView}>
+        <View style={animalStyles.animalView2}>
           <ImageBackground
             source={protectora2}
             style={animalStyles.animalImage}

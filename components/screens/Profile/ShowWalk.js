@@ -13,6 +13,8 @@ import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
 import { myWalksStyles } from "../../styles/myWalksStyle";
 import { requestsStyles } from "../../styles/requestsStyle";
+import firebase from "firebase";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ShowWalk(props) {
   const { navigation } = props;
@@ -25,6 +27,7 @@ function ShowWalk(props) {
   var pago = "";
   var fecha = "";
 
+  bannedAssertion();
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
@@ -70,8 +73,8 @@ function ShowWalk(props) {
 
   const confirmFinishRequest = () => {
     Alert.alert(
-      "Va a navegar hacia una página para poner su email para obtener el cobro",
       "¿Está seguro?",
+      "Dará el servicio por finalizado y navegará hacia una vista para recibir el pago.",
       [
         {
           text: "Si",
@@ -85,7 +88,6 @@ function ShowWalk(props) {
       { cancelable: false }
     );
   };
-
 
   const finishRequest = () => {
     /*var idRequest = request.id;

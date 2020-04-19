@@ -5,6 +5,7 @@ import { withNavigation } from "react-navigation";
 import { db } from "../../population/config.js";
 import { globalStyles } from "../../styles/global";
 import { requestsStyles } from "../../styles/requestsStyle";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function showRequest(props) {
   const { navigation } = props;
@@ -15,8 +16,7 @@ function showRequest(props) {
   var status = "";
   var worker = [];
   var pago = "";
-  let valorado;
-  let desabilitado;
+  bannedAssertion();
 
   db.ref("wauwers")
     .orderByChild("id")
@@ -39,13 +39,13 @@ function showRequest(props) {
     navigation.popToTop();
   };
 
-  if (request.type == "sitter") {
+  if (request.type === "sitter") {
     tipo = "Alojamiento";
     fecha = "Del "
       .concat(request.startTime)
       .concat(" al ")
       .concat(request.endTime);
-  } else if (request.type == "walk") {
+  } else if (request.type === "walk") {
     tipo = "Paseo";
     fecha = "Día y hora: ".concat(request.interval);
   }
@@ -77,7 +77,7 @@ function showRequest(props) {
     }
   };
 
-  if (request.pending && request.type == "walk") {
+  if (request.pending && request.type === "walk") {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
         <View style={requestsStyles.requestsFeed2}>
@@ -126,7 +126,11 @@ function showRequest(props) {
         </View>
       </SafeAreaView>
     );
-  } else if (!request.pending && request.isCanceled && request.type == "walk") {
+  } else if (
+    !request.pending &&
+    request.isCanceled &&
+    request.type === "walk"
+  ) {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
         <View style={requestsStyles.requestsFeed2}>
@@ -335,7 +339,7 @@ function showRequest(props) {
     !request.pending &&
     !request.isCanceled &&
     !request.isPayed &&
-    request.type == "walk"
+    request.type === "walk"
   ) {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
@@ -389,7 +393,7 @@ function showRequest(props) {
         </View>
       </SafeAreaView>
     );
-  } else if (request.pending && request.type == "sitter") {
+  } else if (request.pending && request.type === "sitter") {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
         <View style={requestsStyles.requestsFeed2}>
@@ -446,7 +450,7 @@ function showRequest(props) {
   } else if (
     !request.pending &&
     request.isCanceled &&
-    request.type == "sitter"
+    request.type === "sitter"
   ) {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
@@ -486,7 +490,7 @@ function showRequest(props) {
     !request.pending &&
     !request.isCanceled &&
     !request.isPayed &&
-    request.type == "sitter"
+    request.type === "sitter"
   ) {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
@@ -550,7 +554,7 @@ function showRequest(props) {
     !request.isCanceled &&
     request.isPayed &&
     !request.isFinished &&
-    request.type == "sitter"
+    request.type === "sitter"
   ) {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>
@@ -618,7 +622,7 @@ function showRequest(props) {
     request.isPayed &&
     request.isFinished &&
     !request.isRated &&
-    request.type == "sitter"
+    request.type === "sitter"
   ) {
     return (
       <SafeAreaView style={requestsStyles.requestsView4}>

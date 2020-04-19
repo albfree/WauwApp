@@ -15,6 +15,7 @@ export const animalStyles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 10,
     textAlign: "center",
+    fontWeight: "bold"
   },
   animalTxt2: {
     color: blanco,
@@ -26,9 +27,16 @@ export const animalStyles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: transparente,
     height: "20%",
-    marginBottom: 20,
-    marginTop: 10,
     resizeMode: "stretch",
     width: "100%",
   },
+  animalView2: {
+    alignSelf: "center",
+    backgroundColor: transparente,
+    height: "20%",
+    marginTop: 20,
+    marginBottom: 20,
+    resizeMode: "stretch",
+    width: "100%",
+  }
 });

@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   Keyboard,
+  Platform,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -81,9 +82,9 @@ function CreateAccommodation(props) {
   };
 
   const addCommissions = (props) => {
-    let price = props * 1.25;
-    setNewSalary(price);
-    setNewPrice(props);
+    let price = (props * 1.25).toFixed(2);
+    setNewSalary(parseFloat(props).toFixed(2));
+    setNewPrice(price);
   };
 
   const addAccommodation = () => {
@@ -104,8 +105,8 @@ function CreateAccommodation(props) {
       newStartTime === null ||
       newEndTime === null ||
       newSalary === null ||
-      newStartTime < new Date() ||
-      newEndTime < newStartTime
+      new Date().getTime() - newStartTime.getTime() > 20000 ||
+      newEndTime.getTime() - newStartTime.getTime() < 86100000
     ) {
       let errores = "";
       if (newStartTime === null) {
@@ -118,14 +119,14 @@ function CreateAccommodation(props) {
         errores = errores.concat("El precio mínimo es 10.\n");
       }
 
-      if (newStartTime < new Date()) {
+      if (new Date().getTime() - newStartTime.getTime() > 20000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime < newStartTime) {
+      if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
         errores = errores.concat(
-          "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+          "La fecha de entrada debe ser anterior a la fecha de salida.\n"
         );
       }
       Alert.alert("Advertencia", errores.toString());
@@ -133,12 +134,14 @@ function CreateAccommodation(props) {
       let errores = "";
       if (isNaN(newSalary) || newSalary < 10) {
         errores = errores.concat("El precio mínimo es 10.\n");
-        if (newStartTime < new Date() || newEndTime < newStartTime) {
+        if (new Date().getTime() - newStartTime.getTime() > 20000) {
           errores = errores.concat(
             "La fecha de entrada debe ser posterior o igual a la actual.\n"
           );
+        }
+        if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
           errores = errores.concat(
-            "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+            "La fecha de entrada debe ser anterior a la fecha de salida.\n"
           );
         }
 
@@ -167,7 +170,7 @@ function CreateAccommodation(props) {
       <ScrollView keyboardShouldPersistTaps="never">
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
-            <Text style={globalStyles.editAccommodationEditDate}>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
               Establecer Fecha
             </Text>
             <View style={searchAccommodationStyles.searchAccommodationView}>

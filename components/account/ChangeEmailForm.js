@@ -16,7 +16,7 @@ export default function ChangeEmailForm(props) {
     } else {
       setIsLoading(true);
       let userData = {
-        email: newEmail
+        email: newEmail,
       };
       db.ref("wauwers")
         .child(id)
@@ -40,11 +40,11 @@ export default function ChangeEmailForm(props) {
           placeholder="Email"
           containerStyle={styles.input}
           defaultValue={email && email}
-          onChange={v => setNewEmail(v.nativeEvent.text)}
+          onChange={(v) => setNewEmail(v.nativeEvent.text)}
           rightIcon={{
             type: "material-community",
             name: "at",
-            color: "#c2c2c2"
+            color: "#c2c2c2",
           }}
           errorMessage={error}
         />
@@ -64,16 +64,16 @@ const styles = StyleSheet.create({
   view: {
     alignItems: "center",
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   input: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   btnContainer: {
     marginTop: 20,
-    width: "95%"
+    width: "95%",
   },
   btn: {
-    backgroundColor: "#00a680"
-  }
+    backgroundColor: "#00a680",
+  },
 });

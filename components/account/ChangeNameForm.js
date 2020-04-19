@@ -50,6 +50,7 @@ export default function ChangeNameForm(props) {
         buttonStyle={profileStyles.profileBtn2}
         onPress={updateName}
         loading={isLoading}
+        titleStyle={profileStyles.textBtn2}
       />
     </SafeAreaView>
   );

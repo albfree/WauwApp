@@ -168,26 +168,7 @@ function createRequest(props) {
               {"Intervalo seleccionado\n"}
               {value.day + " " + value.startTime + "h - " + value.endDate + "h"}
             </Text>
-            {/* <View style={searchWalksStyles.searchWalksView2}>
-              <Picker
-                selectedValue={select}
-                onValueChange={(value, itemPosition) => funct(value, itemPosition)}
-              >
-                {availabilities.map((item) => (
-                  <Picker.Item
-                    label={
-                      item.day +
-                      " " +
-                      item.startTime +
-                      "h - " +
-                      item.endDate +
-                      "h"
-                    }
-                    value={item}
-                  />
-                ))}
-              </Picker>
-            </View> */}
+           
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Qué perro desea que pasee ?"}
             </Text>

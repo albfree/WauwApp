@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   ActivityIndicator,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import { withNavigation } from "react-navigation";
@@ -13,20 +13,17 @@ import qs from "qs";
 import { decode, encode } from "base-64";
 import { db } from "../population/config.js";
 
-
-
 function Pago(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  console.log("request", request);
   const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const priceRequest = request.price;
   const requestId = request.id;
 
-  //Le vamos a pasar de props al pago la request entera. De ahí, coges el precio y se lo pasas al data details. Si response.status = 200, entonces setearemos 
-  //isPayed de esa request a true. En la vista de showRequest, el botón de pago se mostrará cuando isCanceled = false, isPending = false, isPayed = false, 
+  //Le vamos a pasar de props al pago la request entera. De ahí, coges el precio y se lo pasas al data details. Si response.status = 200, entonces setearemos
+  //isPayed de esa request a true. En la vista de showRequest, el botón de pago se mostrará cuando isCanceled = false, isPending = false, isPayed = false,
   // y si isCanceled = False, isPending = false y isPayed = true se mostrará el botón de "Abrir chat", que tendrá que abrir un chat entre el owner y el worker.
 
   //Fix bug btoa
@@ -51,7 +48,7 @@ function Pago(props) {
     const dataDetail = {
       intent: "sale",
       payer: {
-        payment_method: "paypal"
+        payment_method: "paypal",
       },
       transactions: [
         {
@@ -64,63 +61,64 @@ function Pago(props) {
               shipping_discount: "0",
               insurance: "0",
               handling_fee: "0",
-              tax: "0"
-            }
+              tax: "0",
+            },
           },
           description: "This is the payment transaction description",
           payment_options: {
-            allowed_payment_method: "IMMEDIATE_PAY"
+            allowed_payment_method: "IMMEDIATE_PAY",
           },
           item_list: {
             items: [
               {
                 name: "Wauw service",
-                description: "You are helping animal shelters with this transaction",
+                description:
+                  "You are helping animal shelters with this transaction",
                 quantity: "1",
                 price: priceRequest,
                 tax: "0",
                 sku: requestId,
-                currency: "EUR"
-              }
-            ]
-          }
-        }
+                currency: "EUR",
+              },
+            ],
+          },
+        },
       ],
       redirect_urls: {
         return_url: "https://example.com/",
-        cancel_url: "https://example.com/"
-      }
+        cancel_url: "https://example.com/",
+      },
     };
 
     const url = `https://api.sandbox.paypal.com/v1/oauth2/token`;
 
     const data = {
-      grant_type: "client_credentials"
+      grant_type: "client_credentials",
     };
 
     const auth = {
       username:
         "AUrtghWgBuLlBCqUDRK4NfYpHNRxRPlxdQFu1m0nV8XSrVnfGT734v_CrmSWFjGvJ9GgcVlEyJ6GsgXq", //"your_paypal-app-client-ID",
       password:
-        "EMc9eBqWueUaCtRuB92j3smvFqF4jyog2nzyFFY1Ud5us5vxm5F_KOKFj2QN1fVnaj8f33zBlh8eOGz2" //"your-paypal-app-secret-ID
+        "EMc9eBqWueUaCtRuB92j3smvFqF4jyog2nzyFFY1Ud5us5vxm5F_KOKFj2QN1fVnaj8f33zBlh8eOGz2", //"your-paypal-app-secret-ID
     };
 
     const options = {
       method: "post",
       headers: {
         "content-type": "application/x-www-form-urlencoded",
-        "Access-Control-Allow-Credentials": true
+        "Access-Control-Allow-Credentials": true,
       },
 
       //Make sure you use the qs.stringify for data
       data: qs.stringify(data),
       auth: auth,
-      url
+      url,
     };
 
     // Authorise with seller app information (clientId and secret key)
     axios(options)
-      .then(response => {
+      .then((response) => {
         setAccessToken(response.data.access_token);
 
         //Resquest payal payment (It will load login page payment detail on the way)
@@ -131,26 +129,22 @@ function Pago(props) {
             {
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${response.data.access_token}`
-              }
+                Authorization: `Bearer ${response.data.access_token}`,
+              },
             }
           )
-          .then(response => {
+          .then((response) => {
             const { id, links } = response.data;
-            const approvalUrl = links.find(data => data.rel == "approval_url")
-              .href;
+            const approvalUrl = links.find(
+              (data) => data.rel === "approval_url"
+            ).href;
 
-            //console.log("response", links);
             setPaypalUrl(approvalUrl);
             navigation.popToTop();
           })
-          .catch(err => {
-            //console.log({ ...err });
-          });
+          .catch((err) => {});
       })
-      .catch(err => {
-        //console.log(err);
-      });
+      .catch((err) => {});
   };
 
   /*---End Paypal checkout section---*/
@@ -161,12 +155,10 @@ function Pago(props) {
     }
   };
 
-  _onNavigationStateChange = webViewState => {
-    //console.log("webViewState", webViewState);
-
+  _onNavigationStateChange = (webViewState) => {
     //When the webViewState.title is empty this mean it's in process loading the first paypal page so there is no paypal's loading icon
     //We show our loading icon then. After that we don't want to show our icon we need to set setShouldShowWebviewLoading to limit it
-    if (webViewState.title == "") {
+    if (webViewState.title === "") {
       //When the webview get here Don't need our loading anymore because there is one from paypal
       setShouldShowWebviewLoading(false);
     }
@@ -185,29 +177,24 @@ function Pago(props) {
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${accessToken}`
-            }
+              Authorization: `Bearer ${accessToken}`,
+            },
           }
         )
-        .then(response => {
+        .then((response) => {
           setShouldShowWebviewLoading(true);
-          console.log("response.status", response.status);
           var idRequest = request.id;
-          console.log("id requests", idRequest);
           var query = db.ref().child("requests/" + idRequest);
 
           query.update({
-            isPayed: true
-          })
+            isPayed: true,
+          });
 
           alert("El pago se ha realizado correctamente");
           navigation.navigate("Profile");
-    
-
         })
-        .catch(err => {
+        .catch((err) => {
           setShouldShowWebviewLoading(true);
-          //console.log({ ...err });
         });
     }
   };
@@ -226,7 +213,7 @@ function Pago(props) {
               fontSize: 22,
               fontWeight: "400",
               textAlign: "center",
-              color: "#ffffff"
+              color: "#ffffff",
             }}
           >
             BUY NOW
@@ -253,7 +240,7 @@ function Pago(props) {
             ...StyleSheet.absoluteFill,
             justifyContent: "center",
             alignItems: "center",
-            backgroundColor: "#ffffff"
+            backgroundColor: "#ffffff",
           }}
         >
           <ActivityIndicator size="small" color="#A02AE0" />
@@ -274,7 +261,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   webview: {
     width: "100%",
@@ -283,7 +270,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
   },
   btn: {
     paddingVertical: 5,
@@ -292,6 +279,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#61E786",
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center"
-  }
+    alignContent: "center",
+  },
 });

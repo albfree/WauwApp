@@ -21,6 +21,7 @@ import {
 import Toast from "react-native-easy-toast";
 import { globalStyles } from "../../styles/global";
 import { walkerFormStyles } from "../../styles/walkerFormStyle";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
@@ -42,13 +43,7 @@ function ProfileWalkerForm(props) {
     ["Domingo", 96],
   ];
 
-  let userInfo;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      userInfo = snap.val();
-    });
+  var userInfo = bannedAssertion();
 
   useEffect(() => {
     const resulIds = [];
@@ -65,10 +60,10 @@ function ProfileWalkerForm(props) {
             " - " +
             child.val().availability.endDate;
           let id = child.val().availability.id;
-          const price = Math.round(((child.val().price / 1.3) * 10) / 10);
+          const myPrice = child.val().myPrice;
           resulIds.push(id);
           hourPrice.push(hour);
-          hourPrice.push(price);
+          hourPrice.push(myPrice);
           resulHours.push(hourPrice);
         });
         setIds(resulIds);
@@ -112,10 +107,15 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
-    const money = Math.round(sueldo * 1.3 * 10) / 10;
+    let money = sueldo * 1.3;
+    if (!Number.isInteger(money * 100)) {
+      money = Math.round(money * 100) / 100;
+    }
+
     const walkData = {
       availability: availability,
       price: money,
+      myPrice: sueldo * 1,
     };
 
     db.ref(
@@ -242,16 +242,6 @@ function ProfileWalkerForm(props) {
                 } else {
                   setSueldo(null);
                 }
-                //const salary = Math.round(precio * 1.3 * 10) / 10;
-
-                // db.ref("wauwers/" + userInfo.id)
-                //   .update({
-                //     price: salary,
-                //     walkSalary: precio,
-                //   })
-                //   .then(() => {
-                //     setSueldo(precio);
-                //   });
               }}
             >
               {sueldo}

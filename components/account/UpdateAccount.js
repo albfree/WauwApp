@@ -1,32 +1,24 @@
 import { db } from "../population/config.js";
 
-const changeAvatar = () => {
-  console.log("Estás cambiando el avatar...");
-};
+const changeAvatar = () => {};
 
 export function updateName(id, name) {
   let userData = {
-    name: name
+    name: name,
   };
-  db.ref("wauwers")
-    .child(id)
-    .update(userData);
+  db.ref("wauwers").child(id).update(userData);
 }
 
 export function updateEmail(email) {
   let userData = {
-    email: email
+    email: email,
   };
-  db.ref("wauwers")
-    .child(userInfo.id)
-    .update(userData);
+  db.ref("wauwers").child(userInfo.id).update(userData);
 }
 
 export function updateDescription(desc) {
   let userData = {
-    description: desc
+    description: desc,
   };
-  db.ref("wauwers")
-    .child(userInfo.id)
-    .update(userData);
+  db.ref("wauwers").child(userInfo.id).update(userData);
 }

@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Button, Alert } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+  Alert,
+  Image,
+  SafeAreaView,
+  ScrollView,
+} from "react-native";
+import { CheckBox, Button, Icon } from "react-native-elements";
 import axios from "axios";
 import qs from "qs";
 import { decode, encode } from "base-64";
@@ -7,7 +18,10 @@ import { TextInput } from "react-native-gesture-handler";
 import { db } from "../population/config";
 import { withNavigation } from "react-navigation";
 import { email as gmail } from "../account/QueriesProfile";
-
+import { globalStyles } from "../styles/global";
+import { payStyles } from "../styles/payStyle";
+import { myWalksStyles } from "../styles/myWalksStyle";
+import { requestsStyles } from "../styles/requestsStyle";
 function Pagar(props) {
   //var email = props.navigation.state.params.email;
   //var email = "sb-qs47l5748001@personal.example.com";
@@ -44,8 +58,8 @@ function Pagar(props) {
 
     if (validEmail) {
       Alert.alert(
-        "El pago se realizará sobre este correo",
         "¿Estás seguro?",
+        "El pago se realizará sobre este correo vinculado a su cuenta de PayPal.",
         [
           {
             text: "Si",
@@ -59,7 +73,7 @@ function Pagar(props) {
         { cancelable: false }
       );
     } else {
-      Alert.alert("No válido", "Este email no es válido para otener el cobro");
+      Alert.alert("No válido", "Este email no es válido para recibir el pago.");
     }
 
     function finishRequest() {
@@ -69,7 +83,10 @@ function Pagar(props) {
         isFinished: true,
       });
 
-      alert("Se ha finalizado el servicio correctamente");
+      Alert.alert(
+        "Operación realizada",
+        "Se ha finalizado el servicio correctamente y el pago se ha ingresado en su cuenta de PayPal, en breves lo verá reflejado."
+      );
 
       var id;
       db.ref("wauwers")
@@ -78,7 +95,7 @@ function Pagar(props) {
         .once("child_added", (snap) => {
           id = snap.val().id;
         });
-        
+
       db.ref("wauwers/" + id).update({
         paypalUrl: valor,
       });
@@ -97,17 +114,41 @@ function Pagar(props) {
   };
 
   return (
-    <View>
-      <TextInput
-        style={{ height: 40, borderColor: "gray", borderWidth: 1 }}
-        onChangeText={(text) => {
-          setValor(text);
-        }}
-        value={valor}
-      />
-
-      <Button title={"Solicitar el cobro"} onPress={payment} />
-    </View>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        <View style={globalStyles.blankView5}>
+          <Image
+            source={require("../../assets/images/MoneyDog.jpg")}
+            style={globalStyles.blankImage3}
+          />
+          <Text style={payStyles.payTxt}>Introduce tu correo de Paypal</Text>
+          <TextInput
+            placeholder={"example@example.com"}
+            style={payStyles.payTxt4}
+            onChangeText={(text) => {
+              setValor(text);
+            }}
+            value={valor}
+          />
+          <Button
+            buttonStyle={myWalksStyles.myWalksBtn}
+            containerStyle={myWalksStyles.myWalksContainer}
+            title="Solicitar el cobro"
+            onPress={payment}
+            icon={
+              <Icon
+                type="material-community"
+                name="check"
+                size={30}
+                color="white"
+                marginLeft={"10%"}
+              />
+            }
+            titleStyle={requestsStyles.requestsBtnTittle}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

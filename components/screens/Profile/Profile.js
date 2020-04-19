@@ -20,9 +20,9 @@ import { decode, encode } from "base-64";
 import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
-
+import { bannedAssertion } from "../../account/bannedAssertion";
+import { popUp } from "../../account/popUp";
 function Profile(props) {
-
   if (!global.btoa) {
     global.btoa = encode;
   }
@@ -31,17 +31,10 @@ function Profile(props) {
     global.atob = decode;
   }
   const { navigation } = props;
-
-  var userInfo;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .once("child_added", (snap) => {
-      userInfo = snap.val();
-    });
-
+  var userInfo = bannedAssertion();
   var requestWorker = [];
 
+  popUp();
   // Better way to get some information from DB and send it to UserData
   db.ref("requests")
     .orderByChild("worker")
@@ -99,8 +92,8 @@ function Profile(props) {
       navigation.navigate("ProfileWalkerForm");
     } else {
       Alert.alert(
-        "¡NO TIENES LOCALIZACIÓN INTRODUCIDA!",
-        "Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil"
+        "No tienes ubicación añadida",
+        "Para poder disfrutar de nuestros servicios debe introducir su ubicación en el perfil."
       );
     }
   };
@@ -204,6 +197,30 @@ function Profile(props) {
             style={profileStyles.profilePrints}
           />
 
+          <View>
+            {userInfo.email === "wauwispp1920@gmail.com" ? (
+              <View>
+                <Button
+                  buttonStyle={profileStyles.profileBtn4}
+                  containerStyle={profileStyles.profileBtnContainer4}
+                  title="Panel de Administración"
+                  onPress={() => navigation.navigate("AdminPanel")}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="cogs"
+                      size={30}
+                      color="white"
+                      marginLeft={20}
+                    />
+                  }
+                  titleStyle={profileStyles.profileBtnTittle}
+                />
+              </View>
+            ) : (
+              <View></View>
+            )}
+          </View>
           <Button
             buttonStyle={profileStyles.profileBtn4}
             containerStyle={profileStyles.profileBtnContainer4}
