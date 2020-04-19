@@ -137,13 +137,13 @@ function createRequestAccommodation(props) {
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
               {"Fecha de inicio\n"}
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {newStartTime.toISOString()}
+                {newStartTime.toLocaleString("en-US").substring(0, 10)}
               </Text>{" "}
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
               {"Fecha de finalización\n"}
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {newEndTime.toISOString()}
+                {newEndTime.toLocaleString("en-US").substring(0, 10)}
               </Text>{" "}
             </Text>
 

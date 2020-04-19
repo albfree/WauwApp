@@ -36,7 +36,7 @@ function FormRequestAccommodation(props) {
   );
 
   const onChangeS = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || new Date();
     setShowS(Platform.OS === "ios");
     setStartTime(currentDate);
   };
@@ -51,7 +51,7 @@ function FormRequestAccommodation(props) {
   };
 
   const onChangeE = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || new Date();
     setShowE(Platform.OS === "ios");
     setEndTime(currentDate);
   };

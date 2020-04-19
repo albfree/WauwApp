@@ -75,7 +75,6 @@ function ListAccommodations(props) {
               arrayLocation.push(longitudPaseador);
               myAccomodation.push(arrayLocation);
               accommodations.push(myAccomodation);
-
             } else {
               myAccomodation.push(child.val());
               myAccomodation.push(score);
@@ -84,7 +83,6 @@ function ListAccommodations(props) {
               arrayLocation.push(longitudPaseador);
               myAccomodation.push(arrayLocation);
               accommodations2.push(myAccomodation);
-
             }
           }
         });
@@ -94,13 +92,18 @@ function ListAccommodations(props) {
           const krom = [];
           krom.push(array[0]);
           krom.push(array[1]);
-          const distancia = calculaDistancia(latitudeUser, longitudeUser, array[2][0], array[2][1]);
+          const distancia = calculaDistancia(
+            latitudeUser,
+            longitudeUser,
+            array[2][0],
+            array[2][1]
+          );
           krom.push(distancia);
           appToYou.push(krom);
         });
 
         appToYou.sort((a, b) => {
-          return (a[2] - b[2]);
+          return a[2] - b[2];
         });
 
         const appToYou2 = [];
@@ -108,13 +111,18 @@ function ListAccommodations(props) {
           const krom = [];
           krom.push(array[0]);
           krom.push(array[1]);
-          const distancia = calculaDistancia(latitudeUser, longitudeUser, array[2][0], array[2][1]);
+          const distancia = calculaDistancia(
+            latitudeUser,
+            longitudeUser,
+            array[2][0],
+            array[2][1]
+          );
           krom.push(distancia);
           appToYou2.push(krom);
         });
 
         appToYou2.sort((a, b) => {
-          return (a[2] - b[2]);
+          return a[2] - b[2];
         });
 
         setAccommodationList(appToYou);
@@ -125,12 +133,17 @@ function ListAccommodations(props) {
 
   const calculaDistancia = (lat1, lon1, lat2, lon2) => {
     const rad = function (x) {
-      return x * Math.PI / 180;
+      return (x * Math.PI) / 180;
     };
     var R = 6378.137;
     var dLat = rad(lat2 - lat1);
     var dLong = rad(lon2 - lon1);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(rad(lat1)) *
+        Math.cos(rad(lat2)) *
+        Math.sin(dLong / 2) *
+        Math.sin(dLong / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
     return d.toFixed(2);
@@ -259,13 +272,13 @@ function ListAccommodations(props) {
             navigation={navigation}
           />
         ) : (
-            <List2
-              accommodationsList={accommodationsList2}
-              petNumber={petNumber}
-              myId={id}
-              navigation={navigation}
-            />
-          )}
+          <List2
+            accommodationsList={accommodationsList2}
+            petNumber={petNumber}
+            myId={id}
+            navigation={navigation}
+          />
+        )}
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>

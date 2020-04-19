@@ -101,7 +101,6 @@ function CreateAccommodation(props) {
       price: newPrice,
     };
 
-    console.log(newEndTime.getTime() - newStartTime.getTime());
     if (
       newStartTime === null ||
       newEndTime === null ||
