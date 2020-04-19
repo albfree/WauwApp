@@ -7,6 +7,7 @@ const morado = "#443099";
 const naranja = "#ff7549";
 const transparente = "transparent";
 const rojo = "rgba(255,0,0,0.6)";
+const negro = "black";
 
 export const profileStyles = StyleSheet.create({
   profileAvatar: {
@@ -21,7 +22,7 @@ export const profileStyles = StyleSheet.create({
     borderWidth: 1,
   },
   profileBtn2: {
-    backgroundColor: lila2,
+    backgroundColor: blanco,
     borderColor: lila,
     borderRadius: 18,
     borderWidth: 1,
@@ -197,5 +198,8 @@ export const profileStyles = StyleSheet.create({
   },
   profileView9: {
     flex: 1,
+  },
+  textBtn2: {
+    color: negro
   },
 });
