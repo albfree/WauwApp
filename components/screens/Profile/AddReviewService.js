@@ -70,7 +70,7 @@ function AddReviewService(props) {
                   .then(() => {
                     Alert.alert(
                       "Su valoración se ha guardado",
-                      "Se va a proceder el pago al usuario. Muchas gracias por usar Wauw!"
+                      "¡Muchas gracias por usar Wauw!"
                     );
                     payment(idWorker);
                     navigation.popToTop();

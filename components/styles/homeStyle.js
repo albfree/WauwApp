@@ -21,6 +21,8 @@ export const homeStyles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 10,
     width: "65%",
+    marginTop: 35,
+    marginBottom: 15
   },
   homeBtnContainer2: {
     alignItems: "center",
@@ -32,6 +34,7 @@ export const homeStyles = StyleSheet.create({
     marginTop: 25,
     justifyContent: "center",
     width: "65%",
+    marginBottom: 15
   },
   homeBtnTxt: {
     alignSelf: "center",

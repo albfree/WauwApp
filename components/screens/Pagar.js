@@ -58,8 +58,8 @@ function Pagar(props) {
 
     if (validEmail) {
       Alert.alert(
-        "El pago se realizará sobre este correo",
         "¿Estás seguro?",
+        "El pago se realizará sobre este correo vinculado a su cuenta de PayPal.",
         [
           {
             text: "Si",
@@ -73,7 +73,7 @@ function Pagar(props) {
         { cancelable: false }
       );
     } else {
-      Alert.alert("No válido", "Este email no es válido para ontener el cobro");
+      Alert.alert("No válido", "Este email no es válido para recibir el pago.");
     }
 
     function finishRequest() {
@@ -83,7 +83,7 @@ function Pagar(props) {
         isFinished: true,
       });
 
-      alert("Se ha finalizado el servicio correctamente");
+      Alert.alert("Operación realizada", "Se ha finalizado el servicio correctamente y el pago se ha ingresado en su cuenta de PayPal, en breves lo verá reflejado.");
 
       var id;
       db.ref("wauwers")

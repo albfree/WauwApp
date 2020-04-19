@@ -46,7 +46,8 @@ function FormAdd(props) {
   const guardarLocation = () => {
     if (!locationWauwer) {
       Alert.alert(
-        "Por favor, marca una localización usando el botón Editar Ubicación"
+        "No has añadido ubicación",
+        "Por favor, marca una localización usando el botón Añadir ubicación."
       );
     } else {
       let location = {
@@ -68,7 +69,7 @@ function FormAdd(props) {
     <View style={locationStyles.locationView}>
       <View style={globalStyles.viewFlex1}>
         <Button
-          title="Editar Ubicación"
+          title="Añadir ubicación"
           onPress={() => setIsVisibleMap(true)}
           containerStyle={locationStyles.locationBtnContainer}
           buttonStyle={locationStyles.locationBtn}
@@ -87,7 +88,7 @@ function FormAdd(props) {
         <Button
           buttonStyle={locationStyles.locationBtn}
           containerStyle={locationStyles.locationBtnContainer}
-          title="Guardar Ubicación"
+          title="Guardar ubicación"
           onPress={guardarLocation}
           icon={
             <Icon
@@ -157,16 +158,16 @@ function Map(props) {
         )}
         <View style={locationStyles.locationViewMapBtn}>
           <Button
-            title="Guardar Ubicacion"
-            onPress={confirmLocation}
-            containerStyle={locationStyles.locationMapBtnContainerSave}
-            buttonStyle={locationStyles.locationMapBtnSave}
-          />
-          <Button
-            title="Cancelar Ubicación"
+            title="Cancelar"
             onPress={() => setIsVisibleMap(false)}
             containerStyle={locationStyles.locationMapBtnContainerCancel}
             buttonStyle={locationStyles.locationMapBtnCancel}
+          />
+          <Button
+            title="Guardar"
+            onPress={confirmLocation}
+            containerStyle={locationStyles.locationMapBtnContainerSave}
+            buttonStyle={locationStyles.locationMapBtnSave}
           />
         </View>
       </View>
