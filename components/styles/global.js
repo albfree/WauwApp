@@ -14,14 +14,14 @@ export const globalStyles = StyleSheet.create({
   },
   adminTxt2: {
     fontSize: 20,
-    textAlign: "center",
     fontWeight: "bold",
     marginHorizontal: 15,
+    textAlign: "center",
   },
   adminTxt3: {
     fontSize: 17,
-    textAlign: "center",
     marginHorizontal: 15,
+    textAlign: "center",
   },
   adminTxt4: {
     color: celeste,
@@ -74,7 +74,6 @@ export const globalStyles = StyleSheet.create({
   },
   blankImage3: {
     alignSelf: "center",
-
     borderRadius: 80,
     flex: 1,
     height: 230,
@@ -114,19 +113,8 @@ export const globalStyles = StyleSheet.create({
   },
   blankView5: {
     flex: 1,
-    paddingTop: "5%",
     paddingBottom: "15%",
-  },
-  btnStyle: {
-    backgroundColor: "#443099",
-    width: "75%",
-    height: "45%",
-    borderRadius: 30,
-    marginTop: 5,
-    marginBottom: 5,
-  },
-  btnTextStyle: {
-    flex: 1,
+    paddingTop: "5%",
   },
   drawerIcon: {
     alignSelf: "flex-end",
@@ -141,19 +129,19 @@ export const globalStyles = StyleSheet.create({
     margin: 20,
   },
   drawerTitle: {
-    flex: 1,
     alignItems: "center",
-    marginHorizontal: 5,
     alignSelf: "center",
+    flex: 1,
+    marginHorizontal: 5,
   },
   drawerTxt: {
     fontSize: 20,
     fontWeight: "bold",
   },
   drawerView: {
-    height: 150,
-    backgroundColor: "white",
     alignItems: "center",
+    backgroundColor: "white",
+    height: 150,
     justifyContent: "center",
   },
   viewFeed: {
