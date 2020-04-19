@@ -1,9 +1,63 @@
 import { StyleSheet } from "react-native";
 
-const gris = "#dddddd";
 const blanco = "#FFF";
-
+const verde = "green";
+const rojo = "red";
+const lila = "#d6d6e8";
+const lila2 = "#443099";
+const celeste = "#33AAFF";
 export const globalStyles = StyleSheet.create({
+  adminTxt: {
+    color: blanco,
+    fontSize: 20,
+    textAlign: "center",
+  },
+  adminTxt2: {
+    fontSize: 20,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginHorizontal: 15,
+  },
+  adminTxt3: {
+    fontSize: 17,
+    textAlign: "center",
+    marginHorizontal: 15,
+  },
+  adminTxt4: {
+    color: celeste,
+  },
+  adminView: {
+    alignItems: "center",
+    backgroundColor: rojo,
+    borderColor: lila,
+    borderRadius: 20,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    height: 50,
+    justifyContent: "center",
+    marginHorizontal: 30,
+    marginVertical: 10,
+    paddingHorizontal: 20,
+  },
+  adminView2: {
+    alignItems: "center",
+    backgroundColor: verde,
+    borderColor: lila,
+    borderRadius: 20,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: "row",
+    height: 50,
+    marginHorizontal: 30,
+    marginVertical: 10,
+    paddingHorizontal: 20,
+  },
+  adminView3: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
   blankImage: {
     flex: 1,
     height: null,
@@ -27,6 +81,15 @@ export const globalStyles = StyleSheet.create({
     marginVertical: 10,
     resizeMode: "cover",
     width: "90%",
+  },
+  blankImage4: {
+    alignSelf: "center",
+    borderRadius: 80,
+    flex: 1,
+    height: 230,
+    marginVertical: 40,
+    resizeMode: "cover",
+    width: "85%",
   },
   blankTxt: {
     fontSize: 22,
