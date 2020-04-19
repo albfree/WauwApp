@@ -26,7 +26,9 @@ export default function UserData(props) {
     if (user.hasOwnProperty("address")) {
       userEmail += "Dirección: " + user.address + "\n";
     }
-    userEmail += "Descripción: " + user.description + "\n";
+    if (user.hasOwnProperty("description")) {
+      userEmail += "Descripción: " + user.description + "\n";
+    }
     userEmail += "Email: " + user.email + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
@@ -151,9 +153,14 @@ export default function UserData(props) {
           ) : (
             <Text> </Text>
           )}
-          <Text>Descripción: {user.description}</Text>
+          {user.hasOwnProperty("description") ? (
+            <View>
+              <Text>Descripción: {user.description}</Text>
+            </View>
+          ) : (
+            <Text> </Text>
+          )}
           <Text>Email: {user.email}</Text>
-          <Text>Salario: {user.price} €</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
           {user.hasOwnProperty("location") ? (
