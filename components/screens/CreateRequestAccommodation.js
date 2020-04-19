@@ -7,6 +7,7 @@ import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
+import { dateParse } from "../utils/DateParser";
 
 function createRequestAccommodation(props) {
   const { navigation } = props;
@@ -137,7 +138,7 @@ function createRequestAccommodation(props) {
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
               {"Fecha de inicio\n"}
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {newStartTime.toLocaleString("en-US").substring(0, 10)}
+                {dateParse.fechaParseadaCorta(newStartTime)}
               </Text>{" "}
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>

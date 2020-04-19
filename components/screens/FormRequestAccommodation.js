@@ -9,6 +9,7 @@ import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
+import  dateParse  from "../utils/DateParser";
 
 function FormRequestAccommodation(props) {
   const { navigation } = props;
@@ -34,6 +35,16 @@ function FormRequestAccommodation(props) {
   const endAccommodation = new Date(
     navigation.state.params.accommodation.endTime
   );
+
+  function fechaParseadaCorta(fecha) {
+    var fechaRecibida = new Date(fecha);
+    return (
+        fechaRecibida.getDate() + "/" +
+        parseInt(fechaRecibida.getMonth() + 1) +
+        "/" +
+        fechaRecibida.getFullYear()
+    );
+}
 
   const onChangeS = (event, selectedDate) => {
     const currentDate = selectedDate || new Date();
@@ -230,7 +241,7 @@ function FormRequestAccommodation(props) {
               Fechas Disponibles
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-              Del {startAccommodation.toLocaleString("en-US").substring(0, 10)}{" "}
+              Del {fechaParseadaCorta(startAccommodation)}{" "}
               hasta el{" "}
               {endAccommodation.toLocaleString("en-US").substring(0, 10)}
             </Text>
