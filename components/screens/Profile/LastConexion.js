@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -12,43 +12,50 @@ import { db } from "../../population/config";
 import { email } from "../../account/QueriesProfile";
 import BlankView from "../BlankView";
 import { fechaParseada } from "./../../utils/DateParser";
-import { profileStyles } from "../../styles/profileStyle";
 import { globalStyles } from "../../styles/global";
 import { userDataStyles } from "../../styles/userDataStyle";
+import Toast from "react-native-easy-toast";
 
 export default function LastConexion(props) {
   const { navigation } = props;
   const [loginsRegistrados, setLoginsRegistrados] = useState([]);
+  const toastRef = useRef();
+
+  let wauwer;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .once("child_added", (snap) => {
+      wauwer = snap.val().userId;
+    });
 
   useEffect(() => {
-    let wauwer;
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("child_added", (snap) => {
-        wauwer = snap.val();
-      });
-    let i = 0;
     let logins1 = [];
+    let aux = [];
     db.ref("logins")
       .orderByChild("user")
-      .equalTo(wauwer.userId)
-      .on("child_added", function (snap) {
-        logins1.push(snap.val().fecha);
+      .equalTo(wauwer)
+      .once("value", (snap) => {
+        snap.forEach((child) => {
+          logins1.push(child.val().fecha);
+        });
+      })
+      .then(() => {
+        logins1.reverse();
+        let tope;
+        if (logins1.length > 10) {
+          tope = 10;
+        } else {
+          tope = logins1.length;
+        }
+        for (let i = 0; i < tope; i++) {
+          aux.push(logins1[i]);
+        }
+        setLoginsRegistrados(aux);
+      })
+      .catch(() => {
+        toastRef.current.show("Error al recuperar sus datos");
       });
-    logins1.reverse();
-    let aux = [];
-    let tope;
-    if (logins1.length > 10) {
-      tope = 10;
-    } else {
-      tope = logins1.length;
-    }
-    for (let i = 0; i < tope; i++) {
-      aux.push(logins1[i]);
-    }
-
-    setLoginsRegistrados(aux);
   }, []);
 
   return (
@@ -89,6 +96,7 @@ export default function LastConexion(props) {
           </View>
         </View>
       </ScrollView>
+      <Toast ref={toastRef} position="center" opacity={0.7} />
     </SafeAreaView>
   );
 }
