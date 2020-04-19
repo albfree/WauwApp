@@ -48,7 +48,7 @@ function createRequestAccommodation(props) {
     navigation.state.params.formData.salary
   );
 
-  const fechaParseadaCorta =(fecha) =>{
+  const fechaParseadaCorta =(fecha) => {
     var fechaRecibida = new Date(fecha);
     return (
         fechaRecibida.getDate() + "/" +

@@ -35,7 +35,7 @@ function FormRequestAccommodation(props) {
     navigation.state.params.accommodation.endTime
   );
 
-  const fechaParseadaCorta =(fecha) =>{
+  const fechaParseadaCorta =(fecha) => {
     var fechaRecibida = new Date(fecha);
     return (
         fechaRecibida.getDate() + "/" +
