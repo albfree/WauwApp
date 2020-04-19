@@ -56,9 +56,9 @@ function FormAdd(props) {
 
       db.ref("wauwers/" + wauwer.id).update(location);
       Alert.alert(
-        "Editado",
-        "Editado correctamente",
-        [{ text: "Vale", onPress: () => navigation.navigate("ProfileDrawer") }],
+        "Ubicación guardada",
+        "Ahora puede acceder a todos nuestros servicios.",
+        [{ text: "OK", onPress: () => navigation.navigate("ProfileDrawer") }],
 
         { cancelable: false }
       );
@@ -133,7 +133,7 @@ function Map(props) {
 
   const confirmLocation = () => {
     setLocationWauwer(location);
-    Alert.alert("Localización marcada");
+    Alert.alert("Localización marcada", "Se ha agregado correctamente la ubicación seleccionada, guárdala para confirmar.");
     setIsVisibleMap(false);
   };
 

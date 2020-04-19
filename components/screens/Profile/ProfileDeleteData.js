@@ -97,10 +97,10 @@ function ProfileDeleteData(props) {
   const aviso = () => {
     Alert.alert(
       "Aviso",
-      "Aviso. Estás a punto de borrar tus datos de esta aplicación. Para volver a usar la aplicación deberás registrarte de nuevo",
+      "Aviso. Estás a punto de borrar tus datos de esta aplicación. Para volver a usar la aplicación deberás registrarte de nuevo.",
       [
         {
-          text: "Vale",
+          text: "OK",
           onPress: validateAndDelete,
         },
         {
