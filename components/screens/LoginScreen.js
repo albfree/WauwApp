@@ -172,9 +172,8 @@ function LoginScreen(props) {
       />
       <CheckBox checked={isChecked} onPress={changeChecked} />
       <Text>
-        He leído y acepto los
+        He leído y acepto los{" "}
         <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
-          {" "}
           términos y condiciones de uso
         </Text>
       </Text>
