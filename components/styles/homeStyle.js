@@ -19,10 +19,9 @@ export const homeStyles = StyleSheet.create({
     borderWidth: 1,
     height: "10%",
     justifyContent: "center",
-    marginTop: 10,
-    width: "65%",
+    marginBottom: 15,
     marginTop: 35,
-    marginBottom: 15
+    width: "65%",
   },
   homeBtnContainer2: {
     alignItems: "center",
@@ -31,10 +30,10 @@ export const homeStyles = StyleSheet.create({
     borderColor: lila,
     borderWidth: 1,
     height: "10%",
+    marginBottom: 15,
     marginTop: 25,
     justifyContent: "center",
     width: "65%",
-    marginBottom: 15
   },
   homeBtnTxt: {
     alignSelf: "center",

@@ -114,7 +114,6 @@ function EditDeleteAccommodation(props) {
         setIsLoading(true);
       })
       .catch(() => {
-        setError("Ha ocurrido un error");
         setIsLoading(false);
       });
     Alert.alert("Éxito", "Alojamiento cancelado.");
@@ -181,7 +180,6 @@ function EditDeleteAccommodation(props) {
             setIsLoading(true);
           })
           .catch(() => {
-            setError("Ha ocurrido un error");
             setIsLoading(false);
           });
         Alert.alert("Éxito", "Se ha editado el alojamiento correctamente.");

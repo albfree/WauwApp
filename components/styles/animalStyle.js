@@ -12,10 +12,10 @@ export const animalStyles = StyleSheet.create({
   animalTxt: {
     color: blanco,
     fontSize: 20,
+    fontWeight: "bold",
     marginHorizontal: 20,
     marginTop: 10,
     textAlign: "center",
-    fontWeight: "bold"
   },
   animalTxt2: {
     color: blanco,
@@ -38,5 +38,5 @@ export const animalStyles = StyleSheet.create({
     marginBottom: 20,
     resizeMode: "stretch",
     width: "100%",
-  }
+  },
 });

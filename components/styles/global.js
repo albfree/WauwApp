@@ -26,6 +26,15 @@ export const globalStyles = StyleSheet.create({
   adminTxt4: {
     color: celeste,
   },
+  adminTxt5: {
+    color: lila,
+    fontSize: 12,
+    textAlign: "right",
+  },
+  adminTxt6: {
+    fontSize: 17,
+    textAlign: "center",
+  },
   adminView: {
     alignItems: "center",
     backgroundColor: rojo,
@@ -140,7 +149,7 @@ export const globalStyles = StyleSheet.create({
   },
   drawerView: {
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: blanco,
     height: 150,
     justifyContent: "center",
   },

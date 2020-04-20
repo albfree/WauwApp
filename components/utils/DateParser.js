@@ -8,7 +8,7 @@ export function fechaParseada(fecha) {
     " " +
     fechaRecibida.getDate() +
     "/" +
-    parseInt(fechaRecibida.getMonth() + 1) +
+    parseInt(fechaRecibida.getMonth() + 1, 10) +
     "/" +
     fechaRecibida.getFullYear() +
     " " +
@@ -23,7 +23,7 @@ export function fechaParseadaCorta(fecha) {
   return (
     fechaRecibida.getDate() +
     "/" +
-    parseInt(fechaRecibida.getMonth() + 1) +
+    parseInt(fechaRecibida.getMonth() + 1, 10) +
     "/" +
     fechaRecibida.getFullYear()
   );

@@ -8,8 +8,6 @@ import {
   StyleSheet,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Card, Image } from "react-native-elements";
-import { db } from "../../population/config";
 
 export default function ListAccommodations(props) {
   const { accList } = props;
@@ -67,46 +65,40 @@ function Accommodation(accommodation) {
     </View>
   );
 }
+const c1 = "#fff";
 
 const styles = StyleSheet.create({
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 10,
-  },
-  column: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    padding: 20,
-  },
   column_left: {
+    alignItems: "flex-start",
     flex: 1,
     flexDirection: "column",
-    alignItems: "flex-start",
     justifyContent: "space-between",
     padding: 20,
   },
   column_right: {
+    alignItems: "flex-end",
     flex: 1,
     flexDirection: "column",
-    alignItems: "flex-end",
     justifyContent: "flex-end",
     padding: 20,
   },
-  tarjeta: {
-    elevation: 1,
-    backgroundColor: "#fff",
-    borderRadius: 25,
-    borderStyle: "solid",
+  row: {
+    alignItems: "center",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    padding: 10,
   },
   separacion: {
-    paddingTop: 5,
+    paddingBottom: 5,
     paddingLeft: 5,
     paddingRight: 5,
-    paddingBottom: 5,
+    paddingTop: 5,
+  },
+  tarjeta: {
+    backgroundColor: c1,
+    borderRadius: 25,
+    borderStyle: "solid",
+    elevation: 1,
   },
 });

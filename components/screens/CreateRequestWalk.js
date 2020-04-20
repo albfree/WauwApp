@@ -134,7 +134,6 @@ function createRequest(props) {
             navigation.popToTop();
             setIsLoading(false);
             setReloadData(true);
-            setIsVisibleModal(false);
           })
           .catch(() => {
             setError("Ha ocurrido un error");
@@ -168,7 +167,7 @@ function createRequest(props) {
               {"Intervalo seleccionado\n"}
               {value.day + " " + value.startTime + "h - " + value.endDate + "h"}
             </Text>
-           
+
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Qué perro desea que pasee ?"}
             </Text>
