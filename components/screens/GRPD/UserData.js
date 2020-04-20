@@ -23,43 +23,61 @@ export default function UserData(props) {
     var petsUE = [];
     var accommodationsUE = [];
 
-    db.ref("requests")
+    async function getWorkers() {
+      await db.ref("requests")
       .orderByChild("worker")
       .equalTo(user.id)
       .once("value", (snap) => {
         snap.forEach((child) => {
-          requestWorkerUE.push(child);
+          requestWorkerUE.push(child.val());
         });
       });
-    setRequestWorker(requestOwnerUE);
+    setRequestWorker(requestWorkerUE);
+    }
 
-    db.ref("requests")
+    async function getOwners() {
+      await db.ref("requests")
       .orderByChild("owner")
       .equalTo(user.id)
       .once("value", (snap) => {
         snap.forEach((child) => {
-          requestOwnerUE.push(child);
+          requestOwnerUE.push(child.val());
         });
       });
     setRequestOwner(requestOwnerUE);
+    }
 
-    db.ref("pet/" + user.id).once("value", (snap) => {
-      snap.forEach((child) => {
-        petsUE.push(child);
+    async function getPets() {
+      await db.ref("pet/" + user.id).once("value", (snap) => {
+        snap.forEach((child) => {
+          petsUE.push(child.val());
+        });
       });
-    });
+      setPets(petsUE);
+    }
 
-    setPets(petsUE);
-
-    db.ref("accommodation")
+    async function getAccommodations() {
+      await db.ref("accommodation")
       .orderByChild("worker/" + user.id)
       .once("value", (snap) => {
         snap.forEach((pretty) => {
-          accommodationsUE.push(pretty);
+          accommodationsUE.push(pretty.val());
+          console.log("pretty.val()", pretty.val());
         });
       });
 
     setAccommodations(accommodationsUE);
+    }
+
+    getWorkers();
+
+    getOwners();
+
+    getPets();
+
+    getAccommodations();
+
+    console.log(accommodations);
 
   }, []);
 
@@ -92,8 +110,7 @@ export default function UserData(props) {
 
     if (pets.length !== 0) {
       {
-        pets.map((pet) => {
-          let petParse = JSON.parse(JSON.stringify(pet));
+        pets.map((petParse) => {
           petsEmail += "Nombre: " + petParse.name + "\n";
           petsEmail += "Descripción: " + petParse.description + "\n";
           petsEmail += "Raza: " + petParse.breed + "\n";
@@ -105,8 +122,7 @@ export default function UserData(props) {
     }
 
     if (requestOwner.length !== 0) {
-      requestOwner.map((reqOwner) => {
-        let reqParse = JSON.parse(JSON.stringify(reqOwner));
+      requestOwner.map((reqParse) => {
         if (!reqOwner.hasOwnProperty("interval")) {
           requestOwnerEmail += "Alojamiento\n";
         } else {
@@ -138,8 +154,7 @@ export default function UserData(props) {
     requestOwnerEmail += "\n\n";
 
     if (requestWorker.length !== 0) {
-      requestWorker.map((reqWorker) => {
-        let reqParse = JSON.parse(JSON.stringify(reqWorker));
+      requestWorker.map((reqParse) => {
         if (!reqParse.hasOwnProperty("interval")) {
           requestWorkerEmail += "Alojamiento\n";
         } else {
@@ -174,8 +189,7 @@ export default function UserData(props) {
 
     if (accommodations.length !== 0) {
       {
-        accommodations.map((accEmail) => {
-          let accParse = JSON.parse(JSON.stringify(accEmail));
+        accommodations.map((accParse) => {
           accommodationEmail +=
             "Fecha de inicio: " + fechaParseada(accParse.startTime) + "\n";
           accommodationEmail +=
@@ -263,8 +277,7 @@ export default function UserData(props) {
         {pets.length !== 0 ? (
           <View style={userDataStyles.userDataView}>
             <Text style={userDataStyles.userDataTxt}>Mascotas registradas</Text>
-            {pets.map((pet) => {
-              let petParse = JSON.parse(JSON.stringify(pet));
+            {pets.map((petParse) => {
               return (
                 <View>
                   <Text style={userDataStyles.userDataTxt3}>
@@ -291,8 +304,7 @@ export default function UserData(props) {
             <Text style={userDataStyles.userDataTxt}>
               Solicitudes recibidas
             </Text>
-            {requestWorker.map((request) => {
-              let reqParse = JSON.parse(JSON.stringify(request));
+            {requestWorker.map((reqParse) => {
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
@@ -327,8 +339,7 @@ export default function UserData(props) {
         {requestOwner.length !== 0 ? (
           <View style={userDataStyles.userDataView}>
             <Text style={userDataStyles.userDataTxt}>Solicitudes Enviadas</Text>
-            {requestOwner.map((request) => {
-              let reqParse = JSON.parse(JSON.stringify(request));
+            {requestOwner.map((reqParse) => {
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
@@ -366,12 +377,11 @@ export default function UserData(props) {
               {" "}
               Acomodaciones registradas en el sistema{" "}
             </Text>
-            {accommodations.map((acc) => {
-              let accParse = JSON.parse(JSON.stringify(acc));
+            {accommodations.map((accParse) => {
               return (
                 <View>
                   <Text style={userDataStyles.userDataTxt3}>
-                    Fecha de inicio: {fechaParseada(accParse.startDate)}
+                    Fecha de inicio: {fechaParseada(accParse.startTime)}
                   </Text>
                   <Text style={userDataStyles.userDataTxt3}>
                     Fecha de fin: {fechaParseada(accParse.endTime)}
