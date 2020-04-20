@@ -138,11 +138,12 @@ function SearchWalks(props) {
       setMaxPrice(null);
       setMinRating(null);
     } else {
-      if (
-        !Number.isInteger(maxPrice * 10) ||
-        !Number.isInteger(minRating * 10)
-      ) {
-        toastRef.current.show("Valores enteros o con 1 decimal");
+      if (!Number.isInteger(maxPrice * 100) || maxPrice <= 0) {
+        toastRef.current.show("Precio positivo con máximo 2 decimales");
+        setMaxPrice(null);
+        setMinRating(null);
+      } else if (!Number.isInteger(minRating * 10)) {
+        toastRef.current.show("Valoración con máximo 1 decimal");
         setMaxPrice(null);
         setMinRating(null);
       } else {
@@ -183,6 +184,7 @@ function SearchWalks(props) {
           inputStyle={searchWalksStyles.searchWalkTxt8}
           keyboardType="numeric"
           placeholder="Precio máximo del paseo"
+          maxLength={6}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMaxPrice(val.nativeEvent.text);
@@ -197,6 +199,7 @@ function SearchWalks(props) {
           inputStyle={searchWalksStyles.searchWalkTxt9}
           keyboardType="numeric"
           placeholder="Valoración mínima del paseador"
+          maxLength={3}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMinRating(val.nativeEvent.text);
