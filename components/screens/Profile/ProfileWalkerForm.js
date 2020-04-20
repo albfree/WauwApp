@@ -107,10 +107,7 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
-    let money = sueldo * 1.3;
-    if (!Number.isInteger(money * 100)) {
-      money = Math.round(money * 100) / 100;
-    }
+    let money = Math.round(sueldo * 1.3 * 100) / 100;
 
     const walkData = {
       availability: availability,
@@ -214,7 +211,10 @@ function ProfileWalkerForm(props) {
         if (sueldo < 5) {
           toastRef.current.show("Salario mínimo de 5");
           setSueldo(null);
-        } else {
+        } else if(sueldo>500){
+          toastRef.current.show("No seas avaricioso");
+          setSueldo(null);
+        }else{
           isAdded(id);
         }
       }
