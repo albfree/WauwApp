@@ -32,51 +32,8 @@ function Profile(props) {
   }
   const { navigation } = props;
   var userInfo = bannedAssertion();
-  var requestWorker = [];
 
   popUp();
-  // Better way to get some information from DB and send it to UserData
-  db.ref("requests")
-    .orderByChild("worker")
-    .equalTo(userInfo.id)
-    .once("value", (snap) => {
-      //request = snap.val();
-      snap.forEach((child) => {
-        requestWorker.push(child);
-      });
-    });
-
-  var requestOwner = [];
-
-  // Better way to get some information from DB and send it to UserData
-  db.ref("requests")
-    .orderByChild("owner")
-    .equalTo(userInfo.id)
-    .once("value", (snap) => {
-      //request = snap.val();
-      snap.forEach((child) => {
-        requestOwner.push(child);
-      });
-    });
-
-  var pets = [];
-
-  db.ref("pet/" + userInfo.id).on("value", (snap) => {
-    snap.forEach((child) => {
-      pets.push(child);
-    });
-  });
-
-  var accommodations = [];
-
-  db.ref("accommodation")
-    .orderByChild("worker")
-    .equalTo(userInfo.id)
-    .once("value", (snap) => {
-      snap.forEach((pretty) => {
-        accommodations.push(pretty);
-      });
-    });
 
   const checkHasLocation = () => {
     let ck;
@@ -172,14 +129,7 @@ function Profile(props) {
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Ver información recopilada"
-            onPress={() =>
-              navigation.navigate("UserData", {
-                userInfo: userInfo,
-                requestWorker: requestWorker,
-                pets: pets,
-                requestOwner: requestOwner,
-              })
-            }
+            onPress={() => navigation.navigate("UserData")}
             icon={
               <Icon
                 type="material-community"

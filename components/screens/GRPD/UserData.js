@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Components for export email information
 import qs from "qs";
@@ -7,18 +7,68 @@ import { userDataStyles } from "../../styles/userDataStyle";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { bannedAssertion } from "../../account/bannedAssertion";
+import { db } from "../../population/config";
+import { fechaParseada } from "../../utils/DateParser";
 
 export default function UserData(props) {
-  var user = props.navigation.state.params.userInfo;
-  var requestWorker = props.navigation.state.params.requestWorker;
-  var requestOwner = props.navigation.state.params.requestOwner;
-  var pets = props.navigation.state.params.pets;
+  var user = bannedAssertion();
+  var [pets, setPets] = useState([]);
+  var [requestWorker, setRequestWorker] = useState([]);
+  var [requestOwner, setRequestOwner] = useState([]);
+  var [accommodations, setAccommodations] = useState([]);
+
+  useEffect(() => {
+    var requestWorkerUE = [];
+    var requestOwnerUE = [];
+    var petsUE = [];
+    var accommodationsUE = [];
+
+    db.ref("requests")
+      .orderByChild("worker")
+      .equalTo(user.id)
+      .once("value", (snap) => {
+        snap.forEach((child) => {
+          requestWorkerUE.push(child);
+        });
+      });
+    setRequestWorker(requestOwnerUE);
+
+    db.ref("requests")
+      .orderByChild("owner")
+      .equalTo(user.id)
+      .once("value", (snap) => {
+        snap.forEach((child) => {
+          requestOwnerUE.push(child);
+        });
+      });
+    setRequestOwner(requestOwnerUE);
+
+    db.ref("pet/" + user.id).once("value", (snap) => {
+      snap.forEach((child) => {
+        petsUE.push(child);
+      });
+    });
+
+    setPets(petsUE);
+
+    db.ref("accommodation")
+      .orderByChild("worker/" + user.id)
+      .once("value", (snap) => {
+        snap.forEach((pretty) => {
+          accommodationsUE.push(pretty);
+        });
+      });
+
+    setAccommodations(accommodationsUE);
+
+  }, []);
 
   var sendEmail = function () {
     var userEmail = "Datos de usuario\n\n";
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";
     var petsEmail = "Mascotas registradas en nuestra aplicación\n\n";
+    var accommodationEmail = "Acomodaciones registradas \n\n";
     bannedAssertion();
 
     userEmail += "Nombre: " + user.name + "\n";
@@ -122,11 +172,34 @@ export default function UserData(props) {
 
     requestWorkerEmail += "\n\n";
 
+    if (accommodations.length !== 0) {
+      {
+        accommodations.map((accEmail) => {
+          let accParse = JSON.parse(JSON.stringify(accEmail));
+          accommodationEmail +=
+            "Fecha de inicio: " + fechaParseada(accParse.startTime) + "\n";
+          accommodationEmail +=
+            "Fecha de fin: " + fechaParseada(accParse.endTime) + "\n";
+          if (accParse.isCanceled) {
+            accommodationEmail += "¿Cancelada? Sí\n";
+          } else {
+            accommodationEmail += "¿Cancelada? No\n";
+          }
+          accommodationEmail += "\n\n";
+        });
+      }
+    } else {
+      accommodationEmail +=
+        "Actualmente tiene 0 comodaciones registradas en el sistema\n";
+    }
+    accommodationEmail += "\n\n";
+
     var bodyEmail = "";
     bodyEmail += userEmail + "\n";
     bodyEmail += petsEmail + "\n";
     bodyEmail += requestOwnerEmail + "\n";
     bodyEmail += requestWorkerEmail + "\n";
+    bodyEmail += accommodationEmail + "\n";
 
     email(user.email, {
       cc: "",
@@ -286,6 +359,39 @@ export default function UserData(props) {
             <Text>Actualmente tiene 0 solicitudes recibidas</Text>
           </View>
         )}
+
+        {accommodations.length !== 0 ? (
+          <View style={userDataStyles.userDataView}>
+            <Text style={userDataStyles.userDataTxt}>
+              {" "}
+              Acomodaciones registradas en el sistema{" "}
+            </Text>
+            {accommodations.map((acc) => {
+              let accParse = JSON.parse(JSON.stringify(acc));
+              return (
+                <View>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    Fecha de inicio: {fechaParseada(accParse.startDate)}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    Fecha de fin: {fechaParseada(accParse.endTime)}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    {" "}
+                    ¿Cancelada?: {accParse.isCanceled === true
+                      ? "Sí"
+                      : "No"}{" "}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        ) : (
+          <View style={userDataStyles.userDataView}>
+            <Text> Actualmente tiene 0 acomodaciones registradas </Text>
+          </View>
+        )}
+
         <Button
           buttonStyle={userDataStyles.userDataBtn}
           containerStyle={userDataStyles.userDataContainer}
