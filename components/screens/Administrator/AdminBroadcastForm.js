@@ -58,7 +58,7 @@ function AdminBroadcastForm(props) {
           setError("Ha ocurrido un error");
           setIsLoading(false);
         });
-      Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
+      Alert.alert("Éxito", "Se ha registrado el aviso correctamente.");
       navigation.popToTop();
     }
   };
