@@ -211,7 +211,7 @@ function ProfileWalkerForm(props) {
         if (sueldo < 5) {
           toastRef.current.show("Salario mínimo de 5");
           setSueldo(null);
-        } else if(sueldo>500){
+        } else if(sueldo>666){
           toastRef.current.show("No seas avaricioso");
           setSueldo(null);
         }else{
