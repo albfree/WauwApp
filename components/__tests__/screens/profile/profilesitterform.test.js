@@ -1,15 +1,17 @@
-import React from 'react';
-import renderer from 'react-test-renderer';
+import React from "react";
+import renderer from "react-test-renderer";
 //import ProfileSitterForm from '../../../screens/Profile/ProfileSitterForm';
-import mockStore from 'redux-mock-store';
+import mockStore from "redux-mock-store";
 
-describe('<ProfileSitterForm />', () => {
-  it.skip('testing the ProfileSitterForm screen', async () => {
+describe("<ProfileSitterForm />", () => {
+  it.skip("testing the ProfileSitterForm screen", async () => {
     const store = mockStore({
-        rehydrated: false,
-        navigation: {navigate: jest.fn()},
+      rehydrated: false,
+      navigation: { navigate: jest.fn() },
     });
-    const tree = renderer.create(<ProfileSitterForm navigation={store}/>).toJSON();
+    const tree = renderer
+      .create(<ProfileSitterForm navigation={store} />)
+      .toJSON();
     expect(tree.children.length).toBe(1);
   });
 });

@@ -20,10 +20,9 @@ import { decode, encode } from "base-64";
 import { profileStyles } from "../../styles/profileStyle";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config.js";
-import { bannedAssertion } from "../../account/BannedAssertion";
-
+import { bannedAssertion } from "../../account/bannedAssertion";
+import { popUp } from "../../account/popUp";
 function Profile(props) {
-
   if (!global.btoa) {
     global.btoa = encode;
   }
@@ -33,50 +32,8 @@ function Profile(props) {
   }
   const { navigation } = props;
   var userInfo = bannedAssertion();
-  var requestWorker = [];
 
-  // Better way to get some information from DB and send it to UserData
-  db.ref("requests")
-    .orderByChild("worker")
-    .equalTo(userInfo.id)
-    .once("value", (snap) => {
-      //request = snap.val();
-      snap.forEach((child) => {
-        requestWorker.push(child);
-      });
-    });
-
-  var requestOwner = [];
-
-  // Better way to get some information from DB and send it to UserData
-  db.ref("requests")
-    .orderByChild("owner")
-    .equalTo(userInfo.id)
-    .once("value", (snap) => {
-      //request = snap.val();
-      snap.forEach((child) => {
-        requestOwner.push(child);
-      });
-    });
-
-  var pets = [];
-
-  db.ref("pet/" + userInfo.id).on("value", (snap) => {
-    snap.forEach((child) => {
-      pets.push(child);
-    });
-  });
-
-  var accommodations = [];
-
-  db.ref("accommodation")
-    .orderByChild("worker")
-    .equalTo(userInfo.id)
-    .once("value", (snap) => {
-      snap.forEach((pretty) => {
-        accommodations.push(pretty);
-      });
-    });
+  popUp();
 
   const checkHasLocation = () => {
     let ck;
@@ -92,8 +49,8 @@ function Profile(props) {
       navigation.navigate("ProfileWalkerForm");
     } else {
       Alert.alert(
-        "¡NO TIENES LOCALIZACIÓN INTRODUCIDA!",
-        "Para poder disfrutar de nuestros servicios debe introducir su localización en el perfil"
+        "No tienes ubicación añadida",
+        "Para poder disfrutar de nuestros servicios debe introducir su ubicación en el perfil."
       );
     }
   };
@@ -172,14 +129,7 @@ function Profile(props) {
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Ver información recopilada"
-            onPress={() =>
-              navigation.navigate("UserData", {
-                userInfo: userInfo,
-                requestWorker: requestWorker,
-                pets: pets,
-                requestOwner: requestOwner,
-              })
-            }
+            onPress={() => navigation.navigate("UserData")}
             icon={
               <Icon
                 type="material-community"
@@ -196,29 +146,30 @@ function Profile(props) {
             source={require("../../../assets/images/prints.png")}
             style={profileStyles.profilePrints}
           />
-          
+
           <View>
-          {userInfo.email === "wauwispp1920@gmail.com" ? (
-            <View>
-            <Button
-              buttonStyle={profileStyles.profileBtn4}
-              containerStyle={profileStyles.profileBtnContainer4}
-              title="Panel de Administración"
-              onPress={() => navigation.navigate("AdminPanel")}
-              icon={
-                <Icon
-                  type="material-community"
-                  name="cogs"
-                  size={30}
-                  color="white"
-                  marginLeft={20}
-                />}
-              titleStyle={profileStyles.profileBtnTittle}
-            />  
-            </View>
-          ) : (
-            <View></View>
-          )}
+            {userInfo.email === "wauwispp1920@gmail.com" ? (
+              <View>
+                <Button
+                  buttonStyle={profileStyles.profileBtn4}
+                  containerStyle={profileStyles.profileBtnContainer4}
+                  title="Panel de Administración"
+                  onPress={() => navigation.navigate("AdminPanel")}
+                  icon={
+                    <Icon
+                      type="material-community"
+                      name="cogs"
+                      size={30}
+                      color="white"
+                      marginLeft={20}
+                    />
+                  }
+                  titleStyle={profileStyles.profileBtnTittle}
+                />
+              </View>
+            ) : (
+              <View></View>
+            )}
           </View>
           <Button
             buttonStyle={profileStyles.profileBtn4}

@@ -55,7 +55,6 @@ function SearchWalks(props) {
               wData.push(child.key);
               wData.push(interval.id);
 
-
               const precio = child
                 .child("availabilities")
                 .child(interval.id)
@@ -90,13 +89,18 @@ function SearchWalks(props) {
         const krom = [];
         krom.push(array[0]);
         krom.push(array[1]);
-        const distancia = calculaDistancia(latitudeUser, longitudeUser, array[2][0], array[2][1]);
+        const distancia = calculaDistancia(
+          latitudeUser,
+          longitudeUser,
+          array[2][0],
+          array[2][1]
+        );
         krom.push(distancia);
         appToYou.push(krom);
       });
 
       appToYou.sort((a, b) => {
-        return (a[2] - b[2]);
+        return a[2] - b[2];
       });
 
       setData(appToYou);
@@ -108,17 +112,21 @@ function SearchWalks(props) {
 
   const calculaDistancia = (lat1, lon1, lat2, lon2) => {
     const rad = function (x) {
-      return x * Math.PI / 180;
+      return (x * Math.PI) / 180;
     };
     var R = 6378.137;
     var dLat = rad(lat2 - lat1);
     var dLong = rad(lon2 - lon1);
-    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(rad(lat1)) * Math.cos(rad(lat2)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(rad(lat1)) *
+        Math.cos(rad(lat2)) *
+        Math.sin(dLong / 2) *
+        Math.sin(dLong / 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = R * c;
     return d.toFixed(2);
   };
-
 
   const applyFilter = () => {
     if (
@@ -130,11 +138,12 @@ function SearchWalks(props) {
       setMaxPrice(null);
       setMinRating(null);
     } else {
-      if (
-        !Number.isInteger(maxPrice * 10) ||
-        !Number.isInteger(minRating * 10)
-      ) {
-        toastRef.current.show("Valores enteros o con 1 decimal");
+      if (!Number.isInteger(maxPrice * 100) || maxPrice <= 0) {
+        toastRef.current.show("Precio positivo con máximo 2 decimales");
+        setMaxPrice(null);
+        setMinRating(null);
+      } else if (!Number.isInteger(minRating * 10)) {
+        toastRef.current.show("Valoración con máximo 1 decimal");
         setMaxPrice(null);
         setMinRating(null);
       } else {
@@ -175,6 +184,7 @@ function SearchWalks(props) {
           inputStyle={searchWalksStyles.searchWalkTxt8}
           keyboardType="numeric"
           placeholder="Precio máximo del paseo"
+          maxLength={6}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMaxPrice(val.nativeEvent.text);
@@ -189,6 +199,7 @@ function SearchWalks(props) {
           inputStyle={searchWalksStyles.searchWalkTxt9}
           keyboardType="numeric"
           placeholder="Valoración mínima del paseador"
+          maxLength={3}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMinRating(val.nativeEvent.text);
@@ -248,8 +259,8 @@ function SearchWalks(props) {
             showsVerticalScrollIndicator={false}
           />
         ) : (
-            <BlankView text={"No hay paseadores disponibles"} />
-          )}
+          <BlankView text={"No hay paseadores disponibles"} />
+        )}
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
@@ -311,8 +322,9 @@ function Wauwer(props) {
               <Rating imageSize={20} readonly startingValue={user.avgScore} />
 
               <Text style={searchWalksStyles.searchWalkTxt2}>
-                Precio / Hora: {price} € {dis} km
+                Precio / Hora: {price} €
               </Text>
+              <Text style={searchWalksStyles.searchWalkTxt2}>{dis} km</Text>
             </View>
           </View>
         </View>

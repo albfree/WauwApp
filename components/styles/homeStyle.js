@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 const morado = "#443099";
 const lila = "#d6d6e8";
 
@@ -8,7 +8,7 @@ export const homeStyles = StyleSheet.create({
     borderRadius: 300,
     height: 50,
     justifyContent: "flex-start",
-    paddingHorizontal: 10,
+    paddingHorizontal: Platform.OS === "ios" ? 25 : 10,
     width: "100%",
   },
   homeBtnContainer: {
@@ -18,6 +18,20 @@ export const homeStyles = StyleSheet.create({
     borderColor: lila,
     borderWidth: 1,
     height: "10%",
+    justifyContent: "center",
+    marginBottom: 15,
+    marginTop: 35,
+    width: "65%",
+  },
+  homeBtnContainer2: {
+    alignItems: "center",
+    alignSelf: "center",
+    backgroundColor: morado,
+    borderColor: lila,
+    borderWidth: 1,
+    height: "10%",
+    marginBottom: 15,
+    marginTop: 25,
     justifyContent: "center",
     width: "65%",
   },
@@ -57,7 +71,8 @@ export const homeStyles = StyleSheet.create({
     flex: 1,
     height: 180,
     justifyContent: "center",
-    marginTop: 20,
+    marginVertical: 20,
+    paddingVertical: 10,
     width: "95%",
   },
 });

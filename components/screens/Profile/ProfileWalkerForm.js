@@ -21,7 +21,7 @@ import {
 import Toast from "react-native-easy-toast";
 import { globalStyles } from "../../styles/global";
 import { walkerFormStyles } from "../../styles/walkerFormStyle";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileWalkerForm(props) {
   const { navigation } = props;
@@ -60,10 +60,10 @@ function ProfileWalkerForm(props) {
             " - " +
             child.val().availability.endDate;
           let id = child.val().availability.id;
-          const price = Math.round(((child.val().price / 1.3) * 10) / 10);
+          const myPrice = child.val().myPrice;
           resulIds.push(id);
           hourPrice.push(hour);
-          hourPrice.push(price);
+          hourPrice.push(myPrice);
           resulHours.push(hourPrice);
         });
         setIds(resulIds);
@@ -107,10 +107,12 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
-    const money = Math.round(sueldo * 1.3 * 10) / 10;
+    let money = Math.round(sueldo * 1.3 * 100) / 100;
+
     const walkData = {
       availability: availability,
       price: money,
+      myPrice: sueldo * 1,
     };
 
     db.ref(
@@ -209,6 +211,9 @@ function ProfileWalkerForm(props) {
         if (sueldo < 5) {
           toastRef.current.show("Salario mínimo de 5");
           setSueldo(null);
+        } else if (sueldo > 666) {
+          toastRef.current.show("No seas avaricioso");
+          setSueldo(null);
         } else {
           isAdded(id);
         }
@@ -230,23 +235,13 @@ function ProfileWalkerForm(props) {
               style={walkerFormStyles.walkerFormImput}
               placeholder="Introduzca un salario"
               keyboardType={"numeric"}
+              maxLength={6}
               onChange={(val) => {
-                //let precio;
                 if (val.nativeEvent.text !== "") {
                   setSueldo(val.nativeEvent.text);
                 } else {
                   setSueldo(null);
                 }
-                //const salary = Math.round(precio * 1.3 * 10) / 10;
-
-                // db.ref("wauwers/" + userInfo.id)
-                //   .update({
-                //     price: salary,
-                //     walkSalary: precio,
-                //   })
-                //   .then(() => {
-                //     setSueldo(precio);
-                //   });
               }}
             >
               {sueldo}

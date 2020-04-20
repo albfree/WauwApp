@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Components for export email information
 import qs from "qs";
@@ -6,19 +6,85 @@ import email from "react-native-email";
 import { userDataStyles } from "../../styles/userDataStyle";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "react-native-elements";
-import { bannedAssertion } from "../../account/BannedAssertion";
+import { bannedAssertion } from "../../account/bannedAssertion";
+import { db } from "../../population/config";
+import { fechaParseada } from "../../utils/DateParser";
 
 export default function UserData(props) {
-  var user = props.navigation.state.params.userInfo;
-  var requestWorker = props.navigation.state.params.requestWorker;
-  var requestOwner = props.navigation.state.params.requestOwner;
-  var pets = props.navigation.state.params.pets;
+  var user = bannedAssertion();
+  var [pets, setPets] = useState([]);
+  var [requestWorker, setRequestWorker] = useState([]);
+  var [requestOwner, setRequestOwner] = useState([]);
+  var [accommodations, setAccommodations] = useState([]);
+
+  useEffect(() => {
+    var requestWorkerUE = [];
+    var requestOwnerUE = [];
+    var petsUE = [];
+    var accommodationsUE = [];
+
+    async function getWorkers() {
+      await db.ref("requests")
+      .orderByChild("worker")
+      .equalTo(user.id)
+      .once("value", (snap) => {
+        snap.forEach((child) => {
+          requestWorkerUE.push(child.val());
+        });
+      });
+    setRequestWorker(requestWorkerUE);
+    }
+
+    async function getOwners() {
+      await db.ref("requests")
+      .orderByChild("owner")
+      .equalTo(user.id)
+      .once("value", (snap) => {
+        snap.forEach((child) => {
+          requestOwnerUE.push(child.val());
+        });
+      });
+    setRequestOwner(requestOwnerUE);
+    }
+
+    async function getPets() {
+      await db.ref("pet/" + user.id).once("value", (snap) => {
+        snap.forEach((child) => {
+          petsUE.push(child.val());
+        });
+      });
+      setPets(petsUE);
+    }
+
+    async function getAccommodations() {
+      await db.ref("accommodation")
+      .orderByChild("worker/" + user.id)
+      .once("value", (snap) => {
+        snap.forEach((pretty) => {
+          accommodationsUE.push(pretty.val());
+        });
+      });
+
+    setAccommodations(accommodationsUE);
+    }
+
+    getWorkers();
+
+    getOwners();
+
+    getPets();
+
+    getAccommodations();
+
+
+  }, []);
 
   var sendEmail = function () {
     var userEmail = "Datos de usuario\n\n";
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";
     var petsEmail = "Mascotas registradas en nuestra aplicación\n\n";
+    var accommodationEmail = "Acomodaciones registradas \n\n";
     bannedAssertion();
 
     userEmail += "Nombre: " + user.name + "\n";
@@ -26,7 +92,9 @@ export default function UserData(props) {
     if (user.hasOwnProperty("address")) {
       userEmail += "Dirección: " + user.address + "\n";
     }
-    userEmail += "Descripción: " + user.description + "\n";
+    if (user.hasOwnProperty("description")) {
+      userEmail += "Descripción: " + user.description + "\n";
+    }
     userEmail += "Email: " + user.email + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
@@ -40,8 +108,7 @@ export default function UserData(props) {
 
     if (pets.length !== 0) {
       {
-        pets.map((pet) => {
-          let petParse = JSON.parse(JSON.stringify(pet));
+        pets.map((petParse) => {
           petsEmail += "Nombre: " + petParse.name + "\n";
           petsEmail += "Descripción: " + petParse.description + "\n";
           petsEmail += "Raza: " + petParse.breed + "\n";
@@ -53,8 +120,7 @@ export default function UserData(props) {
     }
 
     if (requestOwner.length !== 0) {
-      requestOwner.map((reqOwner) => {
-        let reqParse = JSON.parse(JSON.stringify(reqOwner));
+      requestOwner.map((reqParse) => {
         if (!reqOwner.hasOwnProperty("interval")) {
           requestOwnerEmail += "Alojamiento\n";
         } else {
@@ -78,15 +144,15 @@ export default function UserData(props) {
         } else {
           requestOwnerEmail += "No\n";
         }
-        requestOwnerEmail += "Precio: " + reqParse.price;
+        requestOwnerEmail += "Precio: " + reqParse.price + "\n\n";
       });
     } else {
       requestOwnerEmail += "Actualmente tiene 0 solicitudes realizadas\n";
     }
+    requestOwnerEmail += "\n\n";
 
     if (requestWorker.length !== 0) {
-      requestWorker.map((reqWorker) => {
-        let reqParse = JSON.parse(JSON.stringify(reqWorker));
+      requestWorker.map((reqParse) => {
         if (!reqParse.hasOwnProperty("interval")) {
           requestWorkerEmail += "Alojamiento\n";
         } else {
@@ -111,19 +177,43 @@ export default function UserData(props) {
         } else {
           requestWorkerEmail += "No\n";
         }
-        requestWorkerEmail += "Precio: " + reqParse.price + "\n";
+        requestWorkerEmail += "Precio: " + reqParse.price + "\n\n";
       });
     } else {
       requestWorkerEmail += "Actualmente tiene 0 solicitudes recibidas\n";
     }
+
+    requestWorkerEmail += "\n\n";
+
+    if (accommodations.length !== 0) {
+      {
+        accommodations.map((accParse) => {
+          accommodationEmail +=
+            "Fecha de inicio: " + fechaParseada(accParse.startTime) + "\n";
+          accommodationEmail +=
+            "Fecha de fin: " + fechaParseada(accParse.endTime) + "\n";
+          if (accParse.isCanceled) {
+            accommodationEmail += "¿Cancelada? Sí\n";
+          } else {
+            accommodationEmail += "¿Cancelada? No\n";
+          }
+          accommodationEmail += "\n\n";
+        });
+      }
+    } else {
+      accommodationEmail +=
+        "Actualmente tiene 0 comodaciones registradas en el sistema\n";
+    }
+    accommodationEmail += "\n\n";
 
     var bodyEmail = "";
     bodyEmail += userEmail + "\n";
     bodyEmail += petsEmail + "\n";
     bodyEmail += requestOwnerEmail + "\n";
     bodyEmail += requestWorkerEmail + "\n";
+    bodyEmail += accommodationEmail + "\n";
 
-    email("wauwispp1920@gmail.com", {
+    email(user.email, {
       cc: "",
       bcc: "",
       body: bodyEmail,
@@ -151,9 +241,14 @@ export default function UserData(props) {
           ) : (
             <Text> </Text>
           )}
-          <Text>Descripción: {user.description}</Text>
+          {user.hasOwnProperty("description") ? (
+            <View>
+              <Text>Descripción: {user.description}</Text>
+            </View>
+          ) : (
+            <Text> </Text>
+          )}
           <Text>Email: {user.email}</Text>
-          <Text>Salario: {user.price} €</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
           {user.hasOwnProperty("location") ? (
@@ -180,8 +275,7 @@ export default function UserData(props) {
         {pets.length !== 0 ? (
           <View style={userDataStyles.userDataView}>
             <Text style={userDataStyles.userDataTxt}>Mascotas registradas</Text>
-            {pets.map((pet) => {
-              let petParse = JSON.parse(JSON.stringify(pet));
+            {pets.map((petParse) => {
               return (
                 <View>
                   <Text style={userDataStyles.userDataTxt3}>
@@ -198,7 +292,9 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          <View style={userDataStyles.userDataView}>
+            <Text> Actualmente tiene 0 mascotas registradas {"\n"} </Text>
+          </View>
         )}
 
         {requestWorker.length !== 0 ? (
@@ -206,8 +302,7 @@ export default function UserData(props) {
             <Text style={userDataStyles.userDataTxt}>
               Solicitudes recibidas
             </Text>
-            {requestWorker.map((request) => {
-              let reqParse = JSON.parse(JSON.stringify(request));
+            {requestWorker.map((reqParse) => {
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
@@ -234,14 +329,15 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes realizadas{"\n"}</Text>
+          </View>
         )}
 
         {requestOwner.length !== 0 ? (
           <View style={userDataStyles.userDataView}>
             <Text style={userDataStyles.userDataTxt}>Solicitudes Enviadas</Text>
-            {requestOwner.map((request) => {
-              let reqParse = JSON.parse(JSON.stringify(request));
+            {requestOwner.map((reqParse) => {
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
@@ -268,8 +364,42 @@ export default function UserData(props) {
             })}
           </View>
         ) : (
-          <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          <View style={userDataStyles.userDataView}>
+            <Text>Actualmente tiene 0 solicitudes recibidas</Text>
+          </View>
         )}
+
+        {accommodations.length !== 0 ? (
+          <View style={userDataStyles.userDataView}>
+            <Text style={userDataStyles.userDataTxt}>
+              {" "}
+              Acomodaciones registradas en el sistema{" "}
+            </Text>
+            {accommodations.map((accParse) => {
+              return (
+                <View>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    Fecha de inicio: {fechaParseada(accParse.startTime)}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    Fecha de fin: {fechaParseada(accParse.endTime)}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    {" "}
+                    ¿Cancelada?: {accParse.isCanceled === true
+                      ? "Sí"
+                      : "No"}{" "}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        ) : (
+          <View style={userDataStyles.userDataView}>
+            <Text> Actualmente tiene 0 acomodaciones registradas </Text>
+          </View>
+        )}
+
         <Button
           buttonStyle={userDataStyles.userDataBtn}
           containerStyle={userDataStyles.userDataContainer}

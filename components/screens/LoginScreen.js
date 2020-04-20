@@ -68,9 +68,7 @@ function LoginScreen(props) {
                   email: result.user.email,
                   wauwPoints: 0,
                   petNumber: 0,
-                  price: 0,
                   avgScore: 0,
-                  walkSalary: 0,
                   location: null,
                   userId: result.user.uid,
                   isBanned: false,
@@ -84,7 +82,7 @@ function LoginScreen(props) {
                     first_name: result.additionalUserInfo.profile.given_name,
                     last_name: result.additionalUserInfo.profile.family_name,
                     created_at: Date.now(),
-                    last_logged_in: new Date().toISOString(), 
+                    last_logged_in: new Date().toISOString(),
                   });
                 let idLogin = db.ref("logins").push().key;
                 firebase
@@ -102,15 +100,15 @@ function LoginScreen(props) {
                   .update({
                     last_logged_in: new Date().toISOString(),
                   });
-                  let idLogin = db.ref("logins").push().key;
-                  firebase
-                    .database()
-                    .ref()
-                    .child("logins/" + idLogin)
-                    .set({
-                      fecha: new Date().toISOString(),
-                      user: result.user.uid,
-                    });
+                let idLogin = db.ref("logins").push().key;
+                firebase
+                  .database()
+                  .ref()
+                  .child("logins/" + idLogin)
+                  .set({
+                    fecha: new Date().toISOString(),
+                    user: result.user.uid,
+                  });
               }
             })
             .catch(function (error) {
@@ -120,7 +118,6 @@ function LoginScreen(props) {
               var credential = error.credential;
             });
         } else {
-          console.log("User already signed-in Firebase.");
         }
       }.bind(this)
     );
@@ -175,9 +172,8 @@ function LoginScreen(props) {
       />
       <CheckBox checked={isChecked} onPress={changeChecked} />
       <Text>
-        He leído y acepto los
+        He leído y acepto los{" "}
         <Text style={loginStyles.loginTxt2} onPress={onPressTerms}>
-          {" "}
           términos y condiciones de uso
         </Text>
       </Text>

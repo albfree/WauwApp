@@ -11,6 +11,7 @@ export const filterDateStyles = StyleSheet.create({
     borderRadius: 30,
     height: "100%",
     justifyContent: "flex-start",
+    paddingRight: 20,
     width: "100%",
   },
   filterDateBtn2: {
@@ -19,6 +20,7 @@ export const filterDateStyles = StyleSheet.create({
     borderRadius: 30,
     height: "100%",
     justifyContent: "flex-start",
+    paddingRight: 20,
     width: "100%",
   },
   filterDateBtnContainer: {
@@ -28,9 +30,8 @@ export const filterDateStyles = StyleSheet.create({
     borderWidth: 1,
     height: 45,
     justifyContent: "center",
-    marginRight: 5,
     marginVertical: 10,
-    width: "45%",
+    width: "100%",
   },
   filterDateBtnContainer2: {
     alignSelf: "center",
@@ -39,15 +40,13 @@ export const filterDateStyles = StyleSheet.create({
     borderWidth: 1,
     height: 45,
     justifyContent: "center",
-    marginLeft: 5,
     marginVertical: 10,
-    width: "45%",
+    width: "100%",
   },
   filterDateTittle: {
     alignSelf: "center",
-    flex: 4,
     fontSize: 15,
-    marginLeft: 5,
+    textAlign: "center",
   },
 
   filterDateTxt: {
@@ -62,9 +61,7 @@ export const filterDateStyles = StyleSheet.create({
     justifyContent: "space-between",
   },
   filterDateView2: {
-    alignItems: "center",
-    flex: 1.8,
-    justifyContent: "space-between",
+    alignSelf: "center",
     marginHorizontal: 5,
   },
 });

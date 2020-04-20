@@ -28,7 +28,7 @@ function createRequestAccommodation(props) {
 
   var x = new Date(startTime);
   var y = new Date(endTime);
- 
+
   //Atributos definidos
 
   const newIsCanceled = false;
@@ -47,6 +47,17 @@ function createRequestAccommodation(props) {
   const [newPrice, setNewPrice] = useState(
     navigation.state.params.formData.salary
   );
+
+  const fechaParseadaCorta = (fecha) => {
+    var fechaRecibida = new Date(fecha);
+    return (
+      fechaRecibida.getDate() +
+      "/" +
+      parseInt(fechaRecibida.getMonth() + 1) +
+      "/" +
+      fechaRecibida.getFullYear()
+    );
+  };
 
   //Owner logueado actualmente que realizada la request
   useEffect(() => {
@@ -110,7 +121,6 @@ function createRequestAccommodation(props) {
       .then(() => {
         setIsLoading(false);
         setReloadData(false);
-        setIsVisibleModal(false);
       })
       .catch(() => {
         setError("Ha ocurrido un error");
@@ -137,13 +147,13 @@ function createRequestAccommodation(props) {
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
               {"Fecha de inicio\n"}
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {newStartTime.toISOString()}
+                {fechaParseadaCorta(newStartTime)}
               </Text>{" "}
             </Text>
             <Text style={searchAccommodationStyles.searchAccommodationTxt6}>
               {"Fecha de finalización\n"}
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {newEndTime.toISOString()}
+                {fechaParseadaCorta(newEndTime)}
               </Text>{" "}
             </Text>
 
@@ -171,7 +181,7 @@ function createRequestAccommodation(props) {
                   marginLeft={10}
                 />
               }
-              titleStyle={globalStyles.editAccommodationEditDateTittle}
+              titleStyle={searchAccommodationStyles.searchAccommodationTxt4}
             />
           </View>
         </View>
@@ -187,25 +197,12 @@ function Precio(props) {
 
   let duration =
     (endTime.getTime() - startTime.getTime()) / (1000 * 60 * 60 * 24);
-  const days = parseInt(duration, 10) + 1;
+  const days = parseInt(duration, 10);
 
   // Si cambia de mes coge los dias bien, pero si esta en el mismo mes coge 1 dia menos
   // estaria bien darle una vuelta a esto. Mientras se queda que suma un dia a todo.
 
-  // const [DefDays, setDefDays] = useState(days);
-  //  console.log(DefDays);
-
   useEffect(() => {
-    // if(startTime.getMonth() != endTime.getMonth()){
-    //   setDefDays(DefDays);
-    //   console.log("Entra if");
-    // }else{
-    //   setDefDays(DefDays + 1);
-    //   console.log("Entra else");
-
-    // }
-
-    // console.log(days);
     let precio = newPrice * days;
     let withPets = precio * petNumber;
     setNewPrice(withPets);

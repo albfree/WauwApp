@@ -7,6 +7,7 @@ import {
   Alert,
   ScrollView,
   Keyboard,
+  Platform,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -15,7 +16,10 @@ import { email } from "../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
+import { bannedAssertion } from "../account/bannedAssertion";
+
 function CreateAccommodation(props) {
+  bannedAssertion();
   const [newStartTime, setStartTime] = useState(new Date());
   const [newEndTime, setEndTime] = useState(new Date());
 
@@ -104,8 +108,8 @@ function CreateAccommodation(props) {
       newStartTime === null ||
       newEndTime === null ||
       newSalary === null ||
-      newStartTime < new Date() ||
-      newEndTime < newStartTime
+      new Date().getTime() - newStartTime.getTime() > 60000 ||
+      newEndTime.getTime() - newStartTime.getTime() < 86100000
     ) {
       let errores = "";
       if (newStartTime === null) {
@@ -118,14 +122,14 @@ function CreateAccommodation(props) {
         errores = errores.concat("El precio mínimo es 10.\n");
       }
 
-      if (newStartTime < new Date()) {
+      if (new Date().getTime() - newStartTime.getTime() > 60000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
       }
-      if (newEndTime < newStartTime) {
+      if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
         errores = errores.concat(
-          "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+          "La fecha de entrada debe ser anterior a la fecha de salida.\n"
         );
       }
       Alert.alert("Advertencia", errores.toString());
@@ -133,12 +137,14 @@ function CreateAccommodation(props) {
       let errores = "";
       if (isNaN(newSalary) || newSalary < 10) {
         errores = errores.concat("El precio mínimo es 10.\n");
-        if (newStartTime < new Date() || newEndTime < newStartTime) {
+        if (new Date().getTime() - newStartTime.getTime() > 60000) {
           errores = errores.concat(
             "La fecha de entrada debe ser posterior o igual a la actual.\n"
           );
+        }
+        if (newEndTime.getTime() - newStartTime.getTime() < 86100000) {
           errores = errores.concat(
-            "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
+            "La fecha de entrada debe ser anterior a la fecha de salida.\n"
           );
         }
 
@@ -167,7 +173,7 @@ function CreateAccommodation(props) {
       <ScrollView keyboardShouldPersistTaps="never">
         <View style={globalStyles.viewFeed}>
           <View style={globalStyles.viewFlex1}>
-            <Text style={globalStyles.editAccommodationEditDate}>
+            <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
               Establecer Fecha
             </Text>
             <View style={searchAccommodationStyles.searchAccommodationView}>
