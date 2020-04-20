@@ -110,7 +110,7 @@ function FormRequestAccommodation(props) {
     if (
       newStartTime === null ||
       newEndTime === null ||
-      new Date().getTime() - newStartTime.getTime() > 10000 ||
+      new Date().getTime() - newStartTime.getTime() > 60000 ||
       newEndTime.getTime() - newStartTime.getTime() < 86100000 ||
       petNumber === 0 ||
       startAccommodation.getTime() - newStartTime.getTime() > 43200000 ||
@@ -124,7 +124,7 @@ function FormRequestAccommodation(props) {
         errores = errores.concat("Debe escribir una fecha de salida.\n");
       }
 
-      if (new Date().getTime() - newStartTime.getTime() > 10000) {
+      if (new Date().getTime() - newStartTime.getTime() > 60000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );

@@ -53,16 +53,18 @@ function Services(props) {
       "Crea tus propios alojamientos para los perros de los demás usuarios"
     );
   };
-
-  const checkHasLocation = () => {
-    let ck;
-    let newOwner;
+  let newOwner;
+  useEffect(() => {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
       .on("child_added", (snap) => {
         newOwner = snap.val();
       });
+  });
+
+  const checkHasLocation = () => {
+    let ck;
 
     if (newOwner.hasOwnProperty("location")) {
       ck = true;
@@ -72,20 +74,48 @@ function Services(props) {
     return ck;
   };
 
+  const checkHasPets = () => {
+    let cp;
+    if (newOwner.petNumber > 0) {
+      cp = true;
+    } else {
+      cp = false;
+    }
+    return cp;
+  };
+
   const check = () => {
     if (checkHasLocation()) {
-      if (tittle === "Buscar Paseador") {
-        navigation.navigate("FormFilterByAvailability");
-      } else if (tittle === "Buscar Alojamiento") {
-        navigation.navigate("FormFilterByDate");
-      } else {
+      if (tittle === "Crear Alojamiento") {
         navigation.navigate("CreateAccommodation");
       }
+      if (checkHasPets()) {
+        if (tittle === "Buscar Paseador") {
+          navigation.navigate("FormFilterByAvailability");
+        } else if (tittle === "Buscar Alojamiento") {
+          navigation.navigate("FormFilterByDate");
+        }
+      } else {
+        Alert.alert(
+          "No ha añadido mascotas",
+          "Para poder disfrutar de nuestros servicios debe introducir la información sobre su mascota en el perfil."
+        );
+
+        navigation.navigate("Profile");
+      }
     } else {
-      Alert.alert(
-        "No tienes ubicación añadida",
-        "Para poder disfrutar de nuestros servicios debe introducir su ubicación en el perfil."
-      );
+      if (checkHasPets()) {
+        Alert.alert(
+          "No tiene añadida su localización",
+          "Debe introducir su localización en el perfil para así ofrecerle los Wauwer más cercanos."
+        );
+      } else {
+        Alert.alert(
+          "No ha completado su información",
+          "Para poder disfrutar de nuestros servicios debe introducir la información sobre su mascota en el perfil, además de su localización para ofrecerle los Wauwer mas cercanos."
+        );
+      }
+      navigation.navigate("Profile");
     }
   };
 
