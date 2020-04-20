@@ -211,10 +211,10 @@ function ProfileWalkerForm(props) {
         if (sueldo < 5) {
           toastRef.current.show("Salario mínimo de 5");
           setSueldo(null);
-        } else if(sueldo>666){
+        } else if (sueldo > 666) {
           toastRef.current.show("No seas avaricioso");
           setSueldo(null);
-        }else{
+        } else {
           isAdded(id);
         }
       }
@@ -235,8 +235,8 @@ function ProfileWalkerForm(props) {
               style={walkerFormStyles.walkerFormImput}
               placeholder="Introduzca un salario"
               keyboardType={"numeric"}
+              maxLength={6}
               onChange={(val) => {
-                //let precio;
                 if (val.nativeEvent.text !== "") {
                   setSueldo(val.nativeEvent.text);
                 } else {

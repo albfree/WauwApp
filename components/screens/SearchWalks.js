@@ -184,6 +184,7 @@ function SearchWalks(props) {
           inputStyle={searchWalksStyles.searchWalkTxt8}
           keyboardType="numeric"
           placeholder="Precio máximo del paseo"
+          maxLength={6}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMaxPrice(val.nativeEvent.text);
@@ -198,6 +199,7 @@ function SearchWalks(props) {
           inputStyle={searchWalksStyles.searchWalkTxt9}
           keyboardType="numeric"
           placeholder="Valoración mínima del paseador"
+          maxLength={3}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMinRating(val.nativeEvent.text);
