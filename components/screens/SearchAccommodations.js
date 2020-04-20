@@ -173,8 +173,8 @@ function ListAccommodations(props) {
       setMaxPrice(null);
       setMinRating(null);
     } else {
-      if (!Number.isInteger(maxPrice * 100)) {
-        toastRef.current.show("Precio entero o con 2 decimales");
+      if (!Number.isInteger(maxPrice * 100) || maxPrice <= 0) {
+        toastRef.current.show("Precio positivo con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
       } else if (!Number.isInteger(minRating * 10)) {
@@ -207,6 +207,7 @@ function ListAccommodations(props) {
           inputStyle={searchWalksStyles.searchWalkTxt8}
           keyboardType="numeric"
           placeholder="Precio máximo del paseo"
+          maxLength={6}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMaxPrice(val.nativeEvent.text);
@@ -221,6 +222,7 @@ function ListAccommodations(props) {
           inputStyle={searchWalksStyles.searchWalkTxt9}
           keyboardType="numeric"
           placeholder="Valoración mínima"
+          maxLength={3}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
               setMinRating(val.nativeEvent.text);
