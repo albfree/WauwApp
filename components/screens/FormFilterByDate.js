@@ -39,7 +39,6 @@ function FormFilterByDate(props) {
     let formData = {
       startTime: newStartTime,
     };
-    console.log(new Date().getTime() - newStartTime.getTime());
     if (
       newStartTime === null ||
       new Date().getTime() - newStartTime.getTime() > 60000
