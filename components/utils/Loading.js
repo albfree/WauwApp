@@ -26,7 +26,7 @@ const c4 = "#00a680";
 const styles = StyleSheet.create({
   overlay: {
     backgroundColor: c3,
-    borderColor: c2,
+    borderColor: c4,
     borderRadius: 10,
     borderWidth: 2,
     height: 100,

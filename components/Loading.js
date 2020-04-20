@@ -25,21 +25,22 @@ const c3 = "#fff";
 const c4 = "#00a680";
 const styles = StyleSheet.create({
   overlay: {
-    height: 100,
-    width: 200,
     backgroundColor: c3,
     borderColor: c4,
-    borderWidth: 2,
     borderRadius: 10,
+    borderWidth: 2,
+    height: 100,
+    width: 200,
   },
-  view: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   text: {
     color: c4,
     textTransform: "uppercase",
     marginTop: 10,
+  },
+  view: {
+    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
   },
 });
