@@ -26,7 +26,9 @@ export default function UserData(props) {
     if (user.hasOwnProperty("address")) {
       userEmail += "Dirección: " + user.address + "\n";
     }
-    userEmail += "Descripción: " + user.description + "\n";
+    if (user.hasOwnProperty("description")) {
+      userEmail += "Descripción: " + user.description + "\n";
+    }
     userEmail += "Email: " + user.email + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
@@ -78,11 +80,12 @@ export default function UserData(props) {
         } else {
           requestOwnerEmail += "No\n";
         }
-        requestOwnerEmail += "Precio: " + reqParse.price;
+        requestOwnerEmail += "Precio: " + reqParse.price + "\n\n";
       });
     } else {
       requestOwnerEmail += "Actualmente tiene 0 solicitudes realizadas\n";
     }
+    requestOwnerEmail += "\n\n";
 
     if (requestWorker.length !== 0) {
       requestWorker.map((reqWorker) => {
@@ -111,11 +114,13 @@ export default function UserData(props) {
         } else {
           requestWorkerEmail += "No\n";
         }
-        requestWorkerEmail += "Precio: " + reqParse.price + "\n";
+        requestWorkerEmail += "Precio: " + reqParse.price + "\n\n";
       });
     } else {
       requestWorkerEmail += "Actualmente tiene 0 solicitudes recibidas\n";
     }
+
+    requestWorkerEmail += "\n\n";
 
     var bodyEmail = "";
     bodyEmail += userEmail + "\n";
@@ -123,7 +128,7 @@ export default function UserData(props) {
     bodyEmail += requestOwnerEmail + "\n";
     bodyEmail += requestWorkerEmail + "\n";
 
-    email("wauwispp1920@gmail.com", {
+    email(user.email, {
       cc: "",
       bcc: "",
       body: bodyEmail,
@@ -151,9 +156,14 @@ export default function UserData(props) {
           ) : (
             <Text> </Text>
           )}
-          <Text>Descripción: {user.description}</Text>
+          {user.hasOwnProperty("description") ? (
+            <View>
+              <Text>Descripción: {user.description}</Text>
+            </View>
+          ) : (
+            <Text> </Text>
+          )}
           <Text>Email: {user.email}</Text>
-          <Text>Salario: {user.price} €</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
           {user.hasOwnProperty("location") ? (
