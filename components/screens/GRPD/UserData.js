@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Components for export email information
 import qs from "qs";
@@ -7,18 +7,84 @@ import { userDataStyles } from "../../styles/userDataStyle";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { bannedAssertion } from "../../account/bannedAssertion";
+import { db } from "../../population/config";
+import { fechaParseada } from "../../utils/DateParser";
 
 export default function UserData(props) {
-  var user = props.navigation.state.params.userInfo;
-  var requestWorker = props.navigation.state.params.requestWorker;
-  var requestOwner = props.navigation.state.params.requestOwner;
-  var pets = props.navigation.state.params.pets;
+  var user = bannedAssertion();
+  var [pets, setPets] = useState([]);
+  var [requestWorker, setRequestWorker] = useState([]);
+  var [requestOwner, setRequestOwner] = useState([]);
+  var [accommodations, setAccommodations] = useState([]);
+
+  useEffect(() => {
+    var requestWorkerUE = [];
+    var requestOwnerUE = [];
+    var petsUE = [];
+    var accommodationsUE = [];
+
+    async function getWorkers() {
+      await db.ref("requests")
+      .orderByChild("worker")
+      .equalTo(user.id)
+      .once("value", (snap) => {
+        snap.forEach((child) => {
+          requestWorkerUE.push(child.val());
+        });
+      });
+    setRequestWorker(requestWorkerUE);
+    }
+
+    async function getOwners() {
+      await db.ref("requests")
+      .orderByChild("owner")
+      .equalTo(user.id)
+      .once("value", (snap) => {
+        snap.forEach((child) => {
+          requestOwnerUE.push(child.val());
+        });
+      });
+    setRequestOwner(requestOwnerUE);
+    }
+
+    async function getPets() {
+      await db.ref("pet/" + user.id).once("value", (snap) => {
+        snap.forEach((child) => {
+          petsUE.push(child.val());
+        });
+      });
+      setPets(petsUE);
+    }
+
+    async function getAccommodations() {
+      await db.ref("accommodation")
+      .orderByChild("worker/" + user.id)
+      .once("value", (snap) => {
+        snap.forEach((pretty) => {
+          accommodationsUE.push(pretty.val());
+        });
+      });
+
+    setAccommodations(accommodationsUE);
+    }
+
+    getWorkers();
+
+    getOwners();
+
+    getPets();
+
+    getAccommodations();
+
+
+  }, []);
 
   var sendEmail = function () {
     var userEmail = "Datos de usuario\n\n";
     var requestWorkerEmail = "Solicitudes recibidas\n\n";
     var requestOwnerEmail = "Solicitudes realizadas\n\n";
     var petsEmail = "Mascotas registradas en nuestra aplicación\n\n";
+    var accommodationEmail = "Acomodaciones registradas \n\n";
     bannedAssertion();
 
     userEmail += "Nombre: " + user.name + "\n";
@@ -42,8 +108,7 @@ export default function UserData(props) {
 
     if (pets.length !== 0) {
       {
-        pets.map((pet) => {
-          let petParse = JSON.parse(JSON.stringify(pet));
+        pets.map((petParse) => {
           petsEmail += "Nombre: " + petParse.name + "\n";
           petsEmail += "Descripción: " + petParse.description + "\n";
           petsEmail += "Raza: " + petParse.breed + "\n";
@@ -55,8 +120,7 @@ export default function UserData(props) {
     }
 
     if (requestOwner.length !== 0) {
-      requestOwner.map((reqOwner) => {
-        let reqParse = JSON.parse(JSON.stringify(reqOwner));
+      requestOwner.map((reqParse) => {
         if (!reqOwner.hasOwnProperty("interval")) {
           requestOwnerEmail += "Alojamiento\n";
         } else {
@@ -88,8 +152,7 @@ export default function UserData(props) {
     requestOwnerEmail += "\n\n";
 
     if (requestWorker.length !== 0) {
-      requestWorker.map((reqWorker) => {
-        let reqParse = JSON.parse(JSON.stringify(reqWorker));
+      requestWorker.map((reqParse) => {
         if (!reqParse.hasOwnProperty("interval")) {
           requestWorkerEmail += "Alojamiento\n";
         } else {
@@ -122,11 +185,33 @@ export default function UserData(props) {
 
     requestWorkerEmail += "\n\n";
 
+    if (accommodations.length !== 0) {
+      {
+        accommodations.map((accParse) => {
+          accommodationEmail +=
+            "Fecha de inicio: " + fechaParseada(accParse.startTime) + "\n";
+          accommodationEmail +=
+            "Fecha de fin: " + fechaParseada(accParse.endTime) + "\n";
+          if (accParse.isCanceled) {
+            accommodationEmail += "¿Cancelada? Sí\n";
+          } else {
+            accommodationEmail += "¿Cancelada? No\n";
+          }
+          accommodationEmail += "\n\n";
+        });
+      }
+    } else {
+      accommodationEmail +=
+        "Actualmente tiene 0 comodaciones registradas en el sistema\n";
+    }
+    accommodationEmail += "\n\n";
+
     var bodyEmail = "";
     bodyEmail += userEmail + "\n";
     bodyEmail += petsEmail + "\n";
     bodyEmail += requestOwnerEmail + "\n";
     bodyEmail += requestWorkerEmail + "\n";
+    bodyEmail += accommodationEmail + "\n";
 
     email(user.email, {
       cc: "",
@@ -190,8 +275,7 @@ export default function UserData(props) {
         {pets.length !== 0 ? (
           <View style={userDataStyles.userDataView}>
             <Text style={userDataStyles.userDataTxt}>Mascotas registradas</Text>
-            {pets.map((pet) => {
-              let petParse = JSON.parse(JSON.stringify(pet));
+            {pets.map((petParse) => {
               return (
                 <View>
                   <Text style={userDataStyles.userDataTxt3}>
@@ -218,8 +302,7 @@ export default function UserData(props) {
             <Text style={userDataStyles.userDataTxt}>
               Solicitudes recibidas
             </Text>
-            {requestWorker.map((request) => {
-              let reqParse = JSON.parse(JSON.stringify(request));
+            {requestWorker.map((reqParse) => {
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
@@ -254,8 +337,7 @@ export default function UserData(props) {
         {requestOwner.length !== 0 ? (
           <View style={userDataStyles.userDataView}>
             <Text style={userDataStyles.userDataTxt}>Solicitudes Enviadas</Text>
-            {requestOwner.map((request) => {
-              let reqParse = JSON.parse(JSON.stringify(request));
+            {requestOwner.map((reqParse) => {
               return (
                 <View>
                   {reqParse.hasOwnProperty("interval") ? (
@@ -286,6 +368,38 @@ export default function UserData(props) {
             <Text>Actualmente tiene 0 solicitudes recibidas</Text>
           </View>
         )}
+
+        {accommodations.length !== 0 ? (
+          <View style={userDataStyles.userDataView}>
+            <Text style={userDataStyles.userDataTxt}>
+              {" "}
+              Acomodaciones registradas en el sistema{" "}
+            </Text>
+            {accommodations.map((accParse) => {
+              return (
+                <View>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    Fecha de inicio: {fechaParseada(accParse.startTime)}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    Fecha de fin: {fechaParseada(accParse.endTime)}
+                  </Text>
+                  <Text style={userDataStyles.userDataTxt3}>
+                    {" "}
+                    ¿Cancelada?: {accParse.isCanceled === true
+                      ? "Sí"
+                      : "No"}{" "}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        ) : (
+          <View style={userDataStyles.userDataView}>
+            <Text> Actualmente tiene 0 acomodaciones registradas </Text>
+          </View>
+        )}
+
         <Button
           buttonStyle={userDataStyles.userDataBtn}
           containerStyle={userDataStyles.userDataContainer}
