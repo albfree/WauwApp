@@ -62,7 +62,6 @@ export default function UserData(props) {
       .once("value", (snap) => {
         snap.forEach((pretty) => {
           accommodationsUE.push(pretty.val());
-          console.log("pretty.val()", pretty.val());
         });
       });
 
@@ -77,7 +76,6 @@ export default function UserData(props) {
 
     getAccommodations();
 
-    console.log(accommodations);
 
   }, []);
 
