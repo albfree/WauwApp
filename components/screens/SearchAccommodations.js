@@ -173,8 +173,8 @@ function ListAccommodations(props) {
       setMaxPrice(null);
       setMinRating(null);
     } else {
-      if (!Number.isInteger(maxPrice * 100)) {
-        toastRef.current.show("Precio entero o con 2 decimales");
+      if (!Number.isInteger(maxPrice * 100) || maxPrice <= 0) {
+        toastRef.current.show("Precio positivo con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
       } else if (!Number.isInteger(minRating * 10)) {
