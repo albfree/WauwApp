@@ -138,11 +138,12 @@ function SearchWalks(props) {
       setMaxPrice(null);
       setMinRating(null);
     } else {
-      if (
-        !Number.isInteger(maxPrice * 10) ||
-        !Number.isInteger(minRating * 10)
-      ) {
-        toastRef.current.show("Valores enteros o con 1 decimal");
+      if (!Number.isInteger(maxPrice * 100)) {
+        toastRef.current.show("Precio con máximo 2 decimales");
+        setMaxPrice(null);
+        setMinRating(null);
+      } else if (!Number.isInteger(minRating * 10)) {
+        toastRef.current.show("Valoración con máximo 1 decimal");
         setMaxPrice(null);
         setMinRating(null);
       } else {
