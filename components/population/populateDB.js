@@ -291,10 +291,12 @@ export default function PopulateDB({ navigation }) {
   );
 }
 
+const c1 = "#fff";
+
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: c1,
     flex: 1,
-    backgroundColor: "#fff",
     padding: 40,
   },
 });

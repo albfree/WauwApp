@@ -24,7 +24,7 @@ import { payStyles } from "../../styles/payStyle";
 function PayRequest(props) {
   const { navigation } = props;
   const request = navigation.state.params.request;
-  const [isWebViewLoading, SetIsWebViewLoading] = useState(false);
+  const [isWebViewLoading, setIsWebViewLoading] = useState(false);
   const [paypalUrl, setPaypalUrl] = useState("");
   const [accessToken, setAccessToken] = useState("");
   const [priceRequest, setPriceRequest] = useState(request.price);
@@ -113,7 +113,7 @@ function PayRequest(props) {
       },
     };
 
-    const url = `https://api.sandbox.paypal.com/v1/oauth2/token`;
+    const url = "https://api.sandbox.paypal.com/v1/oauth2/token";
 
     const data = {
       grant_type: "client_credentials",
@@ -147,7 +147,7 @@ function PayRequest(props) {
         //Resquest payal payment (It will load login page payment detail on the way)
         axios
           .post(
-            `https://api.sandbox.paypal.com/v1/payments/payment`,
+            "https://api.sandbox.paypal.com/v1/payments/payment",
             dataDetail,
             {
               headers: {
@@ -173,7 +173,7 @@ function PayRequest(props) {
 
   onWebviewLoadStart = () => {
     if (shouldShowWebViewLoading) {
-      SetIsWebViewLoading(true);
+      setIsWebViewLoading(true);
     }
   };
 
@@ -280,32 +280,25 @@ function PayRequest(props) {
       {paypalUrl ? (
         <View style={payStyles.payView}>
           <WebView
-            style={{ height: "100%", width: "100%" }}
             source={{ uri: paypalUrl }}
             onNavigationStateChange={this._onNavigationStateChange}
             javaScriptEnabled={true}
             domStorageEnabled={true}
             startInLoadingState={false}
             onLoadStart={onWebviewLoadStart}
-            onLoadEnd={() => SetIsWebViewLoading(false)}
+            onLoadEnd={() => setIsWebViewLoading(false)}
           />
         </View>
       ) : null}
       {isWebViewLoading ? (
-        <View
-          style={{
-            ...StyleSheet.absoluteFill,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#ffffff",
-          }}
-        >
-          <ActivityIndicator size="small" color="#A02AE0" />
+        <View>
+          <ActivityIndicator size="small" color={c1} />
         </View>
       ) : null}
     </React.Fragment>
   );
 }
+const c1 = "#A02AE0";
 
 function WithoutWauwPoints(props) {
   const { buyBook, priceRequestConst } = props;

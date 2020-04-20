@@ -92,9 +92,9 @@ export const accommodationStyles = StyleSheet.create({
     width: 110,
   },
   accommodationBtnTittle: {
+    alignSelf: "center",
     flex: 4,
     fontSize: 15,
-    alignSelf: "center",
     marginLeft: 5,
   },
   accommodationTxt: {

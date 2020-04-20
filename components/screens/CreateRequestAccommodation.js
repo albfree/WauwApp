@@ -121,7 +121,6 @@ function createRequestAccommodation(props) {
       .then(() => {
         setIsLoading(false);
         setReloadData(false);
-        setIsVisibleModal(false);
       })
       .catch(() => {
         setError("Ha ocurrido un error");

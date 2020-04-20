@@ -6,12 +6,13 @@ export default function Modal(props) {
   const { isVisible, setIsVisible, children } = props;
 
   const closeModal = () => setIsVisible(false);
-
+  const c1 = "rgba(0,0,0,.5)";
+  const c2 = "transparent";
   return (
     <Overlay
       isVisible={isVisible}
-      windowBackgroundColor="rgba(0,0,0,.5)"
-      overlayBackgroundColor="transparent"
+      windowBackgroundColor={c1}
+      overlayBackgroundColor={c2}
       overlayStyle={styles.overlay}
       onBackdropPress={closeModal}
     >
@@ -19,11 +20,11 @@ export default function Modal(props) {
     </Overlay>
   );
 }
-
+const c3 = "#fff";
 const styles = StyleSheet.create({
   overlay: {
+    backgroundColor: c3,
     height: "auto",
     width: "90%",
-    backgroundColor: "#fff",
   },
 });

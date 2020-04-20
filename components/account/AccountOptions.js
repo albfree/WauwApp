@@ -3,7 +3,6 @@ import { View, Text } from "react-native";
 import { ListItem } from "react-native-elements";
 import Modal from "./Modal";
 import ChangeNameForm from "./ChangeNameForm";
-import ChangeEmailForm from "./ChangeEmailForm";
 import ChangeDescriptionForm from "./ChangeDescriptionForm";
 import { globalStyles } from "../styles/global";
 
