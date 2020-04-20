@@ -4,6 +4,7 @@ import { db } from "../population/config.js";
 import BlankView from "./BlankView";
 import Loading from "../Loading";
 import { globalStyles } from "../styles/global";
+import { requestsStyles } from "../styles/requestsStyle";
 
 export default function News() {
   const [newsList, setNewsList] = useState([]);
@@ -27,6 +28,7 @@ export default function News() {
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView>
+        <Text style={requestsStyles.requestsTxt16}>Tablón de Anuncios</Text>
         <Loading isVisible={loading} text={"Un momento..."} />
         {newsList.length > 0 ? (
           <FlatList
@@ -45,9 +47,11 @@ export default function News() {
 function Noticia(props) {
   const { noticia } = props;
   return (
-    <View>
-      <Text>{noticia.item.date}</Text>
-      <Text>{noticia.item.text}</Text>
+    <View style={requestsStyles.requestsFeed}>
+      <View style={globalStyles.viewFlex1}>
+        <Text style={globalStyles.adminTxt6}>{noticia.item.text}</Text>
+        <Text style={globalStyles.adminTxt5}>{noticia.item.date}</Text>
+      </View>
     </View>
   );
 }
