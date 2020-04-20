@@ -21,7 +21,7 @@ export const globalStyles = StyleSheet.create({
   adminTxt3: {
     fontSize: 17,
     marginHorizontal: 15,
-    textAlign: "center",
+    textAlign: "justify",
   },
   adminTxt4: {
     color: celeste,

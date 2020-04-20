@@ -24,7 +24,7 @@ export default function BannedScreen() {
 
         <Text style={globalStyles.adminTxt3}>
           {/* Párrafo */}
-          Su cuenta ha sido bloqueada por incumplir nuestras normas básicas de
+          Su cuenta ha sido bloqueada por incumplir nuestras normas básicas
           de conducta. Si piensa que se trata de un error, o bien, desea obtener
           más información (cuál es el motivo del bloqueo, si se trata de una
           suspensión temporal o un bloqueo total, etc), contacte por correo

@@ -97,7 +97,7 @@ function ProfileDeleteData(props) {
   const aviso = () => {
     Alert.alert(
       "Aviso",
-      "Aviso. Estás a punto de borrar tus datos de esta aplicación. Para volver a usar la aplicación deberás registrarte de nuevo.",
+      "Estás a punto de borrar tus datos de esta aplicación. Para volver a usar la aplicación deberás registrarte de nuevo.",
       [
         {
           text: "OK",
@@ -126,6 +126,7 @@ function ProfileDeleteData(props) {
           ) {
             requestWorkerOk = false;
             Alert.alert(
+              "Alerta",
               "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
             );
             break;
@@ -157,6 +158,7 @@ function ProfileDeleteData(props) {
             ) {
               requestOwnerOk = false;
               Alert.alert(
+                "Alerta",
                 "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
               );
               break;
@@ -241,6 +243,7 @@ function deleteData(props) {
 
   if (!user[0].hasOwnProperty("last_logged_in")) {
     Alert.alert(
+      "Alerta",
       "Lo sentimos. Para poder eliminar la cuenta debe haber iniciado sesión más de una vez"
     );
   } else {

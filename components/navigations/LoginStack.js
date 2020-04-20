@@ -4,6 +4,7 @@ import TermsAndConditionsScreen from "../screens/TermsAndConditions";
 import { hide } from "expo/build/launch/SplashScreen";
 
 const morado = "#443099";
+const blanco = "white";
 
 const LoginStack = createStackNavigator({
   Login: {
@@ -20,6 +21,10 @@ const LoginStack = createStackNavigator({
       headerStyle: {
         backgroundColor: morado,
       },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
     }),
   },
 });
