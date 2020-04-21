@@ -206,7 +206,7 @@ function ListAccommodations(props) {
           inputContainerStyle={searchWalksStyles.searchWalksView3}
           inputStyle={searchWalksStyles.searchWalkTxt8}
           keyboardType="numeric"
-          placeholder="Precio máximo del paseo"
+          placeholder="Precio máximo del alojamiento"
           maxLength={6}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
@@ -389,7 +389,7 @@ function Accommodation(props) {
                 Precio
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {accommodation.item[0].salary} € {dis} km
+                {accommodation.item[0].salary} €
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
                 Valoración
@@ -416,6 +416,9 @@ function Accommodation(props) {
                   parseInt(y.getMonth() + 1) +
                   "/" +
                   y.getFullYear()}
+              </Text>
+              <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
+                {dis} km
               </Text>
             </View>
           </View>
