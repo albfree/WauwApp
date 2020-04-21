@@ -43,7 +43,8 @@ function ProfileMyRequests(props) {
   }, []);
 
   return (
-    <SafeAreaView style={globalStyles.viewFlex1}>
+    <ScrollView>
+      <SafeAreaView style={globalStyles.viewFlex1}>
       <TouchableOpacity
         style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
@@ -76,6 +77,7 @@ function ProfileMyRequests(props) {
         )}
       </ScrollView>
     </SafeAreaView>
+    </ScrollView>
   );
 }
 
