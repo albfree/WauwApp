@@ -31,7 +31,7 @@ function ProfileAddDogForm(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("child_added", (snap) => {
+      .once("child_added", (snap) => {
         const newNewOwner = {
           avgScore: snap.val().avgScore,
           homeDescription: snap.val().homeDescription,

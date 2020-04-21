@@ -39,13 +39,16 @@ function FormFilterByDate(props) {
     let formData = {
       startTime: newStartTime,
     };
-    if (newStartTime === null || newStartTime < new Date()) {
+    if (
+      newStartTime === null ||
+      new Date().getTime() - newStartTime.getTime() > 60000
+    ) {
       let errores = "";
       if (newStartTime === null) {
         errores = errores.concat("Debe escribir una fecha de entrada.\n");
       }
 
-      if (newStartTime < new Date()) {
+      if (new Date().getTime() - newStartTime.getTime() > 60000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
@@ -54,7 +57,7 @@ function FormFilterByDate(props) {
       Alert.alert("Advertencia", errores.toString());
     } else {
       let errores = "";
-      if (newStartTime < new Date()) {
+      if (new Date().getTime() - newStartTime.getTime() > 60000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );

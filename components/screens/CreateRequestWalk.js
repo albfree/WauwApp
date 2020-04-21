@@ -37,7 +37,7 @@ function createRequest(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", (snap) => {
+    .once("child_added", (snap) => {
       newOwner = snap.val();
     });
 
@@ -76,7 +76,7 @@ function createRequest(props) {
 
   useEffect(() => {
     // To retrieve my pets' names
-    db.ref("pet/" + newOwner.id).on("value", (snap) => {
+    db.ref("pet/" + newOwner.id).once("value", (snap) => {
       const pets = [];
       snap.forEach((child) => {
         pets.push(child.val().name);
@@ -134,7 +134,6 @@ function createRequest(props) {
             navigation.popToTop();
             setIsLoading(false);
             setReloadData(true);
-            setIsVisibleModal(false);
           })
           .catch(() => {
             setError("Ha ocurrido un error");
@@ -168,7 +167,7 @@ function createRequest(props) {
               {"Intervalo seleccionado\n"}
               {value.day + " " + value.startTime + "h - " + value.endDate + "h"}
             </Text>
-           
+
             <Text style={searchWalksStyles.searchWalkTxt7}>
               {"¿Qué perro desea que pasee ?"}
             </Text>

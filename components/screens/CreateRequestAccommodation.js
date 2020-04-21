@@ -64,7 +64,7 @@ function createRequestAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function (snap) {
+      .once("value", function (snap) {
         snap.forEach(function (child) {
           setNewOwner(child.val());
         });
@@ -76,7 +76,7 @@ function createRequestAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("id")
       .equalTo(navigation.state.params.formData.worker)
-      .on("value", function (snap) {
+      .once("value", function (snap) {
         snap.forEach(function (child) {
           setNewWorker(child.val());
         });
@@ -121,7 +121,6 @@ function createRequestAccommodation(props) {
       .then(() => {
         setIsLoading(false);
         setReloadData(false);
-        setIsVisibleModal(false);
       })
       .catch(() => {
         setError("Ha ocurrido un error");

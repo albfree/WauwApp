@@ -46,8 +46,8 @@ export const payStyles = StyleSheet.create({
   },
   payTxt4: {
     alignSelf: "center",
-    borderColor: lila2,
     borderBottomWidth: 1,
+    borderColor: lila2,
     height: 40,
     marginBottom: 20,
     textAlign: "center",

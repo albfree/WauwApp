@@ -37,7 +37,7 @@ function SearchWalks(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", (snap) => {
+    .once("child_added", (snap) => {
       petNumber = snap.val().petNumber;
       id = snap.val().id;
       longitudeUser = snap.val().location.longitude;
@@ -45,7 +45,7 @@ function SearchWalks(props) {
     });
 
   useEffect(() => {
-    db.ref("availabilities-wauwers").on("value", (snap) => {
+    db.ref("availabilities-wauwers").once("value", (snap) => {
       let allData = [];
       snap.forEach((child) => {
         if (child.key !== id) {

@@ -145,7 +145,7 @@ function Accommodation(accomodationIn) {
                 Del{" "}
                 {x.getDate() +
                   "/" +
-                  parseInt(x.getMonth() + 1) +
+                  parseInt(x.getMonth() + 1, 10) +
                   "/" +
                   x.getFullYear()}
               </Text>
@@ -153,7 +153,7 @@ function Accommodation(accomodationIn) {
                 al{" "}
                 {y.getDate() +
                   "/" +
-                  parseInt(y.getMonth() + 1) +
+                  parseInt(y.getMonth() + 1, 10) +
                   "/" +
                   y.getFullYear()}
               </Text>

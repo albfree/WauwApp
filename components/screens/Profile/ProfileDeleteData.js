@@ -24,7 +24,7 @@ function ProfileDeleteData(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", (snap) => {
+    .once("child_added", (snap) => {
       wauwerId = snap.val().id;
     });
 
@@ -32,7 +32,7 @@ function ProfileDeleteData(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(anonEmail)
-    .on("child_added", (snap) => {
+    .once("child_added", (snap) => {
       anonWauwerId = snap.val().id;
     });
 
@@ -40,7 +40,7 @@ function ProfileDeleteData(props) {
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(wauwerId)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const requests = [];
         snap.forEach((child) => {
           requests.push(child.val());
@@ -55,7 +55,7 @@ function ProfileDeleteData(props) {
     db.ref("requests")
       .orderByChild("owner")
       .equalTo(wauwerId)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const requestsO = [];
         snap.forEach((child) => {
           requestsO.push(child.val());
@@ -70,7 +70,7 @@ function ProfileDeleteData(props) {
     db.ref("users")
       .orderByChild("gmail")
       .equalTo(email)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         snap.forEach((child) => {
           setUser(child.val());
         });
@@ -84,7 +84,7 @@ function ProfileDeleteData(props) {
     db.ref("wauwers")
       .orderByChild("id")
       .equalTo(anonWauwerId)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         snap.forEach((child) => {
           setAnonUser(child.val());
         });
@@ -235,7 +235,7 @@ function deleteData(props) {
   db.ref("users")
     .orderByChild("gmail")
     .equalTo(email)
-    .on("value", (snap) => {
+    .once("value", (snap) => {
       snap.forEach((child) => {
         user.push(child.val());
       });
@@ -273,7 +273,7 @@ function deleteData(props) {
         db.ref("accommodation")
           .orderByChild("worker")
           .equalTo(wauwerId)
-          .on("value", (snap) => {
+          .once("value", (snap) => {
             snap.forEach((child) => {
               child.ref.remove();
             });

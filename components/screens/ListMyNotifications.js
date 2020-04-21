@@ -16,6 +16,7 @@ import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { notificationsStyles } from "../styles/notificationsStyle";
 import firebase from "firebase";
+import { fechaParseada } from "../utils/DateParser";
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
@@ -27,7 +28,7 @@ export default function ListMyNotifications(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", (snap) => {
+    .once("child_added", (snap) => {
       userInfo = snap.val();
       id = userInfo.id;
       if (userInfo.isBanned) {
@@ -41,7 +42,7 @@ export default function ListMyNotifications(props) {
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(id)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const requests = [];
         snap.forEach((child) => {
           requests.push(child.val());
@@ -94,7 +95,7 @@ function Request(props) {
   }
   db.ref("wauwers")
     .child(req.item.owner)
-    .on("value", (snap) => {
+    .once("value", (snap) => {
       ownerInfo = snap.val();
     });
 
@@ -122,9 +123,9 @@ function Request(props) {
   } else if (req.item.type === "sitter") {
     tipo = "alojamiento";
     fecha = "Del "
-      .concat(req.item.startTime)
+      .concat(fechaParseada(req.item.startTime))
       .concat(" al ")
-      .concat(req.item.endTime);
+      .concat(fechaParseada(req.item.endTime));
   }
 
   const checkRequestsState = () => {

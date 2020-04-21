@@ -66,7 +66,7 @@ function CreateAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("value", function (snap) {
+      .once("value", function (snap) {
         snap.forEach(function (child) {
           setNewWorker(child.val().id);
         });
@@ -85,8 +85,9 @@ function CreateAccommodation(props) {
   };
 
   const addCommissions = (props) => {
-    let price = (props * 1.25).toFixed(2);
-    setNewSalary(parseFloat(props).toFixed(2));
+    let salario = props.replace(",", ".").split(",").join("");
+    let price = (salario * 1.25).toFixed(2);
+    setNewSalary(parseFloat(salario).toFixed(2));
     setNewPrice(price);
   };
 
@@ -94,21 +95,11 @@ function CreateAccommodation(props) {
     let id = db.ref("accommodation").push().key;
     setIsLoading(true);
 
-    let accommodationData = {
-      id: id,
-      startTime: newStartTime.toISOString(),
-      endTime: newEndTime.toISOString(),
-      isCanceled: newIsCanceled,
-      salary: newSalary,
-      worker: newWorker,
-      price: newPrice,
-    };
-
     if (
       newStartTime === null ||
       newEndTime === null ||
       newSalary === null ||
-      new Date().getTime() - newStartTime.getTime() > 20000 ||
+      new Date().getTime() - newStartTime.getTime() > 60000 ||
       newEndTime.getTime() - newStartTime.getTime() < 86100000
     ) {
       let errores = "";
@@ -122,7 +113,7 @@ function CreateAccommodation(props) {
         errores = errores.concat("El precio mínimo es 10.\n");
       }
 
-      if (new Date().getTime() - newStartTime.getTime() > 20000) {
+      if (new Date().getTime() - newStartTime.getTime() > 60000) {
         errores = errores.concat(
           "La fecha de entrada debe ser posterior o igual a la actual.\n"
         );
@@ -137,7 +128,7 @@ function CreateAccommodation(props) {
       let errores = "";
       if (isNaN(newSalary) || newSalary < 10) {
         errores = errores.concat("El precio mínimo es 10.\n");
-        if (new Date().getTime() - newStartTime.getTime() > 20000) {
+        if (new Date().getTime() - newStartTime.getTime() > 60000) {
           errores = errores.concat(
             "La fecha de entrada debe ser posterior o igual a la actual.\n"
           );
@@ -150,6 +141,15 @@ function CreateAccommodation(props) {
 
         Alert.alert("Advertencia", errores.toString());
       } else {
+        let accommodationData = {
+          id: id,
+          startTime: newStartTime.toISOString(),
+          endTime: newEndTime.toISOString(),
+          isCanceled: newIsCanceled,
+          salary: newSalary,
+          worker: newWorker,
+          price: newPrice,
+        };
         setIsLoading(true);
         db.ref("accommodation/" + id)
           .set(accommodationData)
@@ -243,6 +243,7 @@ function CreateAccommodation(props) {
               keyboardType="numeric"
               style={searchAccommodationStyles.searchAccommodationView3}
               onChange={(v) => addCommissions(v.nativeEvent.text)}
+              maxLength={6}
             />
             <Button
               buttonStyle={searchAccommodationStyles.searchAccommodationBtn2}
