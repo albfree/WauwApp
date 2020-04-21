@@ -14,7 +14,7 @@ export default function News() {
   useEffect(() => {
     db.ref("broadcast")
       .orderByChild("timestamp")
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const news = [];
         snap.forEach((child) => {
           news.push(child.val());

@@ -58,7 +58,7 @@ function Services(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .on("child_added", (snap) => {
+      .once("child_added", (snap) => {
         newOwner = snap.val();
       });
   });
