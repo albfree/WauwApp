@@ -35,7 +35,7 @@ function ListAccommodations(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .on("child_added", (snap) => {
+    .once("child_added", (snap) => {
       petNumber = snap.val().petNumber;
       id = snap.val().id;
       longitudeUser = snap.val().location.longitude;
@@ -46,7 +46,7 @@ function ListAccommodations(props) {
     db.ref("accommodation")
       .orderByChild("isCanceled")
       .equalTo(false)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const accommodations = [];
         const accommodations2 = [];
         snap.forEach((child) => {
@@ -347,7 +347,7 @@ function Accommodation(props) {
   let worker;
   db.ref("wauwers")
     .child(accommodation.item[0].worker)
-    .on("value", (snap) => {
+    .once("value", (snap) => {
       worker = snap.val();
     });
 
