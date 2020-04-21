@@ -206,7 +206,7 @@ function ListAccommodations(props) {
           inputContainerStyle={searchWalksStyles.searchWalksView3}
           inputStyle={searchWalksStyles.searchWalkTxt8}
           keyboardType="numeric"
-          placeholder="Precio máximo del paseo"
+          placeholder="Precio máximo del alojamiento"
           maxLength={6}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
