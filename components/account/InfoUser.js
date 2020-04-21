@@ -86,8 +86,6 @@ export default function InfoUser(props) {
         <Avatar
           rounded
           size="large"
-          showEditButton
-          onEditPress={changeAvatar}
           containerStyle={profileStyles.profileAvatar}
           source={{
             uri: userInfo.photo,
