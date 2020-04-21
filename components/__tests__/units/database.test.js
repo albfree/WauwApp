@@ -1,8 +1,8 @@
 import { db } from "../../population/config";
 
-describe("testing database connections", ()=>{
+describe("testing database connections", () => {
   
-    test("Searching wauwer: anonymous", ()=>{
+    test("Searching wauwer: anonymous", () => {
       const email = "wauwispp1920@gmail.com";
       let petNumber;
       let id;
