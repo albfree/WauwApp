@@ -93,7 +93,7 @@ function AddReviewService(props) {
 
   const payment = (id) => {
     var user;
-    db.ref("wauwers/" + id).once("value", (snap) => {
+    db.ref("wauwers/" + id).on("value", (snap) => {
       user = snap.val();
     });
 

@@ -11,7 +11,7 @@ export default function LastLogged() {
     db.ref("users")
       .orderByChild("gmail")
       .equalTo(email)
-      .once("value", function (snap) {
+      .on("value", function (snap) {
         snap.forEach(function (child) {
           setLastLogged(child.val().last_logged);
         });

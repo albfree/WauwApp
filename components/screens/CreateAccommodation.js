@@ -68,7 +68,7 @@ function CreateAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .once("value", function (snap) {
+      .on("value", function (snap) {
         snap.forEach(function (child) {
           setNewWorker(child.val().id);
         });

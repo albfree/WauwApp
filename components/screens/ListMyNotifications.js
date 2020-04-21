@@ -28,7 +28,7 @@ export default function ListMyNotifications(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .once("child_added", (snap) => {
+    .on("child_added", (snap) => {
       userInfo = snap.val();
       id = userInfo.id;
       if (userInfo.isBanned) {
@@ -42,7 +42,7 @@ export default function ListMyNotifications(props) {
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(id)
-      .once("value", (snap) => {
+      .on("value", (snap) => {
         const requests = [];
         snap.forEach((child) => {
           requests.push(child.val());
@@ -95,7 +95,7 @@ function Request(props) {
   }
   db.ref("wauwers")
     .child(req.item.owner)
-    .once("value", (snap) => {
+    .on("value", (snap) => {
       ownerInfo = snap.val();
     });
 
