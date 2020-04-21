@@ -13,7 +13,7 @@ export default function LastLogged() {
       .equalTo(email)
       .on("value", function (snap) {
         snap.forEach(function (child) {
-          setLastLogged(child.val().last_logged_in);
+          setLastLogged(child.val().last_logged);
         });
       });
   }, []);
