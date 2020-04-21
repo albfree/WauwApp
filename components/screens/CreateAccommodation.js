@@ -85,24 +85,15 @@ function CreateAccommodation(props) {
   };
 
   const addCommissions = (props) => {
-    let price = (props * 1.25).toFixed(2);
-    setNewSalary(parseFloat(props).toFixed(2));
+    let salario = props.replace(",", ".").split(",").join("");
+    let price = (salario * 1.25).toFixed(2);
+    setNewSalary(parseFloat(salario).toFixed(2));
     setNewPrice(price);
   };
 
   const addAccommodation = () => {
     let id = db.ref("accommodation").push().key;
     setIsLoading(true);
-
-    let accommodationData = {
-      id: id,
-      startTime: newStartTime.toISOString(),
-      endTime: newEndTime.toISOString(),
-      isCanceled: newIsCanceled,
-      salary: newSalary,
-      worker: newWorker,
-      price: newPrice,
-    };
 
     if (
       newStartTime === null ||
@@ -150,6 +141,15 @@ function CreateAccommodation(props) {
 
         Alert.alert("Advertencia", errores.toString());
       } else {
+        let accommodationData = {
+          id: id,
+          startTime: newStartTime.toISOString(),
+          endTime: newEndTime.toISOString(),
+          isCanceled: newIsCanceled,
+          salary: newSalary,
+          worker: newWorker,
+          price: newPrice,
+        };
         setIsLoading(true);
         db.ref("accommodation/" + id)
           .set(accommodationData)
@@ -243,6 +243,7 @@ function CreateAccommodation(props) {
               keyboardType="numeric"
               style={searchAccommodationStyles.searchAccommodationView3}
               onChange={(v) => addCommissions(v.nativeEvent.text)}
+              maxLength={6}
             />
             <Button
               buttonStyle={searchAccommodationStyles.searchAccommodationBtn2}
