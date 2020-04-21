@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -17,8 +17,10 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import { bannedAssertion } from "../account/bannedAssertion";
+import Toast from "react-native-easy-toast";
 
 function CreateAccommodation(props) {
+  const toastRef = useRef();
   bannedAssertion();
   const [newStartTime, setStartTime] = useState(new Date());
   const [newEndTime, setEndTime] = useState(new Date());
@@ -84,6 +86,28 @@ function CreateAccommodation(props) {
     addAccommodation();
   };
 
+  const checkSalary = () => {
+    if (newSalary === null || isNaN(newSalary)) {
+      toastRef.current.show("Salario inválido");
+      setNewSalary(null);
+    } else {
+      if (!Number.isInteger(newSalary * 100)) {
+        toastRef.current.show("Precio con dos decimales máximo");
+        setNewSalary(null);
+      } else {
+        if (newSalary < 10) {
+          toastRef.current.show("Salario mínimo de 10");
+          setNewSalary(null);
+        } else if (newSalary > 500) {
+          toastRef.current.show("Precio máximo 500");
+          setNewSalary(null);
+        } else {
+          all();
+        }
+      }
+    }
+  };
+
   const addCommissions = (props) => {
     let salario = props.replace(",", ".").split(",").join("");
     let price = (salario * 1.25).toFixed(2);
@@ -102,6 +126,7 @@ function CreateAccommodation(props) {
       new Date().getTime() - newStartTime.getTime() > 60000 ||
       newEndTime.getTime() - newStartTime.getTime() < 86100000
     ) {
+      setNewSalary(null);
       let errores = "";
       if (newStartTime === null) {
         errores = errores.concat("Debe escribir una fecha de entrada.\n");
@@ -109,8 +134,12 @@ function CreateAccommodation(props) {
       if (newEndTime === null) {
         errores = errores.concat("Debe escribir una fecha de salida.\n");
       }
-      if (isNaN(newSalary) || newSalary < 10) {
-        errores = errores.concat("El precio mínimo es 10.\n");
+      if (
+        isNaN(newSalary) ||
+        newSalary < 10 ||
+        parseInt(newSalary).toFixed(0) > 500
+      ) {
+        errores = errores.concat("Precio válido entre 10 y 500.\n");
       }
 
       if (new Date().getTime() - newStartTime.getTime() > 60000) {
@@ -126,8 +155,13 @@ function CreateAccommodation(props) {
       Alert.alert("Advertencia", errores.toString());
     } else {
       let errores = "";
-      if (isNaN(newSalary) || newSalary < 10) {
-        errores = errores.concat("El precio mínimo es 10.\n");
+      if (
+        isNaN(newSalary) ||
+        newSalary < 10 ||
+        parseInt(newSalary).toFixed(0) > 500
+      ) {
+        setNewSalary(null);
+        errores = errores.concat("Precio válido entre 10 y 500.\n");
         if (new Date().getTime() - newStartTime.getTime() > 60000) {
           errores = errores.concat(
             "La fecha de entrada debe ser posterior o igual a la actual.\n"
@@ -251,7 +285,7 @@ function CreateAccommodation(props) {
                 searchAccommodationStyles.searchAccommodationContainer3
               }
               title="Crear"
-              onPress={all}
+              onPress={checkSalary}
               icon={
                 <Icon
                   type="material-community"
@@ -266,6 +300,7 @@ function CreateAccommodation(props) {
           </View>
         </View>
       </ScrollView>
+      <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
 }
