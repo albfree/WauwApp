@@ -58,7 +58,7 @@ function Services(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .once("child_added", (snap) => {
+      .on("child_added", (snap) => {
         newOwner = snap.val();
       });
   });
@@ -88,20 +88,20 @@ function Services(props) {
     if (checkHasLocation()) {
       if (tittle === "Crear Alojamiento") {
         navigation.navigate("CreateAccommodation");
-      }
-      if (checkHasPets()) {
-        if (tittle === "Buscar Paseador") {
-          navigation.navigate("FormFilterByAvailability");
-        } else if (tittle === "Buscar Alojamiento") {
-          navigation.navigate("FormFilterByDate");
-        }
       } else {
-        Alert.alert(
-          "No ha añadido mascotas",
-          "Para poder disfrutar de nuestros servicios debe introducir la información sobre su mascota en el perfil."
-        );
-
-        navigation.navigate("Profile");
+        if (checkHasPets()) {
+          if (tittle === "Buscar Paseador") {
+            navigation.navigate("FormFilterByAvailability");
+          } else if (tittle === "Buscar Alojamiento") {
+            navigation.navigate("FormFilterByDate");
+          }
+        } else {
+          Alert.alert(
+            "No ha añadido mascotas",
+            "Para poder disfrutar de nuestros servicios debe introducir la información sobre su mascota en el perfil."
+          );
+          navigation.navigate("Profile");
+        }
       }
     } else {
       if (checkHasPets()) {
