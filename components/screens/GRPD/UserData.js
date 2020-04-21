@@ -58,10 +58,12 @@ export default function UserData(props) {
 
     async function getAccommodations() {
       await db.ref("accommodation")
-      .orderByChild("worker/" + user.id)
+      .orderByChild("worker")
+      .equalTo(user.id)
       .once("value", (snap) => {
         snap.forEach((pretty) => {
           accommodationsUE.push(pretty.val());
+          console.log(pretty.val().id);
         });
       });
 
@@ -78,6 +80,8 @@ export default function UserData(props) {
 
 
   }, []);
+
+  console.log(user.id);
 
   var sendEmail = function () {
     var userEmail = "Datos de usuario\n\n";
@@ -121,7 +125,7 @@ export default function UserData(props) {
 
     if (requestOwner.length !== 0) {
       requestOwner.map((reqParse) => {
-        if (!reqOwner.hasOwnProperty("interval")) {
+        if (!reqParse.hasOwnProperty("interval")) {
           requestOwnerEmail += "Alojamiento\n";
         } else {
           requestOwnerEmail += reqParse.interval;

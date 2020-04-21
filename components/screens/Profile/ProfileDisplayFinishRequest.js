@@ -39,7 +39,7 @@ function DisplayFinishRequest(props) {
     db.ref("wauwers")
       .orderByChild("id")
       .equalTo(id)
-      .on("child_added", (snap) => {
+      .once("child_added", (snap) => {
         worker = snap.val();
       });
   });

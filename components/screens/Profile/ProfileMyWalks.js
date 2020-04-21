@@ -32,7 +32,7 @@ function ProfileMyWalks(props) {
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(wauwerId)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const requests1 = [];
         snap.forEach((child) => {
           if (child.val().type === "walk") {

@@ -32,7 +32,7 @@ function ProfileMyAccommodations(props) {
     db.ref("accommodation")
       .orderByChild("worker")
       .equalTo(wauwerId)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const accommodations = [];
         snap.forEach((child) => {
           var endTime = new Date(child.val().endTime);
@@ -139,7 +139,7 @@ function Accommodation(accomodationIn) {
           <View style={requestsStyles.requestsView}>
             <View style={requestsStyles.requestsView2}>
               <Text style={requestsStyles.requestsTxt2}>
-                {(accommodation.item.salary * 0.8).toFixed(2)} €
+                {accommodation.item.salary} €
               </Text>
               <Text style={requestsStyles.requestsTxt2}>
                 Del{" "}

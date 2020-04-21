@@ -124,6 +124,13 @@ const ProfileScreenStacks = createStackNavigator({
     navigationOptions: () => ({
       title: "Editar alojamiento",
       headerTitleAlign: "center",
+      headerStyle: {
+        backgroundColor: morado,
+      },
+      headerTitleStyle: {
+        color: blanco,
+      },
+      headerTintColor: blanco,
     }),
   },
   UserData: {
