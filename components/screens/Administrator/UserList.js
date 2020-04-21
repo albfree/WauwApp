@@ -26,7 +26,7 @@ function UserList(props) {
   useEffect(() => {
     db.ref("wauwers")
       .orderByChild("surname")
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const users = [];
         snap.forEach((child) => {
           if (child.val().email !== "wauwispp1920@gmail.com") {

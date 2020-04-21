@@ -31,7 +31,7 @@ function ProfileMyRequests(props) {
     db.ref("requests")
       .orderByChild("owner")
       .equalTo(wauwerId)
-      .on("value", (snap) => {
+      .once("value", (snap) => {
         const requests1 = [];
         snap.forEach((child) => {
           requests1.push(child.val());
