@@ -16,6 +16,7 @@ import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { notificationsStyles } from "../styles/notificationsStyle";
 import firebase from "firebase";
+import { fechaParseada } from "../utils/DateParser";
 
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
@@ -122,9 +123,9 @@ function Request(props) {
   } else if (req.item.type === "sitter") {
     tipo = "alojamiento";
     fecha = "Del "
-      .concat(req.item.startTime)
+      .concat(fechaParseada(req.item.startTime))
       .concat(" al ")
-      .concat(req.item.endTime);
+      .concat(fechaParseada(req.item.endTime));
   }
 
   const checkRequestsState = () => {
