@@ -17,7 +17,7 @@ export default function MyReviews(props) {
 
   useEffect(() => {
     let reviews = [];
-    db.ref("reviews/" + user.id).once("value", (snap) => {
+    db.ref("reviews/" + user.id).on("value", (snap) => {
       snap.forEach((child) => {
         reviews.push(child.val());
       });

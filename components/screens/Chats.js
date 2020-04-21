@@ -29,7 +29,7 @@ export default function Chats(props) {
 
   useEffect(() => {
     db.ref("wauwers").child(currentUser.id).update({ hasMessages: false });
-    db.ref("requests").once("value", (snap) => {
+    db.ref("requests").on("value", (snap) => {
       const allData = [];
       snap.forEach((child) => {
         const requestsData = [];
@@ -50,14 +50,14 @@ export default function Chats(props) {
           db.ref("wauwers")
             .orderByChild("id")
             .equalTo(otherUserID)
-            .once("child_added", (snap) => {
+            .on("child_added", (snap) => {
               otherUserName = snap.val().name;
             });
 
           db.ref("wauwers")
             .orderByChild("id")
             .equalTo(otherUserID)
-            .once("child_added", (snap) => {
+            .on("child_added", (snap) => {
               otherUserPhoto = snap.val().photo;
             });
 

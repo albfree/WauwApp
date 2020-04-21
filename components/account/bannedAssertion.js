@@ -8,7 +8,7 @@ export const bannedAssertion = () => {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .once("child_added", (snap) => {
+    .on("child_added", (snap) => {
       userInfo = snap.val();
       if (userInfo.isBanned) {
         Alert.alert("Atención", "Su cuenta ha sido bloqueada.");

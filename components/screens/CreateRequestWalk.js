@@ -37,7 +37,7 @@ function createRequest(props) {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .once("child_added", (snap) => {
+    .on("child_added", (snap) => {
       newOwner = snap.val();
     });
 
@@ -76,7 +76,7 @@ function createRequest(props) {
 
   useEffect(() => {
     // To retrieve my pets' names
-    db.ref("pet/" + newOwner.id).once("value", (snap) => {
+    db.ref("pet/" + newOwner.id).on("value", (snap) => {
       const pets = [];
       snap.forEach((child) => {
         pets.push(child.val().name);

@@ -30,7 +30,7 @@ function ProfileRequestToMyRequestList(props) {
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(wauwerId)
-      .once("value", (snap) => {
+      .on("value", (snap) => {
         const requests = [];
         snap.forEach((child) => {
           var endTime = new Date(child.val().endTime);
@@ -150,7 +150,7 @@ function NameByOwner(ownerId) {
   db.ref("wauwers")
     .orderByChild("id")
     .equalTo(id)
-    .once("child_added", (snap) => {
+    .on("child_added", (snap) => {
       wauwerName = snap.val().name + " " + snap.val().surname;
     });
 

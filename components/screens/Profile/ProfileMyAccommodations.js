@@ -32,7 +32,7 @@ function ProfileMyAccommodations(props) {
     db.ref("accommodation")
       .orderByChild("worker")
       .equalTo(wauwerId)
-      .once("value", (snap) => {
+      .on("value", (snap) => {
         const accommodations = [];
         snap.forEach((child) => {
           var endTime = new Date(child.val().endTime);

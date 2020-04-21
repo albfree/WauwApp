@@ -8,7 +8,7 @@ export const popUp = () => {
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
-    .once("child_added", (snap) => {
+    .on("child_added", (snap) => {
       userInfo = snap.val();
       if (userInfo.hasMessages && userInfo.hasRequests) {
         Alert.alert("Atención", "Tiene mensajes y notificaciones sin leer");

@@ -64,7 +64,7 @@ function createRequestAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("email")
       .equalTo(email)
-      .once("value", function (snap) {
+      .on("value", function (snap) {
         snap.forEach(function (child) {
           setNewOwner(child.val());
         });
@@ -76,7 +76,7 @@ function createRequestAccommodation(props) {
     db.ref("wauwers")
       .orderByChild("id")
       .equalTo(navigation.state.params.formData.worker)
-      .once("value", function (snap) {
+      .on("value", function (snap) {
         snap.forEach(function (child) {
           setNewWorker(child.val());
         });
