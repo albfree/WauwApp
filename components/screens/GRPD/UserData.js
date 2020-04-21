@@ -121,7 +121,7 @@ export default function UserData(props) {
 
     if (requestOwner.length !== 0) {
       requestOwner.map((reqParse) => {
-        if (!reqOwner.hasOwnProperty("interval")) {
+        if (!reqParse.hasOwnProperty("interval")) {
           requestOwnerEmail += "Alojamiento\n";
         } else {
           requestOwnerEmail += reqParse.interval;
