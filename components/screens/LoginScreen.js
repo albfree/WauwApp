@@ -138,9 +138,9 @@ function LoginScreen(props) {
       try {
         const result = await Google.logInAsync({
           iosClientId:
-            "191130769894-9h9fm6gvurfb5l20grk9jirf4svn1n3s.apps.googleusercontent.com",
+            "424386340759-k5povvp3pv7fhp3u3gre498bsfdrit1f.apps.googleusercontent.com",
           androidClientId:
-            "191130769894-jebp8hq5kp341r7nagcs33667quenvl9.apps.googleusercontent.com",
+            "424386340759-u2k9naf3cv2lh654alrn2ltfe57v19q6.apps.googleusercontent.com",
           scopes: ["profile", "email"],
         });
 
