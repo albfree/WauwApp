@@ -147,36 +147,37 @@ function ProfileDeleteData(props) {
           });
         }
       }
-    } else {
-      if (requestsOwnerList && requestsOwnerList.length) {
-        for (let i = 0; i < requestsOwnerList.length; i++) {
-          if (requestsOwnerList[i].pending === false) {
-            if (
-              requestsOwnerList[i].isFinished === false ||
-              requestsOwnerList[i].isPayed === false ||
-              requestsOwnerList[i].isRated === false
-            ) {
-              requestOwnerOk = false;
-              Alert.alert(
-                "Alerta",
-                "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
-              );
-              break;
-            } else {
-              if (requestOwnerOk === true) {
-                let idOwner = {
-                  owner: anonWauwerId,
-                };
-                db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
-                db.ref("chats/" + requestsOwnerList[i].id).remove();
-              }
-            }
+    }
+
+    if (requestsOwnerList && requestsOwnerList.length) {
+      for (let i = 0; i < requestsOwnerList.length; i++) {
+        if (requestsOwnerList[i].pending === false) {
+          if (
+            requestsOwnerList[i].isFinished === false ||
+            requestsOwnerList[i].isPayed === false ||
+            requestsOwnerList[i].isRated === false
+          ) {
+            requestOwnerOk = false;
+            Alert.alert(
+              "Alerta",
+              "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
+            );
+            break;
           } else {
-            db.ref("request/" + requestsOwnerList[i].id).remove();
+            if (requestOwnerOk === true) {
+              let idOwner = {
+                owner: anonWauwerId,
+              };
+              db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
+              db.ref("chats/" + requestsOwnerList[i].id).remove();
+            }
           }
+        } else {
+          db.ref("request/" + requestsOwnerList[i].id).remove();
         }
       }
     }
+  
 
     if (requestWorkerOk && requestOwnerOk) {
       deleteData(wauwerId);
