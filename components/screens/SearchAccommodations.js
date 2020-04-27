@@ -84,6 +84,12 @@ function ListAccommodations(props) {
               myAccomodation.push(arrayLocation);
               accommodations2.push(myAccomodation);
             }
+            if (
+              (maxPrice !== null && child.val().price > maxPrice) ||
+              (minRating !== null && score < minRating)
+            ) {
+              accommodations.pop();
+            }
           }
         });
 
@@ -173,21 +179,25 @@ function ListAccommodations(props) {
       setMaxPrice(null);
       setMinRating(null);
     } else {
-      if (!Number.isInteger(maxPrice * 100) || maxPrice <= 0) {
+      if (
+        maxPrice !== null &&
+        (!Number.isInteger(maxPrice * 100) || maxPrice <= 0)
+      ) {
         toastRef.current.show("Precio positivo con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
-      } else if (!Number.isInteger(minRating * 10)) {
-        toastRef.current.show("Valoración entera o con 1 decimal");
-        setMaxPrice(null);
-        setMinRating(null);
       } else {
-        if (minRating < 0 || minRating > 5) {
+        if (minRating !== null && !Number.isInteger(minRating * 10)) {
+          toastRef.current.show("Valoración con máximo 1 decimal");
+          setMaxPrice(null);
+          setMinRating(null);
+        } else if (minRating !== null && (minRating < 0 || minRating > 5)) {
           toastRef.current.show("Valoración entre 0 y 5");
           setMaxPrice(null);
           setMinRating(null);
         } else {
-          filterList();
+          setReloadData(true);
+          toastRef.current.show("Filtro aplicado");
         }
       }
     }
@@ -389,7 +399,7 @@ function Accommodation(props) {
                 Precio
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt2}>
-                {accommodation.item[0].salary} €
+                {accommodation.item[0].price} €
               </Text>
               <Text style={searchAccommodationStyles.searchAccommodationTxt3}>
                 Valoración

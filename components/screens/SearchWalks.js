@@ -138,16 +138,19 @@ function SearchWalks(props) {
       setMaxPrice(null);
       setMinRating(null);
     } else {
-      if (!Number.isInteger(maxPrice * 100) || maxPrice <= 0) {
+      if (
+        maxPrice !== null &&
+        (!Number.isInteger(maxPrice * 100) || maxPrice <= 0)
+      ) {
         toastRef.current.show("Precio positivo con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
-      } else if (!Number.isInteger(minRating * 10)) {
-        toastRef.current.show("Valoración con máximo 1 decimal");
-        setMaxPrice(null);
-        setMinRating(null);
       } else {
-        if (minRating < 0 || minRating > 5) {
+        if (minRating !== null && !Number.isInteger(minRating * 10)) {
+          toastRef.current.show("Valoración con máximo 1 decimal");
+          setMaxPrice(null);
+          setMinRating(null);
+        } else if (minRating !== null && (minRating < 0 || minRating > 5)) {
           toastRef.current.show("Valoración entre 0 y 5");
           setMaxPrice(null);
           setMinRating(null);
