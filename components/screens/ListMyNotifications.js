@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
   Alert,
   SafeAreaView,
 } from "react-native";
@@ -18,11 +19,25 @@ import { notificationsStyles } from "../styles/notificationsStyle";
 import firebase from "firebase";
 import { fechaParseada } from "../utils/DateParser";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 export default function ListMyNotifications(props) {
   const { toastRef } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
+
   let id;
   let userInfo;
   db.ref("wauwers")
@@ -55,7 +70,11 @@ export default function ListMyNotifications(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {requestsList.length > 0 ? (
           <FlatList
             data={requestsList}
