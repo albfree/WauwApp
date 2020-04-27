@@ -157,6 +157,11 @@ export const globalStyles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: blanco,
     justifyContent: "center",
+    paddingBottom: "5%",
+  },
+  drawerView3: {
+    flex: 1,
+    marginBottom: 10,
     paddingBottom: "10%",
   },
   viewFeed: {
