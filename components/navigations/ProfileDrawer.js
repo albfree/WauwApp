@@ -30,9 +30,11 @@ const CustomDrawerComponent = (props) => (
         style={globalStyles.drawerImage}
       />
     </View>
-    <ScrollView>
-      <DrawerItems {...props} />
-    </ScrollView>
+    <View style={globalStyles.drawerView2}>
+      <ScrollView>
+        <DrawerItems {...props} />
+      </ScrollView>
+    </View>
   </SafeAreaView>
 );
 
