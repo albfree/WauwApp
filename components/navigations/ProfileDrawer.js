@@ -23,7 +23,7 @@ import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
 const CustomDrawerComponent = (props) => (
-  <SafeAreaView>
+  <SafeAreaView style={globalStyles.blankView5}>
     <View style={globalStyles.drawerView}>
       <Image
         source={require("../../assets/images/logo.png")}

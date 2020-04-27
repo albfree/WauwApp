@@ -156,7 +156,6 @@ export const globalStyles = StyleSheet.create({
   drawerView2: {
     alignItems: "center",
     backgroundColor: blanco,
-    height: "80%",
     justifyContent: "center",
     paddingBottom: "10%",
   },
