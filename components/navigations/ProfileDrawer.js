@@ -41,6 +41,7 @@ const CustomDrawerComponent = (props) => (
 export default createDrawerNavigator(
   {
     Profiles: {
+      unmountOnBlur: true,
       screen: ProfileScreen,
       navigationOptions: {
         drawerLabel: "Mi Perfil",
@@ -55,6 +56,7 @@ export default createDrawerNavigator(
       },
     },
     MyRequests: {
+      unmountOnBlur: true,
       screen: MyRequestsScreen,
       navigationOptions: {
         drawerLabel: "Mis Solicitudes",
@@ -69,6 +71,7 @@ export default createDrawerNavigator(
       },
     },
     MyAccommodations: {
+      unmountOnBlur: true,
       screen: MyAccommodationsScreen,
       navigationOptions: {
         drawerLabel: "Mis Alojamientos",
@@ -78,6 +81,7 @@ export default createDrawerNavigator(
       },
     },
     MyWalks: {
+      unmountOnBlur: true,
       screen: MyWalksScreen,
       navigationOptions: {
         drawerLabel: "Mis Paseos",
@@ -93,6 +97,7 @@ export default createDrawerNavigator(
     },
 
     LastConexion: {
+      unmountOnBlur: true,
       screen: LastConexionsScreen,
       navigationOptions: {
         drawerLabel: "Últimas Conexiones",
@@ -108,6 +113,7 @@ export default createDrawerNavigator(
     },
 
     AboutUs: {
+      unmountOnBlur: true,
       screen: AboutUsScreen,
       navigationOptions: {
         drawerLabel: "Sobre Nosotros",
@@ -123,6 +129,7 @@ export default createDrawerNavigator(
     },
 
     Feedback: {
+      unmountOnBlur: true,
       screen: FeedbackScreen,
       navigationOptions: {
         drawerLabel: "Feedback",
@@ -138,6 +145,7 @@ export default createDrawerNavigator(
     },
 
     DeleteData: {
+      unmountOnBlur: true,
       screen: DeleteDataScreen,
       navigationOptions: {
         drawerLabel: "Eliminar Cuenta",
@@ -170,5 +178,6 @@ export default createDrawerNavigator(
   {
     drawerPosition: "right",
     contentComponent: CustomDrawerComponent,
+    initialRouteName: "Profiles",
   }
 );

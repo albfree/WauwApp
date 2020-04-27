@@ -20,224 +20,245 @@ import PagarScreen from "../screens/Pagar";
 const morado = "#443099";
 const blanco = "white";
 
-const ProfileScreenStacks = createStackNavigator({
-  ProfileDrawer: {
-    screen: ProfileDrawerNavigator,
-    navigationOptions: () => ({
-      title: "Mis Datos",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
+const ProfileScreenStacks = createStackNavigator(
+  {
+    ProfileDrawer: {
+      unmountOnBlur: true,
+      screen: ProfileDrawerNavigator,
+      navigationOptions: () => ({
+        title: "Mis Datos",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    ProfileWalkerForm: {
+      unmountOnBlur: true,
+      screen: ProfileWalkerFormScreen,
+      navigationOptions: () => ({
+        title: "Datos de Paseador",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    ProfileAddDogForm: {
+      unmountOnBlur: true,
+      screen: ProfileAddDogFormScreen,
+      navigationOptions: () => ({
+        title: "Datos del Perro",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    ProfileLocationForm: {
+      unmountOnBlur: true,
+      screen: ProfileLocationFormScreen,
+      navigationOptions: () => ({
+        title: "Escoger Localización",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    ShowRequest: {
+      unmountOnBlur: true,
+      screen: ShowRequestScreen,
+      navigationOptions: () => ({
+        title: "Solicitud",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    ShowWalk: {
+      unmountOnBlur: true,
+      screen: ShowWalkScreen,
+      navigationOptions: () => ({
+        title: "Paseo",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    PayRequest: {
+      unmountOnBlur: true,
+      screen: PayRequestScreen,
+      navigationOptions: () => ({
+        title: "Pago",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    EditDeleteAccommodation: {
+      unmountOnBlur: true,
+      screen: EditDeleteAccommodationScreen,
+      navigationOptions: () => ({
+        title: "Editar alojamiento",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    UserData: {
+      unmountOnBlur: true,
+      screen: UserDataScreen,
+      navigationOptions: () => ({
+        title: "Ver información recopilada",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    UserList: {
+      unmountOnBlur: true,
+      screen: UserListScreen,
+      navigationOptions: () => ({
+        title: "Lista de usuarios",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    AddReviewService: {
+      unmountOnBlur: true,
+      screen: AddReviewServiceScreen,
+      navigationOptions: () => ({
+        title: "Formulario Rating",
+        headerTitleAlign: "center",
+      }),
+    },
+    RequestToMyAccommodationList: {
+      unmountOnBlur: true,
+      screen: RequestToMyAccommodationListScreen,
+      navigationOptions: () => ({
+        title: "Solicitudes a mi alojamiento",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    DisplayFinishRequests: {
+      unmountOnBlur: true,
+      screen: DisplayFinishRequestScreen,
+      navigationOptions: () => ({
+        title: "Solicitud a mi alojamiento",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    AdminPanel: {
+      unmountOnBlur: true,
+      screen: AdminPanelScreen,
+      navigationOptions: () => ({
+        title: "Panel de Administración",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    Pagar: {
+      unmountOnBlur: true,
+      screen: PagarScreen,
+      navigationOptions: () => ({
+        title: "Pagar",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    BroadcastMsg: {
+      unmountOnBlur: true,
+      screen: BroadcastMsgScreen,
+      navigationOptions: () => ({
+        title: "Mensaje a todos los usuarios",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
   },
-  ProfileWalkerForm: {
-    screen: ProfileWalkerFormScreen,
-    navigationOptions: () => ({
-      title: "Datos de Paseador",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  ProfileAddDogForm: {
-    screen: ProfileAddDogFormScreen,
-    navigationOptions: () => ({
-      title: "Datos del Perro",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  ProfileLocationForm: {
-    screen: ProfileLocationFormScreen,
-    navigationOptions: () => ({
-      title: "Escoger Localización",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  ShowRequest: {
-    screen: ShowRequestScreen,
-    navigationOptions: () => ({
-      title: "Solicitud",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  ShowWalk: {
-    screen: ShowWalkScreen,
-    navigationOptions: () => ({
-      title: "Paseo",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  PayRequest: {
-    screen: PayRequestScreen,
-    navigationOptions: () => ({
-      title: "Pago",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  EditDeleteAccommodation: {
-    screen: EditDeleteAccommodationScreen,
-    navigationOptions: () => ({
-      title: "Editar alojamiento",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  UserData: {
-    screen: UserDataScreen,
-    navigationOptions: () => ({
-      title: "Ver información recopilada",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  UserList: {
-    screen: UserListScreen,
-    navigationOptions: () => ({
-      title: "Lista de usuarios",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  AddReviewService: {
-    screen: AddReviewServiceScreen,
-    navigationOptions: () => ({
-      title: "Formulario Rating",
-      headerTitleAlign: "center",
-    }),
-  },
-  RequestToMyAccommodationList: {
-    screen: RequestToMyAccommodationListScreen,
-    navigationOptions: () => ({
-      title: "Solicitudes a mi alojamiento",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  DisplayFinishRequests: {
-    screen: DisplayFinishRequestScreen,
-    navigationOptions: () => ({
-      title: "Solicitud a mi alojamiento",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  AdminPanel: {
-    screen: AdminPanelScreen,
-    navigationOptions: () => ({
-      title: "Panel de Administración",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  Pagar: {
-    screen: PagarScreen,
-    navigationOptions: () => ({
-      title: "Pagar",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  BroadcastMsg: {
-    screen: BroadcastMsgScreen,
-    navigationOptions: () => ({
-      title: "Mensaje a todos los usuarios",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-});
+  {
+    initialRouteName: "ProfileDrawer",
+  }
+);
 
 export default ProfileScreenStacks;

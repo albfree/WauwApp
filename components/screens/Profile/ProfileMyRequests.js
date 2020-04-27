@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
   SafeAreaView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -17,15 +18,27 @@ import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
 import { bannedAssertion } from "../../account/bannedAssertion";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 function ProfileMyRequests(props) {
   const { navigation } = props;
-
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [requestsList, setRequestList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
   var wauwer = bannedAssertion();
   var wauwerId = wauwer.id;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     db.ref("requests")
@@ -57,7 +70,11 @@ function ProfileMyRequests(props) {
           </View>
         </View>
       </TouchableOpacity>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Text style={requestsStyles.requestsTxt16}>
           Listado de las solicitudes realizadas
         </Text>
