@@ -43,7 +43,7 @@ function ProfileMyWalks(props) {
       });
     setReloadData(false);
     setLoading(false);
-  }, []);
+  }, [reloadData]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
