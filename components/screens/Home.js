@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   Alert,
   View,
@@ -23,8 +23,16 @@ import { popUp } from "../account/popUp";
 
 function Home(props) {
   const { navigation } = props;
-  bannedAssertion();
-  popUp();
+
+  const [loading, setLoading] = useState(true);
+  const [reloadData, setReloadData] = useState(false);
+
+  useEffect(() => {
+    bannedAssertion();
+    popUp();
+    setReloadData(false);
+    setLoading(false);
+  }, [reloadData]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
