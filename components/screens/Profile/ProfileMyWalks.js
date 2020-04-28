@@ -32,14 +32,14 @@ function ProfileMyWalks(props) {
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(wauwerId)
-      .once("value", (snap) => {
+      .on("value", (snap) => {
         const requests1 = [];
         snap.forEach((child) => {
           if (child.val().type === "walk") {
             requests1.push(child.val());
           }
         });
-        setRequestList(requests1);
+        setRequestList(requests1.reverse());
       });
     setReloadData(false);
     setLoading(false);

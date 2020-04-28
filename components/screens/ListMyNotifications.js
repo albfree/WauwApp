@@ -47,7 +47,7 @@ export default function ListMyNotifications(props) {
         snap.forEach((child) => {
           requests.push(child.val());
         });
-        setRequestsList(requests);
+        setRequestsList(requests.reverse());
       });
     setReloadRequests(false);
     setIsVisibleLoading(false);
