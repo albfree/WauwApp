@@ -37,7 +37,20 @@ function Profile(props) {
   const [reloadData, setReloadData] = useState(false);
 
   useEffect(() => {
-    popUp();
+    let userInfo;
+    db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      userInfo = snap.val();
+      if (userInfo.hasMessages && userInfo.hasRequests) {
+        Alert.alert("Atención", "Tiene mensajes y notificaciones sin leer");
+      } else if (userInfo.hasRequests) {
+        Alert.alert("Atención", "Tiene notificaciones sin leer");
+      } else if (userInfo.hasMessages) {
+        Alert.alert("Atención", "Tiene mensajes sin leer");
+      }
+    });
     const user = bannedAssertion();
     setUserInfo(user);
     setReloadData(false);
