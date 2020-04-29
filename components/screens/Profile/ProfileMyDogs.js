@@ -9,7 +9,7 @@ import {
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
-import { db, wauwers } from "../../population/config";
+import { db } from "../../population/config";
 import { email, id, userId } from "../../account/QueriesProfile";
 import { ScrollView } from "react-native-gesture-handler";
 import BlankView from "../BlankView";
@@ -32,8 +32,6 @@ export default function ProfileMyDogs(props) {
   ref.once("child_added", (snap) => {
     user = snap.val().id;
   });
-
-  console.log("id", wauwers);
 
   useEffect(() => {
     const misMascotas = [];
