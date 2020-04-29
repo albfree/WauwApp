@@ -19,6 +19,7 @@ import { searchWalksStyles } from "../styles/searchWalkStyle";
 function createRequest(props) {
   const { navigation } = props;
   const [newPrice, setNewPrice] = useState(navigation.state.params.price);
+  const [salary, setSalary] = useState(navigation.state.params.salary);
 
   const price = navigation.state.params.price;
   const [newInterval, setNewInterval] = useState(null);
@@ -46,6 +47,7 @@ function createRequest(props) {
 
   const [wauwerPrices, setWauwerPrices] = useState([]);
   const value = navigation.state.params.interval;
+
 
   useEffect(() => {
     // To retrieve the walker availabilities
@@ -123,6 +125,7 @@ function createRequest(props) {
       availability: value.id,
       isFinished: newIsFinished,
       isRated: newIsRated,
+      salary: salary,
     };
     db.ref("requests/" + id)
       .set(requestData)
