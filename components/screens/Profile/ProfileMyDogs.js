@@ -1,21 +1,180 @@
-import React from "react";
-import { Text, View, SafeAreaView, TouchableOpacity } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
+import {
+  Text,
+  View,
+  SafeAreaView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
+import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
+import { db, wauwers } from "../../population/config";
+import { email, id, userId } from "../../account/QueriesProfile";
+import { ScrollView } from "react-native-gesture-handler";
+import BlankView from "../BlankView";
+import Loading from "../../Loading";
+import Toast from "react-native-easy-toast";
+import { profileStyles } from "../../styles/profileStyle";
+import ProfileAddDogForm from "./ProfileAddDogForm";
 
 export default function ProfileMyDogs(props) {
   const { navigation } = props;
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [reloadMascotas, setReloadMascotas] = useState();
+  const [mascotas, setMascotas] = useState([]);
+  const [isVisibleForm, setIsVisibleForm] = useState(false);
+  const toastRef = useRef();
+  const [buttonTitle, setButtonTitle] = useState("Añadir un Perro");
+
+  let user;
+  const ref = db.ref("wauwers").orderByChild("email").equalTo(email);
+  ref.once("child_added", (snap) => {
+    user = snap.val().id;
+  });
+
+  console.log("id", wauwers);
+
+  useEffect(() => {
+    const misMascotas = [];
+    const refMascotas = db.ref("pet/" + user);
+    refMascotas.once("value", (snap) => {
+      snap.forEach((child) => {
+        misMascotas.push(child.val());
+      });
+      setMascotas(misMascotas);
+    });
+    setIsVisibleLoading(false);
+    setReloadMascotas(false);
+  }, [reloadMascotas]);
+
+  useEffect(() => {
+    if (!isVisibleForm) {
+      setButtonTitle("Añadir un Perro");
+    } else {
+      setButtonTitle("Volver a Mis Perros");
+    }
+  }, [isVisibleForm]);
+
+  const setVisible = () => {
+    setIsVisibleForm(!isVisibleForm);
+  };
+
   return (
-    <SafeAreaView style={globalStyles.safeArea}>
-      <TouchableOpacity
-        style={{ alignItems: "flex-end", margin: 16 }}
-        onPress={navigation.openDrawer}
-      >
-        <FontAwesome name="bars" size={24} color="#161924" />
-      </TouchableOpacity>
-      <View>
-        <Text>Vista de mis perros</Text>
-      </View>
+    <SafeAreaView style={globalStyles.viewFlex1}>
+      <ScrollView>
+        <Button
+          buttonStyle={profileStyles.profileBtn3}
+          containerStyle={profileStyles.profileBtnContainer3}
+          title={buttonTitle}
+          onPress={setVisible}
+          icon={
+            <Icon
+              type="material-community"
+              name="dog"
+              size={30}
+              color="white"
+              marginLeft={20}
+            />
+          }
+          titleStyle={profileStyles.profileBtnTittle}
+        />
+        <View>
+          {isVisibleForm ? (
+            <ProfileAddDogForm
+              owner={user}
+              setIsVisibleForm={setIsVisibleForm}
+              setReloadMascotas={setReloadMascotas}
+              setIsVisibleLoading={setIsVisibleLoading}
+              toastRef={toastRef}
+            />
+          ) : (
+            <View>
+              {mascotas.length > 0 ? (
+                mascotas.map((perro, index) => (
+                  <Perro
+                    key={index}
+                    user={user}
+                    perro={perro}
+                    setReloadMascotas={setReloadMascotas}
+                    setIsVisibleLoading={setIsVisibleLoading}
+                    toastRef={toastRef}
+                  />
+                ))
+              ) : (
+                <BlankView text={"No tiene mascotas registradas"} />
+              )}
+            </View>
+          )}
+        </View>
+        <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
+      </ScrollView>
+      <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
+
+  function Perro(props) {
+    const {
+      user,
+      perro,
+      setReloadMascotas,
+      setIsVisibleLoading,
+      toastRef,
+    } = props;
+
+    const deleteDog = () => {
+      setIsVisibleLoading(true);
+      db.ref("pet/" + user + "/" + perro.id)
+        .remove()
+        .then(() => {
+          toastRef.current.show(perro.name + " ha sido eliminado");
+        })
+        .catch(() => {
+          toastRef.current.show("Error al eliminar a " + perro.name);
+        });
+      setReloadMascotas(true);
+    };
+
+    const confirmDelete = () => {
+      Alert.alert(
+        "¿Eliminar a " + perro.name + "?",
+        "",
+        [
+          {
+            text: "Si",
+            onPress: deleteDog,
+          },
+          {
+            text: "No",
+            style: "cancel",
+          },
+        ],
+        { cancelable: false }
+      );
+    };
+
+    return (
+      <TouchableOpacity onPress={confirmDelete}>
+        <View>
+          <Text>{perro.name}</Text>
+          <Text>{perro.breed}</Text>
+          <Text>{perro.description}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  // return (
+  //   <SafeAreaView style={globalStyles.safeArea}>
+  //     <TouchableOpacity
+  //       style={{ alignItems: "flex-end", margin: 16 }}
+  //       onPress={navigation.openDrawer}
+  //     >
+  //       <FontAwesome name="bars" size={24} color="#161924" />
+  //     </TouchableOpacity>
+  //     <View>
+  //       <Text>Vista de mis perros</Text>
+  //     </View>
+  //   </SafeAreaView>
+  // );
 }

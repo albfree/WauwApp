@@ -91,7 +91,7 @@ function Profile(props) {
             }
             titleStyle={profileStyles.profileBtnTittle}
           />
-          <Button
+          {/* <Button
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Añadir un Perro"
@@ -106,7 +106,7 @@ function Profile(props) {
               />
             }
             titleStyle={profileStyles.profileBtnTittle}
-          />
+          /> */}
 
           <Button
             buttonStyle={profileStyles.profileBtn3}

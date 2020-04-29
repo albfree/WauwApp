@@ -90,6 +90,21 @@ export default createDrawerNavigator(
       },
     },
 
+    MyDogs: {
+      screen: MyDogsScreen,
+      navigationOptions: {
+        drawerLabel: "Mis Perros",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+
     LastConexion: {
       screen: LastConexionsScreen,
       navigationOptions: {
@@ -149,21 +164,6 @@ export default createDrawerNavigator(
         ),
       },
     },
-
-    /* MyDogs: {
-      screen: MyDogsScreen,
-      navigationOptions: {
-        drawerLabel: "Mis Perros",
-        drawerIcon: ({ tintColor }) => (
-          <Icon
-            type="material-community"
-            name="dog"
-            size={17}
-            color="#443099"
-          />
-        )
-      }
-    } */
   },
   {
     drawerPosition: "right",

@@ -186,14 +186,7 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (sueldo >= 5) {
-        confirmAdd(id);
-      } else {
-        Alert.alert(
-          "No puede añadir disponibilidades",
-          "Su salario debe ser mayor o igual a 5"
-        );
-      }
+      confirmAdd(id);
     } else {
       Alert.alert("Ya ha seleccionado esta disponibilidad", "");
     }
