@@ -31,16 +31,16 @@ function ProfileMyRequests(props) {
     db.ref("requests")
       .orderByChild("owner")
       .equalTo(wauwerId)
-      .once("value", (snap) => {
+      .on("value", (snap) => {
         const requests1 = [];
         snap.forEach((child) => {
           requests1.push(child.val());
         });
-        setRequestList(requests1);
+        setRequestList(requests1.reverse());
       });
     setReloadData(false);
     setLoading(false);
-  }, []);
+  }, [reloadData]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
