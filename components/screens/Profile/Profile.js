@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -31,21 +31,22 @@ function Profile(props) {
     global.atob = decode;
   }
   const { navigation } = props;
-  var userInfo = bannedAssertion();
+  const currentUser = bannedAssertion();
+  const [userInfo, setUserInfo] = useState(currentUser);
+  const [loading, setLoading] = useState(true);
+  const [reloadData, setReloadData] = useState(false);
 
-  popUp();
+  useEffect(() => {
+    popUp();
+    const user = bannedAssertion();
+    setUserInfo(user);
+    setReloadData(false);
+    setLoading(false);
+  }, [reloadData]);
+  
 
-  const checkHasLocation = () => {
-    let ck;
-    let newOwner;
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("child_added", (snap) => {
-        newOwner = snap.val();
-      });
-
-    if (newOwner.hasOwnProperty("location")) {
+  const checkHasLocation = (userInfo) => {
+    if (userInfo.hasOwnProperty("location")) {
       navigation.navigate("ProfileWalkerForm");
     } else {
       Alert.alert(
@@ -91,7 +92,7 @@ function Profile(props) {
             }
             titleStyle={profileStyles.profileBtnTittle}
           />
-          <Button
+          {/* <Button
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Añadir un Perro"
@@ -106,13 +107,13 @@ function Profile(props) {
               />
             }
             titleStyle={profileStyles.profileBtnTittle}
-          />
+          /> */}
 
           <Button
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Quiero ser Paseador"
-            onPress={() => checkHasLocation()}
+            onPress={() => checkHasLocation(userInfo)}
             icon={
               <Icon
                 type="material-community"

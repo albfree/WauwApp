@@ -27,9 +27,7 @@ function wait(timeout) {
 function ProfileMyRequests(props) {
   const { navigation } = props;
   const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [requestsList, setRequestList] = useState([]);
-  const [reloadData, setReloadData] = useState(false);
 
   var wauwer = bannedAssertion();
   var wauwerId = wauwer.id;
@@ -44,15 +42,13 @@ function ProfileMyRequests(props) {
     db.ref("requests")
       .orderByChild("owner")
       .equalTo(wauwerId)
-      .once("value", (snap) => {
+      .on("value", (snap) => {
         const requests1 = [];
         snap.forEach((child) => {
           requests1.push(child.val());
         });
-        setRequestList(requests1);
+        setRequestList(requests1.reverse());
       });
-    setReloadData(false);
-    setLoading(false);
   }, [refreshing]);
 
   return (
