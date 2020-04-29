@@ -161,7 +161,7 @@ export const globalStyles = StyleSheet.create({
   },
   drawerView3: {
     flex: 1,
-    marginBottom: 10,
+    marginBottom: "15%",
     paddingBottom: "10%",
   },
   viewFeed: {

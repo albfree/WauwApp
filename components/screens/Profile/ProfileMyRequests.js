@@ -53,7 +53,7 @@ function ProfileMyRequests(props) {
       });
     setReloadData(false);
     setLoading(false);
-  }, []);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
