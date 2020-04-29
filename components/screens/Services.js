@@ -29,6 +29,7 @@ function Services(props) {
   const [description, setDescription] = useState(
     "Encuentra a los usuarios disponibles para pasear a tu perro"
   );
+  const [petNumber, setPetNumber] = useState();
 
   useEffect(() => {}, [imageUri]);
 
@@ -54,13 +55,19 @@ function Services(props) {
     );
   };
   let newOwner;
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("child_added", (snap) => {
-        newOwner = snap.val();
-      });
+  let pets = [];
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .once("child_added", (snap) => {
+      newOwner = snap.val();
+    });
+  db.ref("pet/" + newOwner.id).on("value", (snap) => {
+    let myPets = [];
+    snap.forEach((child) => {
+      myPets.push(child.val());
+    });
+    pets = myPets;
   });
 
   const checkHasLocation = () => {
@@ -76,7 +83,7 @@ function Services(props) {
 
   const checkHasPets = () => {
     let cp;
-    if (newOwner.petNumber > 0) {
+    if (pets.length > 0) {
       cp = true;
     } else {
       cp = false;
