@@ -14,6 +14,7 @@ function createRequest(props) {
   const { userInfo } = screenProps;
   const toastRef = useRef();
   const [newPrice, setNewPrice] = useState(navigation.state.params.price);
+  const [salary, setSalary] = useState(navigation.state.params.salary);
   const price = navigation.state.params.price;
   const [newInterval, setNewInterval] = useState(null);
   const newWorker = navigation.state.params.wauwer;
@@ -104,6 +105,7 @@ function createRequest(props) {
       availability: value.id,
       isFinished: newIsFinished,
       isRated: newIsRated,
+      salary: salary,
     };
     db.ref("requests/" + id)
       .set(requestData)

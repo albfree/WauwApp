@@ -90,6 +90,7 @@ function FormRequestAccommodation(props) {
       idAccommodation: navigation.state.params.accommodation.id,
       pending: navigation.state.params.accommodation.pending,
       salary: navigation.state.params.accommodation.salary,
+      price: navigation.state.params.accommodation.price,
       worker: navigation.state.params.accommodation.worker,
       isCanceled: navigation.state.params.accommodation.isCanceled,
       startTime: newStartTime,

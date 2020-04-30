@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
   SafeAreaView,
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
@@ -18,15 +19,25 @@ import { requestsStyles } from "../../styles/requestsStyle";
 import { accommodationStyles } from "../../styles/accommodationStyle";
 import { bannedAssertion } from "../../account/bannedAssertion";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 function ProfileMyAccommodations(props) {
   const { navigation } = props;
-
-  const [loading, setLoading] = useState(true);
   const [accommodationsList, setAccommodationsList] = useState([]);
-  const [reloadData, setReloadData] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   var wauwer = bannedAssertion();
   var wauwerId = wauwer.id;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     db.ref("accommodation")
@@ -42,9 +53,7 @@ function ProfileMyAccommodations(props) {
         });
         setAccommodationsList(accommodations);
       });
-    setReloadData(false);
-    setLoading(false);
-  }, [reloadData]);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -61,22 +70,31 @@ function ProfileMyAccommodations(props) {
           </View>
         </View>
       </TouchableOpacity>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Text style={requestsStyles.requestsTxt16}>
           Listado de sus alojamientos
         </Text>
         {accommodationsList.length > 0 ? (
-          <FlatList
-            data={accommodationsList}
-            renderItem={(accommodation) => (
-              <Accommodation
-                accommodation={accommodation}
-                navigation={navigation}
-              />
-            )}
-            keyExtractor={(accommodation) => accommodation.id}
-            showsVerticalScrollIndicator={false}
-          />
+          <View>
+            <FlatList
+              data={accommodationsList}
+              renderItem={(accommodation) => (
+                <Accommodation
+                  accommodation={accommodation}
+                  navigation={navigation}
+                />
+              )}
+              keyExtractor={(accommodation) => accommodation.id}
+              showsVerticalScrollIndicator={false}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
           <BlankView text={"No tiene alojamientos habilitados"} />
         )}

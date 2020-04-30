@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import _ from "lodash";
 import firebase from "firebase";
@@ -18,9 +19,22 @@ import BlankView from "./BlankView";
 import { chatsStyles } from "../styles/chatsStyle";
 import { bannedAssertion } from "../account/bannedAssertion";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 export default function Chats(props) {
   const { navigation } = props;
   const [data, setData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   var currentUser = bannedAssertion();
   let otherUserID;
@@ -71,24 +85,33 @@ export default function Chats(props) {
       });
       setData(allData);
     });
-  }, []);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {data.length > 0 ? (
-          <FlatList
-            data={data}
-            renderItem={(requestsData) => (
-              <RequestChat
-                requestsData={requestsData}
-                navigation={navigation}
-                currentUser={currentUser}
-                otherUserID={otherUserID}
-              />
-            )}
-            keyExtractor={(requestsData) => requestsData.id}
-          />
+          <View>
+            <FlatList
+              data={data}
+              renderItem={(requestsData) => (
+                <RequestChat
+                  requestsData={requestsData}
+                  navigation={navigation}
+                  currentUser={currentUser}
+                  otherUserID={otherUserID}
+                />
+              )}
+              keyExtractor={(requestsData) => requestsData.id}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
           <BlankView text={"No tiene conversaciones abiertas"} />
         )}

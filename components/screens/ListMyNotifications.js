@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
   Alert,
   SafeAreaView,
 } from "react-native";
@@ -16,11 +17,24 @@ import BlankView from "./BlankView";
 import { notificationsStyles } from "../styles/notificationsStyle";
 import { fechaParseada } from "../utils/DateParser";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 export default function ListMyNotifications(props) {
   const { toastRef, userInfo } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     db.ref("wauwers").child(userInfo.id).update({ hasRequests: false });
@@ -36,25 +50,34 @@ export default function ListMyNotifications(props) {
       });
     setReloadRequests(false);
     setIsVisibleLoading(false);
-  }, [reloadRequests]);
+  }, [reloadRequests, refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         {requestsList.length > 0 ? (
-          <FlatList
-            data={requestsList}
-            renderItem={(request) => (
-              <Request
-                req={request}
-                setReloadRequests={setReloadRequests}
-                setIsVisibleLoading={setIsVisibleLoading}
-                toastRef={toastRef}
-                showsVerticalScrollIndicator={false}
-              />
-            )}
-            keyExtractor={(request) => request.id}
-          />
+          <View>
+            <FlatList
+              data={requestsList}
+              renderItem={(request) => (
+                <Request
+                  req={request}
+                  setReloadRequests={setReloadRequests}
+                  setIsVisibleLoading={setIsVisibleLoading}
+                  toastRef={toastRef}
+                  showsVerticalScrollIndicator={false}
+                />
+              )}
+              keyExtractor={(request) => request.id}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
           <BlankView text={"No tiene notificaciones"} />
         )}

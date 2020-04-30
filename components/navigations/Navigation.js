@@ -10,7 +10,6 @@ import ChatsScreenStack from "./ChatsStack";
 
 const morado = "#443099";
 const gris = "#6c7075";
-let user;
 
 const NavigationStacks = createBottomTabNavigator(
   {
@@ -20,6 +19,7 @@ const NavigationStacks = createBottomTabNavigator(
         // screen: (screenProps) => {
         //   screenProps.handler();
         // },
+        unmountOnBlur: true,
         tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (
           <Icon
@@ -32,6 +32,7 @@ const NavigationStacks = createBottomTabNavigator(
       }),
     },
     Chat: {
+      unmountOnBlur: true,
       screen: ChatsScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Chats",
@@ -46,6 +47,7 @@ const NavigationStacks = createBottomTabNavigator(
       }),
     },
     Services: {
+      unmountOnBlur: true,
       screen: ServicesScreenStacks,
       navigationOptions: () => ({
         tabBarLabel: "Services",
@@ -61,6 +63,7 @@ const NavigationStacks = createBottomTabNavigator(
     },
 
     Notifications: {
+      unmountOnBlur: true,
       screen: NotificationsScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Notifications",
@@ -76,6 +79,7 @@ const NavigationStacks = createBottomTabNavigator(
     },
 
     Profile: {
+      unmountOnBlur: true,
       screen: ProfileScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Profile",
@@ -100,7 +104,6 @@ const NavigationStacks = createBottomTabNavigator(
       activeTintColor: morado,
       keyboardHidesTabBar: false,
     },
-    lazy: "true",
   }
 );
 
