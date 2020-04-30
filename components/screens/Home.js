@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   View,
@@ -15,24 +15,12 @@ import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { homeStyles } from "../styles/homeStyle";
 import _ from "lodash";
-import { bannedAssertion } from "../account/bannedAssertion";
 import { db } from "../population/config";
 import firebase from "firebase";
 import { email } from "../account/QueriesProfile";
-import { popUp } from "../account/popUp";
 
 function Home(props) {
-  const { navigation } = props;
-
-  const [loading, setLoading] = useState(true);
-  const [reloadData, setReloadData] = useState(false);
-
-  useEffect(() => {
-    bannedAssertion();
-    popUp();
-    setReloadData(false);
-    setLoading(false);
-  }, [reloadData]);
+  const { userInfo } = props.screenProps;
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>

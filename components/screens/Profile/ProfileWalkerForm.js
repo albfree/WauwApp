@@ -24,7 +24,7 @@ import { walkerFormStyles } from "../../styles/walkerFormStyle";
 import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileWalkerForm(props) {
-  const { navigation } = props;
+  const { userInfo } = props.screenProps;
   const toastRef = useRef();
   const [reloadData, setReloadData] = useState(false);
   const [ids, setIds] = useState([]);
@@ -43,7 +43,7 @@ function ProfileWalkerForm(props) {
     ["Domingo", 96],
   ];
 
-  var userInfo = bannedAssertion();
+  //var userInfo = bannedAssertion();
 
   useEffect(() => {
     const resulIds = [];
@@ -51,6 +51,8 @@ function ProfileWalkerForm(props) {
     db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities").on(
       "value",
       (snap) => {
+        resulIds.splice(0);
+        resulHours.splice(0);
         snap.forEach((child) => {
           const hourPrice = [];
           let hour =

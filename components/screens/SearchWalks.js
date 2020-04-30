@@ -5,14 +5,12 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
   ScrollView,
 } from "react-native";
 import { Avatar, Button, Icon, Input, Rating } from "react-native-elements";
 import BlankView from "./BlankView";
 import { db } from "../population/config";
 import Loading from "../Loading";
-import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
@@ -20,35 +18,22 @@ import { searchWalksStyles } from "../styles/searchWalkStyle";
 import Toast from "react-native-easy-toast";
 
 function SearchWalks(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(null);
   const [minRating, setMinRating] = useState(null);
-  const toastRef = useRef();
 
+  const toastRef = useRef();
   const interval = navigation.state.params.interval;
 
-  let petNumber;
-  let id;
-  let longitudeUser;
-  let latitudeUser;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      petNumber = snap.val().petNumber;
-      id = snap.val().id;
-      longitudeUser = snap.val().location.longitude;
-      latitudeUser = snap.val().location.latitude;
-    });
-
   useEffect(() => {
-    db.ref("availabilities-wauwers").on("value", (snap) => {
+    db.ref("availabilities-wauwers").once("value", (snap) => {
       let allData = [];
       snap.forEach((child) => {
-        if (child.key !== id) {
+        if (child.key !== userInfo.id) {
           for (var availability in child.val().availabilities) {
             if (availability === interval.id) {
               const wData = [];
@@ -90,8 +75,8 @@ function SearchWalks(props) {
         krom.push(array[0]);
         krom.push(array[1]);
         const distancia = calculaDistancia(
-          latitudeUser,
-          longitudeUser,
+          userInfo.location.latitude,
+          userInfo.location.longitude,
           array[2][0],
           array[2][1]
         );
@@ -253,7 +238,6 @@ function SearchWalks(props) {
             renderItem={(wauwerData) => (
               <Wauwer
                 wauwerData={wauwerData}
-                petNumber={petNumber}
                 navigation={navigation}
                 interval={interval}
               />
@@ -271,7 +255,7 @@ function SearchWalks(props) {
 }
 
 function Wauwer(props) {
-  const { wauwerData, petNumber, navigation, interval } = props;
+  const { wauwerData, navigation, interval } = props;
   const id = wauwerData.item[0];
   const dis = wauwerData.item[2];
 
@@ -289,18 +273,6 @@ function Wauwer(props) {
       price = snap.val().price;
     });
 
-  const checkHasPets = () => {
-    if (petNumber > 0) {
-      navigation.navigate("CreateRequestWalk", {
-        wauwer: user,
-        price: price,
-        interval: interval,
-      });
-    } else {
-      Alert.alert("¡No tienes mascotas que pasear!", "");
-    }
-  };
-
   const publicProf = () => {
     navigation.navigate("PublicProfile", {
       user: user,
@@ -308,7 +280,15 @@ function Wauwer(props) {
   };
 
   return (
-    <TouchableOpacity onPress={checkHasPets}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("CreateRequestWalk", {
+          wauwer: user,
+          price: price,
+          interval: interval,
+        })
+      }
+    >
       <View style={searchWalksStyles.searchWalkFeed}>
         <View style={globalStyles.viewFlex1}>
           <View style={searchWalksStyles.searchWalksView}>

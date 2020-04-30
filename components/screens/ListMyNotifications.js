@@ -8,40 +8,25 @@ import {
   SafeAreaView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Image, Avatar } from "react-native-elements";
+import { Avatar } from "react-native-elements";
 import { db } from "../population/config";
 import Loading from "../Loading";
-import { email } from "../account/QueriesProfile";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { notificationsStyles } from "../styles/notificationsStyle";
-import firebase from "firebase";
 import { fechaParseada } from "../utils/DateParser";
 
 export default function ListMyNotifications(props) {
-  const { toastRef } = props;
+  const { toastRef, userInfo } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
-  let id;
-  let userInfo;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      userInfo = snap.val();
-      id = userInfo.id;
-      if (userInfo.isBanned) {
-        Alert.alert("Atención", "Su cuenta ha sido bloqueada.");
-        firebase.auth().signOut();
-      }
-    });
 
   useEffect(() => {
-    db.ref("wauwers").child(id).update({ hasRequests: false });
+    db.ref("wauwers").child(userInfo.id).update({ hasRequests: false });
     db.ref("requests")
       .orderByChild("worker")
-      .equalTo(id)
+      .equalTo(userInfo.id)
       .on("value", (snap) => {
         const requests = [];
         snap.forEach((child) => {

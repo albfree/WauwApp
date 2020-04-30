@@ -24,27 +24,29 @@ export default function UserData(props) {
     var accommodationsUE = [];
 
     async function getWorkers() {
-      await db.ref("requests")
-      .orderByChild("worker")
-      .equalTo(user.id)
-      .once("value", (snap) => {
-        snap.forEach((child) => {
-          requestWorkerUE.push(child.val());
+      await db
+        .ref("requests")
+        .orderByChild("worker")
+        .equalTo(user.id)
+        .once("value", (snap) => {
+          snap.forEach((child) => {
+            requestWorkerUE.push(child.val());
+          });
         });
-      });
-    setRequestWorker(requestWorkerUE);
+      setRequestWorker(requestWorkerUE);
     }
 
     async function getOwners() {
-      await db.ref("requests")
-      .orderByChild("owner")
-      .equalTo(user.id)
-      .once("value", (snap) => {
-        snap.forEach((child) => {
-          requestOwnerUE.push(child.val());
+      await db
+        .ref("requests")
+        .orderByChild("owner")
+        .equalTo(user.id)
+        .once("value", (snap) => {
+          snap.forEach((child) => {
+            requestOwnerUE.push(child.val());
+          });
         });
-      });
-    setRequestOwner(requestOwnerUE);
+      setRequestOwner(requestOwnerUE);
     }
 
     async function getPets() {
@@ -57,17 +59,17 @@ export default function UserData(props) {
     }
 
     async function getAccommodations() {
-      await db.ref("accommodation")
-      .orderByChild("worker")
-      .equalTo(user.id)
-      .once("value", (snap) => {
-        snap.forEach((pretty) => {
-          accommodationsUE.push(pretty.val());
-          console.log(pretty.val().id);
+      await db
+        .ref("accommodation")
+        .orderByChild("worker")
+        .equalTo(user.id)
+        .once("value", (snap) => {
+          snap.forEach((pretty) => {
+            accommodationsUE.push(pretty.val());
+          });
         });
-      });
 
-    setAccommodations(accommodationsUE);
+      setAccommodations(accommodationsUE);
     }
 
     getWorkers();
@@ -77,11 +79,7 @@ export default function UserData(props) {
     getPets();
 
     getAccommodations();
-
-
   }, []);
-
-  console.log(user.id);
 
   var sendEmail = function () {
     var userEmail = "Datos de usuario\n\n";

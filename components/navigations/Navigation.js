@@ -10,12 +10,16 @@ import ChatsScreenStack from "./ChatsStack";
 
 const morado = "#443099";
 const gris = "#6c7075";
+let user;
 
 const NavigationStacks = createBottomTabNavigator(
   {
     Home: {
       screen: HomeScreenStack,
       navigationOptions: () => ({
+        // screen: (screenProps) => {
+        //   screenProps.handler();
+        // },
         tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (
           <Icon

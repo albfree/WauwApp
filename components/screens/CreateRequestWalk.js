@@ -1,31 +1,22 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  Alert,
-  Picker,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { Text, View, Alert, SafeAreaView, ScrollView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../account/QueriesProfile";
 import { CheckBox } from "react-native-elements";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchWalksStyles } from "../styles/searchWalkStyle";
+import Toast from "react-native-easy-toast";
 
 function createRequest(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
+  const toastRef = useRef();
   const [newPrice, setNewPrice] = useState(navigation.state.params.price);
-
   const price = navigation.state.params.price;
   const [newInterval, setNewInterval] = useState(null);
-  //const [newOwner, setNewOwner] = useState([]);
   const newWorker = navigation.state.params.wauwer;
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [reloadData, setReloadData] = useState(false);
   const [petNumber, setPetNumber] = useState(0);
   const [petNames, setPetNames] = useState([]);
@@ -33,50 +24,42 @@ function createRequest(props) {
   const newIsRated = false;
   const [select, setSelect] = useState(null);
 
-  let newOwner;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      newOwner = snap.val();
-    });
-
   const [availabilities, setAvailabilities] = useState([]);
   const [newAvailability, setNewAvailability] = useState([]);
 
   const [wauwerPrices, setWauwerPrices] = useState([]);
   const value = navigation.state.params.interval;
 
-  useEffect(() => {
-    // To retrieve the walker availabilities
+  // useEffect(() => {
+  //   // To retrieve the walker availabilities
 
-    const ref = db
-      .ref("availabilities-wauwers")
-      .child(newWorker.id)
-      .child("availabilities");
-    ref
-      .once("value", (snap) => {
-        var availabilitiesList = [];
-        snap.forEach((child) => {
-          availabilitiesList.push(child.val().availability);
-        });
-        setAvailabilities(availabilitiesList);
-      })
-      .then(() => {
-        ref.once("value", (snap) => {
-          const prices = [];
-          snap.forEach((child) => {
-            prices.push(child.val().price);
-          });
-          setWauwerPrices(prices);
-        });
-      });
-    setReloadData(false);
-  }, [reloadData]);
+  //   const ref = db
+  //     .ref("availabilities-wauwers")
+  //     .child(newWorker.id)
+  //     .child("availabilities");
+  //   ref
+  //     .once("value", (snap) => {
+  //       var availabilitiesList = [];
+  //       snap.forEach((child) => {
+  //         availabilitiesList.push(child.val().availability);
+  //       });
+  //       setAvailabilities(availabilitiesList);
+  //     })
+  //     .then(() => {
+  //       ref.once("value", (snap) => {
+  //         const prices = [];
+  //         snap.forEach((child) => {
+  //           prices.push(child.val().price);
+  //         });
+  //         setWauwerPrices(prices);
+  //       });
+  //     });
+  //   setReloadData(false);
+  // }, [reloadData]);
 
   useEffect(() => {
     // To retrieve my pets' names
-    db.ref("pet/" + newOwner.id).on("value", (snap) => {
+    db.ref("pet/" + userInfo.id).once("value", (snap) => {
       const pets = [];
       snap.forEach((child) => {
         pets.push(child.val().name);
@@ -93,26 +76,24 @@ function createRequest(props) {
     }
   };
 
-  const funct = (value, itemPosition) => {
-    setNewAvailability(value.id);
-    setNewInterval(
-      value.day + " " + value.startTime + "h - " + value.endDate + "h"
-    );
-    setSelect(value);
-    //setNewPrice(wauwerPrices[itemPosition]);
-  };
+  // const funct = (value, itemPosition) => {
+  //   setNewAvailability(value.id);
+  //   setNewInterval(
+  //     value.day + " " + value.startTime + "h - " + value.endDate + "h"
+  //   );
+  //   setSelect(value);
+  //   //setNewPrice(wauwerPrices[itemPosition]);
+  // };
 
   const addRequest = () => {
     const intervalo =
       value.day + " " + value.startTime + "h - " + value.endDate + "h";
     let id = db.ref("requests").push().key;
-    setError(null);
-    setIsLoading(true);
     let requestData = {
       id: id,
       isCanceled: false,
       isPayed: false,
-      owner: newOwner.id,
+      owner: userInfo.id,
       pending: true,
       petNumber: petNumber,
       place: "localización",
@@ -132,17 +113,13 @@ function createRequest(props) {
           .then(() => {
             Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
             navigation.popToTop();
-            setIsLoading(false);
-            setReloadData(true);
           })
           .catch(() => {
-            setError("Ha ocurrido un error");
-            setIsLoading(false);
+            toastRef.current.show("Error. Vuelva a intentarlo");
           });
       })
       .catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
+        toastRef.current.show("Error. Vuelva a intentarlo");
       });
   };
 
@@ -201,6 +178,7 @@ function createRequest(props) {
           </View>
         </View>
       </ScrollView>
+      <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
 }

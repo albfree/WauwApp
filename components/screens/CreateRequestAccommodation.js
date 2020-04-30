@@ -9,11 +9,10 @@ import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 
 function createRequestAccommodation(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
 
   const [reloadData, setReloadData] = useState(false);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   //Atributos del props
   const newIdAccommodation = navigation.state.params.formData.idAccommodation;
@@ -39,10 +38,8 @@ function createRequestAccommodation(props) {
 
   const newPending = true;
 
-  //Worker y owner
-
+  //Worker
   const [newWorker, setNewWorker] = useState([]);
-  const [newOwner, setNewOwner] = useState([]);
 
   const [newPrice, setNewPrice] = useState(
     navigation.state.params.formData.salary
@@ -58,18 +55,6 @@ function createRequestAccommodation(props) {
       fechaRecibida.getFullYear()
     );
   };
-
-  //Owner logueado actualmente que realizada la request
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
-          setNewOwner(child.val());
-        });
-      });
-  }, [reloadData]);
 
   //Búsqueda por id del worker que creó el alojamiento
   useEffect(() => {
@@ -87,20 +72,16 @@ function createRequestAccommodation(props) {
 
   const all = () => {
     addRequestAccommodation();
-    Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-    navigation.popToTop();
   };
 
   //Añadir la request a la db
 
   const addRequestAccommodation = () => {
     let id = db.ref("requests").push().key;
-    setError(null);
-    setIsLoading(true);
     let requestData = {
       id: id,
       pending: newPending,
-      owner: newOwner.id,
+      owner: userInfo.id,
       price: newPrice,
       type: newType,
       isCanceled: newIsCanceled,
@@ -114,18 +95,14 @@ function createRequestAccommodation(props) {
       isRated: newIsRated,
     };
 
-    setIsLoading(true);
-
     db.ref("requests/" + id)
       .set(requestData)
       .then(() => {
-        setIsLoading(false);
         setReloadData(false);
+        Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
+        navigation.popToTop();
       })
-      .catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
-      });
+      .catch(() => {});
   };
 
   return (
