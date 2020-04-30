@@ -226,7 +226,11 @@ function PayRequest(props) {
         });
 
       let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
-      db.ref("wauwers/" + currentUserID).update({ wauwPoints: newPoints });
+      let newDineroApoyo = 0;
+      db.ref("wauwers/" + currentUserID).update({ 
+        wauwPoints: newPoints,
+        dineroApoyo: newDineroApoyo
+      });
     }
   };
 
