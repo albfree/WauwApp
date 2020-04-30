@@ -15,176 +15,193 @@ import PagarScreen from "../screens/Pagar";
 const morado = "#443099";
 const blanco = "white";
 
-const ServicesScreenStacks = createStackNavigator({
-  Services: {
-    screen: ServicesScreen,
-    navigationOptions: () => ({
-      title: "Elige un Servicio",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  SearchWalks: {
-    screen: SearchWalksScreen,
-    navigationOptions: () => ({
-      title: "Buscar Paseos",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  SearchAccommodations: {
-    screen: SearchAccommodationsScreen,
-    navigationOptions: () => ({
-      title: "Buscar Alojamientos",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  ChangeAvailability: {
-    screen: ChangeAvailabilityScreen,
-    navigationOptions: () => ({
-      title: "Cambiar Disponibilidad",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  CreateRequestWalk: {
-    screen: CreateRequestWalkScreen,
-    navigationOptions: () => ({
-      title: "Crear Solicitud",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  CreateAccommodation: {
-    screen: CreateAccommodationScreen,
-    navigationOptions: () => ({
-      title: "Crear Alojamiento",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  CreateRequestAccommodation: {
-    screen: CreateRequestAccommodationScreen,
-    navigationOptions: () => ({
-      title: "Solicitud de Alojamiento",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  FormRequestAccommodation: {
-    screen: FormRequestAccommodationScreen,
-    navigationOptions: () => ({
-      title: "Solicitud de Alojamiento",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  PublicProfile: {
-    screen: PublicProfileScreen,
-    navigationOptions: () => ({
-      title: "Perfil",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
+const ServicesScreenStacks = createStackNavigator(
+  {
+    Services: {
+      unmountOnBlur: true,
+      screen: ServicesScreen,
+      navigationOptions: () => ({
+        title: "Elige un Servicio",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    SearchWalks: {
+      unmountOnBlur: true,
+      screen: SearchWalksScreen,
+      navigationOptions: () => ({
+        title: "Buscar Paseos",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    SearchAccommodations: {
+      unmountOnBlur: true,
+      screen: SearchAccommodationsScreen,
+      navigationOptions: () => ({
+        title: "Buscar Alojamientos",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    ChangeAvailability: {
+      unmountOnBlur: true,
+      screen: ChangeAvailabilityScreen,
+      navigationOptions: () => ({
+        title: "Cambiar Disponibilidad",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    CreateRequestWalk: {
+      unmountOnBlur: true,
+      screen: CreateRequestWalkScreen,
+      navigationOptions: () => ({
+        title: "Crear Solicitud",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    CreateAccommodation: {
+      unmountOnBlur: true,
+      screen: CreateAccommodationScreen,
+      navigationOptions: () => ({
+        title: "Crear Alojamiento",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    CreateRequestAccommodation: {
+      unmountOnBlur: true,
+      screen: CreateRequestAccommodationScreen,
+      navigationOptions: () => ({
+        title: "Solicitud de Alojamiento",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    FormRequestAccommodation: {
+      unmountOnBlur: true,
+      screen: FormRequestAccommodationScreen,
+      navigationOptions: () => ({
+        title: "Solicitud de Alojamiento",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    PublicProfile: {
+      unmountOnBlur: true,
+      screen: PublicProfileScreen,
+      navigationOptions: () => ({
+        title: "Perfil",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
 
-  FormFilterByAvailability: {
-    screen: FormFilterByAvailabilityScreen,
-    navigationOptions: () => ({
-      title: "Filtrar Paseos",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
+    FormFilterByAvailability: {
+      unmountOnBlur: true,
+      screen: FormFilterByAvailabilityScreen,
+      navigationOptions: () => ({
+        title: "Filtrar Paseos",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    FormFilterByDate: {
+      unmountOnBlur: true,
+      screen: FormFilterByDateScreen,
+      navigationOptions: () => ({
+        title: "Filtrar Alojamientos",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    Pagar: {
+      unmountOnBlur: true,
+      screen: PagarScreen,
+      navigationOptions: () => ({
+        title: "Recibir dinero por servicio",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
   },
-  FormFilterByDate: {
-    screen: FormFilterByDateScreen,
-    navigationOptions: () => ({
-      title: "Filtrar Alojamientos",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  Pagar: {
-    screen: PagarScreen,
-    navigationOptions: () => ({
-      title: "Recibir dinero por servicio",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-});
+  {
+    initialRouteName: "Services",
+  }
+);
 
 export default ServicesScreenStacks;

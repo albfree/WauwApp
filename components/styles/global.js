@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { getVersion } from "expo/build/AR";
 
 const blanco = "#FFF";
 const verde = "green";
@@ -6,6 +7,7 @@ const rojo = "red";
 const lila = "#d6d6e8";
 const lila2 = "#443099";
 const celeste = "#33AAFF";
+const gris = "#838899";
 export const globalStyles = StyleSheet.create({
   adminTxt: {
     color: blanco,
@@ -104,6 +106,12 @@ export const globalStyles = StyleSheet.create({
     fontWeight: "700",
     textAlign: "center",
   },
+  blankTxt2: {
+    color: gris,
+    fontSize: 12,
+    marginVertical: 10,
+    textAlign: "center",
+  },
   blankView: {
     flex: 1,
     paddingVertical: "25%",
@@ -152,6 +160,17 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: blanco,
     height: 150,
     justifyContent: "center",
+  },
+  drawerView2: {
+    alignItems: "center",
+    backgroundColor: blanco,
+    justifyContent: "center",
+    paddingBottom: "5%",
+  },
+  drawerView3: {
+    flex: 1,
+    marginBottom: "15%",
+    paddingBottom: "10%",
   },
   viewFeed: {
     backgroundColor: blanco,

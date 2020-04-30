@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Alert,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import { Avatar, Button, Icon, Input, Rating } from "react-native-elements";
 import BlankView from "./BlankView";
@@ -19,6 +20,12 @@ import { globalStyles } from "../styles/global";
 import { searchWalksStyles } from "../styles/searchWalkStyle";
 import Toast from "react-native-easy-toast";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 function SearchWalks(props) {
   const { navigation } = props;
   const [loading, setLoading] = useState(true);
@@ -27,7 +34,7 @@ function SearchWalks(props) {
   const [maxPrice, setMaxPrice] = useState(null);
   const [minRating, setMinRating] = useState(null);
   const toastRef = useRef();
-
+  const [refreshing, setRefreshing] = useState(false);
   const interval = navigation.state.params.interval;
 
   let petNumber;
@@ -43,6 +50,12 @@ function SearchWalks(props) {
       longitudeUser = snap.val().location.longitude;
       latitudeUser = snap.val().location.latitude;
     });
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     db.ref("availabilities-wauwers").on("value", (snap) => {
@@ -108,7 +121,7 @@ function SearchWalks(props) {
 
     setReloadData(false);
     setLoading(false);
-  }, [reloadData]); //esto es el disparador del useEffect
+  }, [reloadData, refreshing]); //esto es el disparador del useEffect
 
   const calculaDistancia = (lat1, lon1, lat2, lon2) => {
     const rad = function (x) {
@@ -170,7 +183,11 @@ function SearchWalks(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Text style={searchWalksStyles.searchWalkTxt}>
           {"Escoja al paseador que desee\n\n"}
           {"para los " +
@@ -248,19 +265,24 @@ function SearchWalks(props) {
         </View>
         <Loading isVisible={loading} text={"Un momento..."} />
         {data.length > 0 ? (
-          <FlatList
-            data={data}
-            renderItem={(wauwerData) => (
-              <Wauwer
-                wauwerData={wauwerData}
-                petNumber={petNumber}
-                navigation={navigation}
-                interval={interval}
-              />
-            )}
-            keyExtractor={(wauwerData) => wauwerData.id}
-            showsVerticalScrollIndicator={false}
-          />
+          <View>
+            <FlatList
+              data={data}
+              renderItem={(wauwerData) => (
+                <Wauwer
+                  wauwerData={wauwerData}
+                  petNumber={petNumber}
+                  navigation={navigation}
+                  interval={interval}
+                />
+              )}
+              keyExtractor={(wauwerData) => wauwerData.id}
+              showsVerticalScrollIndicator={false}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
           <BlankView text={"No hay paseadores disponibles"} />
         )}

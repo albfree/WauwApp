@@ -6,49 +6,54 @@ import NewsScreen from "../screens/News";
 const morado = "#443099";
 const blanco = "white";
 
-const HomeScreenStack = createStackNavigator({
-  Home: {
-    screen: HomeScreen,
-    navigationOptions: () => ({
-      title: "Inicio",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
+const HomeScreenStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: () => ({
+        title: "Inicio",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    AnimalShelters: {
+      screen: AnimalSheltersScreen,
+      navigationOptions: () => ({
+        title: "Protectoras",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
+    News: {
+      screen: NewsScreen,
+      navigationOptions: () => ({
+        title: "Noticias",
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: morado,
+        },
+        headerTitleStyle: {
+          color: blanco,
+        },
+        headerTintColor: blanco,
+      }),
+    },
   },
-  AnimalShelters: {
-    screen: AnimalSheltersScreen,
-    navigationOptions: () => ({
-      title: "Protectoras",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-  News: {
-    screen: NewsScreen,
-    navigationOptions: () => ({
-      title: "Noticias",
-      headerTitleAlign: "center",
-      headerStyle: {
-        backgroundColor: morado,
-      },
-      headerTitleStyle: {
-        color: blanco,
-      },
-      headerTintColor: blanco,
-    }),
-  },
-});
+  {
+    initialRouteName: "Home",
+  }
+);
 
 export default HomeScreenStack;

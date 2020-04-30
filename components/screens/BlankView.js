@@ -24,6 +24,9 @@ export default function BlankView(props) {
                 style={globalStyles.blankImage}
               />
             </View>
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

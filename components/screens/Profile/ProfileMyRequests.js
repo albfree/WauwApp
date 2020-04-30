@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
   SafeAreaView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -17,15 +18,25 @@ import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
 import { bannedAssertion } from "../../account/bannedAssertion";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 function ProfileMyRequests(props) {
   const { navigation } = props;
-
-  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [requestsList, setRequestList] = useState([]);
-  const [reloadData, setReloadData] = useState(false);
 
   var wauwer = bannedAssertion();
   var wauwerId = wauwer.id;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     db.ref("requests")
@@ -38,9 +49,7 @@ function ProfileMyRequests(props) {
         });
         setRequestList(requests1.reverse());
       });
-    setReloadData(false);
-    setLoading(false);
-  }, [reloadData]);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -57,20 +66,29 @@ function ProfileMyRequests(props) {
           </View>
         </View>
       </TouchableOpacity>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Text style={requestsStyles.requestsTxt16}>
           Listado de las solicitudes realizadas
         </Text>
 
         {requestsList.length > 0 ? (
-          <FlatList
-            data={requestsList}
-            renderItem={(request) => (
-              <Request request={request} navigation={navigation} />
-            )}
-            keyExtractor={(request) => request.id}
-            showsVerticalScrollIndicator={false}
-          />
+          <View>
+            <FlatList
+              data={requestsList}
+              renderItem={(request) => (
+                <Request request={request} navigation={navigation} />
+              )}
+              keyExtractor={(request) => request.id}
+              showsVerticalScrollIndicator={false}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
           <BlankView text={"No tiene solicitudes realizadas"} />
         )}

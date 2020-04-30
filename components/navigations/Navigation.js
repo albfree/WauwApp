@@ -16,6 +16,7 @@ const NavigationStacks = createBottomTabNavigator(
     Home: {
       screen: HomeScreenStack,
       navigationOptions: () => ({
+        unmountOnBlur: true,
         tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (
           <Icon
@@ -28,6 +29,7 @@ const NavigationStacks = createBottomTabNavigator(
       }),
     },
     Chat: {
+      unmountOnBlur: true,
       screen: ChatsScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Chats",
@@ -42,6 +44,7 @@ const NavigationStacks = createBottomTabNavigator(
       }),
     },
     Services: {
+      unmountOnBlur: true,
       screen: ServicesScreenStacks,
       navigationOptions: () => ({
         tabBarLabel: "Services",
@@ -57,6 +60,7 @@ const NavigationStacks = createBottomTabNavigator(
     },
 
     Notifications: {
+      unmountOnBlur: true,
       screen: NotificationsScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Notifications",
@@ -72,6 +76,7 @@ const NavigationStacks = createBottomTabNavigator(
     },
 
     Profile: {
+      unmountOnBlur: true,
       screen: ProfileScreenStack,
       navigationOptions: () => ({
         tabBarLabel: "Profile",
@@ -96,7 +101,6 @@ const NavigationStacks = createBottomTabNavigator(
       activeTintColor: morado,
       keyboardHidesTabBar: false,
     },
-    lazy: "true",
   }
 );
 

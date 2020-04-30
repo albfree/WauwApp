@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Alert,
+  RefreshControl,
 } from "react-native";
 import { Avatar, Input, Button, Icon, Rating } from "react-native-elements";
 import { db } from "../population/config.js";
@@ -18,6 +19,12 @@ import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import { searchWalksStyles } from "../styles/searchWalkStyle.js";
 import Toast from "react-native-easy-toast";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 function ListAccommodations(props) {
   const { navigation } = props;
   const [accommodationsList, setAccommodationList] = useState([]);
@@ -28,6 +35,14 @@ function ListAccommodations(props) {
   const [minRating, setMinRating] = useState(null);
   const filter = navigation.state.params.formData.startTime;
   const toastRef = useRef();
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
+
   let petNumber;
   let id;
   let longitudeUser;
@@ -135,7 +150,7 @@ function ListAccommodations(props) {
         setAccommodationList2(appToYou2);
       });
     setReloadData(false);
-  }, [reloadData]);
+  }, [reloadData, refreshing]);
 
   const calculaDistancia = (lat1, lon1, lat2, lon2) => {
     const rad = function (x) {
@@ -211,7 +226,11 @@ function ListAccommodations(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Input
           inputContainerStyle={searchWalksStyles.searchWalksView3}
           inputStyle={searchWalksStyles.searchWalkTxt8}
@@ -277,19 +296,29 @@ function ListAccommodations(props) {
           />
         </View>
         {accommodationsList.length > 0 ? (
-          <List1
-            accommodationsList={accommodationsList}
-            petNumber={petNumber}
-            myId={id}
-            navigation={navigation}
-          />
+          <View>
+            <List1
+              accommodationsList={accommodationsList}
+              petNumber={petNumber}
+              myId={id}
+              navigation={navigation}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
-          <List2
-            accommodationsList={accommodationsList2}
-            petNumber={petNumber}
-            myId={id}
-            navigation={navigation}
-          />
+          <View>
+            <List2
+              accommodationsList={accommodationsList2}
+              petNumber={petNumber}
+              myId={id}
+              navigation={navigation}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         )}
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
