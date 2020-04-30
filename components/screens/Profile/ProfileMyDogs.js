@@ -4,6 +4,7 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
+  RefreshControl,
   Alert,
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
@@ -18,6 +19,12 @@ import Toast from "react-native-easy-toast";
 import { profileStyles } from "../../styles/profileStyle";
 import ProfileAddDogForm from "./ProfileAddDogForm";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 export default function ProfileMyDogs(props) {
   const { navigation } = props;
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
@@ -26,12 +33,19 @@ export default function ProfileMyDogs(props) {
   const [isVisibleForm, setIsVisibleForm] = useState(false);
   const toastRef = useRef();
   const [buttonTitle, setButtonTitle] = useState("Añadir un Perro");
+  const [refreshing, setRefreshing] = useState(false);
 
   let user;
   const ref = db.ref("wauwers").orderByChild("email").equalTo(email);
   ref.once("child_added", (snap) => {
     user = snap.val().id;
   });
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     const misMascotas = [];
@@ -44,7 +58,7 @@ export default function ProfileMyDogs(props) {
     });
     setIsVisibleLoading(false);
     setReloadMascotas(false);
-  }, [reloadMascotas]);
+  }, [reloadMascotas, refreshing]);
 
   useEffect(() => {
     if (!isVisibleForm) {
@@ -60,7 +74,11 @@ export default function ProfileMyDogs(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Button
           buttonStyle={profileStyles.profileBtn3}
           containerStyle={profileStyles.profileBtnContainer3}
@@ -90,14 +108,19 @@ export default function ProfileMyDogs(props) {
             <View>
               {mascotas.length > 0 ? (
                 mascotas.map((perro, index) => (
-                  <Perro
-                    key={index}
-                    user={user}
-                    perro={perro}
-                    setReloadMascotas={setReloadMascotas}
-                    setIsVisibleLoading={setIsVisibleLoading}
-                    toastRef={toastRef}
-                  />
+                  <View>
+                    <Perro
+                      key={index}
+                      user={user}
+                      perro={perro}
+                      setReloadMascotas={setReloadMascotas}
+                      setIsVisibleLoading={setIsVisibleLoading}
+                      toastRef={toastRef}
+                    />
+                    <Text style={globalStyles.blankTxt2}>
+                      * Deslice hacia abajo para refrescar *
+                    </Text>
+                  </View>
                 ))
               ) : (
                 <BlankView text={"No tiene mascotas registradas"} />

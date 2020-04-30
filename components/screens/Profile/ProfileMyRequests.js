@@ -76,14 +76,19 @@ function ProfileMyRequests(props) {
         </Text>
 
         {requestsList.length > 0 ? (
-          <FlatList
-            data={requestsList}
-            renderItem={(request) => (
-              <Request request={request} navigation={navigation} />
-            )}
-            keyExtractor={(request) => request.id}
-            showsVerticalScrollIndicator={false}
-          />
+          <View>
+            <FlatList
+              data={requestsList}
+              renderItem={(request) => (
+                <Request request={request} navigation={navigation} />
+              )}
+              keyExtractor={(request) => request.id}
+              showsVerticalScrollIndicator={false}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
           <BlankView text={"No tiene solicitudes realizadas"} />
         )}

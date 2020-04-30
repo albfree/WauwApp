@@ -66,7 +66,7 @@ export default function ListMyNotifications(props) {
       });
     setReloadRequests(false);
     setIsVisibleLoading(false);
-  }, [reloadRequests]);
+  }, [reloadRequests, refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -76,19 +76,24 @@ export default function ListMyNotifications(props) {
         }
       >
         {requestsList.length > 0 ? (
-          <FlatList
-            data={requestsList}
-            renderItem={(request) => (
-              <Request
-                req={request}
-                setReloadRequests={setReloadRequests}
-                setIsVisibleLoading={setIsVisibleLoading}
-                toastRef={toastRef}
-                showsVerticalScrollIndicator={false}
-              />
-            )}
-            keyExtractor={(request) => request.id}
-          />
+          <View>
+            <FlatList
+              data={requestsList}
+              renderItem={(request) => (
+                <Request
+                  req={request}
+                  setReloadRequests={setReloadRequests}
+                  setIsVisibleLoading={setIsVisibleLoading}
+                  toastRef={toastRef}
+                  showsVerticalScrollIndicator={false}
+                />
+              )}
+              keyExtractor={(request) => request.id}
+            />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
+          </View>
         ) : (
           <BlankView text={"No tiene notificaciones"} />
         )}

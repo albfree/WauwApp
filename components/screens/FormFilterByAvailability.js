@@ -6,6 +6,7 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -17,10 +18,15 @@ import { formSearchWalkStyles } from "../styles/formSearchWalksStyle";
 import _ from "lodash";
 import { bannedAssertion } from "../account/bannedAssertion";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 function FormFilterByAvailability(props) {
-
   const { navigation } = props;
-
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
 
@@ -28,6 +34,12 @@ function FormFilterByAvailability(props) {
 
   var user = bannedAssertion();
   var id = user.id;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     const query = db.ref("availabilities-wauwers");
@@ -57,11 +69,15 @@ function FormFilterByAvailability(props) {
 
     setReloadData(false);
     setLoading(false);
-  }, [reloadData]);
+  }, [reloadData, refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Loading isVisible={loading} text={"Un momento..."} />
         {availabilities.length > 0 ? (
           <View>
@@ -76,6 +92,9 @@ function FormFilterByAvailability(props) {
               keyExtractor={(interval) => interval.id}
               showsVerticalScrollIndicator={false}
             />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
           </View>
         ) : (
           <View>

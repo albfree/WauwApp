@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { getVersion } from "expo/build/AR";
 
 const blanco = "#FFF";
 const verde = "green";
@@ -6,6 +7,7 @@ const rojo = "red";
 const lila = "#d6d6e8";
 const lila2 = "#443099";
 const celeste = "#33AAFF";
+const gris = "#838899";
 export const globalStyles = StyleSheet.create({
   adminTxt: {
     color: blanco,
@@ -102,6 +104,12 @@ export const globalStyles = StyleSheet.create({
   blankTxt: {
     fontSize: 22,
     fontWeight: "700",
+    textAlign: "center",
+  },
+  blankTxt2: {
+    color: gris,
+    fontSize: 12,
+    marginVertical: 10,
     textAlign: "center",
   },
   blankView: {
