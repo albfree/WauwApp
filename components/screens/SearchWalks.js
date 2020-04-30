@@ -303,12 +303,14 @@ function Wauwer(props) {
   });
 
   let price;
+  let salary;
   db.ref("availabilities-wauwers")
     .child(id)
     .child("availabilities")
     .child(wauwerData.item[1])
     .once("value", (snap) => {
       price = snap.val().price;
+      salary = snap.val().myPrice;
     });
 
   const checkHasPets = () => {
@@ -316,6 +318,7 @@ function Wauwer(props) {
       navigation.navigate("CreateRequestWalk", {
         wauwer: user,
         price: price,
+        salary: salary,
         interval: interval,
       });
     } else {

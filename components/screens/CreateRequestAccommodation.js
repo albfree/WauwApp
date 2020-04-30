@@ -45,6 +45,10 @@ function createRequestAccommodation(props) {
   const [newOwner, setNewOwner] = useState([]);
 
   const [newPrice, setNewPrice] = useState(
+    navigation.state.params.formData.price
+  );
+
+  const [newSalary, setNewSalary] = useState(
     navigation.state.params.formData.salary
   );
 
@@ -102,6 +106,7 @@ function createRequestAccommodation(props) {
       pending: newPending,
       owner: newOwner.id,
       price: newPrice,
+      salary: Number(newSalary),
       type: newType,
       isCanceled: newIsCanceled,
       startTime: x.toISOString(),
