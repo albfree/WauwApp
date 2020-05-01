@@ -26,7 +26,7 @@ function wait(timeout) {
 }
 
 export default function ProfileMyDogs(props) {
-  const { screenProps } = props;
+  const { navigation, screenProps } = props;
   const { userInfo } = screenProps;
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [reloadMascotas, setReloadMascotas] = useState();
@@ -70,7 +70,13 @@ export default function ProfileMyDogs(props) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.viewFlex1}>
+    <SafeAreaView style={globalStyles.safeArea}>
+      <TouchableOpacity
+        style={{ alignItems: "flex-end", margin: 16 }}
+        onPress={navigation.openDrawer}
+      >
+        <FontAwesome name="bars" size={24} color="#161924" />
+      </TouchableOpacity>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -181,18 +187,4 @@ export default function ProfileMyDogs(props) {
       </TouchableOpacity>
     );
   }
-
-  // return (
-  //   <SafeAreaView style={globalStyles.safeArea}>
-  //     <TouchableOpacity
-  //       style={{ alignItems: "flex-end", margin: 16 }}
-  //       onPress={navigation.openDrawer}
-  //     >
-  //       <FontAwesome name="bars" size={24} color="#161924" />
-  //     </TouchableOpacity>
-  //     <View>
-  //       <Text>Vista de mis perros</Text>
-  //     </View>
-  //   </SafeAreaView>
-  // );
 }
