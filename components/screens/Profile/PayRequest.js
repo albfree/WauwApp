@@ -227,12 +227,15 @@ function PayRequest(props) {
 
       let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
       let newDineroApoyo = 0;
-      db.ref("wauwers/" + currentUserID).update({ 
-        wauwPoints: newPoints,
-        dineroApoyo: newDineroApoyo
-      });
+
+      db.ref("wauwers/" + currentUserID).once("child_added", snap => {
+        db.ref("wauwers/" + currentUserID).update({ 
+          wauwPoints: newPoints + snap.val().wauwPoints,
+          dineroApoyo: newDineroApoyo + snap.val().dineroApoyo
+        });
+      })
     }
-  };
+  } ;
 
   return (
     <React.Fragment>
