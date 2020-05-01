@@ -114,9 +114,6 @@ export default function ProfileMyDogs(props) {
                       setIsVisibleLoading={setIsVisibleLoading}
                       toastRef={toastRef}
                     />
-                    <Text style={globalStyles.blankTxt2}>
-                      * Deslice hacia abajo para refrescar *
-                    </Text>
                   </View>
                 ))
               ) : (
@@ -125,6 +122,9 @@ export default function ProfileMyDogs(props) {
             </View>
           )}
         </View>
+        <Text style={globalStyles.blankTxt2}>
+          * Deslice hacia abajo para refrescar *
+        </Text>
         <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
