@@ -10,13 +10,11 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { Icon } from "react-native-elements";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -25,12 +23,11 @@ function wait(timeout) {
 }
 
 function ProfileMyRequests(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
+
   const [refreshing, setRefreshing] = useState(false);
   const [requestsList, setRequestList] = useState([]);
-
-  var wauwer = bannedAssertion();
-  var wauwerId = wauwer.id;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -41,7 +38,7 @@ function ProfileMyRequests(props) {
   useEffect(() => {
     db.ref("requests")
       .orderByChild("owner")
-      .equalTo(wauwerId)
+      .equalTo(userInfo.id)
       .on("value", (snap) => {
         const requests1 = [];
         snap.forEach((child) => {

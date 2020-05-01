@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { db } from "../../population/config";
-import { email } from "../../account/QueriesProfile";
 import BlankView from "../BlankView";
 import { fechaParseada } from "./../../utils/DateParser";
 import { globalStyles } from "../../styles/global";
@@ -24,18 +23,11 @@ function wait(timeout) {
 }
 
 export default function LastConexion(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [loginsRegistrados, setLoginsRegistrados] = useState([]);
   const toastRef = useRef();
   const [refreshing, setRefreshing] = useState(false);
-
-  let wauwer;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .once("child_added", (snap) => {
-      wauwer = snap.val().userId;
-    });
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -48,7 +40,7 @@ export default function LastConexion(props) {
     let aux = [];
     db.ref("logins")
       .orderByChild("user")
-      .equalTo(wauwer)
+      .equalTo(userInfo.userId)
       .once("value", (snap) => {
         snap.forEach((child) => {
           logins1.push(child.val().fecha);

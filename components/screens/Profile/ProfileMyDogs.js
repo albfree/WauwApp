@@ -26,7 +26,8 @@ function wait(timeout) {
 }
 
 export default function ProfileMyDogs(props) {
-  const { navigation } = props;
+  const { screenProps } = props;
+  const { userInfo } = screenProps;
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [reloadMascotas, setReloadMascotas] = useState();
   const [mascotas, setMascotas] = useState([]);
@@ -35,11 +36,7 @@ export default function ProfileMyDogs(props) {
   const [buttonTitle, setButtonTitle] = useState("Añadir un Perro");
   const [refreshing, setRefreshing] = useState(false);
 
-  let user;
-  const ref = db.ref("wauwers").orderByChild("email").equalTo(email);
-  ref.once("child_added", (snap) => {
-    user = snap.val().id;
-  });
+  const user = userInfo.id;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

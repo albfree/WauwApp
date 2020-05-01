@@ -298,9 +298,7 @@ function Wauwer(props) {
     });
 
   const publicProf = () => {
-    navigation.navigate("PublicProfile", {
-      user: user,
-    });
+    navigation.navigate("PublicProfile", { user: user });
   };
 
   return (
@@ -310,6 +308,7 @@ function Wauwer(props) {
           wauwer: user,
           price: price,
           interval: interval,
+          salary: salary,
         })
       }
     >

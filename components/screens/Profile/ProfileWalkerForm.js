@@ -43,8 +43,6 @@ function ProfileWalkerForm(props) {
     ["Domingo", 96],
   ];
 
-  //var userInfo = bannedAssertion();
-
   useEffect(() => {
     const resulIds = [];
     const resulHours = [];

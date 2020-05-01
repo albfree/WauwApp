@@ -7,17 +7,15 @@ import {
   RefreshControl,
   SafeAreaView,
 } from "react-native";
-import { Icon, Button } from "react-native-elements";
+import { Button } from "react-native-elements";
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
 import { accommodationStyles } from "../../styles/accommodationStyle";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -26,12 +24,11 @@ function wait(timeout) {
 }
 
 function ProfileMyAccommodations(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
+
   const [accommodationsList, setAccommodationsList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-
-  var wauwer = bannedAssertion();
-  var wauwerId = wauwer.id;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -42,7 +39,7 @@ function ProfileMyAccommodations(props) {
   useEffect(() => {
     db.ref("accommodation")
       .orderByChild("worker")
-      .equalTo(wauwerId)
+      .equalTo(userInfo.id)
       .on("value", (snap) => {
         const accommodations = [];
         snap.forEach((child) => {
@@ -86,6 +83,7 @@ function ProfileMyAccommodations(props) {
                 <Accommodation
                   accommodation={accommodation}
                   navigation={navigation}
+                  userInfo={userInfo}
                 />
               )}
               keyExtractor={(accommodation) => accommodation.id}
@@ -104,7 +102,7 @@ function ProfileMyAccommodations(props) {
 }
 
 function Accommodation(accomodationIn) {
-  const { accommodation, navigation } = accomodationIn;
+  const { accommodation, navigation, userInfo } = accomodationIn;
   let status = "";
   let color = "rgba(0,128,0,0.6)";
   let editable = false;
@@ -137,6 +135,7 @@ function Accommodation(accomodationIn) {
   const onPressRequests = () => {
     navigation.navigate("RequestToMyAccommodationList", {
       accommodation: accommodation.item,
+      userInfo: userInfo,
     });
   };
 

@@ -16,11 +16,6 @@ import Loading from "../Loading";
 import { formSearchWalkStyles } from "../styles/formSearchWalksStyle";
 import _ from "lodash";
 
-<<<<<<< HEAD
-function FormFilterByAvailability(props) {
-  const { navigation, screenProps } = props;
-  const { userInfo } = screenProps;
-=======
 function wait(timeout) {
   return new Promise((resolve) => {
     setTimeout(resolve, timeout);
@@ -28,16 +23,11 @@ function wait(timeout) {
 }
 
 function FormFilterByAvailability(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [refreshing, setRefreshing] = useState(false);
->>>>>>> ab16469601f41a4425bf95128a461a665acfce2d
   const [loading, setLoading] = useState(true);
   const [availabilities, setAvailabilities] = useState([]);
-
-<<<<<<< HEAD
-=======
-  var user = bannedAssertion();
-  var id = user.id;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -45,11 +35,10 @@ function FormFilterByAvailability(props) {
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
->>>>>>> ab16469601f41a4425bf95128a461a665acfce2d
   useEffect(() => {
     setLoading(true);
     const query = db.ref("availabilities-wauwers");
-    query.on("value", (snap) => {      
+    query.on("value", (snap) => {
       let allAvailability = [];
       const allIds = [];
       snap.forEach((child) => {
@@ -73,14 +62,7 @@ function FormFilterByAvailability(props) {
       setAvailabilities(allAvailability);
     });
     setLoading(false);
-<<<<<<< HEAD
-  }, []);
-
-  return (
-    <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
-=======
-  }, [reloadData, refreshing]);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -90,7 +72,6 @@ function FormFilterByAvailability(props) {
         }
       >
         <Loading isVisible={loading} text={"Un momento..."} />
->>>>>>> ab16469601f41a4425bf95128a461a665acfce2d
         {availabilities.length > 0 ? (
           <View>
             <Text style={formSearchWalkStyles.formSearchWalkTxt}>
