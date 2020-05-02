@@ -521,7 +521,7 @@ function PointsMoreToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({
       wauwPoints: deMas,
-      dineroApoyo: newDineroApoyo + snap.val().dineroApoyo,
+      dineroApoyo: newDineroApoyo + currentDineroApoyo,
     });
 
     Alert.alert(

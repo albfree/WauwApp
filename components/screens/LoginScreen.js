@@ -72,7 +72,7 @@ function LoginScreen(props) {
                   location: null,
                   userId: result.user.uid,
                   isBanned: false,
-                  dineroApoyo: 0.
+                  dineroApoyo: 0
                 });
                 firebase
                   .database()
