@@ -34,7 +34,7 @@ function PayRequest(props) {
 
   let currentUserID;
   let currentUserWauwPoints;
-  let currentDineroApoyo;
+  var currentDineroApoyo;
 
   // Proporción obtenida para las request de paseo
   //let newDineroApoyo = (priceRequestConst/1.3) * 0.1;
@@ -42,7 +42,7 @@ function PayRequest(props) {
   // Proporción obtenida para las request de alojamiento
   //let newDineroApoyo = (priceRequestConst/1.25) * 0.1;
 
-  let newDineroApoyo;
+  var newDineroApoyo;
 
   if (request.hasOwnProperty("availability")) {
     newDineroApoyo = (priceRequestConst / 1.3) * 0.1;
