@@ -34,6 +34,21 @@ function PayRequest(props) {
 
   let currentUserID;
   let currentUserWauwPoints;
+  var currentDineroApoyo;
+
+  // Proporción obtenida para las request de paseo
+  //let newDineroApoyo = (priceRequestConst/1.3) * 0.1;
+
+  // Proporción obtenida para las request de alojamiento
+  //let newDineroApoyo = (priceRequestConst/1.25) * 0.1;
+
+  var newDineroApoyo;
+
+  if (request.hasOwnProperty("availability")) {
+    newDineroApoyo = (priceRequestConst / 1.3) * 0.1;
+  } else {
+    newDineroApoyo = (priceRequestConst / 1.25) * 0.1;
+  }
 
   db.ref("wauwers")
     .orderByChild("email")
@@ -41,6 +56,7 @@ function PayRequest(props) {
     .on("child_added", (snap) => {
       currentUserID = snap.val().id;
       currentUserWauwPoints = snap.val().wauwPoints;
+      currentDineroApoyo = snap.val().dineroApoyo;
     });
 
   //Le vamos a pasar de props al pago la request entera. De ahí, coges el precio y se lo pasas al data details. Si response.status = 200, entonces setearemos
@@ -211,7 +227,7 @@ function PayRequest(props) {
             "Pago realizado",
             "El pago se ha realizado correctamente. \n\nSe han sumado " +
               Math.round((priceRequest / 6.5) * 100) / 100 +
-              " Wauw Points a tu saldo de puntos."
+              " Wauw Points a tu saldo de puntos." + `\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${newDineroApoyo}€`
           );
 
           navigation.popToTop("Services");
@@ -226,7 +242,13 @@ function PayRequest(props) {
         });
 
       let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
-      db.ref("wauwers/" + currentUserID).update({ wauwPoints: newPoints });
+
+      db.ref("wauwers/" + currentUserID).once("child_added", (snap) => {
+        db.ref("wauwers/" + currentUserID).update({
+          wauwPoints: newPoints + currentUserWauwPoints,
+          donatedMoney: newDineroApoyo + currentDineroApoyo,
+        });
+      });
     }
   };
 
@@ -348,11 +370,14 @@ function PointsEqualToPrice(props) {
       isPayed: true,
     });
 
-    db.ref("wauwers/" + currentUserID).update({ wauwPoints: 0 });
+    db.ref("wauwers/" + currentUserID).update({
+      wauwPoints: 0,
+      donatedMoney: newDineroApoyo + currentDineroApoyo,
+    });
 
     Alert.alert(
       "Pago realizado",
-      "Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado."
+      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${newDineroApoyo}€`
     );
 
     navigation.popToTop("Services");
@@ -494,13 +519,14 @@ function PointsMoreToPrice(props) {
       isPayed: true,
     });
 
-    db.ref("wauwers/" + currentUserID).update({ wauwPoints: deMas });
+    db.ref("wauwers/" + currentUserID).update({
+      wauwPoints: deMas,
+      donatedMoney: newDineroApoyo + currentDineroApoyo,
+    });
 
     Alert.alert(
       "Pago realizado",
-      "Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan " +
-        deMas +
-        " Wauw Points."
+      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan` + deMas + `Wauw Points.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${newDineroApoyo}€`
     );
 
     navigation.popToTop("Services");
