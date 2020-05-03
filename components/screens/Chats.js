@@ -53,7 +53,8 @@ export default function Chats(props) {
             child.val().owner === currentUser.id) &&
           child.val().isCanceled === false &&
           child.val().pending === false &&
-          child.val().isPayed === true
+          child.val().isPayed === true &&
+          child.val().isFinished === false
         ) {
           if (child.val().worker != currentUser.id) {
             otherUserID = child.val().worker;
