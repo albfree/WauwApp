@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert, SafeAreaView } from "react-native";
+import { View, Alert, SafeAreaView, Text } from "react-native";
 import { Input, Button, Icon } from "react-native-elements";
 import { email } from "../../account/QueriesProfile";
 import { db } from "../../population/config";
@@ -15,8 +15,17 @@ export default function ProfileLocationForm(props) {
   const { navigation } = props;
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
+  const [address, setAddress] = useState(null);
   const [error, setError] = useState(null);
   const [wauwer, setWauwer] = useState();
+
+  useEffect(() => {
+    let add= {
+      name: "ninguna",
+   };
+   setAddress(add);
+  },[]);
+   
 
   useEffect(() => {
     var wauwer = bannedAssertion();
@@ -36,6 +45,13 @@ export default function ProfileLocationForm(props) {
         setIsVisibleMap={setIsVisibleMap}
         setLocationWauwer={setLocationWauwer}
       />
+      {locationWauwer &&  (
+        <Address
+          locationWauwer={locationWauwer}
+          setAddress={setAddress}
+          address={address}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -175,5 +191,46 @@ function Map(props) {
         </View>
       </View>
     </Modal>
+  );
+}
+
+function Address(props) {
+  const {locationWauwer, address, setAddress} = props;
+
+
+  let loc = {
+    latitude: locationWauwer.latitude,
+    longitude: locationWauwer.longitude,
+  };
+
+  
+
+  console.log(locationWauwer);
+  console.log(address);
+
+  useEffect(() => {
+    (async () => {
+      const resultPermissions = await Permissions.askAsync(
+        Permissions.LOCATION
+      );
+      const statusPermissions = resultPermissions.permissions.location.status;
+
+      if (statusPermissions !== "granted") {
+        setError("No tienes activado el permiso de localización.");
+      } else {
+        console.log(loc);
+        const add = await Location.reverseGeocodeAsync(loc);
+        console.log(add);
+        setAddress(add[0]);
+      }
+    })();
+  }, [locationWauwer]);
+
+  return (
+      <View>
+        <Text>Nota: La ubicación que se mostrará no tiene una precisión al 100%, pero sólo la usamos para que usted se pueda guiar.{"\n"}</Text>
+        <Text>Ha marcado la ubicación cerca de: {address.name}{"\n"}
+              Si su ubicación esta cerca de esa dirección, pulse "Guardar ubicación" para terminar el proceso.</Text>
+      </View>
   );
 }
