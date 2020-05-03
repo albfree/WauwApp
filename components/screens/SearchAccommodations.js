@@ -5,7 +5,6 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
   RefreshControl,
 } from "react-native";
 import { Avatar, Input, Button, Icon, Rating } from "react-native-elements";
@@ -36,6 +35,8 @@ function ListAccommodations(props) {
   const filter = navigation.state.params.formData.startTime;
   const toastRef = useRef();
   const [refreshing, setRefreshing] = useState(false);
+
+  const [precioDecimales, setPrecioDecimales] = useState(null);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -90,11 +91,6 @@ function ListAccommodations(props) {
               (minRating !== null && score < minRating)
             ) {
               accommodations.pop();
-            }
-            if (child.val().price === 12.5) {
-              console.log("precio", child.val().price);
-              console.log("MAX", maxPrice);
-              console.log(child.val() > maxPrice);
             }
           }
         });
@@ -176,6 +172,8 @@ function ListAccommodations(props) {
   };
 
   const applyFilter = () => {
+    console.log(maxPrice);
+    
     if (
       (maxPrice === null && minRating === null) ||
       isNaN(maxPrice) ||
@@ -187,9 +185,9 @@ function ListAccommodations(props) {
     } else {
       if (
         maxPrice !== null &&
-        (!Number.isInteger(maxPrice * 100) || maxPrice <= 0)
+        (!Number.isInteger(precioDecimales) || maxPrice < 10)
       ) {
-        toastRef.current.show("Precio positivo con máximo 2 decimales");
+        toastRef.current.show("Precio mínimo 10 con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
       } else {
@@ -209,25 +207,17 @@ function ListAccommodations(props) {
     }
   };
 
+  const setPrecio = (val) => {
+    setMaxPrice(val);
+    setPrecioDecimales(Math.round(val * 1000000) / 10000);
+  };
+
   const clearFilter = () => {
     setMaxPrice(null);
     setMinRating(null);
+    setPrecioDecimales(null);
     setReloadData(true);
   };
-
-  const setPrecio = (val) => {
-    if (val === "" || isNaN(val)) {
-      setMaxPrice(null);
-    } else {
-      if (Number.isInteger(val * 100)) {
-        setMaxPrice(parseInt(val));
-      } else {
-        setMaxPrice(parseFloat(val));
-      }
-    }
-  };
-
-  const setValoracion = () => {};
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -243,9 +233,8 @@ function ListAccommodations(props) {
           placeholder="Precio máximo del alojamiento"
           maxLength={6}
           onChange={(val) => {
-            //setPrecio(val.nativeEvent.text);
             if (val.nativeEvent.text !== "") {
-              setMaxPrice(val.nativeEvent.text);
+              setPrecio(val.nativeEvent.text);
             } else {
               setMaxPrice(null);
             }

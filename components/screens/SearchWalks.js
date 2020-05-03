@@ -127,6 +127,8 @@ function SearchWalks(props) {
   };
 
   const applyFilter = () => {
+    console.log(maxPrice);
+    
     if (
       (maxPrice === null && minRating === null) ||
       isNaN(maxPrice) ||
