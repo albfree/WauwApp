@@ -15,6 +15,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import BlankView2 from "./BlankView2";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import { searchWalksStyles } from "../styles/searchWalkStyle.js";
+import Loading from "./../Loading";
 import Toast from "react-native-easy-toast";
 
 function wait(timeout) {
@@ -28,15 +29,13 @@ function ListAccommodations(props) {
   const { userInfo } = screenProps;
   const [accommodationsList, setAccommodationList] = useState([]);
   const [accommodationsList2, setAccommodationList2] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [maxPrice, setMaxPrice] = useState(null);
   const [minRating, setMinRating] = useState(null);
   const filter = navigation.state.params.formData.startTime;
   const toastRef = useRef();
   const [refreshing, setRefreshing] = useState(false);
-
-  const [precioDecimales, setPrecioDecimales] = useState(null);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -52,7 +51,7 @@ function ListAccommodations(props) {
         const accommodations = [];
         const accommodations2 = [];
         snap.forEach((child) => {
-          if (child.val().worker !== userInfo.id) {
+          if (child.val().worker === userInfo.id) {
             const myAccomodation = [];
             var endTime = new Date(child.val().endTime);
             var startTime = new Date(child.val().startTime);
@@ -136,6 +135,7 @@ function ListAccommodations(props) {
         setAccommodationList(appToYou);
         setAccommodationList2(appToYou2);
       });
+    setIsVisibleLoading(false);
     setReloadData(false);
   }, [reloadData, refreshing]);
 
@@ -157,23 +157,14 @@ function ListAccommodations(props) {
     return d.toFixed(2);
   };
 
-  const filterList = () => {
-    let accomodations = [];
-    accommodationsList.map((acc) => {
-      if (
-        (maxPrice !== null && acc[0].price <= maxPrice) ||
-        (minRating !== null && acc[1] >= minRating)
-      ) {
-        accomodations.push(acc);
-      }
-    });
-    setAccommodationList(accomodations);
-    toastRef.current.show("Filtro aplicado");
-  };
-
   const applyFilter = () => {
-    console.log(maxPrice);
-    
+    setIsVisibleLoading(true);
+    if (maxPrice !== null) {
+      setMaxPrice(Math.round(maxPrice * 100) / 100);
+    }
+    if (minRating !== null) {
+      setMinRating(Math.round(minRating * 10) / 10);
+    }
     if (
       (maxPrice === null && minRating === null) ||
       isNaN(maxPrice) ||
@@ -185,7 +176,7 @@ function ListAccommodations(props) {
     } else {
       if (
         maxPrice !== null &&
-        (!Number.isInteger(precioDecimales) || maxPrice < 10)
+        (!Number.isInteger(maxPrice * 100) || maxPrice < 10)
       ) {
         toastRef.current.show("Precio mínimo 10 con máximo 2 decimales");
         setMaxPrice(null);
@@ -205,17 +196,13 @@ function ListAccommodations(props) {
         }
       }
     }
-  };
-
-  const setPrecio = (val) => {
-    setMaxPrice(val);
-    setPrecioDecimales(Math.round(val * 1000000) / 10000);
+    setIsVisibleLoading(false);
   };
 
   const clearFilter = () => {
+    setIsVisibleLoading(true);
     setMaxPrice(null);
     setMinRating(null);
-    setPrecioDecimales(null);
     setReloadData(true);
   };
 
@@ -234,7 +221,7 @@ function ListAccommodations(props) {
           maxLength={6}
           onChange={(val) => {
             if (val.nativeEvent.text !== "") {
-              setPrecio(val.nativeEvent.text);
+              setMaxPrice(val.nativeEvent.text);
             } else {
               setMaxPrice(null);
             }
@@ -312,6 +299,7 @@ function ListAccommodations(props) {
           </View>
         )}
       </ScrollView>
+      <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );

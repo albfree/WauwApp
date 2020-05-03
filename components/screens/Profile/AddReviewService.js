@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import {
-  StyleSheet,
   View,
   Alert,
   ScrollView,

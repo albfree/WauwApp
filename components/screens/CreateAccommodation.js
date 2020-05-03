@@ -11,7 +11,6 @@ import {
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { email } from "../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
@@ -63,7 +62,6 @@ function CreateAccommodation(props) {
 
   const newIsCanceled = false;
   const [newSalary, setNewSalary] = useState(null);
-  const [newPrice, setNewPrice] = useState(null);
 
   const all = () => {
     addAccommodation();
@@ -85,21 +83,10 @@ function CreateAccommodation(props) {
           toastRef.current.show("Precio máximo 500");
           setNewSalary(null);
         } else {
-          //addCommissions(newSalary);
           all();
         }
       }
     }
-  };
-
-  const addCommissions = () => {
-    //let salario = props.replace(",", ".").split(",").join("");
-    let price = (newSalary * 1.25).toFixed(2);
-    console.log("antes", price);
-
-    //setNewSalary(parseFloat(salario).toFixed(2));
-    setNewPrice(price);
-    console.log("después", newPrice);
   };
 
   const addAccommodation = () => {
@@ -161,6 +148,7 @@ function CreateAccommodation(props) {
 
         Alert.alert("Advertencia", errores.toString());
       } else {
+        const money = Math.round(newSalary * 1.25 * 100) / 100;
         let accommodationData = {
           id: id,
           startTime: newStartTime.toISOString(),
@@ -168,7 +156,7 @@ function CreateAccommodation(props) {
           isCanceled: newIsCanceled,
           salary: newSalary * 1,
           worker: userInfo.id,
-          price: (newSalary * 1.25).toFixed(2) * 1,
+          price: money,
         };
         db.ref("accommodation/" + id)
           .set(accommodationData)
@@ -257,6 +245,7 @@ function CreateAccommodation(props) {
             <TextInput
               placeholder="10.00"
               keyboardType="numeric"
+              maxLength={6}
               style={searchAccommodationStyles.searchAccommodationView3}
               onChange={(v) => {
                 if (v.nativeEvent.text !== "") {
@@ -266,8 +255,6 @@ function CreateAccommodation(props) {
                   setNewSalary(null);
                 }
               }}
-              //addCommissions(v.nativeEvent.text)}
-              maxLength={6}
             >
               {newSalary}
             </TextInput>

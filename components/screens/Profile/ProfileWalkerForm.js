@@ -11,7 +11,6 @@ import {
 import Loading from "./../../Loading";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
 import _ from "lodash";
 import {
   Collapse,
@@ -21,7 +20,6 @@ import {
 import Toast from "react-native-easy-toast";
 import { globalStyles } from "../../styles/global";
 import { walkerFormStyles } from "../../styles/walkerFormStyle";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileWalkerForm(props) {
   const { userInfo } = props.screenProps;
@@ -107,7 +105,7 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
-    let money = Math.round(sueldo * 1.3 * 100) / 100;
+    const money = Math.round(sueldo * 1.3 * 100) / 100;
 
     const walkData = {
       availability: availability,

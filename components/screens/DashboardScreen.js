@@ -24,7 +24,7 @@ export default function Dashboard(props) {
             } else if (snap.val().hasRequests && snap.val().hasMessages) {
               Alert.alert(
                 "Atención",
-                "Tiene notificaciones y/o mensajes sin leer"
+                "Tiene notificaciones y mensajes sin leer"
               );
             }
             setUserInfo(snap.val());
