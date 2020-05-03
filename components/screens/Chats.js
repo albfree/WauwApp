@@ -50,7 +50,7 @@ export default function Chats(props) {
   }, [setMessages]);
 
   useEffect(() => {
-    db.ref("wauwers").child(currentUser.id).update({ hasMessages: false });
+    setMessages();
     db.ref("requests").on("value", (snap) => {
       const allData = [];
       snap.forEach((child) => {
