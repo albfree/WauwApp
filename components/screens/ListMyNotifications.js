@@ -24,7 +24,7 @@ function wait(timeout) {
 }
 
 export default function ListMyNotifications(props) {
-  const { toastRef, userInfo } = props;
+  const { navigation, toastRef, userInfo } = props;
   const [requestsList, setRequestsList] = useState([]);
   const [reloadRequests, setReloadRequests] = useState(false);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
@@ -36,8 +36,19 @@ export default function ListMyNotifications(props) {
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
-  useEffect(() => {
+  const setRequests = React.useCallback(async () => {
     db.ref("wauwers").child(userInfo.id).update({ hasRequests: false });
+  }, []);
+
+  useEffect(() => {
+    const willFocus = navigation.addListener("willFocus", setRequests);
+    return () => {
+      willFocus.remove();
+    };
+  }, [setRequests]);
+
+  useEffect(() => {
+    setRequests();
     db.ref("requests")
       .orderByChild("worker")
       .equalTo(userInfo.id)

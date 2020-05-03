@@ -26,9 +26,8 @@ export default function Dashboard(props) {
                 "Atención",
                 "Tiene notificaciones y/o mensajes sin leer"
               );
-            } else {
-              setUserInfo(snap.val());
             }
+            setUserInfo(snap.val());
           }
         }
       });

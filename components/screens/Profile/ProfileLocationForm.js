@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Alert, SafeAreaView } from "react-native";
+import { Button, Icon } from "react-native-elements";
 import { db } from "../../population/config";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";

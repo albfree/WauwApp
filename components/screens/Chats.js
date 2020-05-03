@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Alert,
   View,
   Text,
   FlatList,
@@ -9,15 +8,12 @@ import {
   RefreshControl,
 } from "react-native";
 import _ from "lodash";
-import firebase from "firebase";
-import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
 import { ScrollView } from "react-native-gesture-handler";
 import { Avatar } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { chatsStyles } from "../styles/chatsStyle";
-import { bannedAssertion } from "../account/bannedAssertion";
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -26,7 +22,8 @@ function wait(timeout) {
 }
 
 export default function Chats(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [data, setData] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -36,10 +33,21 @@ export default function Chats(props) {
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
-  var currentUser = bannedAssertion();
+  var currentUser = userInfo;
   let otherUserID;
   let otherUserPhoto;
   let otherUserName;
+
+  const setMessages = React.useCallback(async () => {
+    db.ref("wauwers").child(userInfo.id).update({ hasMessages: false });
+  }, []);
+
+  useEffect(() => {
+    const willFocus = navigation.addListener("willFocus", setMessages);
+    return () => {
+      willFocus.remove();
+    };
+  }, [setMessages]);
 
   useEffect(() => {
     db.ref("wauwers").child(currentUser.id).update({ hasMessages: false });
