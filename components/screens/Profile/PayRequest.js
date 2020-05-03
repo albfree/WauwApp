@@ -246,7 +246,7 @@ function PayRequest(props) {
       db.ref("wauwers/" + currentUserID).once("child_added", (snap) => {
         db.ref("wauwers/" + currentUserID).update({
           wauwPoints: newPoints + currentUserWauwPoints,
-          dineroApoyo: newDineroApoyo + currentDineroApoyo,
+          donatedMoney: newDineroApoyo + currentDineroApoyo,
         });
       });
     }
@@ -372,7 +372,7 @@ function PointsEqualToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({
       wauwPoints: 0,
-      dineroApoyo: newDineroApoyo + currentDineroApoyo,
+      donatedMoney: newDineroApoyo + currentDineroApoyo,
     });
 
     Alert.alert(
@@ -521,7 +521,7 @@ function PointsMoreToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({
       wauwPoints: deMas,
-      dineroApoyo: newDineroApoyo + currentDineroApoyo,
+      donatedMoney: newDineroApoyo + currentDineroApoyo,
     });
 
     Alert.alert(
