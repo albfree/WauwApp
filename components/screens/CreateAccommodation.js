@@ -85,17 +85,21 @@ function CreateAccommodation(props) {
           toastRef.current.show("Precio máximo 500");
           setNewSalary(null);
         } else {
+          //addCommissions(newSalary);
           all();
         }
       }
     }
   };
 
-  const addCommissions = (props) => {
-    let salario = props.replace(",", ".").split(",").join("");
-    let price = (salario * 1.25).toFixed(2);
-    setNewSalary(parseFloat(salario).toFixed(2));
+  const addCommissions = () => {
+    //let salario = props.replace(",", ".").split(",").join("");
+    let price = (newSalary * 1.25).toFixed(2);
+    console.log("antes", price);
+
+    //setNewSalary(parseFloat(salario).toFixed(2));
     setNewPrice(price);
+    console.log("después", newPrice);
   };
 
   const addAccommodation = () => {
@@ -162,9 +166,9 @@ function CreateAccommodation(props) {
           startTime: newStartTime.toISOString(),
           endTime: newEndTime.toISOString(),
           isCanceled: newIsCanceled,
-          salary: newSalary,
+          salary: newSalary * 1,
           worker: userInfo.id,
-          price: newPrice,
+          price: (newSalary * 1.25).toFixed(2) * 1,
         };
         db.ref("accommodation/" + id)
           .set(accommodationData)
@@ -254,9 +258,19 @@ function CreateAccommodation(props) {
               placeholder="10.00"
               keyboardType="numeric"
               style={searchAccommodationStyles.searchAccommodationView3}
-              onChange={(v) => addCommissions(v.nativeEvent.text)}
+              onChange={(v) => {
+                if (v.nativeEvent.text !== "") {
+                  setNewSalary(v.nativeEvent.text);
+                  console.log(newSalary);
+                } else {
+                  setNewSalary(null);
+                }
+              }}
+              //addCommissions(v.nativeEvent.text)}
               maxLength={6}
-            />
+            >
+              {newSalary}
+            </TextInput>
             <Button
               buttonStyle={searchAccommodationStyles.searchAccommodationBtn2}
               containerStyle={

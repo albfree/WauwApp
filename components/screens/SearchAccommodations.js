@@ -91,6 +91,11 @@ function ListAccommodations(props) {
             ) {
               accommodations.pop();
             }
+            if (child.val().price === 12.5) {
+              console.log("precio", child.val().price);
+              console.log("MAX", maxPrice);
+              console.log(child.val() > maxPrice);
+            }
           }
         });
 
@@ -210,6 +215,20 @@ function ListAccommodations(props) {
     setReloadData(true);
   };
 
+  const setPrecio = (val) => {
+    if (val === "" || isNaN(val)) {
+      setMaxPrice(null);
+    } else {
+      if (Number.isInteger(val * 100)) {
+        setMaxPrice(parseInt(val));
+      } else {
+        setMaxPrice(parseFloat(val));
+      }
+    }
+  };
+
+  const setValoracion = () => {};
+
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <ScrollView
@@ -224,6 +243,7 @@ function ListAccommodations(props) {
           placeholder="Precio máximo del alojamiento"
           maxLength={6}
           onChange={(val) => {
+            //setPrecio(val.nativeEvent.text);
             if (val.nativeEvent.text !== "") {
               setMaxPrice(val.nativeEvent.text);
             } else {
@@ -331,7 +351,7 @@ function List1(props) {
 }
 
 function List2(props) {
-  const { accommodationsList, navigation} = props;
+  const { accommodationsList, navigation } = props;
   return (
     <SafeAreaView>
       <BlankView2
