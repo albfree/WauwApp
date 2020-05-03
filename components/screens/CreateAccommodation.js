@@ -250,14 +250,11 @@ function CreateAccommodation(props) {
               onChange={(v) => {
                 if (v.nativeEvent.text !== "") {
                   setNewSalary(v.nativeEvent.text);
-                  console.log(newSalary);
                 } else {
                   setNewSalary(null);
                 }
               }}
-            >
-              {newSalary}
-            </TextInput>
+            ></TextInput>
             <Button
               buttonStyle={searchAccommodationStyles.searchAccommodationBtn2}
               containerStyle={
