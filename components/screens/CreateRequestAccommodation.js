@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Alert, SafeAreaView, ScrollView } from "react-native";
+import { Text, View, Alert, SafeAreaView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../account/QueriesProfile";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
@@ -103,6 +102,7 @@ function createRequestAccommodation(props) {
     db.ref("requests/" + id)
       .set(requestData)
       .then(() => {
+        db.ref("wauwers").child(newWorker.id).update({ hasRequests: true });
         setReloadData(false);
         Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
         navigation.popToTop();
