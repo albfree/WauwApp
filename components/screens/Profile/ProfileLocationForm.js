@@ -191,16 +191,10 @@ function Map(props) {
 function Address(props) {
   const {locationWauwer, address, setAddress} = props;
 
-
   let loc = {
     latitude: locationWauwer.latitude,
     longitude: locationWauwer.longitude,
   };
-
-  
-
-  console.log(locationWauwer);
-  console.log(address);
 
   useEffect(() => {
     (async () => {
@@ -212,9 +206,7 @@ function Address(props) {
       if (statusPermissions !== "granted") {
         setError("No tienes activado el permiso de localización.");
       } else {
-        console.log(loc);
         const add = await Location.reverseGeocodeAsync(loc);
-        console.log(add);
         setAddress(add[0]);
       }
     })();
