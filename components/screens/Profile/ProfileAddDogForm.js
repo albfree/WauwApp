@@ -12,7 +12,6 @@ import { withNavigation } from "react-navigation";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { addDogStyles } from "../../styles/addDogStyle";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileAddDogForm(props) {
   const {
@@ -25,7 +24,6 @@ function ProfileAddDogForm(props) {
   const [newName, setNewName] = useState(null);
   const [newBreed, setNewBreed] = useState(null);
   const [newDescription, setNewDescription] = useState(null);
-  bannedAssertion();
 
   const addPet = () => {
     let id = db.ref("pet").push().key;

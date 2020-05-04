@@ -9,27 +9,22 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
 import { globalStyles } from "../../styles/global";
-import { FontAwesome } from "@expo/vector-icons";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;
+  const { userInfo } = navigation.state.params;
 
   const [loading, setLoading] = useState(true);
   const [requestsList, setRequestsList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
 
-  var wauwer = bannedAssertion();
-  var wauwerId = wauwer.id;
-
   useEffect(() => {
     db.ref("requests")
       .orderByChild("worker")
-      .equalTo(wauwerId)
+      .equalTo(userInfo.id)
       .once("value", (snap) => {
         const requests = [];
         snap.forEach((child) => {
@@ -120,7 +115,7 @@ function Request(requestIn) {
         <View style={globalStyles.viewFlex1}>
           <View style={requestsStyles.requestsView}>
             <View style={requestsStyles.requestsView2}>
-              <NameByOwner id={request.item.owner} navigation={navigation} />
+              <NameByOwner id={request.item.owner} />
               {request.item.petNumber > 1 ? (
                 <Text style={requestsStyles.requestsTxt}>
                   {"Alojamiento para " + request.item.petNumber + " perros"}
@@ -145,7 +140,7 @@ function Request(requestIn) {
 }
 
 function NameByOwner(ownerId) {
-  const { id, navigation } = ownerId;
+  const { id } = ownerId;
   let wauwerName;
   db.ref("wauwers")
     .orderByChild("id")

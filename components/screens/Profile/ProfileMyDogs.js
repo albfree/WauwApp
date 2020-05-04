@@ -11,7 +11,6 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { db } from "../../population/config";
-import { email, id, userId } from "../../account/QueriesProfile";
 import { ScrollView } from "react-native-gesture-handler";
 import BlankView from "../BlankView";
 import Loading from "../../Loading";
@@ -26,7 +25,8 @@ function wait(timeout) {
 }
 
 export default function ProfileMyDogs(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [reloadMascotas, setReloadMascotas] = useState();
   const [mascotas, setMascotas] = useState([]);
@@ -35,11 +35,7 @@ export default function ProfileMyDogs(props) {
   const [buttonTitle, setButtonTitle] = useState("Añadir un Perro");
   const [refreshing, setRefreshing] = useState(false);
 
-  let user;
-  const ref = db.ref("wauwers").orderByChild("email").equalTo(email);
-  ref.once("child_added", (snap) => {
-    user = snap.val().id;
-  });
+  const user = userInfo.id;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -73,7 +69,13 @@ export default function ProfileMyDogs(props) {
   };
 
   return (
-    <SafeAreaView style={globalStyles.viewFlex1}>
+    <SafeAreaView style={globalStyles.safeArea}>
+      <TouchableOpacity
+        style={globalStyles.drawerMenuView}
+        onPress={navigation.openDrawer}
+      >
+        <FontAwesome name="bars" size={24} color="#161924" />
+      </TouchableOpacity>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -117,9 +119,6 @@ export default function ProfileMyDogs(props) {
                       setIsVisibleLoading={setIsVisibleLoading}
                       toastRef={toastRef}
                     />
-                    <Text style={globalStyles.blankTxt2}>
-                      * Deslice hacia abajo para refrescar *
-                    </Text>
                   </View>
                 ))
               ) : (
@@ -128,6 +127,9 @@ export default function ProfileMyDogs(props) {
             </View>
           )}
         </View>
+        <Text style={globalStyles.blankTxt2}>
+          * Deslice hacia abajo para refrescar *
+        </Text>
         <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
@@ -184,18 +186,4 @@ export default function ProfileMyDogs(props) {
       </TouchableOpacity>
     );
   }
-
-  // return (
-  //   <SafeAreaView style={globalStyles.safeArea}>
-  //     <TouchableOpacity
-  //       style={{ alignItems: "flex-end", margin: 16 }}
-  //       onPress={navigation.openDrawer}
-  //     >
-  //       <FontAwesome name="bars" size={24} color="#161924" />
-  //     </TouchableOpacity>
-  //     <View>
-  //       <Text>Vista de mis perros</Text>
-  //     </View>
-  //   </SafeAreaView>
-  // );
 }

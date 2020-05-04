@@ -5,7 +5,6 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
   RefreshControl,
 } from "react-native";
 import { Avatar, Input, Button, Icon, Rating } from "react-native-elements";
@@ -13,10 +12,10 @@ import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { ScrollView } from "react-native-gesture-handler";
-import { email } from "../account/QueriesProfile";
 import BlankView2 from "./BlankView2";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 import { searchWalksStyles } from "../styles/searchWalkStyle.js";
+import Loading from "./../Loading";
 import Toast from "react-native-easy-toast";
 
 function wait(timeout) {
@@ -26,10 +25,11 @@ function wait(timeout) {
 }
 
 function ListAccommodations(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [accommodationsList, setAccommodationList] = useState([]);
   const [accommodationsList2, setAccommodationList2] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [reloadData, setReloadData] = useState(false);
   const [maxPrice, setMaxPrice] = useState(null);
   const [minRating, setMinRating] = useState(null);
@@ -43,20 +43,6 @@ function ListAccommodations(props) {
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
-  let petNumber;
-  let id;
-  let longitudeUser;
-  let latitudeUser;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      petNumber = snap.val().petNumber;
-      id = snap.val().id;
-      longitudeUser = snap.val().location.longitude;
-      latitudeUser = snap.val().location.latitude;
-    });
-
   useEffect(() => {
     db.ref("accommodation")
       .orderByChild("isCanceled")
@@ -65,7 +51,7 @@ function ListAccommodations(props) {
         const accommodations = [];
         const accommodations2 = [];
         snap.forEach((child) => {
-          if (child.val().worker !== id) {
+          if (child.val().worker !== userInfo.id) {
             const myAccomodation = [];
             var endTime = new Date(child.val().endTime);
             var startTime = new Date(child.val().startTime);
@@ -114,8 +100,8 @@ function ListAccommodations(props) {
           krom.push(array[0]);
           krom.push(array[1]);
           const distancia = calculaDistancia(
-            latitudeUser,
-            longitudeUser,
+            userInfo.location.latitudeUser,
+            userInfo.location.longitudeUser,
             array[2][0],
             array[2][1]
           );
@@ -133,8 +119,8 @@ function ListAccommodations(props) {
           krom.push(array[0]);
           krom.push(array[1]);
           const distancia = calculaDistancia(
-            latitudeUser,
-            longitudeUser,
+            userInfo.location.latitudeUser,
+            userInfo.location.longitudeUser,
             array[2][0],
             array[2][1]
           );
@@ -149,6 +135,7 @@ function ListAccommodations(props) {
         setAccommodationList(appToYou);
         setAccommodationList2(appToYou2);
       });
+    setIsVisibleLoading(false);
     setReloadData(false);
   }, [reloadData, refreshing]);
 
@@ -170,21 +157,14 @@ function ListAccommodations(props) {
     return d.toFixed(2);
   };
 
-  const filterList = () => {
-    let accomodations = [];
-    accommodationsList.map((acc) => {
-      if (
-        (maxPrice !== null && acc[0].price <= maxPrice) ||
-        (minRating !== null && acc[1] >= minRating)
-      ) {
-        accomodations.push(acc);
-      }
-    });
-    setAccommodationList(accomodations);
-    toastRef.current.show("Filtro aplicado");
-  };
-
   const applyFilter = () => {
+    setIsVisibleLoading(true);
+    if (maxPrice !== null) {
+      setMaxPrice(Math.round(maxPrice * 100) / 100);
+    }
+    if (minRating !== null) {
+      setMinRating(Math.round(minRating * 10) / 10);
+    }
     if (
       (maxPrice === null && minRating === null) ||
       isNaN(maxPrice) ||
@@ -196,9 +176,9 @@ function ListAccommodations(props) {
     } else {
       if (
         maxPrice !== null &&
-        (!Number.isInteger(maxPrice * 100) || maxPrice <= 0)
+        (!Number.isInteger(maxPrice * 100) || maxPrice < 10)
       ) {
-        toastRef.current.show("Precio positivo con máximo 2 decimales");
+        toastRef.current.show("Precio mínimo 10 con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
       } else {
@@ -216,9 +196,11 @@ function ListAccommodations(props) {
         }
       }
     }
+    setIsVisibleLoading(false);
   };
 
   const clearFilter = () => {
+    setIsVisibleLoading(true);
     setMaxPrice(null);
     setMinRating(null);
     setReloadData(true);
@@ -299,8 +281,6 @@ function ListAccommodations(props) {
           <View>
             <List1
               accommodationsList={accommodationsList}
-              petNumber={petNumber}
-              myId={id}
               navigation={navigation}
             />
             <Text style={globalStyles.blankTxt2}>
@@ -311,8 +291,6 @@ function ListAccommodations(props) {
           <View>
             <List2
               accommodationsList={accommodationsList2}
-              petNumber={petNumber}
-              myId={id}
               navigation={navigation}
             />
             <Text style={globalStyles.blankTxt2}>
@@ -321,13 +299,14 @@ function ListAccommodations(props) {
           </View>
         )}
       </ScrollView>
+      <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
 }
 
 function List1(props) {
-  const { accommodationsList, navigation, petNumber, id } = props;
+  const { accommodationsList, navigation } = props;
   return (
     <SafeAreaView>
       <Text style={searchAccommodationStyles.searchAccommodationTxt}>
@@ -339,8 +318,6 @@ function List1(props) {
           <Accommodation
             key={accommodation.index}
             accommodation={accommodation}
-            petNumber={petNumber}
-            myId={id}
             navigation={navigation}
           />
         )}
@@ -351,7 +328,7 @@ function List1(props) {
 }
 
 function List2(props) {
-  const { accommodationsList, navigation, petNumber, id } = props;
+  const { accommodationsList, navigation } = props;
   return (
     <SafeAreaView>
       <BlankView2
@@ -368,8 +345,6 @@ function List2(props) {
           <Accommodation
             key={accommodation.index}
             accommodation={accommodation}
-            petNumber={petNumber}
-            myId={id}
             navigation={navigation}
           />
         )}
@@ -380,26 +355,15 @@ function List2(props) {
 }
 
 function Accommodation(props) {
-  const { accommodation, navigation, petNumber, myId } = props;
+  const { accommodation, navigation } = props;
   const dis = accommodation.item[2];
 
   let worker;
   db.ref("wauwers")
     .child(accommodation.item[0].worker)
-    .on("value", (snap) => {
+    .once("value", (snap) => {
       worker = snap.val();
     });
-
-  const checkHasPets = () => {
-    if (petNumber > 0) {
-      navigation.navigate("FormRequestAccommodation", {
-        accommodation: accommodation.item[0],
-        id: myId,
-      });
-    } else {
-      Alert.alert("¡No tienes mascotas que alojar!", "");
-    }
-  };
 
   const publicProf = () => {
     navigation.navigate("PublicProfile", {
@@ -411,7 +375,13 @@ function Accommodation(props) {
   var y = new Date(accommodation.item[0].endTime);
 
   return (
-    <TouchableOpacity onPress={checkHasPets}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("FormRequestAccommodation", {
+          accommodation: accommodation.item[0],
+        })
+      }
+    >
       <View style={searchAccommodationStyles.searchAccommodationFeed}>
         <View style={globalStyles.viewFlex1}>
           <View style={searchAccommodationStyles.searchAccommodationView}>

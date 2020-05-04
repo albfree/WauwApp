@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { db } from "../population/config.js";
 import { profileStyles } from "../styles/profileStyle";
 
 export default function ChangeDescriptionForm(props) {
-  const { id, desc, setRenderDescription, setReloadData } = props;
+  const { id, desc, setRenderDescription } = props;
   const [newDesc, setNewDesc] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +31,6 @@ export default function ChangeDescriptionForm(props) {
         .update(userData)
         .then(() => {
           setIsLoading(false);
-          setReloadData(true);
           setRenderDescription(false);
         })
         .catch(() => {
