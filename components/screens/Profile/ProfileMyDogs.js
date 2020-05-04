@@ -11,7 +11,6 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { db } from "../../population/config";
-import { email, id, userId } from "../../account/QueriesProfile";
 import { ScrollView } from "react-native-gesture-handler";
 import BlankView from "../BlankView";
 import Loading from "../../Loading";
@@ -72,7 +71,7 @@ export default function ProfileMyDogs(props) {
   return (
     <SafeAreaView style={globalStyles.safeArea}>
       <TouchableOpacity
-        style={{ alignItems: "flex-end", margin: 16 }}
+        style={globalStyles.drawerMenuView}
         onPress={navigation.openDrawer}
       >
         <FontAwesome name="bars" size={24} color="#161924" />
