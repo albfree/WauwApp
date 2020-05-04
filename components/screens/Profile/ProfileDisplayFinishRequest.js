@@ -19,7 +19,8 @@ import { bannedAssertion } from "../../account/bannedAssertion";
 YellowBox.ignoreWarnings(["Setting a timer"]);
 
 function DisplayFinishRequest(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
 
   const request = navigation.state.params.request;
   var id = request.owner;

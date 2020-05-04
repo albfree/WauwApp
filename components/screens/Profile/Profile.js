@@ -16,12 +16,8 @@ import LastLogged from "../../account/LastLogged";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
 import { decode, encode } from "base-64";
-
 import { profileStyles } from "../../styles/profileStyle";
-import { email } from "../../account/QueriesProfile";
-import { db } from "../../population/config.js";
-import { bannedAssertion } from "../../account/bannedAssertion";
-import { popUp } from "../../account/popUp";
+
 function Profile(props) {
   if (!global.btoa) {
     global.btoa = encode;
@@ -30,20 +26,8 @@ function Profile(props) {
   if (!global.atob) {
     global.atob = decode;
   }
-  const { navigation } = props;
-  const currentUser = bannedAssertion();
-  const [userInfo, setUserInfo] = useState(currentUser);
-  const [loading, setLoading] = useState(true);
-  const [reloadData, setReloadData] = useState(false);
-
-  useEffect(() => {
-    popUp();
-    const user = bannedAssertion();
-    setUserInfo(user);
-    setReloadData(false);
-    setLoading(false);
-  }, [reloadData]);
-  
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
 
   const checkHasLocation = (userInfo) => {
     if (userInfo.hasOwnProperty("location")) {
@@ -73,14 +57,16 @@ function Profile(props) {
       </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
         <View style={profileStyles.profileView}>
-          <UserGuest />
+          <UserGuest userInfo={userInfo} />
         </View>
         <View style={profileStyles.profileView2}>
           <Button
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Cambiar mi Localización"
-            onPress={() => navigation.navigate("ProfileLocationForm")}
+            onPress={() =>
+              navigation.navigate("ProfileLocationForm", { userInfo: userInfo })
+            }
             icon={
               <Icon
                 type="material-community"

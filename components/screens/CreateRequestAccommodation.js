@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Text, View, Alert, SafeAreaView, ScrollView } from "react-native";
+import { Text, View, Alert, SafeAreaView } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../account/QueriesProfile";
 import _ from "lodash";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
 
 function createRequestAccommodation(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
 
   const [reloadData, setReloadData] = useState(false);
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   //Atributos del props
   const newIdAccommodation = navigation.state.params.formData.idAccommodation;
@@ -39,10 +37,8 @@ function createRequestAccommodation(props) {
 
   const newPending = true;
 
-  //Worker y owner
-
+  //Worker
   const [newWorker, setNewWorker] = useState([]);
-  const [newOwner, setNewOwner] = useState([]);
 
   const [newPrice, setNewPrice] = useState(
     navigation.state.params.formData.price
@@ -63,18 +59,6 @@ function createRequestAccommodation(props) {
     );
   };
 
-  //Owner logueado actualmente que realizada la request
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
-          setNewOwner(child.val());
-        });
-      });
-  }, [reloadData]);
-
   //Búsqueda por id del worker que creó el alojamiento
   useEffect(() => {
     db.ref("wauwers")
@@ -91,20 +75,16 @@ function createRequestAccommodation(props) {
 
   const all = () => {
     addRequestAccommodation();
-    Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
-    navigation.popToTop();
   };
 
   //Añadir la request a la db
 
   const addRequestAccommodation = () => {
     let id = db.ref("requests").push().key;
-    setError(null);
-    setIsLoading(true);
     let requestData = {
       id: id,
       pending: newPending,
-      owner: newOwner.id,
+      owner: userInfo.id,
       price: newPrice,
       salary: Number(newSalary),
       type: newType,
@@ -119,18 +99,15 @@ function createRequestAccommodation(props) {
       isRated: newIsRated,
     };
 
-    setIsLoading(true);
-
     db.ref("requests/" + id)
       .set(requestData)
       .then(() => {
-        setIsLoading(false);
+        db.ref("wauwers").child(newWorker.id).update({ hasRequests: true });
         setReloadData(false);
+        Alert.alert("Éxito", "Se ha creado su solicitud correctamente.");
+        navigation.popToTop();
       })
-      .catch(() => {
-        setError("Ha ocurrido un error");
-        setIsLoading(false);
-      });
+      .catch(() => {});
   };
 
   return (

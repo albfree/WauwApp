@@ -11,13 +11,13 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { FontAwesome } from "@expo/vector-icons";
 import { db } from "../../population/config";
-import { email, id, userId } from "../../account/QueriesProfile";
 import { ScrollView } from "react-native-gesture-handler";
 import BlankView from "../BlankView";
 import Loading from "../../Loading";
 import Toast from "react-native-easy-toast";
 import { profileStyles } from "../../styles/profileStyle";
 import ProfileAddDogForm from "./ProfileAddDogForm";
+import { requestsStyles } from "../../styles/requestsStyle";
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -26,7 +26,8 @@ function wait(timeout) {
 }
 
 export default function ProfileMyDogs(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
   const [reloadMascotas, setReloadMascotas] = useState();
   const [mascotas, setMascotas] = useState([]);
@@ -35,11 +36,7 @@ export default function ProfileMyDogs(props) {
   const [buttonTitle, setButtonTitle] = useState("Añadir un Perro");
   const [refreshing, setRefreshing] = useState(false);
 
-  let user;
-  const ref = db.ref("wauwers").orderByChild("email").equalTo(email);
-  ref.once("child_added", (snap) => {
-    user = snap.val().id;
-  });
+  const user = userInfo.id;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -74,6 +71,19 @@ export default function ProfileMyDogs(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
+      <TouchableOpacity
+        style={globalStyles.drawerMenuView}
+        onPress={navigation.openDrawer}
+      >
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Mis Perros</Text>
+          </View>
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
+      </TouchableOpacity>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -95,6 +105,9 @@ export default function ProfileMyDogs(props) {
           }
           titleStyle={profileStyles.profileBtnTittle}
         />
+        <Text style={requestsStyles.requestsTxt16}>
+          Listado de sus perros registrados
+        </Text>
         <View>
           {isVisibleForm ? (
             <ProfileAddDogForm
@@ -117,9 +130,6 @@ export default function ProfileMyDogs(props) {
                       setIsVisibleLoading={setIsVisibleLoading}
                       toastRef={toastRef}
                     />
-                    <Text style={globalStyles.blankTxt2}>
-                      * Deslice hacia abajo para refrescar *
-                    </Text>
                   </View>
                 ))
               ) : (
@@ -128,6 +138,9 @@ export default function ProfileMyDogs(props) {
             </View>
           )}
         </View>
+        <Text style={globalStyles.blankTxt2}>
+          * Deslice hacia abajo para refrescar *
+        </Text>
         <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.8} />
@@ -176,26 +189,16 @@ export default function ProfileMyDogs(props) {
 
     return (
       <TouchableOpacity onPress={confirmDelete}>
-        <View>
-          <Text>{perro.name}</Text>
-          <Text>{perro.breed}</Text>
-          <Text>{perro.description}</Text>
+        <View style={requestsStyles.requestsFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <Text style={requestsStyles.requestsTxt}>Nombre: {perro.name}</Text>
+            <Text style={requestsStyles.requestsTxt2}>Raza: {perro.breed}</Text>
+            <Text style={requestsStyles.requestsTxt3}>
+              Descripción: {perro.description}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
   }
-
-  // return (
-  //   <SafeAreaView style={globalStyles.safeArea}>
-  //     <TouchableOpacity
-  //       style={{ alignItems: "flex-end", margin: 16 }}
-  //       onPress={navigation.openDrawer}
-  //     >
-  //       <FontAwesome name="bars" size={24} color="#161924" />
-  //     </TouchableOpacity>
-  //     <View>
-  //       <Text>Vista de mis perros</Text>
-  //     </View>
-  //   </SafeAreaView>
-  // );
 }

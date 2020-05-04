@@ -97,6 +97,7 @@ export default createDrawerNavigator(
     },
 
     MyDogs: {
+      unmountOnBlur: true,
       screen: MyDogsScreen,
       navigationOptions: {
         drawerLabel: "Mis Perros",

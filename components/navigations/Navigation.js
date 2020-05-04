@@ -16,6 +16,9 @@ const NavigationStacks = createBottomTabNavigator(
     Home: {
       screen: HomeScreenStack,
       navigationOptions: () => ({
+        // screen: (screenProps) => {
+        //   screenProps.handler();
+        // },
         unmountOnBlur: true,
         tabBarLabel: "Home",
         tabBarIcon: ({ tintColor }) => (

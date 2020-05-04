@@ -1,12 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  YellowBox,
-  Text,
-  TextInput,
-  SafeAreaView,
-  Alert,
-} from "react-native";
+import React, { useState } from "react";
+import { View, Text, TextInput, SafeAreaView, Alert } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from "@react-native-community/datetimepicker";

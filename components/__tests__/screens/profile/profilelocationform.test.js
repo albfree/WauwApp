@@ -4,7 +4,7 @@ import ProfileAddDogForm from "../../../screens/Profile/ProfileLocationForm";
 import mockStore from "redux-mock-store";
 
 describe("<ProfileAddDogForm />", () => {
-  it("testing the ProfileAddDogForm screen", async () => {
+  it.skip("testing the ProfileAddDogForm screen", async () => {
     const store = mockStore({
       rehydrated: false,
       navigation: { navigate: jest.fn() },

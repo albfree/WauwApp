@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, Alert, SafeAreaView, Text } from "react-native";
-import { Input, Button, Icon } from "react-native-elements";
-import { email } from "../../account/QueriesProfile";
+import { Button, Icon } from "react-native-elements";
 import { db } from "../../population/config";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -9,15 +8,15 @@ import MapView from "react-native-maps";
 import Modal from "../../account/Modal";
 import { globalStyles } from "../../styles/global";
 import { locationStyles } from "../../styles/locationStyles";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
+  const { userInfo } = navigation.state.params;
+
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
   const [address, setAddress] = useState(null);
-  const [error, setError] = useState(null);
-  const [wauwer, setWauwer] = useState();
+ 
 
   useEffect(() => {
     let add= {
@@ -27,17 +26,12 @@ export default function ProfileLocationForm(props) {
   },[]);
    
 
-  useEffect(() => {
-    var wauwer = bannedAssertion();
-    setWauwer(wauwer);
-  }, []);
-
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <FormAdd
         setIsVisibleMap={setIsVisibleMap}
         locationWauwer={locationWauwer}
-        wauwer={wauwer}
+        userInfo={userInfo}
         navigation={navigation}
       />
       <Map
@@ -57,7 +51,7 @@ export default function ProfileLocationForm(props) {
 }
 
 function FormAdd(props) {
-  const { setIsVisibleMap, locationWauwer, wauwer, navigation } = props;
+  const { setIsVisibleMap, locationWauwer, userInfo, navigation } = props;
 
   const guardarLocation = () => {
     if (!locationWauwer) {
@@ -70,7 +64,7 @@ function FormAdd(props) {
         location: locationWauwer,
       };
 
-      db.ref("wauwers/" + wauwer.id).update(location);
+      db.ref("wauwers/" + userInfo.id).update(location);
       Alert.alert(
         "Ubicación guardada",
         "Ahora puede acceder a todos nuestros servicios.",

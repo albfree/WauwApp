@@ -11,8 +11,8 @@ import firebase from "firebase";
 import { profileStyles } from "../../styles/profileStyle";
 
 function ProfileDeleteData(props) {
-  const { navigation } = props;
-
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [loading, setLoading] = useState(true);
   const [requestsWorkerList, setRequestWorkerList] = useState([]);
   const [requestsOwnerList, setRequestOwnerList] = useState([]);
@@ -20,13 +20,7 @@ function ProfileDeleteData(props) {
   const [anonUser, setAnonUser] = useState();
   const [reloadData, setReloadData] = useState(false);
 
-  let wauwerId;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      wauwerId = snap.val().id;
-    });
+  const wauwerId = userInfo.id;
 
   let anonWauwerId;
   db.ref("wauwers")
@@ -177,7 +171,6 @@ function ProfileDeleteData(props) {
         }
       }
     }
-  
 
     if (requestWorkerOk && requestOwnerOk) {
       deleteData(wauwerId);

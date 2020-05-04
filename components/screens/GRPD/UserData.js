@@ -23,7 +23,11 @@ function wait(timeout) {
 }
 
 export default function UserData(props) {
-  var user = bannedAssertion();
+  const { screenProps } = props;
+  const { userInfo } = screenProps;
+
+  var user = userInfo;
+  
   var [pets, setPets] = useState([]);
   var [requestWorker, setRequestWorker] = useState([]);
   var [requestOwner, setRequestOwner] = useState([]);

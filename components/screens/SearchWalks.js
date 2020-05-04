@@ -5,19 +5,17 @@ import {
   FlatList,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
   ScrollView,
   RefreshControl,
 } from "react-native";
 import { Avatar, Button, Icon, Input, Rating } from "react-native-elements";
 import BlankView from "./BlankView";
 import { db } from "../population/config";
-import Loading from "../Loading";
-import { email } from "../account/QueriesProfile";
 import { withNavigation } from "react-navigation";
 import _ from "lodash";
 import { globalStyles } from "../styles/global";
 import { searchWalksStyles } from "../styles/searchWalkStyle";
+import Loading from "../Loading";
 import Toast from "react-native-easy-toast";
 
 function wait(timeout) {
@@ -27,8 +25,9 @@ function wait(timeout) {
 }
 
 function SearchWalks(props) {
-  const { navigation } = props;
-  const [loading, setLoading] = useState(true);
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
+  const [isVisibleLoading, setIsVisibleLoading] = useState(false);
   const [reloadData, setReloadData] = useState(false);
   const [data, setData] = useState([]);
   const [maxPrice, setMaxPrice] = useState(null);
@@ -37,19 +36,14 @@ function SearchWalks(props) {
   const [refreshing, setRefreshing] = useState(false);
   const interval = navigation.state.params.interval;
 
-  let petNumber;
-  let id;
-  let longitudeUser;
-  let latitudeUser;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      petNumber = snap.val().petNumber;
-      id = snap.val().id;
-      longitudeUser = snap.val().location.longitude;
-      latitudeUser = snap.val().location.latitude;
-    });
+  let day;
+  if (interval.day === "Sabado") {
+    day = "Sabados";
+  } else if (interval.day === "Domingo") {
+    day = "Domingos";
+  } else {
+    day = interval.day;
+  }
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -58,10 +52,10 @@ function SearchWalks(props) {
   }, [refreshing]);
 
   useEffect(() => {
-    db.ref("availabilities-wauwers").on("value", (snap) => {
+    db.ref("availabilities-wauwers").once("value", (snap) => {
       let allData = [];
       snap.forEach((child) => {
-        if (child.key !== id) {
+        if (child.key !== userInfo.id) {
           for (var availability in child.val().availabilities) {
             if (availability === interval.id) {
               const wData = [];
@@ -103,8 +97,8 @@ function SearchWalks(props) {
         krom.push(array[0]);
         krom.push(array[1]);
         const distancia = calculaDistancia(
-          latitudeUser,
-          longitudeUser,
+          userInfo.location.latitude,
+          userInfo.location.longitude,
           array[2][0],
           array[2][1]
         );
@@ -118,10 +112,9 @@ function SearchWalks(props) {
 
       setData(appToYou);
     });
-
+    setIsVisibleLoading(false);
     setReloadData(false);
-    setLoading(false);
-  }, [reloadData, refreshing]); //esto es el disparador del useEffect
+  }, [reloadData, refreshing]);
 
   const calculaDistancia = (lat1, lon1, lat2, lon2) => {
     const rad = function (x) {
@@ -142,6 +135,13 @@ function SearchWalks(props) {
   };
 
   const applyFilter = () => {
+    setIsVisibleLoading(true);
+    if (maxPrice !== null) {
+      setMaxPrice(Math.round(maxPrice * 100) / 100);
+    }
+    if (minRating !== null) {
+      setMinRating(Math.round(minRating * 10) / 10);
+    }
     if (
       (maxPrice === null && minRating === null) ||
       isNaN(maxPrice) ||
@@ -153,13 +153,17 @@ function SearchWalks(props) {
     } else {
       if (
         maxPrice !== null &&
-        (!Number.isInteger(maxPrice * 100) || maxPrice <= 0)
+        (!Number.isInteger(Math.round(maxPrice * 1000000) / 10000) ||
+          maxPrice < 5)
       ) {
-        toastRef.current.show("Precio positivo con máximo 2 decimales");
+        toastRef.current.show("Precio mínimo 5 con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
       } else {
-        if (minRating !== null && !Number.isInteger(minRating * 10)) {
+        if (
+          minRating !== null &&
+          !Number.isInteger(Math.round(minRating * 100) / 10)
+        ) {
           toastRef.current.show("Valoración con máximo 1 decimal");
           setMaxPrice(null);
           setMinRating(null);
@@ -173,9 +177,11 @@ function SearchWalks(props) {
         }
       }
     }
+    setIsVisibleLoading(false);
   };
 
   const clearFilter = () => {
+    setIsVisibleLoading(true);
     setMaxPrice(null);
     setMinRating(null);
     setReloadData(true);
@@ -191,7 +197,7 @@ function SearchWalks(props) {
         <Text style={searchWalksStyles.searchWalkTxt}>
           {"Escoja al paseador que desee\n\n"}
           {"para los " +
-            interval.day +
+            day +
             " de " +
             interval.startTime +
             "h a " +
@@ -263,7 +269,6 @@ function SearchWalks(props) {
             titleStyle={searchWalksStyles.searchWalktxt10}
           />
         </View>
-        <Loading isVisible={loading} text={"Un momento..."} />
         {data.length > 0 ? (
           <View>
             <FlatList
@@ -271,7 +276,6 @@ function SearchWalks(props) {
               renderItem={(wauwerData) => (
                 <Wauwer
                   wauwerData={wauwerData}
-                  petNumber={petNumber}
                   navigation={navigation}
                   interval={interval}
                 />
@@ -287,13 +291,14 @@ function SearchWalks(props) {
           <BlankView text={"No hay paseadores disponibles"} />
         )}
       </ScrollView>
+      <Loading isVisible={isVisibleLoading} text={"Un momento..."} />
       <Toast ref={toastRef} position="center" opacity={0.8} />
     </SafeAreaView>
   );
 }
 
 function Wauwer(props) {
-  const { wauwerData, petNumber, navigation, interval } = props;
+  const { wauwerData, navigation, interval } = props;
   const id = wauwerData.item[0];
   const dis = wauwerData.item[2];
 
@@ -313,27 +318,21 @@ function Wauwer(props) {
       salary = snap.val().myPrice;
     });
 
-  const checkHasPets = () => {
-    if (petNumber > 0) {
-      navigation.navigate("CreateRequestWalk", {
-        wauwer: user,
-        price: price,
-        salary: salary,
-        interval: interval,
-      });
-    } else {
-      Alert.alert("¡No tienes mascotas que pasear!", "");
-    }
-  };
-
   const publicProf = () => {
-    navigation.navigate("PublicProfile", {
-      user: user,
-    });
+    navigation.navigate("PublicProfile", { user: user });
   };
 
   return (
-    <TouchableOpacity onPress={checkHasPets}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("CreateRequestWalk", {
+          wauwer: user,
+          price: price,
+          interval: interval,
+          salary: salary,
+        })
+      }
+    >
       <View style={searchWalksStyles.searchWalkFeed}>
         <View style={globalStyles.viewFlex1}>
           <View style={searchWalksStyles.searchWalksView}>

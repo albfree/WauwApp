@@ -30,7 +30,9 @@ class LoginScreen extends Component {
             .once("child_added", (snap) => {
               banned = snap.val().isBanned;
               if (!banned) {
-                this.props.navigation.navigate("DashboardScreen");
+                this.props.navigation.navigate("DashboardScreen", {
+                  userInfo: snap.val(),
+                });
               } else {
                 this.props.navigation.navigate("BannedScreen");
               }
