@@ -1,26 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
-  Alert,
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { homeStyles } from "../styles/homeStyle";
 import _ from "lodash";
-import { db } from "../population/config";
-import firebase from "firebase";
-import { email } from "../account/QueriesProfile";
 
 function Home(props) {
-  const { userInfo } = props.screenProps;
+  const { navigation } = props;
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
