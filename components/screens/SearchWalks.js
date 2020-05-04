@@ -301,7 +301,6 @@ function Wauwer(props) {
   const { wauwerData, navigation, interval } = props;
   const id = wauwerData.item[0];
   const dis = wauwerData.item[2];
-  console.log(wauwerData);
 
   let user;
   db.ref("wauwers/" + id).once("value", (snap) => {
