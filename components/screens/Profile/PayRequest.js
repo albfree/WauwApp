@@ -50,8 +50,6 @@ function PayRequest(props) {
     newDineroApoyo = parseFloat((priceRequestConst / 1.25) * 0.1).toFixed(2);
   }
 
-  console.log(newDineroApoyo);
-
   db.ref("wauwers")
     .orderByChild("email")
     .equalTo(email)
