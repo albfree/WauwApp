@@ -36,6 +36,15 @@ function SearchWalks(props) {
   const [refreshing, setRefreshing] = useState(false);
   const interval = navigation.state.params.interval;
 
+  let day;
+  if (interval.day === "Sabado") {
+    day = "Sabados";
+  } else if (interval.day === "Domingo") {
+    day = "Domingos";
+  } else {
+    day = interval.day;
+  }
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
 
@@ -188,7 +197,7 @@ function SearchWalks(props) {
         <Text style={searchWalksStyles.searchWalkTxt}>
           {"Escoja al paseador que desee\n\n"}
           {"para los " +
-            interval.day +
+            day +
             " de " +
             interval.startTime +
             "h a " +
@@ -292,6 +301,7 @@ function Wauwer(props) {
   const { wauwerData, navigation, interval } = props;
   const id = wauwerData.item[0];
   const dis = wauwerData.item[2];
+  console.log(wauwerData);
 
   let user;
   db.ref("wauwers/" + id).once("value", (snap) => {
