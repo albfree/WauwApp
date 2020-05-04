@@ -111,7 +111,7 @@ function Accommodation(accomodationIn) {
   var startTime = new Date(accommodation.item.startTime);
 
   if (startTime < new Date()) {
-    status = "En curso";
+    status = "Dentro de Fecha";
   } else {
     switch (accommodation.item.isCanceled) {
       case true:

@@ -18,6 +18,7 @@ import Loading from "../../Loading";
 import Toast from "react-native-easy-toast";
 import { profileStyles } from "../../styles/profileStyle";
 import ProfileAddDogForm from "./ProfileAddDogForm";
+import { requestsStyles } from "../../styles/requestsStyle";
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -74,6 +75,19 @@ export default function ProfileMyDogs(props) {
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
+      <TouchableOpacity
+        style={globalStyles.drawerMenuView}
+        onPress={navigation.openDrawer}
+      >
+        <View>
+          <View style={globalStyles.drawerTitle}>
+            <Text style={globalStyles.drawerTxt}>Mis Perros</Text>
+          </View>
+          <View style={globalStyles.drawerIcon}>
+            <FontAwesome name="bars" size={24} color="#161924" />
+          </View>
+        </View>
+      </TouchableOpacity>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -95,6 +109,9 @@ export default function ProfileMyDogs(props) {
           }
           titleStyle={profileStyles.profileBtnTittle}
         />
+        <Text style={requestsStyles.requestsTxt16}>
+          Listado de sus perros registrados
+        </Text>
         <View>
           {isVisibleForm ? (
             <ProfileAddDogForm
@@ -176,10 +193,14 @@ export default function ProfileMyDogs(props) {
 
     return (
       <TouchableOpacity onPress={confirmDelete}>
-        <View>
-          <Text>{perro.name}</Text>
-          <Text>{perro.breed}</Text>
-          <Text>{perro.description}</Text>
+        <View style={requestsStyles.requestsFeed}>
+          <View style={globalStyles.viewFlex1}>
+            <Text style={requestsStyles.requestsTxt}>Nombre: {perro.name}</Text>
+            <Text style={requestsStyles.requestsTxt2}>Raza: {perro.breed}</Text>
+            <Text style={requestsStyles.requestsTxt3}>
+              Descripción: {perro.description}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
