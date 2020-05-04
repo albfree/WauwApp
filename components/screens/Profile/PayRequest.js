@@ -45,9 +45,9 @@ function PayRequest(props) {
   var newDineroApoyo;
 
   if (request.hasOwnProperty("availability")) {
-    newDineroApoyo = (priceRequestConst / 1.3) * 0.1;
+    newDineroApoyo = parseFloat((priceRequestConst / 1.3) * 0.1).toFixed(2);
   } else {
-    newDineroApoyo = (priceRequestConst / 1.25) * 0.1;
+    newDineroApoyo = parseFloat((priceRequestConst / 1.25) * 0.1).toFixed(2);
   }
 
   db.ref("wauwers")
