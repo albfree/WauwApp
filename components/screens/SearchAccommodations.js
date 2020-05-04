@@ -51,7 +51,7 @@ function ListAccommodations(props) {
         const accommodations = [];
         const accommodations2 = [];
         snap.forEach((child) => {
-          if (child.val().worker === userInfo.id) {
+          if (child.val().worker !== userInfo.id) {
             const myAccomodation = [];
             var endTime = new Date(child.val().endTime);
             var startTime = new Date(child.val().startTime);
