@@ -6,40 +6,47 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../account/QueriesProfile";
 import BlankView from "./BlankView";
 import { globalStyles } from "../styles/global";
 import Loading from "../Loading";
 import { formSearchWalkStyles } from "../styles/formSearchWalksStyle";
 import _ from "lodash";
-import { bannedAssertion } from "../account/bannedAssertion";
+
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
 
 function FormFilterByAvailability(props) {
-
-  const { navigation } = props;
-
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [reloadData, setReloadData] = useState(false);
-
   const [availabilities, setAvailabilities] = useState([]);
 
-  var user = bannedAssertion();
-  var id = user.id;
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
+    setLoading(true);
     const query = db.ref("availabilities-wauwers");
     query.on("value", (snap) => {
       let allAvailability = [];
       const allIds = [];
       snap.forEach((child) => {
-        if (child.key !== id) {
+        if (child.key !== userInfo.id) {
           query
             .child(child.key)
             .child("availabilities")
-            .on("value", (child) => {
+            .once("value", (child) => {
               child.forEach((kid) => {
                 if (!allIds.includes(kid.key)) {
                   allAvailability.push(kid.val().availability);
@@ -54,14 +61,16 @@ function FormFilterByAvailability(props) {
       });
       setAvailabilities(allAvailability);
     });
-
-    setReloadData(false);
     setLoading(false);
-  }, [reloadData]);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Loading isVisible={loading} text={"Un momento..."} />
         {availabilities.length > 0 ? (
           <View>
@@ -76,6 +85,9 @@ function FormFilterByAvailability(props) {
               keyExtractor={(interval) => interval.id}
               showsVerticalScrollIndicator={false}
             />
+            <Text style={globalStyles.blankTxt2}>
+              * Deslice hacia abajo para refrescar *
+            </Text>
           </View>
         ) : (
           <View>
@@ -83,6 +95,7 @@ function FormFilterByAvailability(props) {
           </View>
         )}
       </ScrollView>
+      <Loading isVisible={loading} text={"Un momento..."} />
     </SafeAreaView>
   );
 }

@@ -5,36 +5,42 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
   Image,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { db } from "../../population/config";
-import { email } from "../../account/QueriesProfile";
 import BlankView from "../BlankView";
 import { fechaParseada } from "./../../utils/DateParser";
 import { globalStyles } from "../../styles/global";
 import { userDataStyles } from "../../styles/userDataStyle";
 import Toast from "react-native-easy-toast";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 export default function LastConexion(props) {
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [loginsRegistrados, setLoginsRegistrados] = useState([]);
   const toastRef = useRef();
+  const [refreshing, setRefreshing] = useState(false);
 
-  let wauwer;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .once("child_added", (snap) => {
-      wauwer = snap.val().userId;
-    });
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     let logins1 = [];
     let aux = [];
     db.ref("logins")
       .orderByChild("user")
-      .equalTo(wauwer)
+      .equalTo(userInfo.userId)
       .once("value", (snap) => {
         snap.forEach((child) => {
           logins1.push(child.val().fecha);
@@ -56,7 +62,7 @@ export default function LastConexion(props) {
       .catch(() => {
         toastRef.current.show("Error al recuperar sus datos");
       });
-  }, []);
+  }, [refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -73,7 +79,11 @@ export default function LastConexion(props) {
           </View>
         </View>
       </TouchableOpacity>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={globalStyles.blankView5}>
           <Image
             source={require("../../../assets/images/PoliceDog.jpg")}
@@ -94,6 +104,9 @@ export default function LastConexion(props) {
               <BlankView text={"No tiene últimas conexiones registradas"} />
             )}
           </View>
+          <Text style={globalStyles.blankTxt2}>
+            * Deslice hacia abajo para refrescar *
+          </Text>
         </View>
       </ScrollView>
       <Toast ref={toastRef} position="center" opacity={0.7} />

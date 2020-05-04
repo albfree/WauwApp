@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView } from "react-native";
 import { Input, Button } from "react-native-elements";
 import { db } from "../population/config.js";
 import { profileStyles } from "../styles/profileStyle";
 
 export default function ChangeNameForm(props) {
-  const { id, name, setRenderName, setReloadData } = props;
+  const { id, name, setRenderName } = props;
   const [newName, setNewName] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +24,6 @@ export default function ChangeNameForm(props) {
         .update(userData)
         .then(() => {
           setIsLoading(false);
-          setReloadData(true);
           setRenderName(false);
         })
         .catch(() => {

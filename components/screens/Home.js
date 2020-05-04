@@ -1,30 +1,19 @@
 import React from "react";
 import {
-  Alert,
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   Image,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
+  ScrollView
 } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import { homeStyles } from "../styles/homeStyle";
 import _ from "lodash";
-import { bannedAssertion } from "../account/bannedAssertion";
-import { db } from "../population/config";
-import firebase from "firebase";
-import { email } from "../account/QueriesProfile";
-import { popUp } from "../account/popUp";
 
 function Home(props) {
   const { navigation } = props;
-  bannedAssertion();
-  popUp();
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>

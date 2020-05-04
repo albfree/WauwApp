@@ -4,18 +4,41 @@ import React, { useEffect, useState } from "react";
 import qs from "qs";
 import email from "react-native-email";
 import { userDataStyles } from "../../styles/userDataStyle";
-import { View, Text, ScrollView, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView,
+  RefreshControl,
+} from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { bannedAssertion } from "../../account/bannedAssertion";
 import { db } from "../../population/config";
 import { fechaParseada } from "../../utils/DateParser";
+import { globalStyles } from "../../styles/global";
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
 
 export default function UserData(props) {
-  var user = bannedAssertion();
+  const { screenProps } = props;
+  const { userInfo } = screenProps;
+
+  var user = userInfo;
+  
   var [pets, setPets] = useState([]);
   var [requestWorker, setRequestWorker] = useState([]);
   var [requestOwner, setRequestOwner] = useState([]);
   var [accommodations, setAccommodations] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     var requestWorkerUE = [];
@@ -24,27 +47,29 @@ export default function UserData(props) {
     var accommodationsUE = [];
 
     async function getWorkers() {
-      await db.ref("requests")
-      .orderByChild("worker")
-      .equalTo(user.id)
-      .once("value", (snap) => {
-        snap.forEach((child) => {
-          requestWorkerUE.push(child.val());
+      await db
+        .ref("requests")
+        .orderByChild("worker")
+        .equalTo(user.id)
+        .once("value", (snap) => {
+          snap.forEach((child) => {
+            requestWorkerUE.push(child.val());
+          });
         });
-      });
-    setRequestWorker(requestWorkerUE);
+      setRequestWorker(requestWorkerUE);
     }
 
     async function getOwners() {
-      await db.ref("requests")
-      .orderByChild("owner")
-      .equalTo(user.id)
-      .once("value", (snap) => {
-        snap.forEach((child) => {
-          requestOwnerUE.push(child.val());
+      await db
+        .ref("requests")
+        .orderByChild("owner")
+        .equalTo(user.id)
+        .once("value", (snap) => {
+          snap.forEach((child) => {
+            requestOwnerUE.push(child.val());
+          });
         });
-      });
-    setRequestOwner(requestOwnerUE);
+      setRequestOwner(requestOwnerUE);
     }
 
     async function getPets() {
@@ -57,17 +82,17 @@ export default function UserData(props) {
     }
 
     async function getAccommodations() {
-      await db.ref("accommodation")
-      .orderByChild("worker")
-      .equalTo(user.id)
-      .once("value", (snap) => {
-        snap.forEach((pretty) => {
-          accommodationsUE.push(pretty.val());
-          console.log(pretty.val().id);
+      await db
+        .ref("accommodation")
+        .orderByChild("worker")
+        .equalTo(user.id)
+        .once("value", (snap) => {
+          snap.forEach((pretty) => {
+            accommodationsUE.push(pretty.val());
+          });
         });
-      });
 
-    setAccommodations(accommodationsUE);
+      setAccommodations(accommodationsUE);
     }
 
     getWorkers();
@@ -77,11 +102,7 @@ export default function UserData(props) {
     getPets();
 
     getAccommodations();
-
-
-  }, []);
-
-  console.log(user.id);
+  }, [refreshing]);
 
   var sendEmail = function () {
     var userEmail = "Datos de usuario\n\n";
@@ -233,7 +254,11 @@ export default function UserData(props) {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={userDataStyles.userDataView}>
           <Text style={userDataStyles.userDataTxt}>Datos personales</Text>
           <Text style={userDataStyles.userDataTxt3}>Nombre: {user.name}</Text>
@@ -243,14 +268,14 @@ export default function UserData(props) {
               <Text>Dirección: {user.address}</Text>
             </View>
           ) : (
-            <Text> </Text>
+            <Text> No tiene ninguna dirección registrada</Text>
           )}
           {user.hasOwnProperty("description") ? (
             <View>
               <Text>Descripción: {user.description}</Text>
             </View>
           ) : (
-            <Text> </Text>
+            <Text>No tiene ninguna descripción establecida </Text>
           )}
           <Text>Email: {user.email}</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
@@ -376,8 +401,7 @@ export default function UserData(props) {
         {accommodations.length !== 0 ? (
           <View style={userDataStyles.userDataView}>
             <Text style={userDataStyles.userDataTxt}>
-              {" "}
-              Acomodaciones registradas en el sistema{" "}
+              Alojamientos registrados
             </Text>
             {accommodations.map((accParse) => {
               return (
@@ -385,14 +409,11 @@ export default function UserData(props) {
                   <Text style={userDataStyles.userDataTxt3}>
                     Fecha de inicio: {fechaParseada(accParse.startTime)}
                   </Text>
-                  <Text style={userDataStyles.userDataTxt3}>
+                  <Text style={userDataStyles.userDataTxt2}>
                     Fecha de fin: {fechaParseada(accParse.endTime)}
                   </Text>
-                  <Text style={userDataStyles.userDataTxt3}>
-                    {" "}
-                    ¿Cancelada?: {accParse.isCanceled === true
-                      ? "Sí"
-                      : "No"}{" "}
+                  <Text style={userDataStyles.userDataTxt2}>
+                    ¿Cancelada?: {accParse.isCanceled === true ? "Sí" : "No"}
                   </Text>
                 </View>
               );
@@ -400,7 +421,7 @@ export default function UserData(props) {
           </View>
         ) : (
           <View style={userDataStyles.userDataView}>
-            <Text> Actualmente tiene 0 acomodaciones registradas </Text>
+            <Text> Actualmente tiene 0 alojamientos registrados </Text>
           </View>
         )}
 
@@ -420,6 +441,9 @@ export default function UserData(props) {
           }
           titleStyle={userDataStyles.userDataTxt4}
         />
+        <Text style={globalStyles.blankTxt2}>
+          * Deslice hacia abajo para refrescar *
+        </Text>
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,18 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, Alert, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Avatar, Icon } from "react-native-elements";
-import { globalStyles } from "../styles/global";
 import * as ImagePicker from "expo-image-picker";
 import { db } from "../population/config.js";
 import { profileStyles } from "../styles/profileStyle";
 import ChangeNameForm from "./ChangeNameForm";
 import ChangeDescriptionForm from "./ChangeDescriptionForm";
-import Modal from "./Modal";
 import * as Permissions from "expo-permissions";
 import * as firebase from "firebase";
 
 export default function InfoUser(props) {
-  const { userInfo, setReloadData, toastRef } = props;
+  const { userInfo, toastRef } = props;
   const [error, setError] = useState("");
   const [renderName, setRenderName] = useState(false);
   const [renderDescription, setRenderDescription] = useState(false);
@@ -72,8 +70,6 @@ export default function InfoUser(props) {
         };
 
         await db.ref("wauwers").child(userInfo.id).update(updatePhoto);
-
-        setReloadData(true);
       })
       .catch(() => {
         toastRef.current.show("Error al recuperar la foto de perfil.", 3000);
@@ -100,7 +96,6 @@ export default function InfoUser(props) {
                 id={userInfo.id}
                 name={userInfo.name}
                 setRenderName={setRenderName}
-                setReloadData={setReloadData}
               />
             ) : (
               <Text style={profileStyles.profileTxt}>{userInfo.name} </Text>
@@ -162,7 +157,6 @@ export default function InfoUser(props) {
             id={userInfo.id}
             desc={userInfo.description}
             setRenderDescription={setRenderDescription}
-            setReloadData={setReloadData}
           />
         ) : (
           <Text style={profileStyles.profileTxt4}>{userInfo.description}</Text>

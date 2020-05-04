@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, SafeAreaView, Alert, ScrollView } from "react-native";
 import { withNavigation } from "react-navigation";
 import { Button, Icon } from "react-native-elements";
@@ -6,17 +6,10 @@ import { globalStyles } from "../styles/global";
 import { filterDateStyles } from "../styles/filterDateStyle";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
-import { bannedAssertion } from "../account/bannedAssertion";
 
 function FormFilterByDate(props) {
-  bannedAssertion();
   const { navigation } = props;
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [reloadData, setReloadData] = useState(false);
-
   const [newStartTime, setStartTime] = useState(new Date());
-
   const [modeS, setModeS] = useState("date");
   const [showS, setShowS] = useState(false);
 
@@ -64,8 +57,6 @@ function FormFilterByDate(props) {
 
         Alert.alert("Advertencia", errores.toString());
       } else {
-        setIsLoading(true);
-
         navigation.navigate("SearchAccommodations", {
           formData: formData,
         });

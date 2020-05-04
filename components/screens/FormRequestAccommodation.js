@@ -11,10 +11,8 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import _ from "lodash";
 
 function FormRequestAccommodation(props) {
-  const { navigation } = props;
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [reloadData, setReloadData] = useState(false);
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
 
   const [newStartTime, setStartTime] = useState(new Date());
   const [newEndTime, setEndTime] = useState(new Date());
@@ -76,17 +74,9 @@ function FormRequestAccommodation(props) {
     showModeE("date");
   };
 
-  let newOwner;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      newOwner = snap.val();
-    });
-
   useEffect(() => {
     // To retrieve my pets' names
-    db.ref("pet/" + newOwner.id).on("value", (snap) => {
+    db.ref("pet/" + userInfo.id).once("value", (snap) => {
       const pets = [];
       snap.forEach((child) => {
         pets.push(child.val().name);
@@ -100,6 +90,7 @@ function FormRequestAccommodation(props) {
       idAccommodation: navigation.state.params.accommodation.id,
       pending: navigation.state.params.accommodation.pending,
       salary: navigation.state.params.accommodation.salary,
+      price: navigation.state.params.accommodation.price,
       worker: navigation.state.params.accommodation.worker,
       isCanceled: navigation.state.params.accommodation.isCanceled,
       startTime: newStartTime,
@@ -158,8 +149,6 @@ function FormRequestAccommodation(props) {
 
       Alert.alert("Advertencia", errores.toString());
     } else {
-      setIsLoading(true);
-
       navigation.navigate("CreateRequestAccommodation", {
         formData: formData,
       });

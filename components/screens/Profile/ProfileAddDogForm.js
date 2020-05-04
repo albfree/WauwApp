@@ -1,51 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
   TextInput,
   Alert,
   SafeAreaView,
-  Keyboard,
   ScrollView,
 } from "react-native";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../../styles/global";
 import { addDogStyles } from "../../styles/addDogStyle";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileAddDogForm(props) {
-  const { setIsVisibleModal, navigation } = props;
+  const {
+    owner,
+    setIsVisibleForm,
+    setReloadMascotas,
+    setIsVisibleLoading,
+    toastRef,
+  } = props;
   const [newName, setNewName] = useState(null);
   const [newBreed, setNewBreed] = useState(null);
   const [newDescription, setNewDescription] = useState(null);
-  const [newOwner, setnewOwner] = useState(null);
-  const [reloadData, setReloadData] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  bannedAssertion();
-
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("child_added", (snap) => {
-        const newNewOwner = {
-          avgScore: snap.val().avgScore,
-          homeDescription: snap.val().homeDescription,
-          email: snap.val().email,
-          id: snap.val().id,
-          name: snap.val().name,
-          photo: snap.val().photo,
-          surname: snap.val().surname,
-          wauwPoints: snap.val().wauwPoints,
-        };
-        setnewOwner(snap.val());
-      });
-    setReloadData(false);
-  }, [reloadData]);
 
   const addPet = () => {
     let id = db.ref("pet").push().key;
@@ -54,7 +32,7 @@ function ProfileAddDogForm(props) {
       name: newName,
       breed: newBreed,
       description: newDescription,
-      owner: newOwner.id,
+      owner: owner,
     };
     var regex = /\w/;
     if (
@@ -79,28 +57,17 @@ function ProfileAddDogForm(props) {
       }
       Alert.alert("Advertencia", errores.toString());
     } else {
-      setIsLoading(true);
-
-      db.ref("pet/" + newOwner.id + "/" + id)
+      setIsVisibleLoading(true);
+      db.ref("pet/" + owner + "/" + id)
         .set(petData)
         .then(() => {
-          db.ref("wauwers/" + newOwner.id)
-            .update({ petNumber: newOwner.petNumber + 1 })
-            .then(() => {
-              Alert.alert("Éxito", "Se ha registrado el perro correctamente.");
-              navigation.navigate("ProfileDrawer");
-              setIsLoading(false);
-              setIsVisibleModal(false);
-            })
-            .catch(() => {
-              setError("Ha ocurrido un error");
-              setIsLoading(false);
-            });
+          toastRef.current.show("Mascota añadida");
         })
         .catch(() => {
-          setError("Ha ocurrido un error");
-          setIsLoading(false);
+          toastRef.current.show("Error al añadir mascota");
         });
+      setIsVisibleForm(false);
+      setReloadMascotas(true);
     }
   };
 

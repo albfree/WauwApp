@@ -7,29 +7,14 @@ import { email } from "./QueriesProfile";
 import { globalStyles } from "../styles/global";
 import Toast from "react-native-easy-toast";
 
-export default function UserGuest() {
-  const [userInfo, setUserInfo] = useState([]);
-  const [reloadData, setReloadData] = useState(false);
+export default function UserGuest(props) {
+  const { userInfo } = props;
   const toastRef = useRef();
-
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
-          setUserInfo(child.val());
-        });
-      });
-
-    setReloadData(false);
-  }, [reloadData]);
 
   return (
     <View>
       <InfoUser
         userInfo={userInfo}
-        setReloadData={setReloadData}
         toastRef={toastRef}
       />
       <Toast ref={toastRef} position="center" opacity={0.9} />

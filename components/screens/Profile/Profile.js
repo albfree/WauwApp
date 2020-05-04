@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -16,12 +16,8 @@ import LastLogged from "../../account/LastLogged";
 import { globalStyles } from "../../styles/global";
 import { withNavigation } from "react-navigation";
 import { decode, encode } from "base-64";
-
 import { profileStyles } from "../../styles/profileStyle";
-import { email } from "../../account/QueriesProfile";
-import { db } from "../../population/config.js";
-import { bannedAssertion } from "../../account/bannedAssertion";
-import { popUp } from "../../account/popUp";
+
 function Profile(props) {
   if (!global.btoa) {
     global.btoa = encode;
@@ -30,22 +26,11 @@ function Profile(props) {
   if (!global.atob) {
     global.atob = decode;
   }
-  const { navigation } = props;
-  var userInfo = bannedAssertion();
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
 
-  popUp();
-
-  const checkHasLocation = () => {
-    let ck;
-    let newOwner;
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("child_added", (snap) => {
-        newOwner = snap.val();
-      });
-
-    if (newOwner.hasOwnProperty("location")) {
+  const checkHasLocation = (userInfo) => {
+    if (userInfo.hasOwnProperty("location")) {
       navigation.navigate("ProfileWalkerForm");
     } else {
       Alert.alert(
@@ -72,14 +57,16 @@ function Profile(props) {
       </TouchableOpacity>
       <ScrollView scrollEventThrottle={16}>
         <View style={profileStyles.profileView}>
-          <UserGuest />
+          <UserGuest userInfo={userInfo} />
         </View>
         <View style={profileStyles.profileView2}>
           <Button
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Cambiar mi Localización"
-            onPress={() => navigation.navigate("ProfileLocationForm")}
+            onPress={() =>
+              navigation.navigate("ProfileLocationForm", { userInfo: userInfo })
+            }
             icon={
               <Icon
                 type="material-community"
@@ -91,7 +78,7 @@ function Profile(props) {
             }
             titleStyle={profileStyles.profileBtnTittle}
           />
-          <Button
+          {/* <Button
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Añadir un Perro"
@@ -106,13 +93,13 @@ function Profile(props) {
               />
             }
             titleStyle={profileStyles.profileBtnTittle}
-          />
+          /> */}
 
           <Button
             buttonStyle={profileStyles.profileBtn3}
             containerStyle={profileStyles.profileBtnContainer3}
             title="Quiero ser Paseador"
-            onPress={() => checkHasLocation()}
+            onPress={() => checkHasLocation(userInfo)}
             icon={
               <Icon
                 type="material-community"

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert, SafeAreaView } from "react-native";
-import { Input, Button, Icon } from "react-native-elements";
-import { email } from "../../account/QueriesProfile";
+import { View, Alert, SafeAreaView, Text } from "react-native";
+import { Button, Icon } from "react-native-elements";
 import { db } from "../../population/config";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
@@ -9,26 +8,30 @@ import MapView from "react-native-maps";
 import Modal from "../../account/Modal";
 import { globalStyles } from "../../styles/global";
 import { locationStyles } from "../../styles/locationStyles";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 export default function ProfileLocationForm(props) {
   const { navigation } = props;
+  const { userInfo } = navigation.state.params;
+
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
-  const [error, setError] = useState(null);
-  const [wauwer, setWauwer] = useState();
+  const [address, setAddress] = useState(null);
+ 
 
   useEffect(() => {
-    var wauwer = bannedAssertion();
-    setWauwer(wauwer);
-  }, []);
+    let add= {
+      name: "ninguna",
+   };
+   setAddress(add);
+  },[]);
+   
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <FormAdd
         setIsVisibleMap={setIsVisibleMap}
         locationWauwer={locationWauwer}
-        wauwer={wauwer}
+        userInfo={userInfo}
         navigation={navigation}
       />
       <Map
@@ -36,12 +39,19 @@ export default function ProfileLocationForm(props) {
         setIsVisibleMap={setIsVisibleMap}
         setLocationWauwer={setLocationWauwer}
       />
+      {locationWauwer &&  (
+        <Address
+          locationWauwer={locationWauwer}
+          setAddress={setAddress}
+          address={address}
+        />
+      )}
     </SafeAreaView>
   );
 }
 
 function FormAdd(props) {
-  const { setIsVisibleMap, locationWauwer, wauwer, navigation } = props;
+  const { setIsVisibleMap, locationWauwer, userInfo, navigation } = props;
 
   const guardarLocation = () => {
     if (!locationWauwer) {
@@ -54,7 +64,7 @@ function FormAdd(props) {
         location: locationWauwer,
       };
 
-      db.ref("wauwers/" + wauwer.id).update(location);
+      db.ref("wauwers/" + userInfo.id).update(location);
       Alert.alert(
         "Ubicación guardada",
         "Ahora puede acceder a todos nuestros servicios.",
@@ -175,5 +185,38 @@ function Map(props) {
         </View>
       </View>
     </Modal>
+  );
+}
+
+function Address(props) {
+  const {locationWauwer, address, setAddress} = props;
+
+  let loc = {
+    latitude: locationWauwer.latitude,
+    longitude: locationWauwer.longitude,
+  };
+
+  useEffect(() => {
+    (async () => {
+      const resultPermissions = await Permissions.askAsync(
+        Permissions.LOCATION
+      );
+      const statusPermissions = resultPermissions.permissions.location.status;
+
+      if (statusPermissions !== "granted") {
+        setError("No tienes activado el permiso de localización.");
+      } else {
+        const add = await Location.reverseGeocodeAsync(loc);
+        setAddress(add[0]);
+      }
+    })();
+  }, [locationWauwer]);
+
+  return (
+      <View>
+        <Text>Nota: La ubicación que se mostrará no tiene una precisión al 100%, pero sólo la usamos para que usted se pueda guiar.{"\n"}</Text>
+        <Text>Ha marcado la ubicación cerca de: {address.name}{"\n"}
+              Si su ubicación esta cerca de esa dirección, pulse "Guardar ubicación" para terminar el proceso.</Text>
+      </View>
   );
 }

@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import {
-  StyleSheet,
   View,
   Alert,
   ScrollView,
@@ -25,6 +24,7 @@ function AddReviewService(props) {
   const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
   const toastRef = useRef();
+  const salaryRequest = request.salary;
   const [paypalUrl, setPaypalUrl] = useState("");
 
   const uploadData = () => {
@@ -109,7 +109,7 @@ function AddReviewService(props) {
       {
         recipient_type: "EMAIL",
         amount: {
-          value: request.price,
+          value: salaryRequest,
           currency: "EUR",
         },
         note: "Gracias por tu servicio!",

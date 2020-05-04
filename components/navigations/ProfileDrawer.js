@@ -23,22 +23,25 @@ import { globalStyles } from "../styles/global";
 import ProfileScreen from "../screens/Profile/Profile";
 
 const CustomDrawerComponent = (props) => (
-  <SafeAreaView>
+  <SafeAreaView style={globalStyles.drawerView3}>
     <View style={globalStyles.drawerView}>
       <Image
         source={require("../../assets/images/logo.png")}
         style={globalStyles.drawerImage}
       />
     </View>
-    <ScrollView>
-      <DrawerItems {...props} />
-    </ScrollView>
+    <View style={globalStyles.drawerView2}>
+      <ScrollView>
+        <DrawerItems {...props} />
+      </ScrollView>
+    </View>
   </SafeAreaView>
 );
 
 export default createDrawerNavigator(
   {
     Profiles: {
+      unmountOnBlur: true,
       screen: ProfileScreen,
       navigationOptions: {
         drawerLabel: "Mi Perfil",
@@ -53,6 +56,7 @@ export default createDrawerNavigator(
       },
     },
     MyRequests: {
+      unmountOnBlur: true,
       screen: MyRequestsScreen,
       navigationOptions: {
         drawerLabel: "Mis Solicitudes",
@@ -67,6 +71,7 @@ export default createDrawerNavigator(
       },
     },
     MyAccommodations: {
+      unmountOnBlur: true,
       screen: MyAccommodationsScreen,
       navigationOptions: {
         drawerLabel: "Mis Alojamientos",
@@ -76,6 +81,7 @@ export default createDrawerNavigator(
       },
     },
     MyWalks: {
+      unmountOnBlur: true,
       screen: MyWalksScreen,
       navigationOptions: {
         drawerLabel: "Mis Paseos",
@@ -90,7 +96,24 @@ export default createDrawerNavigator(
       },
     },
 
+    MyDogs: {
+      unmountOnBlur: true,
+      screen: MyDogsScreen,
+      navigationOptions: {
+        drawerLabel: "Mis Perros",
+        drawerIcon: ({ tintColor }) => (
+          <Icon
+            type="material-community"
+            name="dog"
+            size={17}
+            color="#443099"
+          />
+        ),
+      },
+    },
+
     LastConexion: {
+      unmountOnBlur: true,
       screen: LastConexionsScreen,
       navigationOptions: {
         drawerLabel: "Últimas Conexiones",
@@ -106,6 +129,7 @@ export default createDrawerNavigator(
     },
 
     AboutUs: {
+      unmountOnBlur: true,
       screen: AboutUsScreen,
       navigationOptions: {
         drawerLabel: "Sobre Nosotros",
@@ -121,6 +145,7 @@ export default createDrawerNavigator(
     },
 
     Feedback: {
+      unmountOnBlur: true,
       screen: FeedbackScreen,
       navigationOptions: {
         drawerLabel: "Feedback",
@@ -136,6 +161,7 @@ export default createDrawerNavigator(
     },
 
     DeleteData: {
+      unmountOnBlur: true,
       screen: DeleteDataScreen,
       navigationOptions: {
         drawerLabel: "Eliminar Cuenta",
@@ -149,24 +175,10 @@ export default createDrawerNavigator(
         ),
       },
     },
-
-    /* MyDogs: {
-      screen: MyDogsScreen,
-      navigationOptions: {
-        drawerLabel: "Mis Perros",
-        drawerIcon: ({ tintColor }) => (
-          <Icon
-            type="material-community"
-            name="dog"
-            size={17}
-            color="#443099"
-          />
-        )
-      }
-    } */
   },
   {
     drawerPosition: "right",
     contentComponent: CustomDrawerComponent,
+    initialRouteName: "Profiles",
   }
 );

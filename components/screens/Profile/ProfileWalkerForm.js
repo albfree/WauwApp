@@ -11,7 +11,6 @@ import {
 import Loading from "./../../Loading";
 import { db } from "../../population/config.js";
 import { withNavigation } from "react-navigation";
-import { email } from "../../account/QueriesProfile";
 import _ from "lodash";
 import {
   Collapse,
@@ -21,10 +20,9 @@ import {
 import Toast from "react-native-easy-toast";
 import { globalStyles } from "../../styles/global";
 import { walkerFormStyles } from "../../styles/walkerFormStyle";
-import { bannedAssertion } from "../../account/bannedAssertion";
 
 function ProfileWalkerForm(props) {
-  const { navigation } = props;
+  const { userInfo } = props.screenProps;
   const toastRef = useRef();
   const [reloadData, setReloadData] = useState(false);
   const [ids, setIds] = useState([]);
@@ -43,14 +41,14 @@ function ProfileWalkerForm(props) {
     ["Domingo", 96],
   ];
 
-  var userInfo = bannedAssertion();
-
   useEffect(() => {
     const resulIds = [];
     const resulHours = [];
     db.ref("availabilities-wauwers/" + userInfo.id + "/availabilities").on(
       "value",
       (snap) => {
+        resulIds.splice(0);
+        resulHours.splice(0);
         snap.forEach((child) => {
           const hourPrice = [];
           let hour =
@@ -107,7 +105,7 @@ function ProfileWalkerForm(props) {
         availability = snap.val();
       });
 
-    let money = Math.round(sueldo * 1.3 * 100) / 100;
+    const money = Math.round(sueldo * 1.3 * 100) / 100;
 
     const walkData = {
       availability: availability,
@@ -186,14 +184,7 @@ function ProfileWalkerForm(props) {
 
   const isAdded = (id) => {
     if (!ids.includes(id)) {
-      if (sueldo >= 5) {
-        confirmAdd(id);
-      } else {
-        Alert.alert(
-          "No puede añadir disponibilidades",
-          "Su salario debe ser mayor o igual a 5"
-        );
-      }
+      confirmAdd(id);
     } else {
       Alert.alert("Ya ha seleccionado esta disponibilidad", "");
     }

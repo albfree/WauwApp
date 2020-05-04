@@ -2,26 +2,23 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   Image,
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  Alert,
-  Dimensions,
+  Alert
 } from "react-native";
 
 import { withNavigation } from "react-navigation";
 import { globalStyles } from "../styles/global";
 import _ from "lodash";
 import { servicesStyles } from "../styles/servicesStyle";
-import { email } from "../account/QueriesProfile";
 import { db } from "../population/config.js";
 import { bannedAssertion } from "../account/bannedAssertion";
 
 function Services(props) {
-  bannedAssertion();
-  const { navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [imageUri, setImageUri] = useState(
     require("../../assets/images/SearchWalk.jpg")
   );
@@ -53,20 +50,20 @@ function Services(props) {
       "Crea tus propios alojamientos para los perros de los demás usuarios"
     );
   };
-  let newOwner;
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("child_added", (snap) => {
-        newOwner = snap.val();
-      });
+
+  let pets = [];
+  db.ref("pet/" + userInfo.id).on("value", (snap) => {
+    let myPets = [];
+    snap.forEach((child) => {
+      myPets.push(child.val());
+    });
+    pets = myPets;
   });
 
   const checkHasLocation = () => {
     let ck;
 
-    if (newOwner.hasOwnProperty("location")) {
+    if (userInfo.hasOwnProperty("location")) {
       ck = true;
     } else {
       ck = false;
@@ -76,7 +73,7 @@ function Services(props) {
 
   const checkHasPets = () => {
     let cp;
-    if (newOwner.petNumber > 0) {
+    if (pets.length > 0) {
       cp = true;
     } else {
       cp = false;

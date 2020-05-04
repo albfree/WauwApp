@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -6,33 +6,29 @@ import {
   SafeAreaView,
   Alert,
   ScrollView,
-  Keyboard,
   Platform,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { email } from "../account/QueriesProfile";
 import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { searchAccommodationStyles } from "../styles/searchAccommodationStyle";
-import { bannedAssertion } from "../account/bannedAssertion";
 import Toast from "react-native-easy-toast";
 
 function CreateAccommodation(props) {
   const toastRef = useRef();
-  bannedAssertion();
   const [newStartTime, setStartTime] = useState(new Date());
   const [newEndTime, setEndTime] = useState(new Date());
 
-  const { setIsVisibleModal, navigation } = props;
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
+
   const [modeS, setModeS] = useState("date");
   const [showS, setShowS] = useState(false);
 
   const [modeE, setModeE] = useState("date");
   const [showE, setShowE] = useState(false);
-
-  const [reloadData, setReloadData] = useState(false);
 
   const onChangeS = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -64,23 +60,8 @@ function CreateAccommodation(props) {
     showModeE("date");
   };
 
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("email")
-      .equalTo(email)
-      .on("value", function (snap) {
-        snap.forEach(function (child) {
-          setNewWorker(child.val().id);
-        });
-      });
-    setReloadData(false);
-  }, [reloadData]);
-
   const newIsCanceled = false;
-  const [newWorker, setNewWorker] = useState([]);
   const [newSalary, setNewSalary] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [newPrice, setNewPrice] = useState(null);
 
   const all = () => {
     addAccommodation();
@@ -108,16 +89,8 @@ function CreateAccommodation(props) {
     }
   };
 
-  const addCommissions = (props) => {
-    let salario = props.replace(",", ".").split(",").join("");
-    let price = (salario * 1.25).toFixed(2);
-    setNewSalary(parseFloat(salario).toFixed(2));
-    setNewPrice(price);
-  };
-
   const addAccommodation = () => {
     let id = db.ref("accommodation").push().key;
-    setIsLoading(true);
 
     if (
       newStartTime === null ||
@@ -175,29 +148,26 @@ function CreateAccommodation(props) {
 
         Alert.alert("Advertencia", errores.toString());
       } else {
+        const money = Math.round(newSalary * 1.25 * 100) / 100;
         let accommodationData = {
           id: id,
           startTime: newStartTime.toISOString(),
           endTime: newEndTime.toISOString(),
           isCanceled: newIsCanceled,
-          salary: newSalary,
-          worker: newWorker,
-          price: newPrice,
+          salary: newSalary * 1,
+          worker: userInfo.id,
+          price: money,
         };
-        setIsLoading(true);
         db.ref("accommodation/" + id)
           .set(accommodationData)
           .then(() => {
-            setIsLoading(false);
-            setReloadData(true);
-            setIsVisibleModal(false);
+            Alert.alert(
+              "Éxito",
+              "Se ha registrado el alojamiento correctamente."
+            );
+            navigation.popToTop();
           })
-          .catch(() => {
-            setError("Ha ocurrido un error");
-            setIsLoading(false);
-          });
-        Alert.alert("Éxito", "Se ha registrado el alojamiento correctamente.");
-        navigation.popToTop();
+          .catch(() => {});
       }
     }
   };
@@ -275,10 +245,16 @@ function CreateAccommodation(props) {
             <TextInput
               placeholder="10.00"
               keyboardType="numeric"
-              style={searchAccommodationStyles.searchAccommodationView3}
-              onChange={(v) => addCommissions(v.nativeEvent.text)}
               maxLength={6}
-            />
+              style={searchAccommodationStyles.searchAccommodationView3}
+              onChange={(v) => {
+                if (v.nativeEvent.text !== "") {
+                  setNewSalary(v.nativeEvent.text);
+                } else {
+                  setNewSalary(null);
+                }
+              }}
+            ></TextInput>
             <Button
               buttonStyle={searchAccommodationStyles.searchAccommodationBtn2}
               containerStyle={

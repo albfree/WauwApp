@@ -11,8 +11,8 @@ import firebase from "firebase";
 import { profileStyles } from "../../styles/profileStyle";
 
 function ProfileDeleteData(props) {
-  const { navigation } = props;
-
+  const { navigation, screenProps } = props;
+  const { userInfo } = screenProps;
   const [loading, setLoading] = useState(true);
   const [requestsWorkerList, setRequestWorkerList] = useState([]);
   const [requestsOwnerList, setRequestOwnerList] = useState([]);
@@ -20,13 +20,7 @@ function ProfileDeleteData(props) {
   const [anonUser, setAnonUser] = useState();
   const [reloadData, setReloadData] = useState(false);
 
-  let wauwerId;
-  db.ref("wauwers")
-    .orderByChild("email")
-    .equalTo(email)
-    .on("child_added", (snap) => {
-      wauwerId = snap.val().id;
-    });
+  const wauwerId = userInfo.id;
 
   let anonWauwerId;
   db.ref("wauwers")
@@ -147,33 +141,33 @@ function ProfileDeleteData(props) {
           });
         }
       }
-    } else {
-      if (requestsOwnerList && requestsOwnerList.length) {
-        for (let i = 0; i < requestsOwnerList.length; i++) {
-          if (requestsOwnerList[i].pending === false) {
-            if (
-              requestsOwnerList[i].isFinished === false ||
-              requestsOwnerList[i].isPayed === false ||
-              requestsOwnerList[i].isRated === false
-            ) {
-              requestOwnerOk = false;
-              Alert.alert(
-                "Alerta",
-                "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
-              );
-              break;
-            } else {
-              if (requestOwnerOk === true) {
-                let idOwner = {
-                  owner: anonWauwerId,
-                };
-                db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
-                db.ref("chats/" + requestsOwnerList[i].id).remove();
-              }
-            }
+    }
+
+    if (requestsOwnerList && requestsOwnerList.length) {
+      for (let i = 0; i < requestsOwnerList.length; i++) {
+        if (requestsOwnerList[i].pending === false) {
+          if (
+            requestsOwnerList[i].isFinished === false ||
+            requestsOwnerList[i].isPayed === false ||
+            requestsOwnerList[i].isRated === false
+          ) {
+            requestOwnerOk = false;
+            Alert.alert(
+              "Alerta",
+              "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
+            );
+            break;
           } else {
-            db.ref("request/" + requestsOwnerList[i].id).remove();
+            if (requestOwnerOk === true) {
+              let idOwner = {
+                owner: anonWauwerId,
+              };
+              db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
+              db.ref("chats/" + requestsOwnerList[i].id).remove();
+            }
           }
+        } else {
+          db.ref("request/" + requestsOwnerList[i].id).remove();
         }
       }
     }

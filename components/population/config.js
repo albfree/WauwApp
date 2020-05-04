@@ -1,14 +1,14 @@
 import firebase from "firebase";
 
 var firebaseConfig = {
-  apiKey: "AIzaSyAfLltQ_t5X0bqCivZSDrIV7Jmmf076Jtc",
-  authDomain: "wauw-ispp-s3.firebaseapp.com",
-  databaseURL: "https://wauw-ispp-s3.firebaseio.com",
-  projectId: "wauw-ispp-s3",
-  storageBucket: "wauw-ispp-s3.appspot.com",
-  messagingSenderId: "191130769894",
-  appId: "1:191130769894:web:b866775f14d7f420cb1e27",
-};
+    apiKey: "AIzaSyD5wCzqji50oFhF_a3nUT4bG3HGwYK20W4",
+    authDomain: "wauw-ispp-fs.firebaseapp.com",
+    databaseURL: "https://wauw-ispp-fs.firebaseio.com",
+    projectId: "wauw-ispp-fs",
+    storageBucket: "wauw-ispp-fs.appspot.com",
+    messagingSenderId: "424386340759",
+    appId: "1:424386340759:web:8283f35c3f6dbd18f386d2"
+  };
 
 // Initialize Firebase
 var app = firebase.initializeApp(firebaseConfig);
