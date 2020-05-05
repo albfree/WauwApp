@@ -15,8 +15,10 @@ export default function InfoUser(props) {
   const [renderName, setRenderName] = useState(false);
   const [renderDescription, setRenderDescription] = useState(false);
 
-  let pointsToMoney = Math.round(userInfo.wauwPoints * 0.65 * 100) / 100;
+  let pointsToMoney = parseFloat(Math.round(userInfo.wauwPoints * 0.65 * 100) / 100).toFixed(2);
   let moneyPoints = "(" + pointsToMoney + "€)";
+
+  let donatedMoney = "(" + userInfo.donatedMoney + "€)";
 
   const changeAvatar = async () => {
     const resultPermission = await Permissions.askAsync(
@@ -127,6 +129,12 @@ export default function InfoUser(props) {
       <View>
         <Text style={profileStyles.profileView5}>
           Wauw Points: {userInfo.wauwPoints} {moneyPoints}
+        </Text>
+      </View>
+
+      <View>
+        <Text style={profileStyles.profileView5}>
+          Cantidad donada: {donatedMoney}
         </Text>
       </View>
 
