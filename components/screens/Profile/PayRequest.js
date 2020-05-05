@@ -34,15 +34,8 @@ function PayRequest(props) {
 
   let currentUserID;
   let currentUserWauwPoints;
-  var currentDineroApoyo;
-
-  // Proporción obtenida para las request de paseo
-  //let newDineroApoyo = (priceRequestConst/1.3) * 0.1;
-
-  // Proporción obtenida para las request de alojamiento
-  //let newDineroApoyo = (priceRequestConst/1.25) * 0.1;
-
-  var newDineroApoyo;
+  let currentDineroApoyo;
+  let newDineroApoyo;
 
   if (request.hasOwnProperty("availability")) {
     newDineroApoyo = parseFloat((priceRequestConst / 1.3) * 0.1).toFixed(2);
@@ -56,7 +49,7 @@ function PayRequest(props) {
     .on("child_added", (snap) => {
       currentUserID = snap.val().id;
       currentUserWauwPoints = snap.val().wauwPoints;
-      currentDineroApoyo = snap.val().dineroApoyo;
+      currentDineroApoyo = snap.val().donatedMoney;
     });
 
   //Le vamos a pasar de props al pago la request entera. De ahí, coges el precio y se lo pasas al data details. Si response.status = 200, entonces setearemos
@@ -246,7 +239,7 @@ function PayRequest(props) {
       db.ref("wauwers/" + currentUserID).once("child_added", (snap) => {
         db.ref("wauwers/" + currentUserID).update({
           wauwPoints: newPoints + currentUserWauwPoints,
-          donatedMoney: newDineroApoyo + currentDineroApoyo,
+          donatedMoney: parseFloat(newDineroApoyo) + parseFloat(currentDineroApoyo),
         });
       });
     }
@@ -270,6 +263,8 @@ function PayRequest(props) {
           currentUserID={currentUserID}
           navigation={navigation}
           priceRequestConst={priceRequestConst}
+          donatedMoney={newDineroApoyo}
+          currentDonatedMoney={currentDineroApoyo}
         ></PointsEqualToPrice>
       ) : null}
 
@@ -284,6 +279,8 @@ function PayRequest(props) {
           checked={checked}
           setIsChecked={setIsChecked}
           priceRequestConst={priceRequestConst}
+          donatedMoney={newDineroApoyo}
+          currentDonatedMoney={currentDineroApoyo}
         ></PointsLessToPrice>
       ) : null}
 
@@ -296,6 +293,8 @@ function PayRequest(props) {
           currentUserID={currentUserID}
           navigation={navigation}
           priceRequestConst={priceRequestConst}
+          donatedMoney={newDineroApoyo}
+          currentDonatedMoney={currentDineroApoyo}
         ></PointsMoreToPrice>
       ) : null}
 
@@ -361,9 +360,12 @@ function PointsEqualToPrice(props) {
     currentUserID,
     navigation,
     priceRequestConst,
+    donatedMoney,
+    currentDonatedMoney
   } = props;
 
   let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
+  console.log(parseFloat(donatedMoney) + parseFloat(currentDonatedMoney));
 
   const canjeoIgual = async () => {
     db.ref("requests/" + requestId).update({
@@ -372,12 +374,12 @@ function PointsEqualToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({
       wauwPoints: 0,
-      donatedMoney: newDineroApoyo + currentDineroApoyo,
+      donatedMoney: parseFloat(donatedMoney) + parseFloat(currentDonatedMoney),
     });
 
     Alert.alert(
       "Pago realizado",
-      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${newDineroApoyo}€`
+      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTu saldo de Wauw Points se ha agotado.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${donatedMoney}€`
     );
 
     navigation.popToTop("Services");
@@ -431,6 +433,8 @@ function PointsLessToPrice(props) {
     checked,
     setIsChecked,
     priceRequestConst,
+    donatedMoney,
+    currentDonatedMoney
   } = props;
 
   let resta = Math.round(wauwPoints * 0.65 * 100) / 100;
@@ -505,6 +509,8 @@ function PointsMoreToPrice(props) {
     currentUserID,
     navigation,
     priceRequestConst,
+    donatedMoney,
+    currentDonatedMoney,
   } = props;
 
   let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
@@ -521,12 +527,12 @@ function PointsMoreToPrice(props) {
 
     db.ref("wauwers/" + currentUserID).update({
       wauwPoints: deMas,
-      donatedMoney: newDineroApoyo + currentDineroApoyo,
+      donatedMoney: parseFloat(donatedMoney) + parseFloat(currentDonatedMoney),
     });
 
     Alert.alert(
       "Pago realizado",
-      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan` + deMas + `Wauw Points.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${newDineroApoyo}€`
+      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan` + deMas + `Wauw Points.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${donatedMoney}€`
     );
 
     navigation.popToTop("Services");
