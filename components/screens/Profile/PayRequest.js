@@ -365,7 +365,6 @@ function PointsEqualToPrice(props) {
   } = props;
 
   let valor = Math.round(wauwPoints * 0.65 * 100) / 100;
-  console.log(parseFloat(donatedMoney) + parseFloat(currentDonatedMoney));
 
   const canjeoIgual = async () => {
     db.ref("requests/" + requestId).update({
