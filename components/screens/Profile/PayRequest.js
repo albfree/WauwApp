@@ -279,6 +279,7 @@ function PayRequest(props) {
           checked={checked}
           setIsChecked={setIsChecked}
           priceRequestConst={priceRequestConst}
+          currentUserID={currentUserID}
         ></PointsLessToPrice>
       ) : null}
 
