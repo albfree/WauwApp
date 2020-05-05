@@ -279,8 +279,6 @@ function PayRequest(props) {
           checked={checked}
           setIsChecked={setIsChecked}
           priceRequestConst={priceRequestConst}
-          donatedMoney={newDineroApoyo}
-          currentDonatedMoney={currentDineroApoyo}
         ></PointsLessToPrice>
       ) : null}
 
@@ -432,8 +430,6 @@ function PointsLessToPrice(props) {
     checked,
     setIsChecked,
     priceRequestConst,
-    donatedMoney,
-    currentDonatedMoney
   } = props;
 
   let resta = Math.round(wauwPoints * 0.65 * 100) / 100;
@@ -457,6 +453,10 @@ function PointsLessToPrice(props) {
       "Aprobar ISPP con 6⏳ h/semanales: ¡DIFICULTAD DIOS! 🐶"
     );
   };
+
+  db.ref("wauwers/" + currentUserID).update({
+    wauwPoints: 0,
+  });
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
