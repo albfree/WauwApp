@@ -442,6 +442,7 @@ function PointsLessToPrice(props) {
 
   const setChecked = () => {
     if (checked === false) {
+      
       setPriceRequest(Math.round((priceRequest - resta) * 100) / 100);
     } else {
       setPriceRequest(Math.round((priceRequest + resta) * 100) / 100);
