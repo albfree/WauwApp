@@ -244,7 +244,7 @@ function EditDeleteAccommodation(props) {
                 <TextInput
                   value={navigation.state.params.accommodation.salary}
                   placeholder={(
-                    navigation.state.params.accommodation.salary * 0.8
+                    navigation.state.params.accommodation.salary
                   )
                     .toFixed(2)
                     .toString()}
@@ -334,7 +334,7 @@ function EditDeleteAccommodation(props) {
                   Precio por noche
                 </Text>
                 <Text style={requestsStyles.requestsTxt13}>
-                  {(navigation.state.params.accommodation.salary * 0.8)
+                  {(navigation.state.params.accommodation.salary)
                     .toFixed(2)
                     .toString()}{" "}
                   €
