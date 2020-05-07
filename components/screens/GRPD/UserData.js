@@ -123,6 +123,7 @@ export default function UserData(props) {
     userEmail += "Email: " + user.email + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
+    userEmail += "Cantidad donada: " + parseFloat(user.donatedMoney).toFixed(2) + "€\n";
     if (user.hasOwnProperty("location")) {
       userEmail += user.location.latitude + "\n";
       userEmail += user.location.latitudeDelta + "\n";
@@ -280,6 +281,7 @@ export default function UserData(props) {
           <Text>Email: {user.email}</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
+          <Text>Cantidad donada: {parseFloat(user.donatedMoney).toFixed(2)}€</Text>
           {user.hasOwnProperty("location") ? (
             <View>
               <Text> La localización es visible sólo para ti</Text>
