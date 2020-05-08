@@ -67,7 +67,7 @@ function PayRequest(props) {
     }
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   //When loading paypal page it refirects lots of times. This prop to control start loading only first time
   const [shouldShowWebViewLoading, setShouldShowWebviewLoading] = useState(
@@ -173,9 +173,9 @@ function PayRequest(props) {
 
             setPaypalUrl(approvalUrl);
           })
-          .catch((err) => {});
+          .catch((err) => { });
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   /*---End Paypal checkout section---*/
@@ -219,8 +219,8 @@ function PayRequest(props) {
           Alert.alert(
             "Pago realizado",
             "El pago se ha realizado correctamente. \n\nSe han sumado " +
-              Math.round((priceRequest / 6.5) * 100) / 100 +
-              " Wauw Points a tu saldo de puntos." + `\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${newDineroApoyo}€`
+            Math.round((priceRequest / 6.5) * 100) / 100 +
+            " Wauw Points a tu saldo de puntos." + `\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${newDineroApoyo}€`
           );
 
           navigation.popToTop("Services");
@@ -234,14 +234,29 @@ function PayRequest(props) {
           setShouldShowWebviewLoading(true);
         });
 
-      let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
+      if (checked) {
 
-      db.ref("wauwers/" + currentUserID).once("child_added", (snap) => {
-        db.ref("wauwers/" + currentUserID).update({
-          wauwPoints: newPoints + currentUserWauwPoints,
-          donatedMoney: parseFloat(newDineroApoyo) + parseFloat(currentDineroApoyo),
+        let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
+
+        db.ref("wauwers/" + currentUserID).once("child_added", (snap) => {
+          db.ref("wauwers/" + currentUserID).update({
+            wauwPoints: newPoints,
+            donatedMoney: parseFloat(newDineroApoyo) + parseFloat(currentDineroApoyo),
+          });
         });
-      });
+
+        setIsChecked(!checked);
+
+      } else {
+        let newPoints = Math.round((priceRequest / 6.5) * 100) / 100;
+
+        db.ref("wauwers/" + currentUserID).once("child_added", (snap) => {
+          db.ref("wauwers/" + currentUserID).update({
+            wauwPoints: newPoints + currentUserWauwPoints,
+            donatedMoney: parseFloat(newDineroApoyo) + parseFloat(currentDineroApoyo),
+          });
+        });
+      }
     }
   };
 
@@ -270,18 +285,18 @@ function PayRequest(props) {
 
       {(currentUserWauwPoints > 0 &&
         Math.round(currentUserWauwPoints * 0.65 * 100) / 100 < priceRequest) ||
-      checked ? (
-        <PointsLessToPrice
-          buyBook={buyBook}
-          wauwPoints={currentUserWauwPoints}
-          priceRequest={priceRequest}
-          setPriceRequest={setPriceRequest}
-          checked={checked}
-          setIsChecked={setIsChecked}
-          priceRequestConst={priceRequestConst}
-          currentUserID={currentUserID}
-        ></PointsLessToPrice>
-      ) : null}
+        checked ? (
+          <PointsLessToPrice
+            buyBook={buyBook}
+            wauwPoints={currentUserWauwPoints}
+            priceRequest={priceRequest}
+            setPriceRequest={setPriceRequest}
+            checked={checked}
+            setIsChecked={setIsChecked}
+            priceRequestConst={priceRequestConst}
+            currentUserID={currentUserID}
+          ></PointsLessToPrice>
+        ) : null}
 
       {Math.round(currentUserWauwPoints * 0.65 * 100) / 100 > priceRequest ? (
         <PointsMoreToPrice
@@ -442,7 +457,7 @@ function PointsLessToPrice(props) {
 
   const setChecked = () => {
     if (checked === false) {
-      
+
       setPriceRequest(Math.round((priceRequest - resta) * 100) / 100);
     } else {
       setPriceRequest(Math.round((priceRequest + resta) * 100) / 100);
@@ -530,7 +545,7 @@ function PointsMoreToPrice(props) {
 
     Alert.alert(
       "Pago realizado",
-      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan` + deMas + `Wauw Points.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${donatedMoney}€`
+      `Has realizado el pago del servicio con Wauw Points correctamente. \n\nTe quedan ` + deMas + ` Wauw Points.\n\nAdemás, con este pago ha realizado una aportación a las protectoras de ${donatedMoney}€`
     );
 
     navigation.popToTop("Services");
