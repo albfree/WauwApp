@@ -34,11 +34,13 @@ export default function ProfileLocationForm(props) {
         userInfo={userInfo}
         navigation={navigation}
       />
-      <Map
+
+        <Map
         isVisibleMap={isVisibleMap}
         setIsVisibleMap={setIsVisibleMap}
         setLocationWauwer={setLocationWauwer}
       />
+      
       {locationWauwer &&  (
         <Address
           locationWauwer={locationWauwer}
@@ -215,7 +217,7 @@ function Address(props) {
   return (
       <View>
         <Text>Nota: La ubicación que se mostrará no tiene una precisión al 100%, pero sólo la usamos para que usted se pueda guiar.{"\n"}</Text>
-        <Text>Ha marcado la ubicación cerca de: {address.name}{"\n"}
+        <Text>Ha marcado la ubicación cerca de: {"\n"}{address.name}{"\n"}
               Si su ubicación esta cerca de esa dirección, pulse "Guardar ubicación" para terminar el proceso.</Text>
       </View>
   );
