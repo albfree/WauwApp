@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Alert, SafeAreaView } from "react-native";
+import { View, Alert, SafeAreaView, Text } from "react-native";
 import { Button, Icon } from "react-native-elements";
 import { db } from "../../population/config";
 import * as Location from "expo-location";
@@ -15,6 +15,16 @@ export default function ProfileLocationForm(props) {
 
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
+  const [address, setAddress] = useState(null);
+ 
+
+  useEffect(() => {
+    let add= {
+      name: "ninguna",
+   };
+   setAddress(add);
+  },[]);
+   
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -29,6 +39,13 @@ export default function ProfileLocationForm(props) {
         setIsVisibleMap={setIsVisibleMap}
         setLocationWauwer={setLocationWauwer}
       />
+      {locationWauwer &&  (
+        <Address
+          locationWauwer={locationWauwer}
+          setAddress={setAddress}
+          address={address}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -168,5 +185,38 @@ function Map(props) {
         </View>
       </View>
     </Modal>
+  );
+}
+
+function Address(props) {
+  const {locationWauwer, address, setAddress} = props;
+
+  let loc = {
+    latitude: locationWauwer.latitude,
+    longitude: locationWauwer.longitude,
+  };
+
+  useEffect(() => {
+    (async () => {
+      const resultPermissions = await Permissions.askAsync(
+        Permissions.LOCATION
+      );
+      const statusPermissions = resultPermissions.permissions.location.status;
+
+      if (statusPermissions !== "granted") {
+        setError("No tienes activado el permiso de localización.");
+      } else {
+        const add = await Location.reverseGeocodeAsync(loc);
+        setAddress(add[0]);
+      }
+    })();
+  }, [locationWauwer]);
+
+  return (
+      <View>
+        <Text>Nota: La ubicación que se mostrará no tiene una precisión al 100%, pero sólo la usamos para que usted se pueda guiar.{"\n"}</Text>
+        <Text>Ha marcado la ubicación cerca de: {address.name}{"\n"}
+              Si su ubicación esta cerca de esa dirección, pulse "Guardar ubicación" para terminar el proceso.</Text>
+      </View>
   );
 }
