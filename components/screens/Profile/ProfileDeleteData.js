@@ -11,8 +11,8 @@ import firebase from "firebase";
 import { profileStyles } from "../../styles/profileStyle";
 
 function ProfileDeleteData(props) {
-  const { navigation, screenProps } = props;
-  const { userInfo } = screenProps;
+  const { navigation } = props;
+
   const [loading, setLoading] = useState(true);
   const [requestsWorkerList, setRequestWorkerList] = useState([]);
   const [requestsOwnerList, setRequestOwnerList] = useState([]);
@@ -20,7 +20,13 @@ function ProfileDeleteData(props) {
   const [anonUser, setAnonUser] = useState();
   const [reloadData, setReloadData] = useState(false);
 
-  const wauwerId = userInfo.id;
+  let wauwerId;
+  db.ref("wauwers")
+    .orderByChild("email")
+    .equalTo(email)
+    .on("child_added", (snap) => {
+      wauwerId = snap.val().id;
+    });
 
   let anonWauwerId;
   db.ref("wauwers")
@@ -124,21 +130,7 @@ function ProfileDeleteData(props) {
               "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
             );
             break;
-          } else {
-            if (requestWorkerOk === true) {
-              let idWorker = {
-                worker: anonWauwerId,
-              };
-              db.ref("requests/" + requestsWorkerList[i].id).update(idWorker);
-              db.ref("chats/" + requestsWorkerList[i].id).remove();
-            }
-          }
-        } else {
-          db.ref("requests/" + requestsWorkerList[i].id).update({
-            pending: false,
-            isCanceled: true,
-            worker: anonWauwerId,
-          });
+          } 
         }
       }
     }
@@ -157,23 +149,14 @@ function ProfileDeleteData(props) {
               "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
             );
             break;
-          } else {
-            if (requestOwnerOk === true) {
-              let idOwner = {
-                owner: anonWauwerId,
-              };
-              db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
-              db.ref("chats/" + requestsOwnerList[i].id).remove();
-            }
-          }
-        } else {
-          db.ref("request/" + requestsOwnerList[i].id).remove();
+          } 
         }
       }
     }
+  
 
     if (requestWorkerOk && requestOwnerOk) {
-      deleteData(wauwerId);
+      deleteData(wauwerId, anonWauwerId, requestsWorkerList, requestsOwnerList);
     }
   };
 
@@ -222,8 +205,7 @@ function ProfileDeleteData(props) {
   );
 }
 
-function deleteData(props) {
-  let wauwerId = props;
+function deleteData(wauwerId, anonWauwerId, requestsWorkerList, requestsOwnerList) {
 
   var user = [];
   db.ref("users")
@@ -258,6 +240,40 @@ function deleteData(props) {
           "Por razones de seguridad, necesitamos que vuelvas a iniciar sesión en esta cuenta para poder eliminarla."
         );
       } else {
+
+        // ANONIMIZADO/BORRADO DE REQUESTS
+
+        if (requestsWorkerList && requestsWorkerList.length){
+          for (let i = 0; i < requestsWorkerList.length; i++) {
+            if (requestsWorkerList[i].pending === true) {
+              db.ref("requests/" + requestsWorkerList[i].id).update({
+                pending: false,
+                isCanceled: true,
+                worker: anonWauwerId,
+              });
+            } else {
+              let idWorker = {
+                worker: anonWauwerId,
+              };
+              db.ref("requests/" + requestsWorkerList[i].id).update(idWorker);
+              db.ref("chats/" + requestsWorkerList[i].id).remove();
+            }
+          }
+        }
+
+        if (requestsOwnerList && requestsOwnerList.length) {
+          for (let i = 0; i < requestsOwnerList.length; i++) {
+            if(requestsOwnerList[i].pending === true) {
+              db.ref("request/" + requestsOwnerList[i].id).remove();
+            }else {
+              let idOwner = {
+                owner: anonWauwerId,
+              };
+              db.ref("requests/" + requestsOwnerList[i].id).update(idOwner);
+              db.ref("chats/" + requestsOwnerList[i].id).remove();
+            }
+          }
+        }
         //BORRADO DE MASCOTAS
 
         db.ref("pet/" + wauwerId).remove();
