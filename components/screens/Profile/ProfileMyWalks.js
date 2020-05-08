@@ -165,7 +165,7 @@ function Request(requestIn) {
               </Text>
               <Text style={statusC}>{status} </Text>
               <Text style={requestsStyles.requestsTxt2}>
-                {request.item.price} € <Text style={payC}>{pay}</Text>
+                {request.item.salary} € <Text style={payC}>{pay}</Text>
               </Text>
             </View>
             <View style={requestsStyles.requestsView3}>
