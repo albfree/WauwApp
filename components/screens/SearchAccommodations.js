@@ -27,6 +27,7 @@ function wait(timeout) {
 function ListAccommodations(props) {
   const { navigation, screenProps } = props;
   const { userInfo } = screenProps;
+  
   const [accommodationsList, setAccommodationList] = useState([]);
   const [accommodationsList2, setAccommodationList2] = useState([]);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
@@ -42,8 +43,9 @@ function ListAccommodations(props) {
 
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
-
+  
   useEffect(() => {
+    
     db.ref("accommodation")
       .orderByChild("isCanceled")
       .equalTo(false)
@@ -100,8 +102,8 @@ function ListAccommodations(props) {
           krom.push(array[0]);
           krom.push(array[1]);
           const distancia = calculaDistancia(
-            userInfo.location.latitudeUser,
-            userInfo.location.longitudeUser,
+            userInfo.location.latitude,
+            userInfo.location.longitude,
             array[2][0],
             array[2][1]
           );
@@ -119,8 +121,8 @@ function ListAccommodations(props) {
           krom.push(array[0]);
           krom.push(array[1]);
           const distancia = calculaDistancia(
-            userInfo.location.latitudeUser,
-            userInfo.location.longitudeUser,
+            userInfo.location.latitude,
+            userInfo.location.longitude,
             array[2][0],
             array[2][1]
           );
