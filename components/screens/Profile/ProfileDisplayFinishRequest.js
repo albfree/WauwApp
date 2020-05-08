@@ -183,7 +183,7 @@ function DisplayFinishRequest(props) {
               </View>
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
+                  {request.salary} €
                 </Text>
                 <Text style={requestsStyles.requestsTxt9}>{status}</Text>
                 <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
@@ -253,7 +253,7 @@ function DisplayFinishRequest(props) {
               </View>
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt11}>
-                  {request.price} €
+                  {request.salary} €
                 </Text>
                 <Text style={requestsStyles.requestsTxt12}>{status}</Text>
               </View>
@@ -293,7 +293,7 @@ function DisplayFinishRequest(props) {
               </View>
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
+                  {request.salary} €
                 </Text>
                 <Text style={requestsStyles.requestsTxt13}>{status}</Text>
                 <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
@@ -367,7 +367,7 @@ function DisplayFinishRequest(props) {
               </View>
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
+                  {request.salary} €
                 </Text>
                 <Text style={requestsStyles.requestsTxt13}>{status}</Text>
                 <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
@@ -452,7 +452,7 @@ function DisplayFinishRequest(props) {
               </View>
               <View style={requestsStyles.requestsView6}>
                 <Text style={requestsStyles.requestsTxt8}>
-                  {request.price} €
+                  {request.salary} €
                 </Text>
                 <Text style={requestsStyles.requestsTxt13}>{status}</Text>
                 <Text style={requestsStyles.requestsTxt10}> {pago} </Text>
