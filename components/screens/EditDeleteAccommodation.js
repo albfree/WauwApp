@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { View, Text, TextInput, SafeAreaView, Alert } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -8,9 +8,11 @@ import { Button, Icon } from "react-native-elements";
 import { globalStyles } from "../styles/global";
 import { requestsStyles } from "../styles/requestsStyle";
 import { accommodationStyles } from "../styles/accommodationStyle";
+import Toast from "react-native-easy-toast";
 
 function EditDeleteAccommodation(props) {
   const { navigation } = props;
+  const toastRef = useRef();
 
   const [newStartTime, setStartTime] = useState(
     new Date(navigation.state.params.accommodation.startTime)
@@ -32,9 +34,15 @@ function EditDeleteAccommodation(props) {
   const [setReloadData] = useState(false);
 
   const onChangeS = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowS(Platform.OS === "ios");
-    setStartTime(currentDate);
+    if (event.type === "set") {
+      const currentDate = selectedDate;
+      setShowS(false);
+      setStartTime(currentDate);
+    } else if (event.type === "dismissed") {
+      const defaultTime = newStartTime;
+      setShowS(false);
+      setStartTime(defaultTime);
+    }
   };
 
   const showModeS = (currentMode) => {
@@ -47,9 +55,15 @@ function EditDeleteAccommodation(props) {
   };
 
   const onChangeE = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowE(Platform.OS === "ios");
-    setEndTime(currentDate);
+    if (event.type === "set") {
+      const currentDate = selectedDate;
+      setShowE(false);
+      setEndTime(currentDate);
+    } else if (event.type === "dismissed") {
+      const defaultTime = newEndTime;
+      setShowE(false);
+      setEndTime(defaultTime);
+    }
   };
 
   const showModeE = (currentMode) => {
@@ -64,15 +78,36 @@ function EditDeleteAccommodation(props) {
   const [newSalary, setNewSalary] = useState(
     navigation.state.params.accommodation.salary
   );
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const checkSalary = () => {
+    if (newSalary !== null) {
+      setNewSalary(Math.round(newSalary * 100) / 100);
+    }
+    if (newSalary === null || isNaN(newSalary)) {
+      toastRef.current.show("Salario inválido");
+      setNewSalary(null);
+    } else {
+      if (!Number.isInteger(Math.round(newSalary * 1000000) / 10000)) {
+        toastRef.current.show("Precio con dos decimales máximo");
+        setNewSalary(null);
+      } else {
+        if (newSalary < 10) {
+          toastRef.current.show("Salario mínimo de 10");
+          setNewSalary(null);
+        } else if (newSalary > 500) {
+          toastRef.current.show("Precio máximo 500");
+          setNewSalary(null);
+        } else {
+          all();
+        }
+      }
+    }
+  };
 
   const all = () => {
     updateAccomodation();
-  };
-
-  const addCommissions = (props) => {
-    let price = props * 1.25;
-    setNewSalary(price);
   };
 
   const id = navigation.state.params.accommodation.id;
@@ -117,7 +152,6 @@ function EditDeleteAccommodation(props) {
     if (
       newStartTime === null ||
       newEndTime === null ||
-      newSalary === null ||
       newStartTime < new Date() ||
       newEndTime < newStartTime
     ) {
@@ -144,40 +178,28 @@ function EditDeleteAccommodation(props) {
       }
       Alert.alert("Advertencia", errores.toString());
     } else {
-      let errores = "";
-      if (isNaN(newSalary) || newSalary < 10) {
-        errores = errores.concat("El precio mínimo es 10.\n");
-        if (newStartTime < new Date() || newEndTime < newStartTime) {
-          errores = errores.concat(
-            "La fecha de entrada debe ser posterior o igual a la actual.\n"
-          );
-          errores = errores.concat(
-            "La fecha de entrada debe ser anterior o igual a la fecha de salida.\n"
-          );
-        }
+      const money = Math.round(newSalary * 1.25 * 100) / 100;
+      
+      let accommodationData = {
+        startTime: newStartTime.toISOString(),
+        endTime: newEndTime.toISOString(),
+        salary: Math.round(newSalary * 100) / 100,
+        price: money,
+      };
 
-        Alert.alert("Advertencia", errores.toString());
-      } else {
-        let accommodationData = {
-          startTime: newStartTime.toISOString(),
-          endTime: newEndTime.toISOString(),
-          salary: newSalary,
-        };
-
-        db.ref("accommodation")
-          .child(id)
-          .update(accommodationData)
-          .then(() => {
-            setReloadData(true);
-            setIsVisibleModal(false);
-            setIsLoading(true);
-          })
-          .catch(() => {
-            setIsLoading(false);
-          });
-        Alert.alert("Éxito", "Se ha editado el alojamiento correctamente.");
-        navigation.navigate("MyAccommodations");
-      }
+      db.ref("accommodation")
+        .child(id)
+        .update(accommodationData)
+        .then(() => {
+          setReloadData(true);
+          setIsVisibleModal(false);
+          setIsLoading(true);
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
+      Alert.alert("Éxito", "Se ha editado el alojamiento correctamente.");
+      navigation.navigate("MyAccommodations");
     }
   };
 
@@ -221,7 +243,7 @@ function EditDeleteAccommodation(props) {
                     accommodationStyles.accommodationBtnContainer3
                   }
                   title="Guardar"
-                  onPress={all}
+                  onPress={checkSalary}
                   icon={
                     <Icon
                       type="material-community"
@@ -242,16 +264,17 @@ function EditDeleteAccommodation(props) {
                   Precio / noche
                 </Text>
                 <TextInput
-                  value={navigation.state.params.accommodation.salary}
-                  placeholder={(
-                    navigation.state.params.accommodation.salary
-                  )
-                    .toFixed(2)
-                    .toString()}
+                  placeholder={navigation.state.params.accommodation.salary.toString()}
                   keyboardType="numeric"
                   style={accommodationStyles.accommodationTxt4}
-                  onChange={(v) => addCommissions(v.nativeEvent.text)}
-                />
+                  onChange={(v) => {
+                    if (v.nativeEvent.text !== "") {
+                      setNewSalary(v.nativeEvent.text);
+                    } else {
+                      setNewSalary(null);
+                    }
+                  }}
+                ></TextInput>
               </View>
               <View style={requestsStyles.requestsView6}>
                 <Button
@@ -333,17 +356,13 @@ function EditDeleteAccommodation(props) {
                 <Text style={accommodationStyles.accommodationTxt}>
                   Precio por noche
                 </Text>
-                <Text style={requestsStyles.requestsTxt13}>
-                  {(navigation.state.params.accommodation.salary)
-                    .toFixed(2)
-                    .toString()}{" "}
-                  €
-                </Text>
+                <Text style={requestsStyles.requestsTxt13}>{newSalary} €</Text>
               </View>
             </View>
           </View>
         </View>
       )}
+      <Toast ref={toastRef} position="top" opacity={0.9} />
     </SafeAreaView>
   );
 }

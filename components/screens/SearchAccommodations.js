@@ -27,7 +27,7 @@ function wait(timeout) {
 function ListAccommodations(props) {
   const { navigation, screenProps } = props;
   const { userInfo } = screenProps;
-  
+
   const [accommodationsList, setAccommodationList] = useState([]);
   const [accommodationsList2, setAccommodationList2] = useState([]);
   const [isVisibleLoading, setIsVisibleLoading] = useState(true);
@@ -43,9 +43,8 @@ function ListAccommodations(props) {
 
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
-  
+
   useEffect(() => {
-    
     db.ref("accommodation")
       .orderByChild("isCanceled")
       .equalTo(false)
@@ -87,6 +86,7 @@ function ListAccommodations(props) {
               myAccomodation.push(arrayLocation);
               accommodations2.push(myAccomodation);
             }
+
             if (
               (maxPrice !== null && child.val().price > maxPrice) ||
               (minRating !== null && score < minRating)
@@ -178,13 +178,17 @@ function ListAccommodations(props) {
     } else {
       if (
         maxPrice !== null &&
-        (!Number.isInteger(maxPrice * 100) || maxPrice < 10)
+        (!Number.isInteger(Math.round(maxPrice * 1000000) / 10000) ||
+          maxPrice < 10)
       ) {
         toastRef.current.show("Precio mínimo 10 con máximo 2 decimales");
         setMaxPrice(null);
         setMinRating(null);
       } else {
-        if (minRating !== null && !Number.isInteger(minRating * 10)) {
+        if (
+          minRating !== null &&
+          !Number.isInteger(Math.round(minRating * 100) / 10)
+        ) {
           toastRef.current.show("Valoración con máximo 1 decimal");
           setMaxPrice(null);
           setMinRating(null);
@@ -206,6 +210,10 @@ function ListAccommodations(props) {
     setMaxPrice(null);
     setMinRating(null);
     setReloadData(true);
+  };
+
+  const seteaPrecio = (val) => {
+    setMaxPrice(parseFloat(Math.round(val * 100) / 100));
   };
 
   return (
