@@ -15,17 +15,29 @@ export default function ProfileLocationForm(props) {
 
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
-  const [address, setAddress] = useState(null);
- 
+  const [location, setLocation] = useState(null);
 
   useEffect(() => {
-    let add= {
-      name: "ninguna",
-   };
-   setAddress(add);
-  },[]);
-   
+    (async () => {
+      const resultPermissions = await Permissions.askAsync(
+        Permissions.LOCATION
+      );
+      const statusPermissions = resultPermissions.permissions.location.status;
 
+      if (statusPermissions !== "granted") {
+        setError("No tienes activado el permiso de localización.");
+      } else {
+        const loc = await Location.getCurrentPositionAsync({});
+        setLocation({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.001,
+        });
+      }
+    })();
+  }, []);
+ 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
       <FormAdd
@@ -34,18 +46,14 @@ export default function ProfileLocationForm(props) {
         userInfo={userInfo}
         navigation={navigation}
       />
-      <Map
+
+        <Map
         isVisibleMap={isVisibleMap}
+        location={location}
+        setLocation={setLocation}
         setIsVisibleMap={setIsVisibleMap}
         setLocationWauwer={setLocationWauwer}
       />
-      {locationWauwer &&  (
-        <Address
-          locationWauwer={locationWauwer}
-          setAddress={setAddress}
-          address={address}
-        />
-      )}
     </SafeAreaView>
   );
 }
@@ -117,29 +125,7 @@ function FormAdd(props) {
 }
 
 function Map(props) {
-  const { isVisibleMap, setIsVisibleMap, setLocationWauwer } = props;
-  const [location, setLocation] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const resultPermissions = await Permissions.askAsync(
-        Permissions.LOCATION
-      );
-      const statusPermissions = resultPermissions.permissions.location.status;
-
-      if (statusPermissions !== "granted") {
-        setError("No tienes activado el permiso de localización.");
-      } else {
-        const loc = await Location.getCurrentPositionAsync({});
-        setLocation({
-          latitude: loc.coords.latitude,
-          longitude: loc.coords.longitude,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.001,
-        });
-      }
-    })();
-  }, []);
+  const { isVisibleMap, setIsVisibleMap, setLocationWauwer, location, setLocation } = props;
 
   const confirmLocation = () => {
     setLocationWauwer(location);
@@ -185,38 +171,5 @@ function Map(props) {
         </View>
       </View>
     </Modal>
-  );
-}
-
-function Address(props) {
-  const {locationWauwer, address, setAddress} = props;
-
-  let loc = {
-    latitude: locationWauwer.latitude,
-    longitude: locationWauwer.longitude,
-  };
-
-  useEffect(() => {
-    (async () => {
-      const resultPermissions = await Permissions.askAsync(
-        Permissions.LOCATION
-      );
-      const statusPermissions = resultPermissions.permissions.location.status;
-
-      if (statusPermissions !== "granted") {
-        setError("No tienes activado el permiso de localización.");
-      } else {
-        const add = await Location.reverseGeocodeAsync(loc);
-        setAddress(add[0]);
-      }
-    })();
-  }, [locationWauwer]);
-
-  return (
-      <View>
-        <Text>Nota: La ubicación que se mostrará no tiene una precisión al 100%, pero sólo la usamos para que usted se pueda guiar.{"\n"}</Text>
-        <Text>Ha marcado la ubicación cerca de: {address.name}{"\n"}
-              Si su ubicación esta cerca de esa dirección, pulse "Guardar ubicación" para terminar el proceso.</Text>
-      </View>
   );
 }
