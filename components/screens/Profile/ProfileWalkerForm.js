@@ -106,7 +106,7 @@ function ProfileWalkerForm(props) {
       });
 
     const money = Math.round(sueldo * 1.3 * 100) / 100;
-
+    
     const walkData = {
       availability: availability,
       price: money,
@@ -195,7 +195,7 @@ function ProfileWalkerForm(props) {
       toastRef.current.show("Salario inválido");
       setSueldo(null);
     } else {
-      if (!Number.isInteger(sueldo * 100)) {
+      if (!Number.isInteger(Math.round(sueldo * 1000000) / 10000)) {
         toastRef.current.show("Salario con dos decimales máximo");
         setSueldo(null);
       } else {
