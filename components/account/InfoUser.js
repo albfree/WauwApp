@@ -18,7 +18,7 @@ export default function InfoUser(props) {
   let pointsToMoney = parseFloat(Math.round(userInfo.wauwPoints * 0.65 * 100) / 100).toFixed(2);
   let moneyPoints = "(" + pointsToMoney + "€)";
 
-  let donatedMoney = "(" + parseFloat(userInfo.donatedMoney).toFixed(2) + "€)";
+  let donatedMoney = parseFloat(userInfo.donatedMoney).toFixed(2) + "€";
 
   const changeAvatar = async () => {
     const resultPermission = await Permissions.askAsync(
