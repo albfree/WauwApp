@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   Alert,
   ScrollView,
-  Platform,
 } from "react-native";
 import { db } from "../population/config.js";
 import { withNavigation } from "react-navigation";
@@ -84,7 +83,7 @@ function CreateAccommodation(props) {
       toastRef.current.show("Salario inválido");
       setNewSalary(null);
     } else {
-      if (!Number.isInteger(newSalary * 100)) {
+      if (!Number.isInteger(Math.round(newSalary * 1000000) / 10000)) {
         toastRef.current.show("Precio con dos decimales máximo");
         setNewSalary(null);
       } else {
@@ -131,12 +130,13 @@ function CreateAccommodation(props) {
       Alert.alert("Advertencia", errores.toString());
     } else {
       const money = Math.round(newSalary * 1.25 * 100) / 100;
+      
       let accommodationData = {
         id: id,
         startTime: newStartTime.toISOString(),
         endTime: newEndTime.toISOString(),
         isCanceled: newIsCanceled,
-        salary: newSalary * 1,
+        salary: Math.round(newSalary * 100) / 100,
         worker: userInfo.id,
         price: money,
       };
