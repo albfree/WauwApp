@@ -50,7 +50,6 @@ export const locationStyles = StyleSheet.create({
     backgroundColor: mapa2,
   },
   locationMapStyle: {
-    ...StyleSheet.absoluteFillObject,
     height: 550,
     width: "100%",
   },
