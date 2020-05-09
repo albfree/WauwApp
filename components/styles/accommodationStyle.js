@@ -44,7 +44,7 @@ export const accommodationStyles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 10,
     marginTop: 35,
-    width: 150,
+    width: "140%",
   },
   accommodationBtnContainer2: {
     alignSelf: "flex-end",
@@ -56,7 +56,7 @@ export const accommodationStyles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 10,
     marginTop: 35,
-    width: 150,
+    width: "140%",
   },
   accommodationBtnContainer3: {
     alignSelf: "flex-start",
@@ -68,7 +68,7 @@ export const accommodationStyles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 10,
     marginTop: 55,
-    width: 150,
+    width: "140%",
   },
   accommodationBtnContainer4: {
     alignSelf: "flex-end",
@@ -80,7 +80,7 @@ export const accommodationStyles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 10,
     marginTop: 55,
-    width: 150,
+    width: "140%",
   },
   accommodationBtnContainer5: {
     alignSelf: "center",

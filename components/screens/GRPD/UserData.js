@@ -27,7 +27,7 @@ export default function UserData(props) {
   const { userInfo } = screenProps;
 
   var user = userInfo;
-  
+
   var [pets, setPets] = useState([]);
   var [requestWorker, setRequestWorker] = useState([]);
   var [requestOwner, setRequestOwner] = useState([]);
@@ -123,7 +123,8 @@ export default function UserData(props) {
     userEmail += "Email: " + user.email + "\n";
     userEmail += "Wauwpoints: " + user.wauwPoints + "\n";
     userEmail += "Nota media: " + user.avgScore + "\n";
-    userEmail += "Cantidad donada: " + parseFloat(user.donatedMoney).toFixed(2) + "€\n";
+    userEmail +=
+      "Cantidad donada: " + parseFloat(user.donatedMoney).toFixed(2) + "€\n";
     if (user.hasOwnProperty("location")) {
       userEmail += user.location.latitude + "\n";
       userEmail += user.location.latitudeDelta + "\n";
@@ -264,13 +265,6 @@ export default function UserData(props) {
           <Text style={userDataStyles.userDataTxt}>Datos personales</Text>
           <Text style={userDataStyles.userDataTxt3}>Nombre: {user.name}</Text>
           <Text>Apellidos: {user.surname}</Text>
-          {user.hasOwnProperty("address") ? (
-            <View>
-              <Text>Dirección: {user.address}</Text>
-            </View>
-          ) : (
-            <Text> No tiene ninguna dirección registrada</Text>
-          )}
           {user.hasOwnProperty("description") ? (
             <View>
               <Text>Descripción: {user.description}</Text>
@@ -281,7 +275,9 @@ export default function UserData(props) {
           <Text>Email: {user.email}</Text>
           <Text>WauwPoints: {user.wauwPoints}</Text>
           <Text>Nota media: {user.avgScore}</Text>
-          <Text>Cantidad donada: {parseFloat(user.donatedMoney).toFixed(2)}€</Text>
+          <Text>
+            Cantidad donada: {parseFloat(user.donatedMoney).toFixed(2)}€
+          </Text>
           {user.hasOwnProperty("location") ? (
             <View>
               <Text> La localización es visible sólo para ti</Text>

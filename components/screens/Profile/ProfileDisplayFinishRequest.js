@@ -36,14 +36,12 @@ function DisplayFinishRequest(props) {
   const [error, setError] = useState("");
   bannedAssertion();
 
-  useEffect(() => {
-    db.ref("wauwers")
-      .orderByChild("id")
-      .equalTo(id)
-      .once("child_added", (snap) => {
-        worker = snap.val();
-      });
-  });
+  db.ref("wauwers")
+    .orderByChild("id")
+    .equalTo(id)
+    .once("child_added", (snap) => {
+      worker = snap.val();
+    });
 
   const assertIsNotBanned = () => {
     if (!worker.isBanned) {
@@ -171,8 +169,7 @@ function DisplayFinishRequest(props) {
                   Del{" "}
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}
                   {"\n"}
-                  al{" "}
-                  {request.endTime.toLocaleString("es-ES").substring(0, 10)}
+                  al {request.endTime.toLocaleString("es-ES").substring(0, 10)}
                 </Text>
               </View>
               <View style={requestsStyles.requestsView6}>
@@ -241,8 +238,7 @@ function DisplayFinishRequest(props) {
                   Del{" "}
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}
                   {"\n"}
-                  al{" "}
-                  {request.endTime.toLocaleString("es-ES").substring(0, 10)}
+                  al {request.endTime.toLocaleString("es-ES").substring(0, 10)}
                 </Text>
               </View>
               <View style={requestsStyles.requestsView6}>
@@ -281,8 +277,7 @@ function DisplayFinishRequest(props) {
                   Del{" "}
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}
                   {"\n"}
-                  al{" "}
-                  {request.endTime.toLocaleString("es-ES").substring(0, 10)}
+                  al {request.endTime.toLocaleString("es-ES").substring(0, 10)}
                 </Text>
               </View>
               <View style={requestsStyles.requestsView6}>
@@ -355,8 +350,7 @@ function DisplayFinishRequest(props) {
                   Del{" "}
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}
                   {"\n"}
-                  al{" "}
-                  {request.endTime.toLocaleString("es-ES").substring(0, 10)}
+                  al {request.endTime.toLocaleString("es-ES").substring(0, 10)}
                 </Text>
               </View>
               <View style={requestsStyles.requestsView6}>
@@ -400,8 +394,7 @@ function DisplayFinishRequest(props) {
                   Del{" "}
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}
                   {"\n"}
-                  al{" "}
-                  {request.endTime.toLocaleString("es-ES").substring(0, 10)}
+                  al {request.endTime.toLocaleString("es-ES").substring(0, 10)}
                 </Text>
               </View>
               <View style={requestsStyles.requestsView6}>
@@ -415,8 +408,7 @@ function DisplayFinishRequest(props) {
                   Del{" "}
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}
                   {"\n"}
-                  al{" "}
-                  {request.endTime.toLocaleString("es-ES").substring(0, 10)}
+                  al {request.endTime.toLocaleString("es-ES").substring(0, 10)}
                 </Text>
                 <Text style={requestsStyles.requestsTxt13}>{status}</Text>
                 <Text style={requestsStyles.requestsTxt14}> {pago} </Text>
@@ -440,8 +432,7 @@ function DisplayFinishRequest(props) {
                   Del{" "}
                   {request.startTime.toLocaleString("es-ES").substring(0, 10)}
                   {"\n"}
-                  al{" "}
-                  {request.endTime.toLocaleString("es-ES").substring(0, 10)}
+                  al {request.endTime.toLocaleString("es-ES").substring(0, 10)}
                 </Text>
               </View>
               <View style={requestsStyles.requestsView6}>

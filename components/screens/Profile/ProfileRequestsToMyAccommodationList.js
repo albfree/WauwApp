@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   TouchableOpacity,
+  RefreshControl,
   SafeAreaView,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
@@ -13,13 +14,25 @@ import { globalStyles } from "../../styles/global";
 import BlankView from "../BlankView";
 import { requestsStyles } from "../../styles/requestsStyle";
 
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 function ProfileRequestToMyRequestList(props) {
   const { navigation } = props;
   const { userInfo } = navigation.state.params;
-
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [requestsList, setRequestsList] = useState([]);
   const [reloadData, setReloadData] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(2000).then(() => setRefreshing(false));
+  }, [refreshing]);
 
   useEffect(() => {
     db.ref("requests")
@@ -41,11 +54,15 @@ function ProfileRequestToMyRequestList(props) {
       });
     setReloadData(false);
     setLoading(false);
-  }, [reloadData]);
+  }, [reloadData, refreshing]);
 
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Text style={requestsStyles.requestsTxt16}>
           Listado de solicitudes para este alojamiento
         </Text>
@@ -118,12 +135,10 @@ function Request(requestIn) {
               <NameByOwner id={request.item.owner} />
               {request.item.petNumber > 1 ? (
                 <Text style={requestsStyles.requestsTxt}>
-                  {"Alojamiento para " + request.item.petNumber + " perros"}
+                  {request.item.petNumber + " perros"}
                 </Text>
               ) : (
-                <Text>
-                  {"Alojamiento para " + request.item.petNumber + " perro"}
-                </Text>
+                <Text>{request.item.petNumber + " perro"}</Text>
               )}
               <Text style={statusC}>{status} </Text>
             </View>
@@ -151,7 +166,7 @@ function NameByOwner(ownerId) {
 
   return (
     <View>
-      <Text>{"Solicitud de " + wauwerName}</Text>
+      <Text>{wauwerName}</Text>
     </View>
   );
 }
