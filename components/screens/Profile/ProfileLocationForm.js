@@ -15,6 +15,28 @@ export default function ProfileLocationForm(props) {
 
   const [isVisibleMap, setIsVisibleMap] = useState(false);
   const [locationWauwer, setLocationWauwer] = useState(null);
+  const [location, setLocation] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      const resultPermissions = await Permissions.askAsync(
+        Permissions.LOCATION
+      );
+      const statusPermissions = resultPermissions.permissions.location.status;
+
+      if (statusPermissions !== "granted") {
+        setError("No tienes activado el permiso de localización.");
+      } else {
+        const loc = await Location.getCurrentPositionAsync({});
+        setLocation({
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude,
+          latitudeDelta: 0.001,
+          longitudeDelta: 0.001,
+        });
+      }
+    })();
+  }, []);
  
   return (
     <SafeAreaView style={globalStyles.viewFlex1}>
@@ -27,6 +49,8 @@ export default function ProfileLocationForm(props) {
 
         <Map
         isVisibleMap={isVisibleMap}
+        location={location}
+        setLocation={setLocation}
         setIsVisibleMap={setIsVisibleMap}
         setLocationWauwer={setLocationWauwer}
       />
@@ -101,29 +125,7 @@ function FormAdd(props) {
 }
 
 function Map(props) {
-  const { isVisibleMap, setIsVisibleMap, setLocationWauwer } = props;
-  const [location, setLocation] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      const resultPermissions = await Permissions.askAsync(
-        Permissions.LOCATION
-      );
-      const statusPermissions = resultPermissions.permissions.location.status;
-
-      if (statusPermissions !== "granted") {
-        setError("No tienes activado el permiso de localización.");
-      } else {
-        const loc = await Location.getCurrentPositionAsync({});
-        setLocation({
-          latitude: loc.coords.latitude,
-          longitude: loc.coords.longitude,
-          latitudeDelta: 0.001,
-          longitudeDelta: 0.001,
-        });
-      }
-    })();
-  }, []);
+  const { isVisibleMap, setIsVisibleMap, setLocationWauwer, location, setLocation } = props;
 
   const confirmLocation = () => {
     setLocationWauwer(location);
