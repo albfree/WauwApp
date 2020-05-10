@@ -125,10 +125,6 @@ function ProfileDeleteData(props) {
             requestsWorkerList[i].isRated === false
           ) {
             requestWorkerOk = false;
-            Alert.alert(
-              "Alerta",
-              "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
-            );
             break;
           } 
         }
@@ -144,10 +140,6 @@ function ProfileDeleteData(props) {
             requestsOwnerList[i].isRated === false
           ) {
             requestOwnerOk = false;
-            Alert.alert(
-              "Alerta",
-              "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
-            );
             break;
           } 
         }
@@ -157,6 +149,11 @@ function ProfileDeleteData(props) {
 
     if (requestWorkerOk && requestOwnerOk) {
       deleteData(wauwerId, anonWauwerId, requestsWorkerList, requestsOwnerList);
+    } else {
+      Alert.alert(
+        "Alerta",
+        "Lo sentimos, pero tienes alguna solicitud pendiente de finalización, pago o valoración."
+      );
     }
   };
 
