@@ -264,7 +264,7 @@ function deleteData(wauwerId, anonWauwerId, requestsWorkerList, requestsOwnerLis
         if (requestsOwnerList && requestsOwnerList.length) {
           for (let i = 0; i < requestsOwnerList.length; i++) {
             if(requestsOwnerList[i].pending === true) {
-              db.ref("request/" + requestsOwnerList[i].id).remove();
+              db.ref("requests/" + requestsOwnerList[i].id).remove();
             }else {
               let idOwner = {
                 owner: anonWauwerId,
