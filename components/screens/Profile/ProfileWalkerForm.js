@@ -55,8 +55,9 @@ function ProfileWalkerForm(props) {
             child.val().availability.day +
             ": " +
             child.val().availability.startTime +
-            " - " +
-            child.val().availability.endDate;
+            "h - " +
+            child.val().availability.endDate +
+            "h";
           let id = child.val().availability.id;
           const myPrice = child.val().myPrice;
           resulIds.push(id);
@@ -82,8 +83,9 @@ function ProfileWalkerForm(props) {
           child.val().day +
           ": " +
           child.val().startTime +
-          " - " +
-          child.val().endDate;
+          "h - " +
+          child.val().endDate +
+          "h";
         let id = child.val().id;
         hueco.push(hour);
         hueco.push(id);
@@ -106,7 +108,7 @@ function ProfileWalkerForm(props) {
       });
 
     const money = Math.round(sueldo * 1.3 * 100) / 100;
-    
+
     const walkData = {
       availability: availability,
       price: money,
