@@ -46,6 +46,10 @@ export const walkerFormStyles = StyleSheet.create({
     fontSize: 15,
     textAlign: "center",
   },
+  walkerFormTxt4: {
+    fontSize: 13,
+    textAlign: "center",
+  },
   walkerFormView: {
     flex: 1,
     flexDirection: "row",
@@ -58,6 +62,8 @@ export const walkerFormStyles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     margin: 5,
-    padding: 5,
+    paddingVertical: 5,
+    textAlign: "center",
+    width: 140,
   },
 });

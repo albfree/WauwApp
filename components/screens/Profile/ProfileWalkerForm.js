@@ -253,7 +253,7 @@ function ProfileWalkerForm(props) {
                       <TouchableOpacity
                         onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
-                        <Text style={walkerFormStyles.walkerFormTxt3}>
+                        <Text style={walkerFormStyles.walkerFormTxt4}>
                           {hour[0]}
                         </Text>
                         <Text style={walkerFormStyles.walkerFormTxt3}>
@@ -285,7 +285,9 @@ function ProfileWalkerForm(props) {
                         onPress={() => checkSalary(av[1])}
                       >
                         <View style={walkerFormStyles.walkerFormView2}>
-                          <Text>{av[0]}</Text>
+                          <Text style={walkerFormStyles.walkerFormTxt4}>
+                            {av[0]}
+                          </Text>
                         </View>
                       </TouchableOpacity>
                     ))}
