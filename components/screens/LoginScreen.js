@@ -67,7 +67,6 @@ function LoginScreen(props) {
                   photo: result.additionalUserInfo.profile.picture,
                   email: result.user.email,
                   wauwPoints: 0,
-                  petNumber: 0,
                   avgScore: 0,
                   location: null,
                   userId: result.user.uid,
