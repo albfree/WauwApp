@@ -118,7 +118,7 @@ function ProfileDeleteData(props) {
 
     if (requestsWorkerList && requestsWorkerList.length) {
       for (let i = 0; i < requestsWorkerList.length; i++) {
-        if (requestsWorkerList[i].pending === false) {
+        if (requestsWorkerList[i].pending === false && requestsWorkerList[i].isCanceled === false) {
           if (
             requestsWorkerList[i].isFinished === false ||
             requestsWorkerList[i].isPayed === false ||
@@ -133,7 +133,7 @@ function ProfileDeleteData(props) {
 
     if (requestsOwnerList && requestsOwnerList.length) {
       for (let i = 0; i < requestsOwnerList.length; i++) {
-        if (requestsOwnerList[i].pending === false) {
+        if (requestsOwnerList[i].pending === false && requestsOwnerList[i].isCanceled === false) {
           if (
             requestsOwnerList[i].isFinished === false ||
             requestsOwnerList[i].isPayed === false ||
