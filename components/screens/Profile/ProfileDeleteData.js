@@ -298,6 +298,16 @@ function deleteData(wauwerId, anonWauwerId, requestsWorkerList, requestsOwnerLis
 
         var currentUser = firebase.auth().currentUser;
         var userUid = currentUser.uid;
+
+        //BORRADO DE LOGINS
+        db.ref("logins")
+          .orderByChild("user")
+          .equalTo(userUid)
+          .on("value", (snap) => {
+            snap.forEach((child) => {
+              child.ref.remove();
+            });
+          });
         currentUser.delete().then(function () {
           db.ref("users/" + userUid).remove();
           db.ref("wauwers/" + wauwerId).remove();
