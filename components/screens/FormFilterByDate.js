@@ -13,15 +13,15 @@ function FormFilterByDate(props) {
   const [modeS, setModeS] = useState("date");
   const [showS, setShowS] = useState(false);
 
-  const onChangeS = (event, selectedDate) => {
-    if (event.type === "set") {
-      const currentDate = selectedDate;
-      setShowS(false);
-      setStartTime(currentDate);
-    } else if (event.type === "dismissed") {
+  const onChangeS = (selectedDate) => {
+    if (selectedDate === undefined) {
       const defaultTime = newStartTime;
       setShowS(false);
       setStartTime(defaultTime);
+    } else {
+      const currentDate = selectedDate;
+      setShowS(false);
+      setStartTime(currentDate);
     }
   };
 

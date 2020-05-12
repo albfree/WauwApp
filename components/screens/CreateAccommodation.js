@@ -29,15 +29,15 @@ function CreateAccommodation(props) {
   const [modeE, setModeE] = useState("date");
   const [showE, setShowE] = useState(false);
 
-  const onChangeS = (event, selectedDate) => {
-    if (event.type === "set") {
-      const currentDate = selectedDate;
-      setShowS(false);
-      setStartTime(currentDate);
-    } else if (event.type === "dismissed") {
+  const onChangeS = (selectedDate) => {
+    if (selectedDate === undefined) {
       const defaultTime = newStartTime;
       setShowS(false);
       setStartTime(defaultTime);
+    } else {
+      const currentDate = selectedDate;
+      setShowS(false);
+      setStartTime(currentDate);
     }
   };
 
@@ -50,15 +50,15 @@ function CreateAccommodation(props) {
     showModeS("date");
   };
 
-  const onChangeE = (event, selectedDate) => {
-    if (event.type === "set") {
+  const onChangeE = (selectedDate) => {
+    if (selectedDate === undefined) {
+      const defaultTime = newStartTime;
+      setShowS(false);
+      setStartTime(defaultTime);
+    } else {
       const currentDate = selectedDate;
-      setShowE(false);
-      setEndTime(currentDate);
-    } else if (event.type === "dismissed") {
-      const defaultTime = newEndTime;
-      setShowE(false);
-      setEndTime(defaultTime);
+      setShowS(false);
+      setStartTime(currentDate);
     }
   };
 
@@ -130,7 +130,7 @@ function CreateAccommodation(props) {
       Alert.alert("Advertencia", errores.toString());
     } else {
       const money = Math.round(newSalary * 1.25 * 100) / 100;
-      
+
       let accommodationData = {
         id: id,
         startTime: newStartTime.toISOString(),
