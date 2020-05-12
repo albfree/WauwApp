@@ -55,8 +55,9 @@ function ProfileWalkerForm(props) {
             child.val().availability.day +
             ": " +
             child.val().availability.startTime +
-            " - " +
-            child.val().availability.endDate;
+            "h - " +
+            child.val().availability.endDate +
+            "h";
           let id = child.val().availability.id;
           const myPrice = child.val().myPrice;
           resulIds.push(id);
@@ -82,8 +83,9 @@ function ProfileWalkerForm(props) {
           child.val().day +
           ": " +
           child.val().startTime +
-          " - " +
-          child.val().endDate;
+          "h - " +
+          child.val().endDate +
+          "h";
         let id = child.val().id;
         hueco.push(hour);
         hueco.push(id);
@@ -195,7 +197,7 @@ function ProfileWalkerForm(props) {
       toastRef.current.show("Salario inválido");
       setSueldo(null);
     } else {
-      if (!Number.isInteger(sueldo * 100)) {
+      if (!Number.isInteger(Math.round(sueldo * 1000000) / 10000)) {
         toastRef.current.show("Salario con dos decimales máximo");
         setSueldo(null);
       } else {
@@ -251,7 +253,7 @@ function ProfileWalkerForm(props) {
                       <TouchableOpacity
                         onPress={() => confirmDelete(ids[hours.indexOf(hour)])}
                       >
-                        <Text style={walkerFormStyles.walkerFormTxt3}>
+                        <Text style={walkerFormStyles.walkerFormTxt4}>
                           {hour[0]}
                         </Text>
                         <Text style={walkerFormStyles.walkerFormTxt3}>
@@ -283,7 +285,9 @@ function ProfileWalkerForm(props) {
                         onPress={() => checkSalary(av[1])}
                       >
                         <View style={walkerFormStyles.walkerFormView2}>
-                          <Text>{av[0]}</Text>
+                          <Text style={walkerFormStyles.walkerFormTxt4}>
+                            {av[0]}
+                          </Text>
                         </View>
                       </TouchableOpacity>
                     ))}

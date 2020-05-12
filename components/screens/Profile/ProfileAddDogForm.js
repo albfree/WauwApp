@@ -99,7 +99,7 @@ function ProfileAddDogForm(props) {
             <Button
               buttonStyle={addDogStyles.addDogBtn}
               containerStyle={addDogStyles.addDogBtnContainer}
-              title="Crear"
+              title="Añadir"
               onPress={addPet}
               icon={
                 <Icon

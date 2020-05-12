@@ -15,7 +15,7 @@ import Loading from "../Loading";
 import { globalStyles } from "../styles/global";
 import BlankView from "./BlankView";
 import { notificationsStyles } from "../styles/notificationsStyle";
-import { fechaParseada } from "../utils/DateParser";
+import { fechaParseadaCorta } from "../utils/DateParser";
 
 function wait(timeout) {
   return new Promise((resolve) => {
@@ -142,9 +142,9 @@ function Request(props) {
   } else if (req.item.type === "sitter") {
     tipo = "alojamiento";
     fecha = "Del "
-      .concat(fechaParseada(req.item.startTime))
+      .concat(fechaParseadaCorta(req.item.startTime))
       .concat(" al ")
-      .concat(fechaParseada(req.item.endTime));
+      .concat(fechaParseadaCorta(req.item.endTime));
   }
 
   const checkRequestsState = () => {

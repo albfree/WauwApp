@@ -45,9 +45,15 @@ function FormRequestAccommodation(props) {
   };
 
   const onChangeS = (event, selectedDate) => {
-    const currentDate = selectedDate || new Date();
-    setShowS(Platform.OS === "ios");
-    setStartTime(currentDate);
+    if (event.type === "set") {
+      const currentDate = selectedDate;
+      setShowS(false);
+      setStartTime(currentDate);
+    } else if (event.type === "dismissed") {
+      const defaultTime = newStartTime;
+      setShowS(false);
+      setStartTime(defaultTime);
+    }
   };
 
   const showModeS = (currentMode) => {
@@ -60,9 +66,15 @@ function FormRequestAccommodation(props) {
   };
 
   const onChangeE = (event, selectedDate) => {
-    const currentDate = selectedDate || new Date();
-    setShowE(Platform.OS === "ios");
-    setEndTime(currentDate);
+    if (event.type === "set") {
+      const currentDate = selectedDate;
+      setShowE(false);
+      setEndTime(currentDate);
+    } else if (event.type === "dismissed") {
+      const defaultTime = newEndTime;
+      setShowE(false);
+      setEndTime(defaultTime);
+    }
   };
 
   const showModeE = (currentMode) => {

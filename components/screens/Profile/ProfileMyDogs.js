@@ -176,7 +176,7 @@ export default function ProfileMyDogs(props) {
         [
           {
             text: "Si",
-            onPress: deleteDog,
+            onPress: checkRequests,
           },
           {
             text: "No",
@@ -185,6 +185,36 @@ export default function ProfileMyDogs(props) {
         ],
         { cancelable: false }
       );
+    };
+
+    const checkRequests = () => {
+      let num = 0;
+      db.ref("requests")
+        .orderByChild("owner")
+        .equalTo(user)
+        .once("value", (snap) => {
+          snap.forEach((child) => {
+            if (
+              child.val().pending ||
+              (!child.val().isCanceled && !child.val().isFinished)
+            ) {
+              num++;
+            }
+          });
+        })
+        .then(() => {
+          if (num > 0) {
+            let solicitudes = " solicitud en curso";
+            let mensaje = "Cancele o finalícela antes de eliminar mascotas";
+            if (num > 1) {
+              solicitudes = " solicitudes en curso";
+              mensaje = "Cancele o finalícelas antes de eliminar mascotas";
+            }
+            Alert.alert("Tiene " + num + solicitudes, mensaje);
+          } else {
+            deleteDog();
+          }
+        });
     };
 
     return (
